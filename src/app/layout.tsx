@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Sora } from "next/font/google";
 
 import { siteConfig } from "@/config/site";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
 
 import "./globals.css";
 
@@ -45,8 +47,12 @@ export default function RootLayout({
       className={`${inter.variable} ${sora.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
-        {children}
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </div>
       </body>
     </html>
   );
