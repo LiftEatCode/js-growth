@@ -7,6 +7,7 @@ import {
   Workflow,
 } from "lucide-react";
 
+import { FeatureCard } from "@/components/marketing";
 import {
   Container,
   Section,
@@ -63,28 +64,14 @@ export function ServicesSection() {
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => {
-            const Icon = service.icon;
-
-            return (
-              <article
-                key={service.title}
-                className="group rounded-2xl border border-border bg-card p-8 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft"
-              >
-                <div className="mb-6 flex size-12 items-center justify-center rounded-xl bg-blue-50 text-brand-blue transition duration-300 group-hover:bg-brand-blue group-hover:text-white">
-                  <Icon aria-hidden="true" className="size-6" />
-                </div>
-
-                <h3 className="font-heading text-xl font-semibold text-brand">
-                  {service.title}
-                </h3>
-
-                <p className="mt-3 leading-7 text-muted">
-                  {service.description}
-                </p>
-              </article>
-            );
-          })}
+          {services.map((service) => (
+            <FeatureCard
+              key={service.title}
+              title={service.title}
+              description={service.description}
+              icon={service.icon}
+            />
+          ))}
         </div>
       </Container>
     </Section>
