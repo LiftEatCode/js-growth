@@ -1,0 +1,1 @@
+export { GrowthSystemVisual } from "./growth-system-visual";
