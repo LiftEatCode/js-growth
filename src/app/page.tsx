@@ -1,4 +1,5 @@
 import { CTASection } from "@/components/marketing";
+import { FAQSection } from "@/components/sections/faq-section";
 import { FeaturedProjectsSection } from "@/components/sections/featured-projects-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { ProcessSection } from "@/components/sections/process-section";
@@ -15,6 +16,7 @@ export default function HomePage() {
       <FeaturedProjectsSection />
       <ProcessSection />
       <TestimonialsSection />
+      <FAQSection />
 
       <CTASection
         title="Turn your website into a system that drives growth."
