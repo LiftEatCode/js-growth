@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import {
   BenefitsSection,
   CTASection,
+  FAQSection,
   PageHero,
   ProcessSection,
 } from "@/components/marketing";
@@ -10,6 +11,7 @@ import { GoogleBusinessProfileSection } from "@/components/sections/google-busin
 import {
   localSeoBenefits,
   localSeoProcess,
+  localSeoFAQ,
 } from "@/content/services/local-seo";
 
 export const metadata: Metadata = {
@@ -34,6 +36,11 @@ export default function LocalSEOPage() {
 
       <GoogleBusinessProfileSection />
       <ProcessSection {...localSeoProcess} theme="dark" />
+
+      <FAQSection
+        {...localSeoFAQ}
+        className="bg-background"
+      />
 
       <CTASection
         title="Improve your visibility in local search."

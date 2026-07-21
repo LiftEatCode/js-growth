@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { WebsiteCapabilitiesSection } from "@/components/sections/website-capabilities-section";
-import { WebsiteFAQSection } from "@/components/sections/website-faq-section";
-import { WebsiteIndustriesSection } from "@/components/sections/website-industries-section";
-import { WebsiteProcessSection } from "@/components/sections/website-process-section";
 import {
   BenefitsSection,
+  CapabilitiesSection,
   CTASection,
+  FAQSection,
+  IndustriesSection,
   PageHero,
+  ProcessSection,
 } from "@/components/marketing";
 
-import { websiteBenefits } from "@/content/services/websites";
+import {
+  websiteBenefits,
+  websiteCapabilities,
+  websiteFAQ,
+  websiteIndustries,
+  websiteProcess,
+} from "@/content/services/websites";
 
 export const metadata: Metadata = {
   title: "Website Development",
@@ -30,10 +36,26 @@ export default function WebsitesPage() {
         {...websiteBenefits}
         className="bg-background"
       />
-      <WebsiteCapabilitiesSection />
-      <WebsiteProcessSection />
-      <WebsiteIndustriesSection />
-      <WebsiteFAQSection />
+
+      <CapabilitiesSection
+        {...websiteCapabilities}
+        className="bg-muted/30"
+      />
+
+      <ProcessSection
+        {...websiteProcess}
+        theme="dark"
+      />
+
+      <IndustriesSection
+        {...websiteIndustries}
+        className="bg-muted/30"
+      />
+
+      <FAQSection
+        {...websiteFAQ}
+        className="bg-background"
+      />
 
       <CTASection
         title="Build a website that works as hard as your business."

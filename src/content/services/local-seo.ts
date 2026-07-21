@@ -14,6 +14,7 @@ import {
 
 import type {
   BenefitItem,
+  FAQItem,
   ProcessItem,
 } from "@/components/marketing";
   
@@ -126,4 +127,63 @@ export const localSeoProcess = {
       icon: BarChart3,
     },
   ] satisfies readonly ProcessItem[],
+} as const;
+
+export const localSeoFAQ = {
+  eyebrow: "Local SEO FAQ",
+  title: "Common questions about improving local search visibility.",
+  description:
+    "Local SEO involves your website, Google Business Profile, reviews, local content, business listings, and ongoing optimization.",
+  items: [
+    {
+      question: "How long does Local SEO take to work?",
+      answer:
+        "Local SEO is a long-term strategy. Some improvements may appear within a few weeks, while stronger ranking, traffic, and lead growth usually develops over several months.",
+    },
+    {
+      question: "Can you guarantee first-place Google rankings?",
+      answer:
+        "No reputable SEO provider can guarantee a specific ranking. Search results depend on competition, location, relevance, authority, website quality, reviews, and Google's algorithms.",
+    },
+    {
+      question: "Do I need a Google Business Profile?",
+      answer:
+        "For most local businesses, yes. A properly optimized Google Business Profile is one of the most important tools for appearing in Google Maps and local search results.",
+    },
+    {
+      question: "Can you optimize my existing website?",
+      answer:
+        "Yes. We can improve the technical foundation, service pages, location relevance, metadata, internal linking, content, calls to action, and other search signals on an existing website.",
+    },
+    {
+      question: "Do reviews affect Local SEO?",
+      answer:
+        "Reviews help build trust and can support local visibility. Review quality, frequency, relevance, and professional responses all contribute to a stronger local presence.",
+    },
+    {
+      question: "What are local citations?",
+      answer:
+        "Local citations are mentions of your business information across directories, maps, industry websites, and other platforms. Accurate and consistent information helps search engines verify your business.",
+    },
+    {
+      question: "Do I need separate pages for each location?",
+      answer:
+        "Sometimes. Businesses serving multiple real locations or distinct markets may benefit from dedicated location pages, but they should provide meaningful, unique information rather than duplicated content.",
+    },
+    {
+      question: "Will Local SEO bring more phone calls?",
+      answer:
+        "The goal is to increase qualified visibility and make it easier for nearby customers to call, visit, request directions, or submit a form. Results depend on demand, competition, and the strength of the overall strategy.",
+    },
+    {
+      question: "What do you track?",
+      answer:
+        "We can track local rankings, organic traffic, Google Business Profile actions, calls, form submissions, website engagement, direction requests, and other meaningful conversion signals.",
+    },
+    {
+      question: "Is Local SEO a one-time service?",
+      answer:
+        "Initial optimization is valuable, but ongoing work usually produces stronger results. Competitors, search behavior, business information, reviews, content, and Google systems continue to change.",
+    },
+  ] satisfies readonly FAQItem[],
 } as const;
