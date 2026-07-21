@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 
-import { CTASection, PageHero } from "@/components/marketing";
+import {
+  BenefitsSection,
+  CTASection,
+  PageHero,
+  ProcessSection,
+} from "@/components/marketing";
 import { GoogleBusinessProfileSection } from "@/components/sections/google-business-profile-section";
-import { LocalSEOBenefitsSection } from "@/components/sections/local-seo-benefits-section";
-import { LocalSEOProcessSection } from "@/components/sections/local-seo-process-section";
+import {
+  localSeoBenefits,
+  localSeoProcess,
+} from "@/content/services/local-seo";
 
 export const metadata: Metadata = {
   title: "Local SEO",
@@ -20,9 +27,13 @@ export default function LocalSEOPage() {
         description="JS Solutions improves your website, Google Business Profile, service-area relevance, local content, reviews, and technical foundation so your business can compete in the markets that matter most."
       />
 
-      <LocalSEOBenefitsSection />
+      <BenefitsSection
+        {...localSeoBenefits}
+        className="bg-background"
+      />
+
       <GoogleBusinessProfileSection />
-      <LocalSEOProcessSection />
+      <ProcessSection {...localSeoProcess} theme="dark" />
 
       <CTASection
         title="Improve your visibility in local search."

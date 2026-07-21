@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-
-import { CTASection, PageHero } from "@/components/marketing";
-import { WebsiteBenefitsSection } from "@/components/sections/website-benefits-section";
 import { WebsiteCapabilitiesSection } from "@/components/sections/website-capabilities-section";
 import { WebsiteFAQSection } from "@/components/sections/website-faq-section";
 import { WebsiteIndustriesSection } from "@/components/sections/website-industries-section";
 import { WebsiteProcessSection } from "@/components/sections/website-process-section";
+import {
+  BenefitsSection,
+  CTASection,
+  PageHero,
+} from "@/components/marketing";
+
+import { websiteBenefits } from "@/content/services/websites";
 
 export const metadata: Metadata = {
   title: "Website Development",
@@ -22,7 +26,10 @@ export default function WebsitesPage() {
         description="JS Solutions builds fast, scalable websites designed around user experience, technical SEO, accessibility, Core Web Vitals, and lead generation."
       />
 
-      <WebsiteBenefitsSection />
+      <BenefitsSection
+        {...websiteBenefits}
+        className="bg-background"
+      />
       <WebsiteCapabilitiesSection />
       <WebsiteProcessSection />
       <WebsiteIndustriesSection />
