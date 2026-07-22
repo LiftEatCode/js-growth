@@ -10,7 +10,7 @@ export const siteConfig = {
       { name: "Services", href: "/services" },
       { name: "Websites", href: "/websites" },
       { name: "Local SEO", href: "/local-seo" },
-      { name: "AI Solutions", href: "/ai-solutions" },
+      { name: "AI Automation", href: "/ai-automation" },
       { name: "About", href: "/about" },
       { name: "Blog", href: "/blog" },
       { name: "Contact", href: "/contact" },
