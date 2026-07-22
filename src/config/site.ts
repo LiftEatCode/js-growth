@@ -8,6 +8,7 @@ export const siteConfig = {
     navigation: [
       { name: "Home", href: "/" },
       { name: "Services", href: "/services" },
+      { name: "Growth System", href: "/growth-system" },
       { name: "Websites", href: "/websites" },
       { name: "Local SEO", href: "/local-seo" },
       { name: "AI Automation", href: "/ai-automation" },
@@ -15,4 +16,4 @@ export const siteConfig = {
       { name: "Blog", href: "/blog" },
       { name: "Contact", href: "/contact" },
     ],
-  } as const;
+  } as const; 

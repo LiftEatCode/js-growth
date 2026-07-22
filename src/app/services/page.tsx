@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 
 import {
@@ -39,6 +40,14 @@ export default function ServicesPage() {
             className="max-w-xl [&_*]:text-white"
           />
             <GrowthSystemVisual />
+            <div className="mt-8">
+              <Link
+                href="/growth-system"
+                className="inline-flex items-center text-sm font-semibold text-white transition hover:opacity-80"
+              >
+                Explore the complete growth system →
+              </Link>
+            </div>
           </div>
         </Container>
       </Section>
