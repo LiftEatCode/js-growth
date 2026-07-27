@@ -12,14 +12,12 @@ import {
 
 import {
   BenefitsSection,
-  BusinessProblemsSection,
   CTASection,
   GrowthSystemVisual,
   PageHero,
   ProcessSection,
 } from "@/components/marketing";
 import { Container, Section, SectionHeader } from "@/components/ui";
-import { businessProblems } from "@/content/home";
 
 export const metadata: Metadata = {
   title: "The JS Growth System",
@@ -158,8 +156,6 @@ export default function GrowthSystemPage() {
       <BenefitsSection {...growthBenefits} />
 
       <ProcessSection {...growthProcess} theme="dark" />
-
-      <BusinessProblemsSection {...businessProblems} />
 
       <CTASection
         title="Build the right growth system for your business."
