@@ -33,25 +33,26 @@ export default function ServicesPage() {
       <Section className="overflow-hidden bg-brand text-white">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <SectionHeader
-            eyebrow="The JS Growth System"
-            title="Your digital tools should work together."
-            description="A website should not sit alone. Search visibility brings the right visitors, conversion systems capture opportunities, automation improves follow-up, and analytics show what is driving growth."
-            className="max-w-xl [&_*]:text-white"
-          />
-            <GrowthSystemVisual />
-            <div className="mt-8">
+            <div>
+              <SectionHeader
+                eyebrow="The JS Growth System"
+                title="Your digital tools should work together."
+                description="A website should not sit alone. Search visibility brings the right visitors, conversion systems capture opportunities, automation improves follow-up, and analytics show what is driving growth."
+                className="max-w-xl [&_*]:text-white"
+              />
+
               <Link
                 href="/growth-system"
-                className="inline-flex items-center text-sm font-semibold text-white transition hover:opacity-80"
+                className="mt-8 inline-flex items-center text-sm font-semibold text-white transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 Explore the complete growth system →
               </Link>
             </div>
+
+            <GrowthSystemVisual />
           </div>
         </Container>
       </Section>
-
       <CTASection
         title="Build a digital system that supports real growth."
         description="Let’s review your website, visibility, customer journey, workflows, and business goals to determine the strongest place to start."
