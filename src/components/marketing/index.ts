@@ -34,4 +34,10 @@ export {
     type IndustriesSectionProps,
     type IndustryItem,
   } from "./industries-section";
+
+  export {
+    BusinessProblemsSection,
+    type BusinessProblemItem,
+    type BusinessProblemsSectionProps,
+  } from "./business-problems-section";  
   

@@ -12,12 +12,14 @@ import {
 
 import {
   BenefitsSection,
+  BusinessProblemsSection,
   CTASection,
   GrowthSystemVisual,
   PageHero,
   ProcessSection,
 } from "@/components/marketing";
 import { Container, Section, SectionHeader } from "@/components/ui";
+import { businessProblems } from "@/content/home";
 
 export const metadata: Metadata = {
   title: "The JS Growth System",
@@ -157,47 +159,7 @@ export default function GrowthSystemPage() {
 
       <ProcessSection {...growthProcess} theme="dark" />
 
-      <Section>
-        <Container>
-          <div className="grid gap-10 rounded-3xl border bg-card p-8 shadow-soft md:p-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-            <div>
-              <div className="flex size-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                <ChartNoAxesCombined className="size-6" />
-              </div>
-
-              <h2 className="mt-6 text-3xl font-semibold tracking-tight md:text-4xl">
-                Start where your business needs help most.
-              </h2>
-
-              <p className="mt-4 leading-7 text-muted-foreground">
-                You do not need to implement every part at once. We identify the
-                biggest opportunity or bottleneck, build the right foundation,
-                and expand the system as your business grows.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Outdated or underperforming website",
-                "Low local search visibility",
-                "Inconsistent lead generation",
-                "Slow customer follow-up",
-                "Too many repetitive tasks",
-                "Disconnected business tools",
-                "Limited performance reporting",
-                "Difficulty scaling operations",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-xl border bg-background px-4 py-3 text-sm font-medium"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </Section>
+      <BusinessProblemsSection {...businessProblems} />
 
       <CTASection
         title="Build the right growth system for your business."
