@@ -7,10 +7,16 @@ import { ServicesSection } from "@/components/sections/services-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { WhyChooseSection } from "@/components/sections/why-choose-section";
 
+import {
+  BusinessProblemsSection,
+} from "@/components/marketing";
+import { businessProblems } from "@/content/home";
+
 export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <BusinessProblemsSection {...businessProblems} />
       <ServicesSection />
       <WhyChooseSection />
       <FeaturedProjectsSection />
