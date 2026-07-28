@@ -1,289 +1,146 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Bot,
-  ChartNoAxesCombined,
-  Code2,
-  Search,
-} from "lucide-react";
+import { ArrowRight, Clock3 } from "lucide-react";
 
-import { PageHero } from "@/components/marketing";
-import { Container, Section } from "@/components/ui";
+import { CTASection } from "@/components/marketing";
+import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
+import { blogPosts } from "@/content/blog/posts";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Business Growth Insights",
   description:
-    "Practical insights from JS Solutions about websites, Local SEO, AI automation, analytics, and digital growth for local businesses.",
+    "Practical insights about websites, Local SEO, AI automation, analytics, and digital growth for local businesses.",
+  alternates: {
+    canonical: "/blog",
+  },
 };
-
-const featuredArticle = {
-  title: "Why Every Local Business Needs More Than Just a Website",
-  description:
-    "A website should do more than look professional. Learn how performance, Local SEO, conversion strategy, analytics, and automation work together to generate measurable business growth.",
-  category: "Digital Growth",
-  readTime: "7 min read",
-  href: "/blog/why-local-businesses-need-more-than-a-website",
-};
-
-const articles = [
-  {
-    title: "What Is Local SEO and Why Does It Matter?",
-    description:
-      "Learn how Local SEO helps nearby customers find your business through Google Search, Maps, and your Google Business Profile.",
-    category: "Local SEO",
-    readTime: "6 min read",
-    href: "/blog/what-is-local-seo",
-    icon: Search,
-  },
-  {
-    title: "How Much Should a Small Business Website Cost?",
-    description:
-      "Understand the factors that affect website pricing and what small businesses should expect from a professional website investment.",
-    category: "Websites",
-    readTime: "8 min read",
-    href: "/blog/small-business-website-cost",
-    icon: Code2,
-  },
-  {
-    title: "How AI Automation Can Save Your Business Time",
-    description:
-      "Explore practical ways AI and automation can reduce repetitive work, improve follow-up, and create more consistent customer experiences.",
-    category: "AI Automation",
-    readTime: "7 min read",
-    href: "/blog/how-ai-automation-saves-time",
-    icon: Bot,
-  },
-  {
-    title: "The Website Metrics Local Businesses Should Track",
-    description:
-      "Discover which analytics matter most when measuring website performance, lead generation, search visibility, and marketing results.",
-    category: "Analytics",
-    readTime: "6 min read",
-    href: "/blog/website-metrics-local-businesses",
-    icon: ChartNoAxesCombined,
-  },
-];
-
-const categories = [
-  "Websites",
-  "Local SEO",
-  "AI Automation",
-  "Business Systems",
-  "Analytics",
-  "Digital Growth",
-];
 
 export default function BlogPage() {
+  const featuredPost =
+    blogPosts.find((post) => post.featured) ?? blogPosts[0];
+
+  const remainingPosts = featuredPost
+    ? blogPosts.filter((post) => post.slug !== featuredPost.slug)
+    : [];
+
   return (
     <>
-      <PageHero
-        eyebrow="Insights"
-        title="Websites, SEO, AI, and automation explained."
-        description="Practical insights for local businesses that want stronger online visibility, better technology, smarter workflows, and more consistent lead generation."
-      />
-
-      <Section className="border-b border-border">
+      <Section className="overflow-hidden pt-28 sm:pt-32">
         <Container>
-          <div className="grid gap-8 overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
-            <div className="flex flex-col justify-center">
-              <div className="flex flex-wrap items-center gap-3 text-sm">
-                <span className="rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
-                  Featured
-                </span>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+              Insights
+            </p>
 
-                <span className="text-muted">
-                  {featuredArticle.category}
-                </span>
+            <h1 className="font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              Practical strategies for growing a local business
+            </h1>
 
-                <span className="text-muted" aria-hidden="true">
-                  •
-                </span>
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted">
+              Explore actionable ideas about websites, Local SEO, automation,
+              analytics, and modern digital growth.
+            </p>
+          </div>
+        </Container>
+      </Section>
 
-                <span className="text-muted">
-                  {featuredArticle.readTime}
-                </span>
-              </div>
+      {featuredPost ? (
+        <Section className="pt-4 sm:pt-8">
+          <Container>
+            <article className="group relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-soft sm:p-10 lg:p-12">
+              <div className="max-w-3xl">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
+                  <span className="rounded-full border border-border bg-background px-3 py-1 font-medium text-foreground">
+                    {featuredPost.category}
+                  </span>
 
-              <h2 className="mt-6 max-w-2xl font-heading text-3xl font-semibold tracking-tight text-brand sm:text-4xl">
-                {featuredArticle.title}
-              </h2>
+                  <span className="inline-flex items-center gap-2">
+                    <Clock3 className="h-4 w-4" />
+                    {featuredPost.readingTime}
+                  </span>
+                </div>
 
-              <p className="mt-5 max-w-2xl text-base leading-7 text-muted sm:text-lg">
-                {featuredArticle.description}
-              </p>
+                <h2 className="mt-6 font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                  <Link
+                    href={`/blog/${featuredPost.slug}`}
+                    className="transition-colors hover:text-brand"
+                  >
+                    {featuredPost.title}
+                  </Link>
+                </h2>
 
-              <div className="mt-8">
+                <p className="mt-5 text-lg leading-8 text-muted">
+                  {featuredPost.description}
+                </p>
+
                 <Link
-                  href={featuredArticle.href}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  href={`/blog/${featuredPost.slug}`}
+                  className="mt-8 inline-flex items-center gap-2 font-semibold text-brand transition-transform group-hover:translate-x-1"
                 >
-                  Read Article
+                  Read article
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
-            </div>
+            </article>
+          </Container>
+        </Section>
+      ) : null}
 
-            <div className="flex min-h-72 items-center justify-center rounded-2xl border border-border bg-muted/40 p-8">
-              <div className="max-w-sm text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <ChartNoAxesCombined className="h-8 w-8" />
-                </div>
-
-                <p className="mt-6 font-heading text-xl font-semibold text-brand">
-                  Strategy backed by technology
-                </p>
-
-                <p className="mt-3 text-sm leading-6 text-muted">
-                  Practical guidance designed to help local businesses make
-                  smarter decisions about websites, marketing, automation, and
-                  growth.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      <Section className="border-b border-border bg-muted/20">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Latest insights
-              </p>
-
-              <h2 className="mt-4 max-w-3xl font-heading text-3xl font-semibold tracking-tight text-brand sm:text-4xl">
-                Practical guidance for growing local businesses
-              </h2>
-
-              <p className="mt-5 max-w-2xl text-base leading-7 text-muted">
-                Explore strategies covering website performance, Local SEO,
-                automation, analytics, lead generation, and business
-                technology.
-              </p>
-            </div>
-
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-            >
-              Suggest a topic
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {articles.map((article) => {
-              const Icon = article.icon;
-
-              return (
+      {remainingPosts.length > 0 ? (
+        <Section>
+          <Container>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {remainingPosts.map((post) => (
                 <article
-                  key={article.title}
-                  className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-card transition-transform duration-200 hover:-translate-y-1 sm:p-8"
+                  key={post.slug}
+                  className="group flex h-full flex-col rounded-3xl border border-border bg-card p-7 shadow-soft"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <Icon className="h-6 w-6" />
-                    </div>
-
-                    <span className="text-sm text-muted">
-                      {article.readTime}
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
+                    <span className="font-medium text-brand">
+                      {post.category}
                     </span>
+
+                    <span aria-hidden="true">•</span>
+
+                    <span>{post.readingTime}</span>
                   </div>
 
-                  <p className="mt-6 text-sm font-semibold text-primary">
-                    {article.category}
-                  </p>
+                  <h2 className="mt-5 font-heading text-2xl font-semibold tracking-tight text-foreground">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="transition-colors hover:text-brand"
+                    >
+                      {post.title}
+                    </Link>
+                  </h2>
 
-                  <h3 className="mt-3 font-heading text-2xl font-semibold tracking-tight text-brand">
-                    {article.title}
-                  </h3>
-
-                  <p className="mt-4 flex-1 text-sm leading-7 text-muted">
-                    {article.description}
+                  <p className="mt-4 flex-1 leading-7 text-muted">
+                    {post.description}
                   </p>
 
                   <Link
-                    href={article.href}
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors group-hover:text-primary"
+                    href={`/blog/${post.slug}`}
+                    className="mt-6 inline-flex items-center gap-2 font-semibold text-brand transition-transform group-hover:translate-x-1"
                   >
-                    Read Article
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    Read article
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 </article>
-              );
-            })}
-          </div>
-        </Container>
-      </Section>
-
-      <Section className="border-b border-border">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Explore topics
-              </p>
-
-              <h2 className="mt-4 font-heading text-3xl font-semibold tracking-tight text-brand sm:text-4xl">
-                Find the information your business needs
-              </h2>
-
-              <p className="mt-5 text-base leading-7 text-muted">
-                Browse insights across the core areas that influence local
-                visibility, operational efficiency, customer acquisition, and
-                long-term business growth.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {categories.map((category) => (
-                <div
-                  key={category}
-                  className="flex items-center justify-between rounded-xl border border-border bg-card px-5 py-4 shadow-card"
-                >
-                  <span className="font-medium text-brand">{category}</span>
-
-                  <ArrowRight className="h-4 w-4 text-primary" />
-                </div>
               ))}
             </div>
-          </div>
-        </Container>
-      </Section>
+          </Container>
+        </Section>
+      ) : null}
 
-      <Section>
-        <Container>
-          <div className="overflow-hidden rounded-3xl border border-border bg-brand px-6 py-12 text-background sm:px-10 lg:px-16 lg:py-16">
-            <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-              <div className="max-w-3xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                  Need help growing?
-                </p>
-
-                <h2 className="mt-4 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Turn these strategies into results for your business.
-                </h2>
-
-                <p className="mt-5 text-base leading-7 text-background/70 sm:text-lg">
-                  JS Solutions combines modern websites, Local SEO, AI,
-                  automation, and analytics into practical systems built around
-                  your goals.
-                </p>
-              </div>
-
-              <Link
-                href="/contact"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-              >
-                Start a Conversation
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      <CTASection
+        title="Ready to build a stronger digital growth system?"
+        description="Let’s create a website, SEO strategy, and automation system designed around your business goals."
+        primaryLabel="Start Your Project"
+        primaryHref="/contact"
+        secondaryLabel="View Services"
+        secondaryHref="/services"
+      />
     </>
   );
 }
