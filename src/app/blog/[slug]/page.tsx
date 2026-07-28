@@ -3,6 +3,12 @@ import { notFound } from "next/navigation";
 
 import { BlogArticleLayout } from "@/components/blog/blog-article-layout";
 import { blogPosts, getBlogPost } from "@/content/blog/posts";
+import {
+  getAbsoluteUrl,
+  getBlogPostingSchema,
+  getBreadcrumbSchema,
+  serializeJsonLd,
+} from "@/lib/seo";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -25,23 +31,29 @@ export async function generateMetadata({
   if (!post) {
     return {
       title: "Article Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  const canonicalUrl = `/blog/${post.slug}`;
+  const articleUrl = getAbsoluteUrl(`/blog/${post.slug}`);
 
   return {
     title: post.title,
     description: post.description,
     alternates: {
-      canonical: canonicalUrl,
+      canonical: articleUrl,
     },
     openGraph: {
+      type: "article",
       title: post.title,
       description: post.description,
-      type: "article",
-      url: canonicalUrl,
+      url: articleUrl,
+      siteName: "JS Solutions",
       publishedTime: post.publishedAtIso,
+      modifiedTime: post.publishedAtIso,
     },
     twitter: {
       card: "summary_large_image",
@@ -61,15 +73,29 @@ export default async function BlogPostPage({
     notFound();
   }
 
+  const structuredData = [
+    getBlogPostingSchema(post),
+    getBreadcrumbSchema(post),
+  ];
+
   return (
-    <BlogArticleLayout
-      title={post.title}
-      description={post.description}
-      category={post.category}
-      publishedAt={post.publishedAt}
-      readingTime={post.readingTime}
-    >
-      {post.content}
-    </BlogArticleLayout>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(structuredData),
+        }}
+      />
+
+      <BlogArticleLayout
+        title={post.title}
+        description={post.description}
+        category={post.category}
+        publishedAt={post.publishedAt}
+        readingTime={post.readingTime}
+      >
+        {post.content}
+      </BlogArticleLayout>
+    </>
   );
 }
