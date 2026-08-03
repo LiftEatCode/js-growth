@@ -9,9 +9,9 @@ export const siteConfig = {
   navigation: [
     { name: "Home", href: "/" },
     { name: "Services", href: "/services" },
-    { name: "Websites", href: "/services/websites" },
-    { name: "Local SEO", href: "/services/local-seo" },
-    { name: "AI Automation", href: "/services/ai-automation" },
+    { name: "Websites", href: "/websites" },
+    { name: "Local SEO", href: "/local-seo" },
+    { name: "AI Automation", href: "/ai-automation" },
     { name: "Projects", href: "/projects" },
     { name: "Investment", href: "/investment" },
     { name: "About", href: "/about" },

@@ -75,6 +75,9 @@ export function getOrganizationSchema() {
     logo: getAbsoluteUrl("/logo.png"),
     description:
       "Custom websites, Local SEO, AI automation, and digital growth solutions for local businesses.",
+    sameAs: [
+      "https://www.facebook.com/profile.php?id=61590770143173",
+    ],
   };
 }
 
