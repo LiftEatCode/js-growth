@@ -1,381 +1,304 @@
-# Local SEO Service Guide
+# Local SEO Service
 
-## Purpose
+> **Helping local businesses increase their visibility, attract more qualified customers, and grow through search engine optimization.**
+>
+> This document serves as the central guide for the JS Solutions Local SEO service. It outlines our process, deliverables, supporting documentation, pricing resources, operational procedures, and best practices for delivering consistent, measurable results.
 
-This document defines the Local SEO service offered by JS Solutions.
+---
 
-It serves as the complete operational playbook for delivering Local SEO services consistently, professionally, and with measurable business outcomes.
+# Purpose
 
-Every Local SEO engagement should improve a client's visibility in local search, increase qualified leads, and strengthen their long-term online presence.
+The Local SEO Service provides a structured framework for improving a client's visibility in local search results.
+
+Our objective is not simply to improve rankings, but to increase qualified leads, phone calls, website traffic, and revenue by optimizing every aspect of a business's local online presence.
+
+---
+
+# Service Objectives
+
+Our Local SEO service is designed to:
+
+- Increase local search visibility
+- Improve Google Business Profile performance
+- Increase website traffic
+- Generate more qualified leads
+- Improve keyword rankings
+- Build local authority
+- Improve online reputation
+- Increase conversions
+
+---
+
+# Ideal Clients
+
+This service is best suited for:
+
+- Automotive Repair Shops
+- Contractors
+- HVAC Companies
+- Electricians
+- Plumbers
+- Roofers
+- Medical Practices
+- Dental Offices
+- Restaurants
+- Local Retail Stores
+- Professional Services
+- Home Service Businesses
+
+Businesses should generally operate within a defined geographic service area or have one or more physical locations.
 
 ---
 
 # Service Overview
 
-Local SEO is the process of improving a business's visibility in local search results, including Google Search and Google Maps.
+The Local SEO process follows a structured lifecycle.
 
-Our goal is not simply to improve rankings.
+```text
+Discovery
+        ↓
+Qualification
+        ↓
+Website Audit
+        ↓
+Keyword Research
+        ↓
+Competitor Analysis
+        ↓
+Technical SEO Audit
+        ↓
+On-Page Optimization
+        ↓
+Google Business Profile Optimization
+        ↓
+Citation Management
+        ↓
+Content Strategy
+        ↓
+Monthly Reporting
+        ↓
+Continuous Improvement
+```
 
-Our goal is to help businesses generate more qualified leads through better local visibility.
-
----
-
-# Ideal Client
-
-Businesses that serve a geographic area.
-
-Examples include:
-
-- Automotive Repair
-- HVAC
-- Electricians
-- Plumbers
-- Roofers
-- Landscapers
-- Contractors
-- Medical Offices
-- Dentists
-- Restaurants
-- Attorneys
-- Retail Stores
-- Local Service Providers
-
----
-
-# Primary Goals
-
-Every Local SEO campaign should improve:
-
-- Google Maps visibility
-- Organic traffic
-- Phone calls
-- Website traffic
-- Form submissions
-- Direction requests
-- Customer reviews
-- Brand authority
+Each phase builds upon the previous one to create a sustainable long-term SEO strategy.
 
 ---
 
-# Discovery Questionnaire
+# Service Deliverables
 
-Before beginning any work, collect the following information.
+Every Local SEO engagement should include:
 
-## Business
+- Discovery Session
+- Initial Website Audit
+- Technical SEO Audit
+- Keyword Research
+- Competitor Analysis
+- Google Business Profile Review
+- Citation Audit
+- On-Page Optimization
+- Monthly Reporting
+- Strategy Recommendations
+- Ongoing Performance Monitoring
 
-- Business Name
-- Website
-- Primary Services
-- Service Area
-- Number of Locations
-- Years in Business
-
----
-
-## Marketing
-
-- Existing SEO provider?
-- Google Ads?
-- Facebook Ads?
-- Social Media Presence?
-- Monthly Marketing Budget?
+Deliverables may vary depending on the client's selected service package.
 
 ---
 
-## Technical
+# Service Documentation
 
-- Google Business Profile access
-- Search Console access
-- Google Analytics access
-- Website CMS
-- Hosting Provider
+## Client Qualification
+
+- [Qualification](qualification.md)
 
 ---
 
-## Competition
+## Discovery
 
-Who are your top competitors?
-
-Which competitors consistently appear in Google Maps?
-
-What businesses do you admire?
+- [Discovery Meeting](discovery.md)
 
 ---
 
-# Initial Audit Checklist
+## SEO Strategy
 
-## Website
-
-☐ Mobile Friendly
-
-☐ HTTPS
-
-☐ Sitemap
-
-☐ Robots.txt
-
-☐ Metadata
-
-☐ Page Speed
-
-☐ Internal Links
-
-☐ Broken Links
-
-☐ Structured Headings
-
-☐ Contact Information
-
-☐ Service Pages
-
-☐ Location Pages
+- [Keyword Research](keyword-research.md)
+- [Competitor Analysis](competitor-analysis.md)
 
 ---
 
-## Google Business Profile
+## Technical SEO
 
-☐ Claimed
-
-☐ Verified
-
-☐ Primary Category
-
-☐ Secondary Categories
-
-☐ Business Description
-
-☐ Hours
-
-☐ Services
-
-☐ Products
-
-☐ Photos
-
-☐ Logo
-
-☐ Cover Image
-
-☐ Appointment Link
-
-☐ Website Link
-
-☐ Messaging
-
-☐ Reviews
-
-☐ Review Responses
+- [Technical SEO Audit](technical-audit.md)
+- [On-Page Optimization](on-page-optimization.md)
 
 ---
 
 ## Local SEO
 
-☐ NAP Consistency
-
-☐ Local Citations
-
-☐ Schema
-
-☐ Review Count
-
-☐ Review Rating
-
-☐ Local Content
-
-☐ Internal Links
-
-☐ Competitor Analysis
-
-☐ Keyword Research
+- [Local SEO Strategy](local-seo.md)
+- [Google Business Profile](google-business-profile.md)
+- [Citation Management](citation-management.md)
 
 ---
 
-# Deliverables
+## Reporting
 
-Every Local SEO project includes:
-
-- Technical SEO Audit
-- Keyword Research
-- Competitor Analysis
-- Google Business Profile Optimization
-- Metadata Optimization
-- Internal Linking Improvements
-- Local Landing Pages (when appropriate)
-- Monthly Reporting
-- SEO Strategy Updates
+- [Reporting](reporting.md)
 
 ---
 
-# Monthly Workflow
+## Client Resources
 
-## Week 1
-
-Review rankings
-
-Review Search Console
-
-Review Analytics
-
-Fix technical issues
+- [Pricing](pricing.md)
+- [Timeline](timeline.md)
+- [Frequently Asked Questions](faq.md)
 
 ---
 
-## Week 2
+## Checklists
 
-Publish optimized content
-
-Improve internal linking
-
-Update service pages
+- [Launch Checklist](launch-checklist.md)
+- [Monthly Checklist](monthly-checklist.md)
 
 ---
 
-## Week 3
+# Standard Process
 
-Optimize Google Business Profile
+Every Local SEO project should follow the same workflow.
 
-Add new photos
+1. Discovery Meeting
+2. Qualify the client
+3. Perform an initial website audit
+4. Research keywords
+5. Analyze competitors
+6. Complete a technical SEO audit
+7. Optimize on-page SEO
+8. Optimize the Google Business Profile
+9. Improve local citations
+10. Deliver monthly reporting
+11. Continuously improve results
 
-Respond to reviews
-
-Acquire citations
-
----
-
-## Week 4
-
-Performance reporting
-
-Competitor review
-
-Strategy planning
-
-Next month's priorities
+This standardized process ensures every client receives a consistent, repeatable experience.
 
 ---
 
-# KPIs
+# Success Metrics
 
-Track monthly:
+Success should be measured using business outcomes rather than rankings alone.
 
-- Organic Traffic
-- Google Maps Rankings
-- Phone Calls
-- Website Clicks
-- Direction Requests
-- Form Submissions
-- Keyword Rankings
-- Review Growth
-- Domain Authority
-- Indexed Pages
+Examples include:
 
----
-
-# Reporting
-
-Every monthly report should answer:
-
-What improved?
-
-What declined?
-
-Why?
-
-What work was completed?
-
-What is planned next?
-
-How is the business benefiting?
+- Organic traffic growth
+- Local keyword rankings
+- Google Business Profile visibility
+- Website conversions
+- Phone calls
+- Contact form submissions
+- Direction requests
+- Customer reviews
+- Revenue growth
+- Return on investment (ROI)
 
 ---
 
-# Internal Cross-Sell Opportunities
+# Recommended Tools
 
-Website Redesign
+The following tools may be used during Local SEO engagements:
 
-Google Analytics
+## Google
 
-AI Chatbot
-
-Business Automation
-
-Website Maintenance
-
-Content Marketing
-
-Google Ads
+- Google Business Profile
+- Google Search Console
+- Google Analytics 4
+- Google Tag Manager
+- PageSpeed Insights
 
 ---
 
-# Client Success Metrics
+## SEO Platforms
 
-Success is measured by:
-
-Higher Rankings
-
-More Qualified Leads
-
-Increased Phone Calls
-
-Higher Conversion Rates
-
-Greater Local Visibility
-
-Improved Customer Trust
-
-Long-Term Growth
+- Ahrefs
+- Semrush
+- BrightLocal
+- Screaming Frog
+- Moz
 
 ---
 
-# Quality Standards
+## Internal Tools (Future)
 
-Every recommendation should:
+The following tools are planned as part of the JS Solutions platform:
 
-Be measurable
-
-Support business growth
-
-Follow Google's best practices
-
-Improve user experience
-
-Create long-term value
+- Website Audit Tool
+- Local SEO Audit Tool
+- Keyword Research Assistant
+- Competitor Analysis Dashboard
+- Monthly Reporting Dashboard
+- SEO Performance Dashboard
+- AI SEO Assistant
 
 ---
 
-# Future Improvements
+# Related Documentation
 
-Future service enhancements:
+## SOPs
 
-- AI-powered SEO reporting
-- Citation automation
-- Local rank tracking dashboard
-- AI content recommendations
-- Competitor monitoring
-- Custom reporting portal
+- SEO SOP Library *(Coming Soon)*
 
 ---
 
-# Final Principle
+## Templates
 
-Local SEO is not about chasing rankings.
-
-It is about helping businesses become easier to find, easier to trust, and easier to choose.
-
-Every optimization should support that mission.
+- SEO Audit Template *(Planned)*
+- Monthly SEO Report *(Planned)*
+- Competitor Analysis Template *(Planned)*
 
 ---
 
-## Document Information
+## Examples
 
-Owner: Josh Spradling
+- Automotive Local SEO *(Planned)*
+- Medical Local SEO *(Planned)*
+- Restaurant Local SEO *(Planned)*
 
-Company: JS Solutions
+---
 
-Service: Local SEO
+# Future Enhancements
 
-Status: Active
+This service will continue evolving as new tools and automation become available.
 
-Version: 1.0
+Future enhancements include:
 
-Last Updated: August 2026
+- Automated SEO audits
+- AI-assisted keyword research
+- Automated competitor monitoring
+- AI-generated monthly reports
+- Client dashboards
+- Local ranking trackers
+- Citation monitoring
+- Business intelligence reporting
+
+---
+
+# Revision History
+
+| Version | Date | Description |
+|----------|------|-------------|
+| 1.0 | August 2026 | Initial Local SEO service documentation |
+
+---
+
+# Document Information
+
+**Owner:** Josh Spradling
+
+**Company:** JS Solutions
+
+**Category:** Services
+
+**Service:** Local SEO
+
+**Status:** Active
+
+**Version:** 1.0
+
+**Last Updated:** August 2026
