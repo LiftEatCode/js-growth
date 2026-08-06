@@ -31,8 +31,11 @@ export function MobileNavigation() {
         <Menu aria-hidden="true" className="size-5" />
       </SheetTrigger>
 
-      <SheetContent side="right" className="w-full max-w-sm p-0">
-        <SheetHeader className="border-b border-border px-6 py-5 text-left">
+      <SheetContent
+        side="right"
+        className="z-[100] h-dvh w-full max-w-sm overflow-y-auto border-l border-border bg-background p-0 text-foreground shadow-2xl"
+      >
+        <SheetHeader className="border-b border-border bg-background px-6 py-5 text-left">
           <SheetTitle className="font-heading text-xl text-brand">
             {siteConfig.name}
           </SheetTitle>
@@ -44,7 +47,7 @@ export function MobileNavigation() {
 
         <nav
           aria-label="Mobile navigation"
-          className="flex h-[calc(100%-7rem)] flex-col px-6 py-6"
+          className="flex min-h-[calc(100dvh-7rem)] flex-col bg-background px-6 py-6"
         >
           <ul className="space-y-1">
             {siteConfig.navigation.map((item) => (
