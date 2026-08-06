@@ -6,17 +6,14 @@ import type {
   AuditFinding,
   AuditPageData,
   AuditStatus,
+  WebsiteAuditResult,
 } from "./types";
 
 interface ScoringResult {
   findings: AuditFinding[];
   categoryScores: AuditCategoryScore[];
   overallScore: number;
-  summary: {
-    passed: number;
-    warnings: number;
-    failed: number;
-  };
+  summary: WebsiteAuditResult["summary"];
 }
 
 const CATEGORY_LABELS: Record<AuditCategory, string> = {
@@ -85,7 +82,7 @@ function calculateCategoryScores(
 
     const normalizedScore =
       possiblePoints === 0
-        ? maxScore
+        ? 0
         : (earnedPoints / possiblePoints) *
           maxScore;
 
@@ -132,7 +129,7 @@ function calculateOverallScore(
 
 function calculateSummary(
   findings: AuditFinding[],
-): ScoringResult["summary"] {
+): WebsiteAuditResult["summary"] {
   return findings.reduce(
     (summary, finding) => {
       if (finding.status === "pass") {
@@ -147,12 +144,45 @@ function calculateSummary(
         summary.failed += 1;
       }
 
+      const isActionable =
+        finding.status !== "pass";
+
+      if (
+        isActionable &&
+        finding.priority === "critical"
+      ) {
+        summary.criticalIssues += 1;
+      }
+
+      if (
+        isActionable &&
+        finding.quickWin
+      ) {
+        summary.quickWins += 1;
+      }
+
+      if (
+        isActionable &&
+        finding.businessImpact === "high"
+      ) {
+        summary.highImpactFindings += 1;
+      }
+
+      if (isActionable) {
+        summary.estimatedFixMinutes +=
+          finding.estimatedFixMinutes;
+      }
+
       return summary;
     },
     {
       passed: 0,
       warnings: 0,
       failed: 0,
+      criticalIssues: 0,
+      quickWins: 0,
+      highImpactFindings: 0,
+      estimatedFixMinutes: 0,
     },
   );
 }

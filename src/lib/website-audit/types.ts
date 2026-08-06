@@ -8,31 +8,39 @@ export type AuditCategory =
   | "local"
   | "performance";
 
-  export interface AuditFinding {
-    id: string;
-    title: string;
-    description: string;
-    recommendation?: string;
-    status: AuditStatus;
-    category: AuditCategory;
-    scoreImpact: number;
+export type AuditPriority =
+  | "low"
+  | "medium"
+  | "high"
+  | "critical";
 
-    priority: "low" | "medium" | "high" | "critical";
-  
-    businessImpact:
-      | "low"
-      | "medium"
-      | "high";
-  
-    difficulty:
-      | "easy"
-      | "medium"
-      | "hard";
-  
-    estimatedFixTime: string;
-  
-    quickWin: boolean;
-  }
+export type BusinessImpact =
+  | "low"
+  | "medium"
+  | "high";
+
+export type FixDifficulty =
+  | "easy"
+  | "medium"
+  | "hard";
+
+export interface AuditFinding {
+  id: string;
+  title: string;
+  description: string;
+  recommendation?: string;
+  status: AuditStatus;
+  category: AuditCategory;
+  scoreImpact: number;
+
+  priority: AuditPriority;
+  businessImpact: BusinessImpact;
+  difficulty: FixDifficulty;
+
+  estimatedFixMinutes: number;
+
+  quickWin: boolean;
+}
 
 export interface AuditCategoryScore {
   category: AuditCategory;
@@ -89,6 +97,11 @@ export interface WebsiteAuditResult {
     passed: number;
     warnings: number;
     failed: number;
+  
+    criticalIssues: number;
+    quickWins: number;
+    highImpactFindings: number;
+    estimatedFixMinutes: number;
   };
 }
 

@@ -1,212 +1,213 @@
+"use client";
+
 import {
-    AlertTriangle,
-    CheckCircle2,
-    XCircle,
-  } from "lucide-react";
-  
-  import type {
-    AuditCategoryScore,
-    WebsiteAuditResult,
-  } from "@/lib/website-audit/types";
-  
-  interface AuditScoreProps {
-    overallScore: number;
-    categoryScores: AuditCategoryScore[];
-    summary: WebsiteAuditResult["summary"];
+  AlertTriangle,
+  BadgeCheck,
+  Clock3,
+  TrendingUp,
+} from "lucide-react";
+
+import type {
+  AuditCategoryScore,
+  WebsiteAuditResult,
+} from "@/lib/website-audit/types";
+
+interface AuditScoreProps {
+  overallScore: number;
+  categoryScores: AuditCategoryScore[];
+  summary: WebsiteAuditResult["summary"];
+}
+
+function getScoreColor(score: number) {
+  if (score >= 90) {
+    return "text-green-500";
   }
-  
-  function getScoreLabel(score: number): string {
-    if (score >= 90) {
-      return "Excellent";
-    }
-  
-    if (score >= 75) {
-      return "Good";
-    }
-  
-    if (score >= 60) {
-      return "Needs Improvement";
-    }
-  
-    return "High Priority";
+
+  if (score >= 75) {
+    return "text-emerald-500";
   }
-  
-  function getScoreClasses(score: number): string {
-    if (score >= 90) {
-      return "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400";
-    }
-  
-    if (score >= 75) {
-      return "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-400";
-    }
-  
-    if (score >= 60) {
-      return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400";
-    }
-  
-    return "border-destructive/30 bg-destructive/10 text-destructive";
+
+  if (score >= 60) {
+    return "text-yellow-500";
   }
-  
-  function getProgressClasses(score: number): string {
-    if (score >= 90) {
-      return "bg-emerald-500";
-    }
-  
-    if (score >= 75) {
-      return "bg-blue-500";
-    }
-  
-    if (score >= 60) {
-      return "bg-amber-500";
-    }
-  
-    return "bg-destructive";
+
+  if (score >= 40) {
+    return "text-orange-500";
   }
-  
-  export function AuditScore({
-    overallScore,
-    categoryScores,
-    summary,
-  }: AuditScoreProps) {
-    return (
-      <section
-        aria-labelledby="audit-score-heading"
-        className="rounded-2xl border border-border bg-card p-6 shadow-sm"
-      >
-        <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
-          <div className="flex flex-col items-center justify-center text-center">
-            <div
-              className={`flex size-40 flex-col items-center justify-center rounded-full border-8 ${getScoreClasses(
-                overallScore,
-              )}`}
-            >
-              <span className="text-5xl font-bold tracking-tight">
-                {overallScore}
-              </span>
-  
-              <span className="text-sm font-medium">
-                out of 100
-              </span>
-            </div>
-  
-            <h2
-              id="audit-score-heading"
-              className="mt-4 text-xl font-semibold text-foreground"
-            >
-              {getScoreLabel(overallScore)}
-            </h2>
-  
-            <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
-              This score summarizes the homepage&apos;s
-              technical, search, content, accessibility,
-              local SEO, and basic performance signals.
-            </p>
-          </div>
-  
-          <div className="space-y-6">
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-                <CheckCircle2
-                  aria-hidden="true"
-                  className="size-5 text-emerald-600 dark:text-emerald-400"
-                />
-  
-                <div>
-                  <p className="text-2xl font-semibold text-foreground">
-                    {summary.passed}
-                  </p>
-  
-                  <p className="text-sm text-muted-foreground">
-                    Passed
-                  </p>
-                </div>
-              </div>
-  
-              <div className="flex items-center gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
-                <AlertTriangle
-                  aria-hidden="true"
-                  className="size-5 text-amber-600 dark:text-amber-400"
-                />
-  
-                <div>
-                  <p className="text-2xl font-semibold text-foreground">
-                    {summary.warnings}
-                  </p>
-  
-                  <p className="text-sm text-muted-foreground">
-                    Warnings
-                  </p>
-                </div>
-              </div>
-  
-              <div className="flex items-center gap-3 rounded-xl border border-destructive/20 bg-destructive/5 p-4">
-                <XCircle
-                  aria-hidden="true"
-                  className="size-5 text-destructive"
-                />
-  
-                <div>
-                  <p className="text-2xl font-semibold text-foreground">
-                    {summary.failed}
-                  </p>
-  
-                  <p className="text-sm text-muted-foreground">
-                    Failed
-                  </p>
-                </div>
-              </div>
-            </div>
-  
-            <div className="space-y-4">
-              {categoryScores.map((categoryScore) => {
-                const percentage =
-                  categoryScore.maxScore === 0
-                    ? 0
-                    : Math.round(
-                        (categoryScore.score /
-                          categoryScore.maxScore) *
-                          100,
-                      );
-  
-                return (
-                  <div
-                    key={categoryScore.category}
-                    className="space-y-2"
-                  >
-                    <div className="flex items-center justify-between gap-4 text-sm">
-                      <span className="font-medium text-foreground">
-                        {categoryScore.label}
-                      </span>
-  
-                      <span className="text-muted-foreground">
-                        {categoryScore.score}/
-                        {categoryScore.maxScore}
-                      </span>
-                    </div>
-  
-                    <div
-                      role="progressbar"
-                      aria-label={`${categoryScore.label} score`}
-                      aria-valuemin={0}
-                      aria-valuemax={categoryScore.maxScore}
-                      aria-valuenow={categoryScore.score}
-                      className="h-2.5 overflow-hidden rounded-full bg-muted"
-                    >
-                      <div
-                        className={`h-full rounded-full transition-[width] duration-500 ${getProgressClasses(
-                          percentage,
-                        )}`}
-                        style={{
-                          width: `${percentage}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+
+  return "text-red-500";
+}
+
+function getScoreLabel(score: number) {
+  if (score >= 90) return "Excellent";
+  if (score >= 75) return "Very Good";
+  if (score >= 60) return "Good";
+  if (score >= 40) return "Needs Improvement";
+  return "Poor";
+}
+
+function formatMinutes(minutes: number) {
+  if (minutes < 60) {
+    return `${minutes} min`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  if (mins === 0) {
+    return `${hours} hr`;
+  }
+
+  return `${hours}h ${mins}m`;
+}
+
+export function AuditScore({
+  overallScore,
+  categoryScores,
+  summary,
+}: AuditScoreProps) {
+  return (
+    <div className="space-y-8">
+
+      <div className="rounded-3xl border bg-card p-10">
+
+        <div className="text-center">
+
+          <p className="text-sm uppercase tracking-widest text-muted-foreground">
+            Website Health
+          </p>
+
+          <h2
+            className={`mt-4 text-7xl font-bold ${getScoreColor(
+              overallScore,
+            )}`}
+          >
+            {overallScore}
+          </h2>
+
+          <p className="mt-2 text-xl font-semibold">
+            {getScoreLabel(overallScore)}
+          </p>
+
         </div>
-      </section>
-    );
-  }
+
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+
+        <MetricCard
+          icon={<AlertTriangle className="h-6 w-6" />}
+          title="Critical Issues"
+          value={summary.criticalIssues}
+        />
+
+        <MetricCard
+          icon={<TrendingUp className="h-6 w-6" />}
+          title="High Impact"
+          value={summary.highImpactFindings}
+        />
+
+        <MetricCard
+          icon={<BadgeCheck className="h-6 w-6" />}
+          title="Quick Wins"
+          value={summary.quickWins}
+        />
+
+        <MetricCard
+          icon={<Clock3 className="h-6 w-6" />}
+          title="Estimated Fix Time"
+          value={formatMinutes(
+            summary.estimatedFixMinutes,
+          )}
+        />
+
+      </div>
+
+      <div className="rounded-3xl border bg-card p-8">
+
+        <h3 className="mb-6 text-xl font-semibold">
+          Category Scores
+        </h3>
+
+        <div className="space-y-6">
+
+          {categoryScores.map((category) => (
+            <CategoryBar
+              key={category.category}
+              category={category}
+            />
+          ))}
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+function MetricCard({
+  icon,
+  title,
+  value,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border bg-card p-6">
+
+      <div className="mb-4 text-primary">
+        {icon}
+      </div>
+
+      <div className="text-3xl font-bold">
+        {value}
+      </div>
+
+      <div className="mt-2 text-sm text-muted-foreground">
+        {title}
+      </div>
+
+    </div>
+  );
+}
+
+function CategoryBar({
+  category,
+}: {
+  category: AuditCategoryScore;
+}) {
+  const percent =
+    (category.score / category.maxScore) * 100;
+
+  return (
+    <div>
+
+      <div className="mb-2 flex justify-between">
+
+        <span className="font-medium">
+          {category.label}
+        </span>
+
+        <span className="text-muted-foreground">
+          {category.score} / {category.maxScore}
+        </span>
+
+      </div>
+
+      <div className="h-3 overflow-hidden rounded-full bg-muted">
+
+        <div
+          className="h-full rounded-full bg-primary transition-all"
+          style={{
+            width: `${percent}%`,
+          }}
+        />
+
+      </div>
+
+    </div>
+  );
+}
