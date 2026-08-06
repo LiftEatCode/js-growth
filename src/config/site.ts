@@ -12,6 +12,7 @@ export const siteConfig = {
     { name: "Websites", href: "/websites" },
     { name: "Local SEO", href: "/local-seo" },
     { name: "AI Automation", href: "/ai-automation" },
+    { name: "Website Audit", href: "/website-audit" },
     { name: "Projects", href: "/projects" },
     { name: "Investment", href: "/investment" },
     { name: "About", href: "/about" },
