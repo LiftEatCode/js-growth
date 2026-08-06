@@ -1,5 +1,4 @@
 import {
-  ExternalLink,
   FileCode2,
   Globe2,
   ImageIcon,
@@ -8,79 +7,23 @@ import {
   MapPin,
 } from "lucide-react";
 
+import { AuditCategoryGrid } from "@/components/website-audit/audit-category-grid";
+import { AuditCriticalIssues } from "@/components/website-audit/audit-critical-issues";
+import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
+import { AuditMetricsGrid } from "@/components/website-audit/audit-metrics-grid";
 import { AuditPriorityActions } from "@/components/website-audit/audit-priority-actions";
-import { AuditScore } from "@/components/website-audit/audit-score";
-import { ExecutiveSummaryCard } from "@/components/website-audit/executive-summary";
-import { FindingCard } from "@/components/website-audit/finding-card";
+import { AuditReportHero } from "@/components/website-audit/audit-report-hero";
 import { QuickWinsPanel } from "@/components/website-audit/quick-wins-panel";
-import { Badge } from "@/components/ui/badge";
 import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
-import type {
-  AuditFinding,
-  WebsiteAuditResult,
-} from "@/lib/website-audit/types";
+import type { WebsiteAuditResult } from "@/lib/website-audit/types";
 
 interface AuditResultsProps {
   result: WebsiteAuditResult;
 }
 
-function sortFindings(
-  findings: AuditFinding[],
-): AuditFinding[] {
-  const statusPriority = {
-    fail: 0,
-    warning: 1,
-    pass: 2,
-  };
-
-  const findingPriority = {
-    critical: 0,
-    high: 1,
-    medium: 2,
-    low: 3,
-  };
-
-  return [...findings].sort((a, b) => {
-    const statusDifference =
-      statusPriority[a.status] -
-      statusPriority[b.status];
-
-    if (statusDifference !== 0) {
-      return statusDifference;
-    }
-
-    const priorityDifference =
-      findingPriority[a.priority] -
-      findingPriority[b.priority];
-
-    if (priorityDifference !== 0) {
-      return priorityDifference;
-    }
-
-    return b.scoreImpact - a.scoreImpact;
-  });
-}
-
-function formatDate(value: string): string {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Unknown date";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
-
 export function AuditResults({
   result,
 }: AuditResultsProps) {
-  const sortedFindings = sortFindings(
-    result.findings,
-  );
-
   const executiveSummary =
     buildExecutiveSummary(
       result.findings,
@@ -89,72 +32,22 @@ export function AuditResults({
 
   return (
     <div className="space-y-8">
-      <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Globe2
-                aria-hidden="true"
-                className="size-4"
-              />
-              Audited website
-            </div>
-
-            <h2 className="mt-2 break-all text-2xl font-semibold tracking-tight text-foreground">
-              {result.metadata.finalUrl}
-            </h2>
-
-            {result.metadata.requestedUrl !==
-            result.metadata.finalUrl ? (
-              <p className="mt-2 break-all text-sm text-muted-foreground">
-                Requested:{" "}
-                {result.metadata.requestedUrl}
-              </p>
-            ) : null}
-
-            <p className="mt-2 text-sm text-muted-foreground">
-              Audited{" "}
-              {formatDate(
-                result.metadata.fetchedAt,
-              )}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline">
-              HTTP {result.metadata.statusCode}
-            </Badge>
-
-            <Badge variant="secondary">
-              {result.metadata.contentType ??
-                "Unknown content type"}
-            </Badge>
-
-            <a
-              href={result.metadata.finalUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-            >
-              Open website
-
-              <ExternalLink
-                aria-hidden="true"
-                className="size-4"
-              />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <ExecutiveSummaryCard
-        summary={executiveSummary}
+      <AuditReportHero
+        result={result}
+        executiveSummary={executiveSummary}
       />
 
-      <AuditScore
-        overallScore={result.overallScore}
-        categoryScores={result.categoryScores}
+      <AuditMetricsGrid
         summary={result.summary}
+      />
+
+      <AuditCriticalIssues
+        findings={result.findings}
+      />
+
+      <AuditCategoryGrid
+        categoryScores={result.categoryScores}
+        findings={result.findings}
       />
 
       <AuditPriorityActions
@@ -210,8 +103,7 @@ export function AuditResults({
                 ? result.pageData.structuredDataTypes.join(
                     ", ",
                   )
-                : result.pageData
-                      .hasStructuredData
+                : result.pageData.hasStructuredData
                   ? "Detected"
                   : "Not detected"
             }
@@ -230,8 +122,7 @@ export function AuditResults({
             icon={FileCode2}
             label="Meta description"
             value={
-              result.pageData
-                .metaDescription ??
+              result.pageData.metaDescription ??
               "No meta description detected"
             }
           />
@@ -258,40 +149,9 @@ export function AuditResults({
         </div>
       </section>
 
-      <section
-        aria-labelledby="findings-heading"
-        className="space-y-5"
-      >
-        <div>
-          <p className="text-sm font-medium text-primary">
-            Recommended actions
-          </p>
-
-          <h2
-            id="findings-heading"
-            className="mt-1 text-2xl font-semibold tracking-tight text-foreground"
-          >
-            Audit findings
-          </h2>
-
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-            Failed checks appear first,
-            followed by warnings and passed
-            checks. Address the highest-impact
-            issues before lower-priority
-            improvements.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {sortedFindings.map((finding) => (
-            <FindingCard
-              key={finding.id}
-              finding={finding}
-            />
-          ))}
-        </div>
-      </section>
+      <AuditFindingsFilter
+        findings={result.findings}
+      />
     </div>
   );
 }
