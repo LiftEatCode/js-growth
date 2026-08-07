@@ -8,23 +8,26 @@ import {
 } from "lucide-react";
 
 import { AuditCategoryGrid } from "@/components/website-audit/audit-category-grid";
+import { AuditConversionCta } from "@/components/website-audit/audit-conversion-cta";
 import { AuditCriticalIssues } from "@/components/website-audit/audit-critical-issues";
+import { AuditExecutiveDashboard } from "@/components/website-audit/audit-executive-dashboard";
 import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
-import { AuditMetricsGrid } from "@/components/website-audit/audit-metrics-grid";
-import { AuditReportHero } from "@/components/website-audit/audit-report-hero";
-import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
 import { AuditOpportunityCard } from "@/components/website-audit/audit-opportunity-card";
 import { AuditRecommendedRoadmap } from "@/components/website-audit/audit-recommended-roadmap";
-import { AuditConversionCta } from "@/components/website-audit/audit-conversion-cta";
-
-import type { WebsiteAuditResult } from "@/lib/website-audit/types";
+import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
+import type {
+  ReportMode,
+  WebsiteAuditResult,
+} from "@/lib/website-audit/types";
 
 interface AuditResultsProps {
   result: WebsiteAuditResult;
+  mode?: ReportMode;
 }
 
 export function AuditResults({
   result,
+  mode = "public",
 }: AuditResultsProps) {
   const executiveSummary =
     buildExecutiveSummary(
@@ -34,30 +37,29 @@ export function AuditResults({
 
   return (
     <div className="space-y-8">
-      <AuditReportHero
+      <AuditExecutiveDashboard
         result={result}
         executiveSummary={executiveSummary}
-      />
-
-      <AuditMetricsGrid
-        summary={result.summary}
+        mode={mode}
       />
 
       <AuditOpportunityCard
         opportunity={result.opportunity}
+        mode={mode}
       />
-
 
       <AuditCriticalIssues
         findings={result.findings}
+        mode={mode}
+      />
+
+      <AuditRecommendedRoadmap
+        findings={result.findings}
+        mode={mode}
       />
 
       <AuditCategoryGrid
         categoryScores={result.categoryScores}
-        findings={result.findings}
-      />
-
-      <AuditRecommendedRoadmap
         findings={result.findings}
       />
 
@@ -106,7 +108,8 @@ export function AuditResults({
                 ? result.pageData.structuredDataTypes.join(
                     ", ",
                   )
-                : result.pageData.hasStructuredData
+                : result.pageData
+                      .hasStructuredData
                   ? "Detected"
                   : "Not detected"
             }
@@ -125,7 +128,8 @@ export function AuditResults({
             icon={FileCode2}
             label="Meta description"
             value={
-              result.pageData.metaDescription ??
+              result.pageData
+                .metaDescription ??
               "No meta description detected"
             }
           />
@@ -154,12 +158,16 @@ export function AuditResults({
 
       <AuditFindingsFilter
         findings={result.findings}
+        mode={mode}
       />
 
       <AuditConversionCta
         opportunity={result.opportunity}
         summary={result.summary}
-        websiteUrl={result.metadata.finalUrl}
+        websiteUrl={
+          result.metadata.finalUrl
+        }
+        mode={mode}
       />
     </div>
   );

@@ -1,4 +1,12 @@
-export type AuditStatus = "pass" | "warning" | "fail";
+export type ReportMode =
+  | "public"
+  | "consultation"
+  | "client";
+
+export type AuditStatus =
+  | "pass"
+  | "warning"
+  | "fail";
 
 export type AuditCategory =
   | "technical"
@@ -24,7 +32,7 @@ export type FixDifficulty =
   | "medium"
   | "hard";
 
-  export type OpportunityLevel =
+export type OpportunityLevel =
   | "low"
   | "medium"
   | "high"
@@ -34,6 +42,32 @@ export type OpportunityConfidence =
   | "low"
   | "medium"
   | "high";
+
+export interface OpportunityInsight {
+  id: string;
+  title: string;
+  description: string;
+  businessValue: string;
+
+  priority:
+    | "high"
+    | "medium"
+    | "low";
+
+  category:
+    | "seo"
+    | "content"
+    | "technical"
+    | "local"
+    | "performance";
+
+  icon:
+    | "search"
+    | "map"
+    | "speed"
+    | "content"
+    | "technical";
+}
 
 export interface AuditOpportunity {
   score: number;
@@ -60,6 +94,8 @@ export interface AuditOpportunity {
   confidence: OpportunityConfidence;
 
   assumptions: string[];
+
+  insights: OpportunityInsight[];
 }
 
 export interface AuditFinding {
@@ -67,12 +103,15 @@ export interface AuditFinding {
   title: string;
   description: string;
   recommendation?: string;
+
   status: AuditStatus;
   category: AuditCategory;
   scoreImpact: number;
 
   priority: AuditPriority;
+
   businessImpact: BusinessImpact;
+
   difficulty: FixDifficulty;
 
   estimatedFixMinutes: number;
@@ -126,25 +165,34 @@ export interface AuditPageData {
 
 export interface WebsiteAuditResult {
   success: true;
+
   metadata: AuditPageMetadata;
+
   pageData: AuditPageData;
+
   findings: AuditFinding[];
+
   categoryScores: AuditCategoryScore[];
+
   overallScore: number;
+
   summary: {
     passed: number;
     warnings: number;
     failed: number;
+
     criticalIssues: number;
     quickWins: number;
     highImpactFindings: number;
     estimatedFixMinutes: number;
   };
+
   opportunity: AuditOpportunity;
 }
 
 export interface WebsiteAuditError {
   success: false;
+
   error: {
     code:
       | "INVALID_URL"
@@ -154,6 +202,7 @@ export interface WebsiteAuditError {
       | "INVALID_CONTENT_TYPE"
       | "RESPONSE_TOO_LARGE"
       | "ANALYSIS_FAILED";
+
     message: string;
   };
 }

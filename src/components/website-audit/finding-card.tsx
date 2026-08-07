@@ -4,6 +4,7 @@ import {
   Clock3,
   Gauge,
   Lightbulb,
+  LockKeyhole,
   Sparkles,
   Wrench,
   XCircle,
@@ -11,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { getFindingVisibility } from "@/lib/website-audit/report-mode";
 import type {
   AuditCategory,
   AuditFinding,
@@ -18,10 +20,12 @@ import type {
   AuditStatus,
   BusinessImpact,
   FixDifficulty,
+  ReportMode,
 } from "@/lib/website-audit/types";
 
 interface FindingCardProps {
   finding: AuditFinding;
+  mode?: ReportMode;
 }
 
 const CATEGORY_LABELS: Record<
@@ -142,12 +146,8 @@ function formatMinutes(
     return `${minutes} min`;
   }
 
-  const hours = Math.floor(
-    minutes / 60,
-  );
-
-  const remainingMinutes =
-    minutes % 60;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
 
   if (remainingMinutes === 0) {
     return `${hours} hr`;
@@ -191,11 +191,15 @@ function StatusIcon({
 
 export function FindingCard({
   finding,
+  mode = "public",
 }: FindingCardProps) {
   const classes =
     getStatusClasses(
       finding.status,
     );
+
+  const visibility =
+    getFindingVisibility(mode);
 
   const isActionable =
     finding.status !== "pass";
@@ -242,7 +246,8 @@ export function FindingCard({
                 }
               </Badge>
 
-              {isActionable ? (
+              {visibility.showPriority &&
+              isActionable ? (
                 <Badge
                   variant="outline"
                   className={getPriorityClasses(
@@ -253,7 +258,8 @@ export function FindingCard({
                 </Badge>
               ) : null}
 
-              {finding.quickWin &&
+              {visibility.showQuickWin &&
+              finding.quickWin &&
               isActionable ? (
                 <Badge
                   variant="outline"
@@ -271,29 +277,35 @@ export function FindingCard({
 
           {isActionable ? (
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              <FindingMetric
-                icon={Gauge}
-                label="Business impact"
-                value={getImpactLabel(
-                  finding.businessImpact,
-                )}
-              />
+              {visibility.showBusinessImpact ? (
+                <FindingMetric
+                  icon={Gauge}
+                  label="Business impact"
+                  value={getImpactLabel(
+                    finding.businessImpact,
+                  )}
+                />
+              ) : null}
 
-              <FindingMetric
-                icon={Wrench}
-                label="Difficulty"
-                value={getDifficultyLabel(
-                  finding.difficulty,
-                )}
-              />
+              {visibility.showDifficulty ? (
+                <FindingMetric
+                  icon={Wrench}
+                  label="Difficulty"
+                  value={getDifficultyLabel(
+                    finding.difficulty,
+                  )}
+                />
+              ) : null}
 
-              <FindingMetric
-                icon={Clock3}
-                label="Estimated time"
-                value={formatMinutes(
-                  finding.estimatedFixMinutes,
-                )}
-              />
+              {visibility.showEstimatedTime ? (
+                <FindingMetric
+                  icon={Clock3}
+                  label="Estimated time"
+                  value={formatMinutes(
+                    finding.estimatedFixMinutes,
+                  )}
+                />
+              ) : null}
 
               <FindingMetric
                 icon={Sparkles}
@@ -303,7 +315,8 @@ export function FindingCard({
             </div>
           ) : null}
 
-          {finding.recommendation ? (
+          {finding.recommendation &&
+          visibility.showRecommendation ? (
             <div className="flex items-start gap-3 rounded-xl border border-border/70 bg-background/80 p-4">
               <Lightbulb
                 aria-hidden="true"
@@ -319,6 +332,44 @@ export function FindingCard({
                   {finding.recommendation}
                 </p>
               </div>
+            </div>
+          ) : null}
+
+          {isActionable &&
+          mode === "public" &&
+          !visibility.showRecommendation ? (
+            <div className="flex items-start gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+              <LockKeyhole
+                aria-hidden="true"
+                className="mt-0.5 size-4 shrink-0 text-primary"
+              />
+
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  Detailed recommendation locked
+                </p>
+
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  A detailed implementation recommendation
+                  is available as part of the full strategy
+                  review.
+                </p>
+              </div>
+            </div>
+          ) : null}
+
+          {visibility.showImplementation &&
+          isActionable ? (
+            <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-4">
+              <p className="text-sm font-medium text-foreground">
+                Client implementation guidance
+              </p>
+
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                AI-generated implementation instructions
+                will be displayed here once the client AI
+                layer is enabled.
+              </p>
             </div>
           ) : null}
         </div>

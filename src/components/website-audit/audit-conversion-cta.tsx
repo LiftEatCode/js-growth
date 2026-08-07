@@ -3,12 +3,14 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock3,
+  LockKeyhole,
   TrendingUp,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type {
   AuditOpportunity,
+  ReportMode,
   WebsiteAuditResult,
 } from "@/lib/website-audit/types";
 
@@ -16,6 +18,7 @@ interface AuditConversionCtaProps {
   opportunity: AuditOpportunity;
   summary: WebsiteAuditResult["summary"];
   websiteUrl: string;
+  mode?: ReportMode;
 }
 
 function formatMinutes(minutes: number): string {
@@ -57,12 +60,48 @@ export function AuditConversionCta({
   opportunity,
   summary,
   websiteUrl,
+  mode = "public",
 }: AuditConversionCtaProps) {
   const hostname = getHostname(websiteUrl);
 
   const contactHref = `/contact?service=website-optimization&website=${encodeURIComponent(
     websiteUrl,
   )}`;
+
+  const isPublic = mode === "public";
+  const isClient = mode === "client";
+
+  if (isClient) {
+    return (
+      <section className="rounded-3xl border border-primary/20 bg-primary/5 p-6 shadow-sm sm:p-8">
+        <div className="flex items-start gap-4">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <TrendingUp
+              aria-hidden="true"
+              className="size-5"
+            />
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-primary">
+              Client workspace
+            </p>
+
+            <h2 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+              Implementation is ready for planning.
+            </h2>
+
+            <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
+              The client version of this report will connect
+              the audit findings to tasks, AI implementation
+              guidance, progress tracking, and future audit
+              comparisons.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -81,20 +120,22 @@ export function AuditConversionCta({
               aria-hidden="true"
               className="size-4"
             />
-            Turn the audit into a growth plan
+
+            Recommended next step
           </div>
 
           <h2
             id="audit-conversion-heading"
             className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl"
           >
-            Want JS Solutions to fix the highest-impact issues?
+            Turn this audit into a growth plan for{" "}
+            {hostname}.
           </h2>
 
           <p className="mt-4 max-w-2xl text-base leading-7 text-primary-foreground/80 sm:text-lg">
-            We can review the findings for {hostname},
-            prioritize the work, and create a practical
-            implementation plan based on your business goals.
+            JS Solutions can review the full audit,
+            prioritize the highest-value work, and build an
+            implementation plan around your business goals.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm text-primary-foreground/85">
@@ -103,6 +144,7 @@ export function AuditConversionCta({
                 aria-hidden="true"
                 className="size-4"
               />
+
               {summary.highImpactFindings} high-impact{" "}
               {summary.highImpactFindings === 1
                 ? "opportunity"
@@ -114,20 +156,24 @@ export function AuditConversionCta({
                 aria-hidden="true"
                 className="size-4"
               />
+
               {summary.quickWins} quick{" "}
               {summary.quickWins === 1 ? "win" : "wins"}
             </span>
 
-            <span className="inline-flex items-center gap-2">
-              <Clock3
-                aria-hidden="true"
-                className="size-4"
-              />
-              {formatMinutes(
-                summary.estimatedFixMinutes,
-              )}{" "}
-              estimated work
-            </span>
+            {!isPublic ? (
+              <span className="inline-flex items-center gap-2">
+                <Clock3
+                  aria-hidden="true"
+                  className="size-4"
+                />
+
+                {formatMinutes(
+                  summary.estimatedFixMinutes,
+                )}{" "}
+                estimated work
+              </span>
+            ) : null}
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -137,7 +183,8 @@ export function AuditConversionCta({
               nativeButton={false}
               render={<Link href={contactHref} />}
             >
-              Request an improvement plan
+              Request a strategy review
+
               <ArrowRight
                 aria-hidden="true"
                 className="ml-2 size-4"
@@ -156,61 +203,78 @@ export function AuditConversionCta({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-primary-foreground/20 bg-primary-foreground/10 p-6 backdrop-blur-sm">
-          <p className="text-sm text-primary-foreground/75">
-            Modeled monthly opportunity
-          </p>
-
-          <p className="mt-2 text-3xl font-bold tracking-tight">
-            {formatCurrency(
-              opportunity.monthlyRevenueOpportunity.minimum,
-            )}
-            {" – "}
-            {formatCurrency(
-              opportunity.monthlyRevenueOpportunity.maximum,
-            )}
-          </p>
-
-          <div className="mt-6 border-t border-primary-foreground/20 pt-5">
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-primary-foreground/75">
-                Opportunity score
-              </span>
-
-              <span className="font-semibold">
-                {opportunity.score}/100
-              </span>
+        {isPublic ? (
+          <div className="rounded-2xl border border-primary-foreground/20 bg-primary-foreground/10 p-6 backdrop-blur-sm">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-primary-foreground/10">
+              <LockKeyhole
+                aria-hidden="true"
+                className="size-5"
+              />
             </div>
 
-            <div className="mt-3 flex items-center justify-between gap-4">
-              <span className="text-sm text-primary-foreground/75">
-                Confidence
-              </span>
+            <p className="mt-4 text-sm text-primary-foreground/75">
+              Full strategy review unlocks
+            </p>
 
-              <span className="font-semibold capitalize">
-                {opportunity.confidence}
-              </span>
-            </div>
+            <ul className="mt-4 space-y-3 text-sm text-primary-foreground/90">
+              <li>Complete findings</li>
+              <li>Detailed recommendations</li>
+              <li>Estimated implementation effort</li>
+              <li>Lead and revenue opportunity model</li>
+              <li>Prioritized implementation roadmap</li>
+            </ul>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-primary-foreground/20 bg-primary-foreground/10 p-6 backdrop-blur-sm">
+            <p className="text-sm text-primary-foreground/75">
+              Modeled monthly opportunity
+            </p>
 
-            <div className="mt-3 flex items-center justify-between gap-4">
-              <span className="text-sm text-primary-foreground/75">
-                Estimated effort
-              </span>
+            <p className="mt-2 text-3xl font-bold tracking-tight">
+              {formatCurrency(
+                opportunity.monthlyRevenueOpportunity.minimum,
+              )}
+              {" – "}
+              {formatCurrency(
+                opportunity.monthlyRevenueOpportunity.maximum,
+              )}
+            </p>
 
-              <span className="font-semibold">
-                {formatMinutes(
-                  opportunity.estimatedFixMinutes,
-                )}
-              </span>
+            <div className="mt-6 border-t border-primary-foreground/20 pt-5">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-sm text-primary-foreground/75">
+                  Opportunity score
+                </span>
+
+                <span className="font-semibold">
+                  {opportunity.score}/100
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between gap-4">
+                <span className="text-sm text-primary-foreground/75">
+                  Confidence
+                </span>
+
+                <span className="font-semibold capitalize">
+                  {opportunity.confidence}
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between gap-4">
+                <span className="text-sm text-primary-foreground/75">
+                  Estimated effort
+                </span>
+
+                <span className="font-semibold">
+                  {formatMinutes(
+                    opportunity.estimatedFixMinutes,
+                  )}
+                </span>
+              </div>
             </div>
           </div>
-
-          <p className="mt-5 text-xs leading-5 text-primary-foreground/65">
-            Estimates are directional and depend on traffic,
-            competition, conversion rate, offer quality, and
-            implementation.
-          </p>
-        </div>
+        )}
       </div>
     </section>
   );
