@@ -8,8 +8,12 @@ import {
 } from "lucide-react";
 
 import { FindingCard } from "@/components/website-audit/finding-card";
+import {
+  InfoPanel,
+  StatBadge,
+} from "@/components/website-audit/report-ui";
 import { Button } from "@/components/ui/button";
-import { getMaximumVisibleFindings } from "@/lib/website-audit/report-mode";
+import { getReportConfig } from "@/lib/website-audit/report-config";
 import type {
   AuditCategory,
   AuditFinding,
@@ -32,7 +36,7 @@ type CategoryFilter =
   | "all"
   | AuditCategory;
 
-const statusFilters: {
+const STATUS_FILTERS: {
   value: StatusFilter;
   label: string;
 }[] = [
@@ -58,7 +62,7 @@ const statusFilters: {
   },
 ];
 
-const categoryFilters: {
+const CATEGORY_FILTERS: {
   value: CategoryFilter;
   label: string;
 }[] = [
@@ -92,17 +96,23 @@ const categoryFilters: {
   },
 ];
 
-const statusPriority = {
+const STATUS_PRIORITY = {
   fail: 0,
   warning: 1,
   pass: 2,
 };
 
-const findingPriority = {
+const FINDING_PRIORITY = {
   critical: 0,
   high: 1,
   medium: 2,
   low: 3,
+};
+
+const IMPACT_PRIORITY = {
+  high: 0,
+  medium: 1,
+  low: 2,
 };
 
 function sortFindings(
@@ -110,30 +120,24 @@ function sortFindings(
 ): AuditFinding[] {
   return [...findings].sort((a, b) => {
     const statusDifference =
-      statusPriority[a.status] -
-      statusPriority[b.status];
+      STATUS_PRIORITY[a.status] -
+      STATUS_PRIORITY[b.status];
 
     if (statusDifference !== 0) {
       return statusDifference;
     }
 
     const priorityDifference =
-      findingPriority[a.priority] -
-      findingPriority[b.priority];
+      FINDING_PRIORITY[a.priority] -
+      FINDING_PRIORITY[b.priority];
 
     if (priorityDifference !== 0) {
       return priorityDifference;
     }
 
-    const impactPriority = {
-      high: 0,
-      medium: 1,
-      low: 2,
-    };
-
     const impactDifference =
-      impactPriority[a.businessImpact] -
-      impactPriority[b.businessImpact];
+      IMPACT_PRIORITY[a.businessImpact] -
+      IMPACT_PRIORITY[b.businessImpact];
 
     if (impactDifference !== 0) {
       return impactDifference;
@@ -155,64 +159,71 @@ export function AuditFindingsFilter({
   findings,
   mode = "public",
 }: AuditFindingsFilterProps) {
+  const config =
+    getReportConfig(mode);
+
   const [statusFilter, setStatusFilter] =
     useState<StatusFilter>("all");
 
-  const [categoryFilter, setCategoryFilter] =
+  const [
+    categoryFilter,
+    setCategoryFilter,
+  ] =
     useState<CategoryFilter>("all");
 
   const filteredFindings =
     useMemo(() => {
-      const filtered = findings.filter(
-        (finding) => {
-          const matchesStatus =
-            statusFilter === "all" ||
-            (statusFilter ===
-              "critical" &&
-              finding.status !==
-                "pass" &&
-              finding.priority ===
-                "critical") ||
-            (statusFilter ===
-              "warnings" &&
-              finding.status ===
-                "warning") ||
-            (statusFilter ===
-              "quick-wins" &&
-              finding.status !==
-                "pass" &&
-              finding.quickWin) ||
-            (statusFilter ===
-              "passed" &&
-              finding.status ===
-                "pass");
+      const filtered =
+        findings.filter(
+          (finding) => {
+            const matchesStatus =
+              statusFilter === "all" ||
+              (statusFilter ===
+                "critical" &&
+                finding.status !==
+                  "pass" &&
+                finding.priority ===
+                  "critical") ||
+              (statusFilter ===
+                "warnings" &&
+                finding.status ===
+                  "warning") ||
+              (statusFilter ===
+                "quick-wins" &&
+                finding.status !==
+                  "pass" &&
+                finding.quickWin) ||
+              (statusFilter ===
+                "passed" &&
+                finding.status ===
+                  "pass");
 
-          const matchesCategory =
-            categoryFilter === "all" ||
-            finding.category ===
-              categoryFilter;
+            const matchesCategory =
+              categoryFilter ===
+                "all" ||
+              finding.category ===
+                categoryFilter;
 
-          return (
-            matchesStatus &&
-            matchesCategory
-          );
-        },
+            return (
+              matchesStatus &&
+              matchesCategory
+            );
+          },
+        );
+
+      return sortFindings(
+        filtered,
       );
-
-      return sortFindings(filtered);
     }, [
       findings,
       statusFilter,
       categoryFilter,
     ]);
 
-  const maximumVisible =
-    getMaximumVisibleFindings(mode);
-
   const visibleFindings =
     filteredFindings.slice(
       0,
-      maximumVisible,
+      config.maximumFindings,
     );
 
   const lockedCount = Math.max(
@@ -220,9 +231,6 @@ export function AuditFindingsFilter({
       visibleFindings.length,
     0,
   );
-
-  const isPublic =
-    mode === "public";
 
   return (
     <section
@@ -248,22 +256,38 @@ export function AuditFindingsFilter({
         </h2>
 
         <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
-          Explore the issues detected during
-          the audit. Higher-priority findings
-          appear first so you can focus on the
-          areas with the greatest potential
-          impact.
+          Explore the issues detected
+          during the audit. Higher-priority
+          findings appear first so you can
+          focus on the areas with the
+          greatest potential impact.
         </p>
       </div>
 
       <div className="space-y-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-          <SlidersHorizontal
-            aria-hidden="true"
-            className="size-4 text-primary"
-          />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <SlidersHorizontal
+              aria-hidden="true"
+              className="size-4 text-primary"
+            />
 
-          Filter findings
+            Filter findings
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <StatBadge
+              label={`${visibleFindings.length} visible`}
+              tone="default"
+            />
+
+            {lockedCount > 0 ? (
+              <StatBadge
+                label={`${lockedCount} locked`}
+                tone="primary"
+              />
+            ) : null}
+          </div>
         </div>
 
         <div>
@@ -272,7 +296,7 @@ export function AuditFindingsFilter({
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {statusFilters.map(
+            {STATUS_FILTERS.map(
               (filter) => (
                 <Button
                   key={filter.value}
@@ -303,7 +327,7 @@ export function AuditFindingsFilter({
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {categoryFilters.map(
+            {CATEGORY_FILTERS.map(
               (filter) => (
                 <Button
                   key={filter.value}
@@ -328,29 +352,15 @@ export function AuditFindingsFilter({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+        <div className="border-t border-border pt-4">
           <p className="text-xs text-muted-foreground">
             Showing{" "}
             {visibleFindings.length} of{" "}
-            {filteredFindings.length} matching
-            findings
+            {filteredFindings.length} matching{" "}
+            {filteredFindings.length === 1
+              ? "finding"
+              : "findings"}
           </p>
-
-          {isPublic &&
-          lockedCount > 0 ? (
-            <p className="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
-              <LockKeyhole
-                aria-hidden="true"
-                className="size-3.5"
-              />
-
-              {lockedCount} additional{" "}
-              {lockedCount === 1
-                ? "finding"
-                : "findings"}{" "}
-              locked
-            </p>
-          ) : null}
         </div>
       </div>
 
@@ -367,111 +377,26 @@ export function AuditFindingsFilter({
           )}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center">
-          <p className="font-medium text-foreground">
-            No findings match these filters.
-          </p>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            Try selecting a different issue
-            type or audit category.
-          </p>
-        </div>
+        <InfoPanel
+          icon={Search}
+          title="No findings match these filters."
+          description="Try selecting a different issue type or audit category."
+          tone="default"
+        />
       )}
 
-      {isPublic &&
-      lockedCount > 0 ? (
-        <LockedFindingsPanel
-          lockedCount={lockedCount}
-          totalCount={
-            filteredFindings.length
-          }
+      {lockedCount > 0 ? (
+        <InfoPanel
+          icon={LockKeyhole}
+          title={`${lockedCount} additional ${
+            lockedCount === 1
+              ? "finding is"
+              : "findings are"
+          } available in the full strategy review.`}
+          description="The full report includes the complete findings list, detailed recommendations, estimated implementation effort, priority guidance, and deeper business-impact analysis."
+          tone="primary"
         />
       ) : null}
     </section>
-  );
-}
-
-interface LockedFindingsPanelProps {
-  lockedCount: number;
-  totalCount: number;
-}
-
-function LockedFindingsPanel({
-  lockedCount,
-  totalCount,
-}: LockedFindingsPanelProps) {
-  return (
-    <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--primary)_0,transparent_35%)] opacity-5"
-      />
-
-      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="max-w-2xl">
-          <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <LockKeyhole
-              aria-hidden="true"
-              className="size-5"
-            />
-          </div>
-
-          <h3 className="mt-4 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-            {lockedCount} additional{" "}
-            {lockedCount === 1
-              ? "finding is"
-              : "findings are"}{" "}
-            available in the full strategy
-            review.
-          </h3>
-
-          <p className="mt-3 leading-7 text-muted-foreground">
-            This free report provides a
-            high-level view of the most
-            important opportunities. A full
-            strategy review includes the
-            complete findings, detailed
-            recommendations, implementation
-            priorities, and estimated effort.
-          </p>
-
-          <p className="mt-4 text-sm font-medium text-foreground">
-            Free report:{" "}
-            {totalCount - lockedCount} of{" "}
-            {totalCount} matching findings
-            unlocked
-          </p>
-        </div>
-
-        <div className="min-w-[240px] rounded-2xl border border-border bg-background p-5">
-          <p className="text-sm font-semibold text-foreground">
-            Full strategy review includes
-          </p>
-
-          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <li>
-              Complete audit findings
-            </li>
-
-            <li>
-              Detailed recommendations
-            </li>
-
-            <li>
-              Estimated implementation effort
-            </li>
-
-            <li>
-              Priority roadmap
-            </li>
-
-            <li>
-              Business-impact analysis
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -11,7 +11,10 @@ import {
   } from "lucide-react";
   
   import { AuditGradeGauge } from "@/components/website-audit/audit-grade-gauge";
-  import { AuditKpiCard } from "@/components/website-audit/audit-kpi-card";
+  import {
+    MetricCard,
+    StatBadge,
+  } from "@/components/website-audit/report-ui";
   import { Badge } from "@/components/ui/badge";
   import type { ExecutiveSummary } from "@/lib/website-audit/executive-summary";
   import { getReportConfig } from "@/lib/website-audit/report-config";
@@ -114,6 +117,28 @@ import {
     return "Low";
   }
   
+  function getOpportunityTone(
+    level: WebsiteAuditResult["opportunity"]["level"],
+  ):
+    | "success"
+    | "primary"
+    | "warning"
+    | "default" {
+    if (level === "very-high") {
+      return "success";
+    }
+  
+    if (level === "high") {
+      return "primary";
+    }
+  
+    if (level === "medium") {
+      return "warning";
+    }
+  
+    return "default";
+  }
+  
   export function AuditExecutiveDashboard({
     result,
     executiveSummary,
@@ -125,6 +150,10 @@ import {
     const hostname = getHostname(
       result.metadata.finalUrl,
     );
+  
+    const actionableFindings =
+      result.summary.failed +
+      result.summary.warnings;
   
     return (
       <section
@@ -253,40 +282,39 @@ import {
               </p>
   
               <div className="mt-6 flex flex-wrap gap-2">
-                <Badge variant="secondary">
-                  {
+                <StatBadge
+                  label={`${result.summary.criticalIssues} critical`}
+                  tone={
                     result.summary
-                      .criticalIssues
-                  }{" "}
-                  critical
-                </Badge>
+                      .criticalIssues > 0
+                      ? "danger"
+                      : "success"
+                  }
+                />
   
-                <Badge variant="secondary">
-                  {
+                <StatBadge
+                  label={`${result.summary.quickWins} quick wins`}
+                  tone="primary"
+                />
+  
+                <StatBadge
+                  label={`${result.summary.highImpactFindings} high impact`}
+                  tone={
                     result.summary
-                      .quickWins
-                  }{" "}
-                  quick wins
-                </Badge>
+                      .highImpactFindings > 0
+                      ? "warning"
+                      : "default"
+                  }
+                />
   
-                <Badge variant="secondary">
-                  {
-                    result.summary
-                      .highImpactFindings
-                  }{" "}
-                  high impact
-                </Badge>
-  
-                <Badge
-                  variant="outline"
-                  className="border-primary/30 bg-primary/10 text-primary"
-                >
-                  {getOpportunityLabel(
-                    result.opportunity
-                      .level,
-                  )}{" "}
-                  growth opportunity
-                </Badge>
+                <StatBadge
+                  label={`${getOpportunityLabel(
+                    result.opportunity.level,
+                  )} growth opportunity`}
+                  tone={getOpportunityTone(
+                    result.opportunity.level,
+                  )}
+                />
               </div>
             </div>
           </div>
@@ -299,7 +327,7 @@ import {
                   : "xl:grid-cols-4"
               }`}
             >
-              <AuditKpiCard
+              <MetricCard
                 icon={TrendingUp}
                 label="Opportunity score"
                 value={`${result.opportunity.score}/100`}
@@ -308,50 +336,48 @@ import {
                 )} modeled growth potential`}
               />
   
-              <AuditKpiCard
+              <MetricCard
                 icon={AlertTriangle}
                 label="Critical issues"
                 value={String(
                   result.summary
                     .criticalIssues,
                 )}
-                description="Issues requiring the highest attention"
+                description="Issues requiring the highest attention."
               />
   
-              <AuditKpiCard
+              <MetricCard
                 icon={Zap}
                 label="Quick wins"
                 value={String(
-                  result.summary
-                    .quickWins,
+                  result.summary.quickWins,
                 )}
-                description="Lower-effort opportunities identified"
+                description="Lower-effort opportunities identified."
               />
   
               {config.showEstimatedTime ? (
-                <AuditKpiCard
+                <MetricCard
                   icon={Clock3}
                   label="Estimated effort"
                   value={formatMinutes(
                     result.summary
                       .estimatedFixMinutes,
                   )}
-                  description="Modeled implementation effort"
+                  description="Modeled implementation effort."
                 />
               ) : (
-                <AuditKpiCard
+                <MetricCard
                   icon={Clock3}
                   label="Actionable findings"
                   value={String(
-                    result.summary.failed +
-                      result.summary.warnings,
+                    actionableFindings,
                   )}
-                  description="Areas where improvement was detected"
+                  description="Areas where improvement was detected."
                 />
               )}
   
               {config.showRevenueModel ? (
-                <AuditKpiCard
+                <MetricCard
                   icon={DollarSign}
                   label="Monthly opportunity"
                   value={`${formatCurrency(
@@ -363,7 +389,7 @@ import {
                       .monthlyRevenueOpportunity
                       .maximum,
                   )}`}
-                  description="Directional modeled revenue opportunity"
+                  description="Directional modeled revenue opportunity."
                 />
               ) : null}
             </div>
