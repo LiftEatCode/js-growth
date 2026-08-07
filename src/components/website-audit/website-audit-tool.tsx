@@ -4,16 +4,21 @@ import { useRef, useState } from "react";
 
 import { AuditForm } from "@/components/website-audit/audit-form";
 import { AuditResults } from "@/components/website-audit/audit-results";
-import type { WebsiteAuditResult } from "@/lib/website-audit/types";
+import type {
+  WebsiteAuditSuccessResponse,
+} from "@/lib/website-audit/types";
 
 export function WebsiteAuditTool() {
   const [result, setResult] =
-    useState<WebsiteAuditResult | null>(null);
+    useState<WebsiteAuditSuccessResponse | null>(
+      null,
+    );
 
-  const resultsRef = useRef<HTMLDivElement>(null);
+  const resultsRef =
+    useRef<HTMLDivElement>(null);
 
   function handleAuditComplete(
-    auditResult: WebsiteAuditResult,
+    auditResult: WebsiteAuditSuccessResponse,
   ): void {
     setResult(auditResult);
 
@@ -33,9 +38,16 @@ export function WebsiteAuditTool() {
         />
       </div>
 
-      <div ref={resultsRef} className="scroll-mt-24">
+      <div
+        ref={resultsRef}
+        className="scroll-mt-24"
+      >
         {result ? (
-          <AuditResults result={result} />
+          <AuditResults
+            result={result}
+            reportId={result.reportId}
+            mode="public"
+          />
         ) : (
           <AuditPreview />
         )}

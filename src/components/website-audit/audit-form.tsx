@@ -17,13 +17,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type {
   WebsiteAuditResponse,
-  WebsiteAuditResult,
+  WebsiteAuditSuccessResponse,
 } from "@/lib/website-audit/types";
 
 interface AuditFormProps {
-  onAuditComplete: (result: WebsiteAuditResult) => void;
+  onAuditComplete: (
+    result: WebsiteAuditSuccessResponse,
+  ) => void;
 }
-
 export function AuditForm({
   onAuditComplete,
 }: AuditFormProps) {
