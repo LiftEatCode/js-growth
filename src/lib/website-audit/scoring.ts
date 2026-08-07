@@ -1,4 +1,5 @@
 import { runAuditRules } from "./engine/run-audit-rules";
+import { calculateAuditOpportunity } from "./opportunity";
 import { coreAuditRules } from "./rules";
 import type {
   AuditCategory,
@@ -14,9 +15,13 @@ interface ScoringResult {
   categoryScores: AuditCategoryScore[];
   overallScore: number;
   summary: WebsiteAuditResult["summary"];
+  opportunity: WebsiteAuditResult["opportunity"];
 }
 
-const CATEGORY_LABELS: Record<AuditCategory, string> = {
+const CATEGORY_LABELS: Record<
+  AuditCategory,
+  string
+> = {
   technical: "Technical SEO",
   seo: "Search Optimization",
   content: "Content",
@@ -25,7 +30,10 @@ const CATEGORY_LABELS: Record<AuditCategory, string> = {
   performance: "Performance",
 };
 
-const CATEGORY_MAX_SCORES: Record<AuditCategory, number> = {
+const CATEGORY_MAX_SCORES: Record<
+  AuditCategory,
+  number
+> = {
   technical: 25,
   seo: 25,
   content: 15,
@@ -34,7 +42,10 @@ const CATEGORY_MAX_SCORES: Record<AuditCategory, number> = {
   performance: 10,
 };
 
-const STATUS_MULTIPLIERS: Record<AuditStatus, number> = {
+const STATUS_MULTIPLIERS: Record<
+  AuditStatus,
+  number
+> = {
   pass: 1,
   warning: 0.5,
   fail: 0,
@@ -60,22 +71,27 @@ function calculateCategoryScores(
 
   return categories.map((category) => {
     const categoryFindings = findings.filter(
-      (finding) => finding.category === category,
+      (finding) =>
+        finding.category === category,
     );
 
-    const possiblePoints = categoryFindings.reduce(
-      (total, finding) =>
-        total + finding.scoreImpact,
-      0,
-    );
+    const possiblePoints =
+      categoryFindings.reduce(
+        (total, finding) =>
+          total + finding.scoreImpact,
+        0,
+      );
 
-    const earnedPoints = categoryFindings.reduce(
-      (total, finding) =>
-        total +
-        finding.scoreImpact *
-          STATUS_MULTIPLIERS[finding.status],
-      0,
-    );
+    const earnedPoints =
+      categoryFindings.reduce(
+        (total, finding) =>
+          total +
+          finding.scoreImpact *
+            STATUS_MULTIPLIERS[
+              finding.status
+            ],
+        0,
+      );
 
     const maxScore =
       CATEGORY_MAX_SCORES[category];
@@ -83,7 +99,8 @@ function calculateCategoryScores(
     const normalizedScore =
       possiblePoints === 0
         ? 0
-        : (earnedPoints / possiblePoints) *
+        : (earnedPoints /
+            possiblePoints) *
           maxScore;
 
     return {
@@ -104,17 +121,19 @@ function calculateCategoryScores(
 function calculateOverallScore(
   categoryScores: AuditCategoryScore[],
 ): number {
-  const earnedScore = categoryScores.reduce(
-    (total, category) =>
-      total + category.score,
-    0,
-  );
+  const earnedScore =
+    categoryScores.reduce(
+      (total, category) =>
+        total + category.score,
+      0,
+    );
 
-  const maximumScore = categoryScores.reduce(
-    (total, category) =>
-      total + category.maxScore,
-    0,
-  );
+  const maximumScore =
+    categoryScores.reduce(
+      (total, category) =>
+        total + category.maxScore,
+      0,
+    );
 
   if (maximumScore === 0) {
     return 0;
@@ -122,7 +141,8 @@ function calculateOverallScore(
 
   return Math.round(
     clampScore(
-      (earnedScore / maximumScore) * 100,
+      (earnedScore / maximumScore) *
+        100,
     ),
   );
 }
@@ -202,11 +222,26 @@ export function scoreWebsiteAudit(
   const categoryScores =
     calculateCategoryScores(findings);
 
+  const overallScore =
+    calculateOverallScore(
+      categoryScores,
+    );
+
+  const summary =
+    calculateSummary(findings);
+
+  const opportunity =
+    calculateAuditOpportunity({
+      findings,
+      overallScore,
+      summary,
+    });
+
   return {
     findings,
     categoryScores,
-    overallScore:
-      calculateOverallScore(categoryScores),
-    summary: calculateSummary(findings),
+    overallScore,
+    summary,
+    opportunity,
   };
 }

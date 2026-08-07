@@ -24,6 +24,44 @@ export type FixDifficulty =
   | "medium"
   | "hard";
 
+  export type OpportunityLevel =
+  | "low"
+  | "medium"
+  | "high"
+  | "very-high";
+
+export type OpportunityConfidence =
+  | "low"
+  | "medium"
+  | "high";
+
+export interface AuditOpportunity {
+  score: number;
+
+  level: OpportunityLevel;
+
+  trafficGainPercent: {
+    minimum: number;
+    maximum: number;
+  };
+
+  monthlyLeadGain: {
+    minimum: number;
+    maximum: number;
+  };
+
+  monthlyRevenueOpportunity: {
+    minimum: number;
+    maximum: number;
+  };
+
+  estimatedFixMinutes: number;
+
+  confidence: OpportunityConfidence;
+
+  assumptions: string[];
+}
+
 export interface AuditFinding {
   id: string;
   title: string;
@@ -97,12 +135,12 @@ export interface WebsiteAuditResult {
     passed: number;
     warnings: number;
     failed: number;
-  
     criticalIssues: number;
     quickWins: number;
     highImpactFindings: number;
     estimatedFixMinutes: number;
   };
+  opportunity: AuditOpportunity;
 }
 
 export interface WebsiteAuditError {

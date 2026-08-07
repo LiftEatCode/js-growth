@@ -11,10 +11,12 @@ import { AuditCategoryGrid } from "@/components/website-audit/audit-category-gri
 import { AuditCriticalIssues } from "@/components/website-audit/audit-critical-issues";
 import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
 import { AuditMetricsGrid } from "@/components/website-audit/audit-metrics-grid";
-import { AuditPriorityActions } from "@/components/website-audit/audit-priority-actions";
 import { AuditReportHero } from "@/components/website-audit/audit-report-hero";
-import { QuickWinsPanel } from "@/components/website-audit/quick-wins-panel";
 import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
+import { AuditOpportunityCard } from "@/components/website-audit/audit-opportunity-card";
+import { AuditRecommendedRoadmap } from "@/components/website-audit/audit-recommended-roadmap";
+import { AuditConversionCta } from "@/components/website-audit/audit-conversion-cta";
+
 import type { WebsiteAuditResult } from "@/lib/website-audit/types";
 
 interface AuditResultsProps {
@@ -41,6 +43,11 @@ export function AuditResults({
         summary={result.summary}
       />
 
+      <AuditOpportunityCard
+        opportunity={result.opportunity}
+      />
+
+
       <AuditCriticalIssues
         findings={result.findings}
       />
@@ -50,11 +57,7 @@ export function AuditResults({
         findings={result.findings}
       />
 
-      <AuditPriorityActions
-        findings={result.findings}
-      />
-
-      <QuickWinsPanel
+      <AuditRecommendedRoadmap
         findings={result.findings}
       />
 
@@ -151,6 +154,12 @@ export function AuditResults({
 
       <AuditFindingsFilter
         findings={result.findings}
+      />
+
+      <AuditConversionCta
+        opportunity={result.opportunity}
+        summary={result.summary}
+        websiteUrl={result.metadata.finalUrl}
       />
     </div>
   );

@@ -45,20 +45,30 @@ export async function auditWebsite(
     return {
       success: true,
       metadata: {
-        requestedUrl: fetchResult.data.requestedUrl,
+        requestedUrl:
+          fetchResult.data.requestedUrl,
         finalUrl: fetchResult.data.finalUrl,
-        statusCode: fetchResult.data.statusCode,
-        contentType: fetchResult.data.contentType,
-        fetchedAt: fetchResult.data.fetchedAt,
+        statusCode:
+          fetchResult.data.statusCode,
+        contentType:
+          fetchResult.data.contentType,
+        fetchedAt:
+          fetchResult.data.fetchedAt,
       },
       pageData,
       findings: scoring.findings,
-      categoryScores: scoring.categoryScores,
-      overallScore: scoring.overallScore,
+      categoryScores:
+        scoring.categoryScores,
+      overallScore:
+        scoring.overallScore,
       summary: scoring.summary,
+      opportunity: scoring.opportunity,
     };
   } catch (error) {
-    console.error("Website audit analysis failed:", error);
+    console.error(
+      "Website audit analysis failed:",
+      error,
+    );
 
     return {
       success: false,
