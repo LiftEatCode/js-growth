@@ -109,9 +109,7 @@ export interface AuditFinding {
   scoreImpact: number;
 
   priority: AuditPriority;
-
   businessImpact: BusinessImpact;
-
   difficulty: FixDifficulty;
 
   estimatedFixMinutes: number;
@@ -163,6 +161,12 @@ export interface AuditPageData {
   hasLocalBusinessSignals: boolean;
 }
 
+/**
+ * Pure audit data.
+ *
+ * This is what gets stored inside AuditReport.
+ * It intentionally does NOT include the saved report ID.
+ */
 export interface WebsiteAuditResult {
   success: true;
 
@@ -190,6 +194,15 @@ export interface WebsiteAuditResult {
   opportunity: AuditOpportunity;
 }
 
+/**
+ * Response returned to the browser after an audit has
+ * successfully been created and saved.
+ */
+export interface WebsiteAuditSuccessResponse
+  extends WebsiteAuditResult {
+  reportId: string;
+}
+
 export interface WebsiteAuditError {
   success: false;
 
@@ -201,12 +214,13 @@ export interface WebsiteAuditError {
       | "FETCH_FAILED"
       | "INVALID_CONTENT_TYPE"
       | "RESPONSE_TOO_LARGE"
-      | "ANALYSIS_FAILED";
+      | "ANALYSIS_FAILED"
+      | "REPORT_SAVE_FAILED";
 
     message: string;
   };
 }
 
 export type WebsiteAuditResponse =
-  | WebsiteAuditResult
+  | WebsiteAuditSuccessResponse
   | WebsiteAuditError;

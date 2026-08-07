@@ -14,6 +14,7 @@ import { AuditExecutiveDashboard } from "@/components/website-audit/audit-execut
 import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
 import { AuditOpportunityCard } from "@/components/website-audit/audit-opportunity-card";
 import { AuditRecommendedRoadmap } from "@/components/website-audit/audit-recommended-roadmap";
+import { SavedReportLink } from "./saved-report-link";
 import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
 import type {
   ReportMode,
@@ -23,11 +24,13 @@ import type {
 interface AuditResultsProps {
   result: WebsiteAuditResult;
   mode?: ReportMode;
+  reportId?: string;
 }
 
 export function AuditResults({
   result,
   mode = "public",
+  reportId,
 }: AuditResultsProps) {
   const executiveSummary =
     buildExecutiveSummary(
@@ -42,6 +45,12 @@ export function AuditResults({
         executiveSummary={executiveSummary}
         mode={mode}
       />
+
+      {reportId ? (
+        <SavedReportLink
+          reportId={reportId}
+        />
+      ) : null}
 
       <AuditOpportunityCard
         opportunity={result.opportunity}
@@ -108,8 +117,7 @@ export function AuditResults({
                 ? result.pageData.structuredDataTypes.join(
                     ", ",
                   )
-                : result.pageData
-                      .hasStructuredData
+                : result.pageData.hasStructuredData
                   ? "Detected"
                   : "Not detected"
             }
@@ -128,8 +136,7 @@ export function AuditResults({
             icon={FileCode2}
             label="Meta description"
             value={
-              result.pageData
-                .metaDescription ??
+              result.pageData.metaDescription ??
               "No meta description detected"
             }
           />
@@ -147,8 +154,7 @@ export function AuditResults({
             icon={MapPin}
             label="Local signals"
             value={
-              result.pageData
-                .hasLocalBusinessSignals
+              result.pageData.hasLocalBusinessSignals
                 ? "Detected"
                 : "Not detected"
             }
@@ -164,9 +170,7 @@ export function AuditResults({
       <AuditConversionCta
         opportunity={result.opportunity}
         summary={result.summary}
-        websiteUrl={
-          result.metadata.finalUrl
-        }
+        websiteUrl={result.metadata.finalUrl}
         mode={mode}
       />
     </div>
