@@ -8,14 +8,54 @@ datasource db {
 }
 
 model AuditReport {
-  id         String   @id
-  version    Int
-  createdAt  DateTime @default(now())
-  website    String
-  hostname   String
-  reportMode String
-  audit      Json
+  id               String   @id
+  version          Int
+  createdAt        DateTime @default(now())
+
+  website          String
+  hostname         String
+  reportMode       String
+
+  overallScore     Int
+  grade            String
+
+  criticalIssues   Int
+  quickWins        Int
+  opportunityScore Int
+
+  audit            Json
+
+  leadId           String?
+
+  lead             Lead?    @relation(fields: [leadId], references: [id])
 
   @@index([hostname])
   @@index([createdAt])
+  @@index([overallScore])
+  @@index([grade])
+  @@index([opportunityScore])
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+
+  createdAt   DateTime @default(now())
+
+  firstName   String
+  lastName    String
+
+  email       String
+
+  phone       String?
+
+  company     String?
+
+  website     String
+
+  contacted   Boolean  @default(false)
+
+  reports     AuditReport[]
+
+  @@index([email])
+  @@index([website])
 }

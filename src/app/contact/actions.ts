@@ -1,6 +1,5 @@
 "use server";
-
-import { Resend } from "resend";
+import { getResendClient } from "@/lib/email/resend";
 
 import { contactFormSchema } from "@/lib/validations/contact";
 
@@ -9,16 +8,6 @@ export type ContactFormState = {
   message: string;
   errors?: Record<string, string[]>;
 };
-
-function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    throw new Error("Missing RESEND_API_KEY");
-  }
-
-  return new Resend(apiKey);
-}
 
 export async function submitContactForm(
   _previousState: ContactFormState,

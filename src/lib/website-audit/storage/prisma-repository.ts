@@ -1,24 +1,36 @@
 import type { Prisma } from "@/generated/prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import { getAuditGrade } from "@/lib/website-audit/grading";
 
-import { summarizeReport } from "./report";
 import type { AuditReportRepository } from "./repository";
 import type {
   AuditReport,
   AuditReportSummary,
 } from "./types";
 
+const auditReportSummarySelect = {
+  id: true,
+  createdAt: true,
+  website: true,
+  hostname: true,
+  reportMode: true,
+  overallScore: true,
+  grade: true,
+  criticalIssues: true,
+  quickWins: true,
+  opportunityScore: true,
+} satisfies Prisma.AuditReportSelect;
+
+type StoredAuditReport = Prisma.AuditReportGetPayload<object>;
+
+type StoredAuditReportSummary =
+  Prisma.AuditReportGetPayload<{
+    select: typeof auditReportSummarySelect;
+  }>;
+
 function toAuditReport(
-  report: {
-    id: string;
-    version: number;
-    createdAt: Date;
-    website: string;
-    hostname: string;
-    reportMode: string;
-    audit: Prisma.JsonValue;
-  },
+  report: StoredAuditReport,
 ): AuditReport {
   return {
     id: report.id,
@@ -33,38 +45,72 @@ function toAuditReport(
   };
 }
 
+function toAuditReportSummary(
+  report: StoredAuditReportSummary,
+): AuditReportSummary {
+  return {
+    id: report.id,
+    createdAt: report.createdAt.toISOString(),
+    website: report.website,
+    hostname: report.hostname,
+    reportMode:
+      report.reportMode as AuditReportSummary["reportMode"],
+    overallScore: report.overallScore,
+    grade: report.grade,
+    criticalIssues: report.criticalIssues,
+    quickWins: report.quickWins,
+    opportunityScore: report.opportunityScore,
+  };
+}
+
 export class PrismaAuditReportRepository
   implements AuditReportRepository
 {
   async save(
     report: AuditReport,
   ): Promise<AuditReport> {
+    const audit = report.audit;
+
+    const grade = getAuditGrade(
+      audit.overallScore,
+    ).letter;
+
     const saved =
       await prisma.auditReport.upsert({
         where: {
           id: report.id,
         },
-
         update: {
           version: report.version,
           website: report.website,
           hostname: report.hostname,
           reportMode: report.reportMode,
+          overallScore: audit.overallScore,
+          grade,
+          criticalIssues:
+            audit.summary.criticalIssues,
+          quickWins: audit.summary.quickWins,
+          opportunityScore:
+            audit.opportunity.score,
           audit:
-            report.audit as unknown as Prisma.InputJsonValue,
+            audit as unknown as Prisma.InputJsonValue,
         },
-
         create: {
           id: report.id,
           version: report.version,
-          createdAt: new Date(
-            report.createdAt,
-          ),
+          createdAt: new Date(report.createdAt),
           website: report.website,
           hostname: report.hostname,
           reportMode: report.reportMode,
+          overallScore: audit.overallScore,
+          grade,
+          criticalIssues:
+            audit.summary.criticalIssues,
+          quickWins: audit.summary.quickWins,
+          opportunityScore:
+            audit.opportunity.score,
           audit:
-            report.audit as unknown as Prisma.InputJsonValue,
+            audit as unknown as Prisma.InputJsonValue,
         },
       });
 
@@ -88,26 +134,19 @@ export class PrismaAuditReportRepository
     return toAuditReport(report);
   }
 
-  async list(): Promise<
-    AuditReportSummary[]
-  > {
+  async list(): Promise<AuditReportSummary[]> {
     const reports =
       await prisma.auditReport.findMany({
+        select: auditReportSummarySelect,
         orderBy: {
           createdAt: "desc",
         },
       });
 
-    return reports.map((report) =>
-      summarizeReport(
-        toAuditReport(report),
-      ),
-    );
+    return reports.map(toAuditReportSummary);
   }
 
-  async delete(
-    id: string,
-  ): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     try {
       await prisma.auditReport.delete({
         where: {

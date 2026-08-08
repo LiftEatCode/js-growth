@@ -5,6 +5,7 @@ import type {
   ReportMode,
   WebsiteAuditResult,
 } from "../types";
+
 import {
   AUDIT_REPORT_VERSION,
   type AuditReport,
@@ -67,5 +68,14 @@ export function summarizeReport(
     grade: getAuditGrade(
       report.audit.overallScore,
     ).letter,
+
+    criticalIssues:
+      report.audit.summary.criticalIssues,
+
+    quickWins:
+      report.audit.summary.quickWins,
+
+    opportunityScore:
+      report.audit.opportunity.score,
   };
 }

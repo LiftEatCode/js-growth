@@ -27,6 +27,7 @@ export default async function ReportPage({
         <AuditResults
           result={report.audit}
           mode={report.reportMode}
+          reportId={report.id}
         />
       </div>
     </main>

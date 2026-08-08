@@ -16,6 +16,7 @@ import { AuditOpportunityCard } from "@/components/website-audit/audit-opportuni
 import { AuditRecommendedRoadmap } from "@/components/website-audit/audit-recommended-roadmap";
 import { SavedReportLink } from "./saved-report-link";
 import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
+import { AuditLeadCapture } from "@/components/website-audit/audit-lead-capture";
 import type {
   ReportMode,
   WebsiteAuditResult,
@@ -166,6 +167,17 @@ export function AuditResults({
         findings={result.findings}
         mode={mode}
       />
+      
+      {reportId ? (
+        <AuditLeadCapture
+          reportId={reportId}
+          hostname={
+            new URL(
+              result.metadata.finalUrl,
+            ).hostname.replace(/^www\./, "")
+          }
+        />
+      ) : null}
 
       <AuditConversionCta
         opportunity={result.opportunity}
