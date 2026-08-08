@@ -1,6 +1,7 @@
-import { renderToBuffer } from "@react-pdf/renderer";
-
-import { AuditReportPdf } from "@/components/website-audit/audit-report-pdf";
+import {
+  createAuditReportPdfFilename,
+  generateAuditReportPdf,
+} from "@/lib/website-audit/pdf/generate-audit-report-pdf";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 export const runtime = "nodejs";
@@ -13,10 +14,13 @@ export async function GET(
     }>;
   },
 ) {
-  const { id } = await context.params;
+  const { id } =
+    await context.params;
 
   const report =
-    await auditReportRepository.findById(id);
+    await auditReportRepository.findById(
+      id,
+    );
 
   if (!report) {
     return new Response(
@@ -27,30 +31,33 @@ export async function GET(
     );
   }
 
-  const pdf = await renderToBuffer(
-    <AuditReportPdf report={report} />,
-  );
+  const pdfBuffer =
+    await generateAuditReportPdf(
+      report,
+    );
 
   const filename =
-    `website-growth-report-${report.hostname}`
-      .replace(
-        /[^a-zA-Z0-9.-]+/g,
-        "-",
-      )
-      .toLowerCase();
+    createAuditReportPdfFilename(
+      report.hostname,
+    );
 
-  return new Response(new Uint8Array(pdf), {
-    status: 200,
+  return new Response(
+    new Uint8Array(
+      pdfBuffer,
+    ),
+    {
+      status: 200,
 
-    headers: {
-      "Content-Type":
-        "application/pdf",
+      headers: {
+        "Content-Type":
+          "application/pdf",
 
-      "Content-Disposition":
-        `attachment; filename="${filename}.pdf"`,
+        "Content-Disposition":
+          `attachment; filename="${filename}"`,
 
-      "Cache-Control":
-        "private, no-store",
+        "Cache-Control":
+          "private, no-store",
+      },
     },
-  });
+  );
 }

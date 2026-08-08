@@ -1,10 +1,16 @@
 "use server";
 
-import { createElement } from "react";
-import { renderToBuffer } from "@react-pdf/renderer";
+import {
+  createElement,
+  type ReactElement,
+} from "react";
+import {
+  renderToBuffer,
+  type DocumentProps,
+} from "@react-pdf/renderer";
 import { revalidatePath } from "next/cache";
 
-import { AuditReportPdf } from "@/components/website-audit/pdf/audit-report-pdf";
+import { AuditReportPdf } from "@/components/website-audit/audit-report-pdf";
 import { getResendClient } from "@/lib/email/resend";
 import { prisma } from "@/lib/prisma";
 import { auditReportRepository } from "@/lib/website-audit/storage";
@@ -181,12 +187,9 @@ export async function captureAuditLead(
     try {
       const pdfBuffer =
         await renderToBuffer(
-          createElement(
-            AuditReportPdf,
-            {
-              report,
-            },
-          ),
+          createElement(AuditReportPdf, {
+            report,
+          }) as ReactElement<DocumentProps>,
         );
 
       const fromEmail =
