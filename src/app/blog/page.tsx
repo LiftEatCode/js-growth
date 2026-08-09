@@ -1,10 +1,21 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock3 } from "lucide-react";
+import type { Metadata } from "next";
+import {
+  ArrowRight,
+  Clock3,
+  Newspaper,
+  Sparkles,
+} from "lucide-react";
 
 import { CTASection } from "@/components/marketing";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
+import {
+  Button,
+  Card,
+  Container,
+  GridPattern,
+  Section,
+  SectionHeader,
+} from "@/components/ui";
 import { blogPosts } from "@/content/blog/posts";
 
 export const metadata: Metadata = {
@@ -26,90 +37,166 @@ export default function BlogPage() {
 
   return (
     <>
-      <Section className="overflow-hidden pt-28 sm:pt-32">
-        <Container>
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-              Insights
-            </p>
+      <section className="relative isolate overflow-hidden bg-brand text-white">
+        <GridPattern className="opacity-45" />
 
-            <h1 className="font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Practical strategies for growing a local business
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 -z-10 size-[48rem] -translate-x-1/2 -translate-y-[62%] rounded-full bg-brand-blue/25 blur-3xl"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute -right-40 top-1/3 -z-10 size-[30rem] rounded-full bg-brand-cyan/15 blur-3xl"
+        />
+
+        <Container className="relative py-20 sm:py-24 lg:py-28">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-cyan-200 backdrop-blur-xl">
+              <Newspaper
+                aria-hidden="true"
+                className="size-4"
+              />
+
+              Business Growth Insights
+            </div>
+
+            <h1 className="mt-6 font-heading text-4xl font-bold leading-tight tracking-[-0.05em] text-white sm:text-5xl lg:text-6xl">
+              Practical strategies for growing a local business.
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted">
-              Explore actionable ideas about websites, Local SEO, automation,
-              analytics, and modern digital growth.
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+              Explore useful ideas about websites, Local SEO, automation,
+              analytics, marketing, and the systems that support business
+              growth.
             </p>
           </div>
         </Container>
-      </Section>
+      </section>
 
       {featuredPost ? (
-        <Section className="pt-4 sm:pt-8">
+        <Section>
           <Container>
-            <article className="group relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-soft sm:p-10 lg:p-12">
-              <div className="max-w-3xl">
-                <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
-                  <span className="rounded-full border border-border bg-background px-3 py-1 font-medium text-foreground">
-                    {featuredPost.category}
-                  </span>
+            <SectionHeader
+              eyebrow="Featured Insight"
+              title="Start with our latest growth strategy."
+              description="Practical guidance designed to help small businesses improve visibility, generate leads, and build stronger digital systems."
+            />
 
-                  <span className="inline-flex items-center gap-2">
-                    <Clock3 className="h-4 w-4" />
-                    {featuredPost.readingTime}
-                  </span>
+            <Card
+              variant="elevated"
+              padding="none"
+              interactive
+              className="group mt-12 overflow-hidden"
+            >
+              <div className="grid lg:grid-cols-[0.72fr_1.28fr]">
+                <div className="relative flex min-h-64 items-end overflow-hidden bg-gradient-to-br from-slate-950 via-brand to-blue-950 p-8 text-white sm:p-10">
+                  <div
+                    aria-hidden="true"
+                    className="absolute -right-16 -top-16 size-56 rounded-full bg-brand-blue/30 blur-3xl"
+                  />
+
+                  <div
+                    aria-hidden="true"
+                    className="absolute -bottom-20 -left-16 size-48 rounded-full bg-brand-cyan/15 blur-3xl"
+                  />
+
+                  <div className="relative">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-cyan-300">
+                      <Sparkles
+                        aria-hidden="true"
+                        className="size-3.5"
+                      />
+
+                      Featured Article
+                    </div>
+
+                    <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">
+                      {featuredPost.category}
+                    </p>
+
+                    <div className="mt-3 flex items-center gap-2 text-sm text-slate-300">
+                      <Clock3
+                        aria-hidden="true"
+                        className="size-4"
+                      />
+
+                      {featuredPost.readingTime}
+                    </div>
+                  </div>
                 </div>
 
-                <h2 className="mt-6 font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-                  <Link
-                    href={`/blog/${featuredPost.slug}`}
-                    className="transition-colors hover:text-brand"
-                  >
+                <div className="flex flex-col p-8 sm:p-10 lg:p-12">
+                  <h2 className="font-heading text-3xl font-semibold tracking-tight text-brand sm:text-4xl">
                     {featuredPost.title}
-                  </Link>
-                </h2>
+                  </h2>
 
-                <p className="mt-5 text-lg leading-8 text-muted">
-                  {featuredPost.description}
-                </p>
+                  <p className="mt-5 max-w-3xl text-lg leading-8 text-muted">
+                    {featuredPost.description}
+                  </p>
 
-                <Link
-                  href={`/blog/${featuredPost.slug}`}
-                  className="mt-8 inline-flex items-center gap-2 font-semibold text-brand transition-transform group-hover:translate-x-1"
-                >
-                  Read article
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+                  <div className="mt-auto pt-8">
+                    <Button
+                      size="lg"
+                      nativeButton={false}
+                      render={
+                        <Link href={`/blog/${featuredPost.slug}`} />
+                      }
+                    >
+                      Read Featured Article
+
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="ml-1 size-4"
+                      />
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </article>
+            </Card>
           </Container>
         </Section>
       ) : null}
 
       {remainingPosts.length > 0 ? (
-        <Section>
+        <Section className="border-y border-border bg-slate-50/60">
           <Container>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <SectionHeader
+              eyebrow="More Insights"
+              title="Ideas you can actually use."
+              description="Explore practical guidance around websites, Local SEO, AI, automation, analytics, marketing, and business growth."
+              align="center"
+              className="mx-auto max-w-3xl"
+            />
+
+            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {remainingPosts.map((post) => (
-                <article
+                <Card
                   key={post.slug}
-                  className="group flex h-full flex-col rounded-3xl border border-border bg-card p-7 shadow-soft"
+                  variant="elevated"
+                  padding="lg"
+                  interactive
+                  className="group flex h-full flex-col"
                 >
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
-                    <span className="font-medium text-brand">
+                  <div className="flex flex-wrap items-center gap-3 text-xs font-medium">
+                    <span className="rounded-full border border-brand-blue/10 bg-brand-blue/[0.045] px-3 py-1.5 text-brand-blue">
                       {post.category}
                     </span>
 
-                    <span aria-hidden="true">•</span>
+                    <span className="inline-flex items-center gap-1.5 text-muted">
+                      <Clock3
+                        aria-hidden="true"
+                        className="size-3.5"
+                      />
 
-                    <span>{post.readingTime}</span>
+                      {post.readingTime}
+                    </span>
                   </div>
 
-                  <h2 className="mt-5 font-heading text-2xl font-semibold tracking-tight text-foreground">
+                  <h2 className="mt-6 font-heading text-2xl font-semibold tracking-tight text-brand">
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="transition-colors hover:text-brand"
+                      className="transition-colors hover:text-brand-blue"
                     >
                       {post.title}
                     </Link>
@@ -119,14 +206,20 @@ export default function BlogPage() {
                     {post.description}
                   </p>
 
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="mt-6 inline-flex items-center gap-2 font-semibold text-brand transition-transform group-hover:translate-x-1"
-                  >
-                    Read article
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </article>
+                  <div className="mt-7 border-t border-border pt-5">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue"
+                    >
+                      Read article
+
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="size-4 transition-transform duration-200 group-hover:translate-x-1"
+                      />
+                    </Link>
+                  </div>
+                </Card>
               ))}
             </div>
           </Container>
