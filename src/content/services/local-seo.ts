@@ -16,8 +16,7 @@ import type {
   BenefitItem,
   FAQItem,
   ProcessItem,
-} from "@/components/marketing";
-  
+} from "@/types/marketing";
 
 export const localSeoBenefits = {
   eyebrow: "Local Search Visibility",

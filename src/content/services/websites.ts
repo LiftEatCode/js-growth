@@ -32,7 +32,7 @@ import type {
   FAQItem,
   IndustryItem,
   ProcessItem,
-} from "@/components/marketing";
+} from "@/types/marketing";
 
 export const websiteBenefits = {
   eyebrow: "Website Development",
