@@ -3,15 +3,20 @@ import {
   BriefcaseBusiness,
   CheckCircle2,
   MapPin,
+  Quote,
+  Sparkles,
+  Star,
   Wrench,
 } from "lucide-react";
 
+import { CTASection } from "@/components/marketing";
 import {
-  CTASection,
-  PageHero,
-  TestimonialCard,
-} from "@/components/marketing";
-import { Container, Section, SectionHeader } from "@/components/ui";
+  Card,
+  Container,
+  GridPattern,
+  Section,
+  SectionHeader,
+} from "@/components/ui";
 import { thaShopCaseStudy } from "@/content/projects/tha-shop";
 
 export const metadata: Metadata = {
@@ -21,59 +26,124 @@ export const metadata: Metadata = {
 };
 
 export default function ThaShopCaseStudyPage() {
-  const { hero, overview, challenge, solution, deliverables, results, testimonial, cta } =
-    thaShopCaseStudy;
+  const {
+    hero,
+    overview,
+    challenge,
+    solution,
+    deliverables,
+    results,
+    testimonial,
+    cta,
+  } = thaShopCaseStudy;
 
   return (
     <>
-      <PageHero
-        eyebrow={hero.eyebrow}
-        title={hero.title}
-        description={hero.description}
-      />
+      <section className="relative isolate overflow-hidden bg-brand text-white">
+        <GridPattern className="opacity-45" />
+
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 -z-10 size-[48rem] -translate-x-1/2 -translate-y-[62%] rounded-full bg-brand-blue/25 blur-3xl"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute -right-40 top-1/3 -z-10 size-[30rem] rounded-full bg-brand-cyan/15 blur-3xl"
+        />
+
+        <Container className="relative py-20 sm:py-24 lg:py-28">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-cyan-200 backdrop-blur-xl">
+              <Sparkles
+                aria-hidden="true"
+                className="size-4"
+              />
+
+              {hero.eyebrow}
+            </div>
+
+            <h1 className="mt-6 font-heading text-4xl font-bold leading-tight tracking-[-0.05em] text-white sm:text-5xl lg:text-6xl">
+              {hero.title}
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+              {hero.description}
+            </p>
+          </div>
+        </Container>
+      </section>
 
       <Section>
         <Container>
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-2xl border bg-card p-6 shadow-soft">
-              <div className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                <BriefcaseBusiness className="size-5" aria-hidden="true" />
+            <Card
+              variant="elevated"
+              padding="lg"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                <BriefcaseBusiness
+                  className="size-5"
+                  aria-hidden="true"
+                />
               </div>
 
-              <p className="mt-5 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
                 Client
               </p>
 
-              <p className="mt-2 text-lg font-semibold">{overview.client}</p>
-            </div>
+              <p className="mt-2 font-heading text-lg font-semibold text-brand">
+                {overview.client}
+              </p>
+            </Card>
 
-            <div className="rounded-2xl border bg-card p-6 shadow-soft">
-              <div className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                <Wrench className="size-5" aria-hidden="true" />
+            <Card
+              variant="elevated"
+              padding="lg"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                <Wrench
+                  className="size-5"
+                  aria-hidden="true"
+                />
               </div>
 
-              <p className="mt-5 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
                 Industry
               </p>
 
-              <p className="mt-2 text-lg font-semibold">{overview.industry}</p>
-            </div>
+              <p className="mt-2 font-heading text-lg font-semibold text-brand">
+                {overview.industry}
+              </p>
+            </Card>
 
-            <div className="rounded-2xl border bg-card p-6 shadow-soft">
-              <div className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                <MapPin className="size-5" aria-hidden="true" />
+            <Card
+              variant="elevated"
+              padding="lg"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                <MapPin
+                  className="size-5"
+                  aria-hidden="true"
+                />
               </div>
 
-              <p className="mt-5 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
                 Location
               </p>
 
-              <p className="mt-2 text-lg font-semibold">{overview.location}</p>
-            </div>
+              <p className="mt-2 font-heading text-lg font-semibold text-brand">
+                {overview.location}
+              </p>
+            </Card>
           </div>
 
-          <div className="mt-10 rounded-2xl border bg-muted/30 p-6 md:p-8">
-            <p className="text-sm font-semibold uppercase tracking-wider text-brand">
+          <Card
+            variant="brand"
+            padding="lg"
+            className="mt-8"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
               Services Provided
             </p>
 
@@ -81,19 +151,19 @@ export default function ThaShopCaseStudyPage() {
               {overview.services.map((service) => (
                 <span
                   key={service}
-                  className="rounded-full border bg-background px-4 py-2 text-sm font-medium"
+                  className="rounded-full border border-brand-blue/10 bg-white px-4 py-2 text-sm font-medium text-brand"
                 >
                   {service}
                 </span>
               ))}
             </div>
-          </div>
+          </Card>
         </Container>
       </Section>
 
-      <Section className="bg-muted/30">
+      <Section className="border-y border-border bg-slate-50/60">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-20">
             <SectionHeader
               eyebrow={challenge.eyebrow}
               title={challenge.title}
@@ -101,20 +171,28 @@ export default function ThaShopCaseStudyPage() {
               className="max-w-xl"
             />
 
-            <div className="rounded-3xl border bg-card p-7 shadow-soft md:p-9">
+            <Card
+              variant="elevated"
+              padding="lg"
+            >
               <div className="space-y-5">
                 {challenge.points.map((point) => (
-                  <div key={point} className="flex items-start gap-3">
+                  <div
+                    key={point}
+                    className="flex items-start gap-3"
+                  >
                     <CheckCircle2
-                      className="mt-0.5 size-5 shrink-0 text-brand"
+                      className="mt-0.5 size-5 shrink-0 text-brand-blue"
                       aria-hidden="true"
                     />
 
-                    <p className="leading-7 text-muted-foreground">{point}</p>
+                    <p className="leading-7 text-muted">
+                      {point}
+                    </p>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           </div>
         </Container>
       </Section>
@@ -131,36 +209,40 @@ export default function ThaShopCaseStudyPage() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {solution.items.map((item, index) => (
-              <article
+              <Card
                 key={item.title}
-                className="rounded-2xl border bg-card p-6 shadow-soft"
+                variant="elevated"
+                padding="lg"
+                interactive
               >
-                <span className="text-sm font-semibold text-brand">
+                <span className="text-sm font-semibold text-brand-blue">
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
-                <h3 className="mt-4 text-xl font-semibold tracking-tight">
+                <h3 className="mt-4 font-heading text-xl font-semibold tracking-tight text-brand">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 leading-7 text-muted-foreground">
+                <p className="mt-3 leading-7 text-muted">
                   {item.description}
                 </p>
-              </article>
+              </Card>
             ))}
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-brand text-white">
-        <Container>
+      <Section className="relative overflow-hidden bg-brand text-white">
+        <GridPattern className="opacity-35" />
+
+        <Container className="relative">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">
                 What We Delivered
               </p>
 
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+              <h2 className="mt-4 font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 A repeatable digital marketing foundation.
               </h2>
 
@@ -204,21 +286,24 @@ export default function ThaShopCaseStudyPage() {
 
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {results.items.map((result) => (
-              <div
+              <Card
                 key={result}
-                className="rounded-2xl border bg-card p-6 shadow-soft"
+                variant="elevated"
+                padding="lg"
               >
                 <CheckCircle2
-                  className="size-6 text-brand"
+                  className="size-6 text-brand-blue"
                   aria-hidden="true"
                 />
 
-                <p className="mt-4 font-medium leading-7">{result}</p>
-              </div>
+                <p className="mt-4 font-medium leading-7 text-brand">
+                  {result}
+                </p>
+              </Card>
             ))}
           </div>
 
-          <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-muted-foreground">
+          <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-muted">
             These results are currently presented qualitatively. Verified
             performance metrics can be added as campaign, traffic, call, and
             lead data become available.
@@ -226,17 +311,52 @@ export default function ThaShopCaseStudyPage() {
         </Container>
       </Section>
 
-      <Section className="bg-muted/30">
+      <Section className="border-y border-border bg-slate-50/60">
         <Container>
-          <div className="mx-auto max-w-3xl">
-            <TestimonialCard
-              quote={testimonial.quote}
-              name={testimonial.name}
-              role={testimonial.role}
-              company={testimonial.company}
-              className="p-8 md:p-10"
-            />
-          </div>
+          <Card
+            as="figure"
+            variant="elevated"
+            padding="lg"
+            className="mx-auto max-w-3xl"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div
+                className="flex gap-1"
+                aria-label="5 out of 5 stars"
+              >
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    aria-hidden="true"
+                    className="size-4 fill-brand-blue text-brand-blue"
+                  />
+                ))}
+              </div>
+
+              <span className="flex size-10 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                <Quote
+                  aria-hidden="true"
+                  className="size-5"
+                />
+              </span>
+            </div>
+
+            <blockquote className="mt-6 text-lg leading-8 text-foreground">
+              “{testimonial.quote}”
+            </blockquote>
+
+            <figcaption className="mt-8 border-t border-border pt-6">
+              <p className="font-heading text-lg font-semibold text-brand">
+                {testimonial.name}
+              </p>
+
+              <p className="mt-1 text-sm text-muted">
+                {[testimonial.role, testimonial.company]
+                  .filter(Boolean)
+                  .join(" • ")}
+              </p>
+            </figcaption>
+          </Card>
         </Container>
       </Section>
 
@@ -244,6 +364,7 @@ export default function ThaShopCaseStudyPage() {
         title={cta.title}
         description={cta.description}
         primaryLabel={cta.primaryLabel}
+        primaryHref="/contact"
       />
     </>
   );
