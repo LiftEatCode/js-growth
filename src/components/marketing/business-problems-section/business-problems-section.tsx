@@ -1,9 +1,19 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
 
-import { Container, Section, SectionHeader } from "@/components/ui";
+import {
+  Card,
+  Container,
+  Section,
+  SectionHeader,
+} from "@/components/ui";
 
-import type { BusinessProblemsSectionProps } from "./types";
+import type {
+  BusinessProblemsSectionProps,
+} from "./types";
 
 export function BusinessProblemsSection({
   eyebrow = "Where Are You Getting Stuck?",
@@ -12,7 +22,12 @@ export function BusinessProblemsSection({
   items,
 }: BusinessProblemsSectionProps) {
   return (
-    <Section>
+    <Section className="relative overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="absolute left-1/2 top-0 -z-10 h-72 w-[46rem] -translate-x-1/2 rounded-full bg-brand-blue/[0.04] blur-3xl"
+      />
+
       <Container>
         <SectionHeader
           eyebrow={eyebrow}
@@ -24,37 +39,69 @@ export function BusinessProblemsSection({
 
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => {
-            const Icon = item.icon;
+            const Icon =
+              item.icon;
 
             return (
               <Link
                 key={item.title}
                 href={item.href}
-                className="group flex h-full flex-col rounded-2xl border bg-card p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-blue/15"
               >
-                <div className="flex size-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                  <Icon className="size-6" />
-                </div>
+                <Card
+                  variant="elevated"
+                  padding="lg"
+                  interactive
+                  className="flex h-full flex-col overflow-hidden"
+                >
+                  <div className="flex items-start justify-between gap-5">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue transition duration-200 group-hover:bg-brand-blue/10">
+                      <Icon
+                        aria-hidden="true"
+                        className="size-5"
+                      />
+                    </span>
 
-                <h3 className="mt-6 text-xl font-semibold tracking-tight">
-                  {item.title}
-                </h3>
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="mt-1 size-5 shrink-0 text-slate-300 transition duration-200 group-hover:translate-x-1 group-hover:text-brand-blue"
+                    />
+                  </div>
 
-                <p className="mt-3 leading-7 text-muted-foreground">
-                  {item.description}
-                </p>
+                  <h3 className="mt-6 font-heading text-xl font-semibold tracking-tight text-brand">
+                    {item.title}
+                  </h3>
 
-                <div className="mt-auto pt-6">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Recommended solution
-                  </span>
+                  <p className="mt-3 leading-7 text-muted">
+                    {
+                      item.description
+                    }
+                  </p>
 
-                  <span className="mt-2 flex items-center gap-2 font-semibold text-brand">
-                    {item.solution}
+                  <div className="mt-auto pt-7">
+                    <div className="border-t border-border pt-5">
+                      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                        <Sparkles
+                          aria-hidden="true"
+                          className="size-3.5 text-brand-blue"
+                        />
 
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
+                        Recommended solution
+                      </div>
+
+                      <div className="mt-2 flex items-center gap-2 text-sm font-semibold text-brand-blue">
+                        {
+                          item.solution
+                        }
+
+                        <ArrowRight
+                          aria-hidden="true"
+                          className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Card>
               </Link>
             );
           })}

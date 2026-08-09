@@ -1,19 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    var(--font-inter),
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+
+  --font-heading:
+    var(--font-sora),
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
 
   --color-background: #f8fafc;
   --color-foreground: #0f172a;
 
   --color-brand: #0f172a;
   --color-brand-blue: #2563eb;
+  --color-brand-blue-dark: #1d4ed8;
   --color-brand-cyan: #06b6d4;
 
   --color-muted: #64748b;
+  --color-muted-light: #94a3b8;
+
   --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
   --color-card: #ffffff;
+
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f8fafc;
+  --color-surface-muted: #f1f5f9;
+
+  --color-success: #059669;
+  --color-success-soft: #ecfdf5;
+
+  --color-warning: #d97706;
+  --color-warning-soft: #fffbeb;
+
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -21,8 +48,29 @@
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
 
-  --shadow-soft: 0 18px 60px rgb(15 23 42 / 0.08);
-  --shadow-card: 0 10px 30px rgb(15 23 42 / 0.06);
+  --shadow-soft:
+    0 18px 60px
+    rgb(15 23 42 / 0.08);
+
+  --shadow-card:
+    0 10px 30px
+    rgb(15 23 42 / 0.06);
+
+  --shadow-card-hover:
+    0 20px 45px
+    rgb(15 23 42 / 0.11);
+
+  --shadow-button:
+    0 7px 18px
+    rgb(37 99 235 / 0.22);
+
+  --shadow-button-hover:
+    0 10px 26px
+    rgb(37 99 235 / 0.3);
+
+  --shadow-menu:
+    0 24px 70px -20px
+    rgb(15 23 42 / 0.35);
 }
 
 @layer base {
@@ -31,20 +79,162 @@
   }
 
   body {
-    background: var(--color-background);
-    color: var(--color-foreground);
+    background:
+      var(--color-background);
+    color:
+      var(--color-foreground);
+
+    font-family:
+      var(--font-sans);
+
+    -webkit-font-smoothing:
+      antialiased;
+
+    text-rendering:
+      optimizeLegibility;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-family: var(--font-heading);
-    letter-spacing: -0.04em;
+    font-family:
+      var(--font-heading);
+
+    letter-spacing:
+      -0.04em;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color:
+      transparent;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    transition-property:
+      color,
+      background-color,
+      border-color,
+      opacity,
+      box-shadow,
+      transform;
+
+    transition-duration:
+      160ms;
+
+    transition-timing-function:
+      ease-out;
   }
 
   ::selection {
-    background: var(--color-brand-blue);
-    color: white;
+    background:
+      var(--color-brand-blue);
+
+    color:
+      white;
+  }
+
+  :focus-visible {
+    outline:
+      2px solid
+      color-mix(
+        in srgb,
+        var(--color-brand-blue) 70%,
+        transparent
+      );
+
+    outline-offset:
+      3px;
+  }
+}
+
+@layer utilities {
+  .surface {
+    background:
+      var(--color-surface);
+
+    border:
+      1px solid
+      var(--color-border);
+  }
+
+  .surface-subtle {
+    background:
+      var(--color-surface-subtle);
+
+    border:
+      1px solid
+      var(--color-border);
+  }
+
+  .surface-muted {
+    background:
+      var(--color-surface-muted);
+
+    border:
+      1px solid
+      var(--color-border);
+  }
+
+  .shadow-soft {
+    box-shadow:
+      var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow:
+      var(--shadow-card);
+  }
+
+  .shadow-card-hover {
+    box-shadow:
+      var(--shadow-card-hover);
+  }
+
+  .shadow-button {
+    box-shadow:
+      var(--shadow-button);
+  }
+
+  .shadow-button-hover {
+    box-shadow:
+      var(--shadow-button-hover);
+  }
+
+  .brand-gradient {
+    background:
+      linear-gradient(
+        135deg,
+        var(--color-brand-blue),
+        var(--color-brand-cyan)
+      );
+  }
+
+  .brand-gradient-text {
+    background:
+      linear-gradient(
+        135deg,
+        var(--color-brand-blue),
+        var(--color-brand-cyan)
+      );
+
+    background-clip:
+      text;
+
+    color:
+      transparent;
+  }
+
+  .brand-glow {
+    box-shadow:
+      0 0 0 1px
+        rgb(37 99 235 / 0.08),
+      0 14px 45px
+        rgb(37 99 235 / 0.14);
   }
 }

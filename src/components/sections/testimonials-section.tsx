@@ -1,11 +1,15 @@
-import { Quote, Star } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
 import {
+  Quote,
+  Star,
+} from "lucide-react";
+
+import {
+  Card,
   Container,
   Section,
   SectionHeader,
 } from "@/components/ui";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 type TestimonialCardProps = {
@@ -25,7 +29,12 @@ const testimonials = [
     name: "Kevin",
     role: "Owner",
     company: "Tha Shop",
-    services: ["Local SEO", "Web Design", "Social Media Management", "Google Ads"],
+    services: [
+      "Local SEO",
+      "Web Design",
+      "Social Media Management",
+      "Google Ads",
+    ],
     rating: 5,
   },
   {
@@ -34,7 +43,11 @@ const testimonials = [
     name: "Casey Jones",
     role: "Owner",
     company: "Crazy Eight Customs",
-    services: ["Web Development", "Marketing", "Local SEO"],
+    services: [
+      "Web Development",
+      "Marketing",
+      "Local SEO",
+    ],
     rating: 5,
   },
 ] as const;
@@ -48,14 +61,28 @@ export function TestimonialCard({
   rating = 5,
   className,
 }: TestimonialCardProps) {
-  const safeRating = Math.min(Math.max(rating, 0), 5);
-  const attribution = [role, company].filter(Boolean).join(" • ");
+  const safeRating =
+    Math.min(
+      Math.max(
+        rating,
+        0,
+      ),
+      5,
+    );
+
+  const attribution =
+    [role, company]
+      .filter(Boolean)
+      .join(" • ");
 
   return (
-    <figure
+    <Card
+      as="figure"
+      variant="elevated"
+      padding="lg"
+      interactive
       className={cn(
-        "group flex h-full flex-col rounded-2xl border border-border bg-card p-8 shadow-card",
-        "transition duration-300 hover:-translate-y-1 hover:shadow-soft",
+        "group flex h-full flex-col overflow-hidden",
         className,
       )}
     >
@@ -64,26 +91,34 @@ export function TestimonialCard({
           className="flex gap-1"
           aria-label={`${safeRating} out of 5 stars`}
         >
-          {Array.from({ length: 5 }, (_, index) => (
-            <Star
-              key={index}
-              aria-hidden="true"
-              className={cn(
-                "size-4",
-                index < safeRating
-                  ? "fill-brand-blue text-brand-blue"
-                  : "fill-transparent text-border",
-              )}
-            />
-          ))}
+          {Array.from(
+            {
+              length: 5,
+            },
+            (_, index) => (
+              <Star
+                key={index}
+                aria-hidden="true"
+                className={cn(
+                  "size-4",
+                  index < safeRating
+                    ? "fill-brand-blue text-brand-blue"
+                    : "fill-transparent text-border",
+                )}
+              />
+            ),
+          )}
         </div>
 
-        <div className="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-brand-blue transition duration-300 group-hover:bg-brand-blue group-hover:text-white">
-          <Quote aria-hidden="true" className="size-5" />
+        <div className="flex size-10 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue transition duration-200 group-hover:bg-brand-blue group-hover:text-white">
+          <Quote
+            aria-hidden="true"
+            className="size-5"
+          />
         </div>
       </div>
 
-      <blockquote className="mt-6 flex-1 text-base leading-8 text-foreground">
+      <blockquote className="mt-6 flex-1 text-lg leading-8 text-foreground">
         “{quote}”
       </blockquote>
 
@@ -93,7 +128,9 @@ export function TestimonialCard({
         </p>
 
         {attribution ? (
-          <p className="mt-1 text-sm text-muted">{attribution}</p>
+          <p className="mt-1 text-sm text-muted">
+            {attribution}
+          </p>
         ) : null}
 
         {services.length > 0 ? (
@@ -105,7 +142,7 @@ export function TestimonialCard({
               <li key={service}>
                 <Badge
                   variant="secondary"
-                  className="rounded-full px-3 py-1 font-medium"
+                  className="rounded-full border border-brand-blue/10 bg-brand-blue/[0.045] px-3 py-1 font-medium text-brand-blue"
                 >
                   {service}
                 </Badge>
@@ -114,33 +151,63 @@ export function TestimonialCard({
           </ul>
         ) : null}
       </figcaption>
-    </figure>
+    </Card>
   );
 }
 
 export function TestimonialsSection() {
   return (
-    <Section className="bg-white">
+    <Section className="relative overflow-hidden bg-white">
+      <div
+        aria-hidden="true"
+        className="absolute right-0 top-0 -z-10 size-[30rem] -translate-y-1/3 translate-x-1/4 rounded-full bg-brand-blue/[0.035] blur-3xl"
+      />
+
       <Container>
         <SectionHeader
           eyebrow="Testimonials"
-          title="Trusted by local businesses ready to grow."
+          title="Trusted by businesses ready to grow."
           description="Real feedback from owners and operators who needed a sharper website, stronger local visibility, and systems that actually support the work."
           align="center"
+          className="mx-auto max-w-3xl"
         />
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-3">
-          {testimonials.map((testimonial) => (
-            <TestimonialCard
-              key={testimonial.name}
-              quote={testimonial.quote}
-              name={testimonial.name}
-              role={testimonial.role}
-              company={testimonial.company}
-              services={testimonial.services}
-              rating={testimonial.rating}
-            />
-          ))}
+        <div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-2">
+          {testimonials.map(
+            (testimonial) => (
+              <TestimonialCard
+                key={
+                  testimonial.name
+                }
+                quote={
+                  testimonial.quote
+                }
+                name={
+                  testimonial.name
+                }
+                role={
+                  testimonial.role
+                }
+                company={
+                  testimonial.company
+                }
+                services={
+                  testimonial.services
+                }
+                rating={
+                  testimonial.rating
+                }
+              />
+            ),
+          )}
+        </div>
+
+        <div className="mx-auto mt-10 max-w-3xl text-center">
+          <p className="text-sm leading-7 text-muted">
+            Every engagement is built around the same goal: better systems,
+            clearer visibility, and technology that creates measurable value
+            for the business.
+          </p>
         </div>
       </Container>
     </Section>
