@@ -11,6 +11,7 @@ import {
 
 import {
   Container,
+  FeatureCard,
   Section,
   SectionHeader,
 } from "@/components/ui";
@@ -68,42 +69,39 @@ const profileImprovements = [
 
 export function GoogleBusinessProfileSection() {
   return (
-    <Section className="bg-white">
+    <Section className="border-y border-border bg-white">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <SectionHeader
-            eyebrow="Google Business Profile"
-            title="Turn your Google listing into a stronger customer touchpoint."
-            description="Your Google Business Profile is often the first place a local customer sees your business. We improve the information, content, trust signals, and conversion paths that influence whether they call, visit, or choose a competitor."
-          />
+        <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <SectionHeader
+              eyebrow="Google Business Profile"
+              title="Turn your Google listing into a stronger customer touchpoint."
+              description="Your Google Business Profile is often the first place a local customer sees your business. We improve the information, content, trust signals, and conversion paths that influence whether they call, visit, or choose a competitor."
+            />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {profileImprovements.map((item) => {
-              const Icon = item.icon;
+            <div className="mt-8 rounded-2xl border border-brand-blue/10 bg-brand-blue/[0.035] p-5">
+              <p className="text-sm font-semibold text-brand">
+                Your profile is part of the customer journey.
+              </p>
 
-              return (
-                <article
-                  key={item.title}
-                  className="group rounded-2xl border border-border bg-background p-6 transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:bg-white hover:shadow-card"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-brand-blue transition duration-300 group-hover:bg-brand-blue group-hover:text-white">
-                      <Icon aria-hidden="true" className="size-5" />
-                    </div>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                Accurate information, reviews, photos, services, and customer
+                actions all work together to influence trust and local
+                visibility.
+              </p>
+            </div>
+          </div>
 
-                    <div>
-                      <h3 className="font-heading text-lg font-semibold text-brand">
-                        {item.title}
-                      </h3>
-
-                      <p className="mt-2 text-sm leading-6 text-muted">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+          <div className="grid gap-5 sm:grid-cols-2">
+            {profileImprovements.map((item) => (
+              <FeatureCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+                icon={item.icon}
+                tone="default"
+              />
+            ))}
           </div>
         </div>
       </Container>

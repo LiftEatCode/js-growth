@@ -1,5 +1,7 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import {
+  ArrowRight,
   BarChart3,
   Bot,
   CheckCircle2,
@@ -7,14 +9,20 @@ import {
   Mail,
   MapPin,
   Search,
+  Sparkles,
   Workflow,
 } from "lucide-react";
 
 import { ContactForm } from "@/components/forms/contact-form";
-import { PageHero } from "@/components/marketing";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { SectionHeader } from "@/components/ui/section-header";
+import {
+  Button,
+  Card,
+  Container,
+  FeatureCard,
+  GridPattern,
+  Section,
+  SectionHeader,
+} from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -53,174 +61,263 @@ const services = [
       "Understand where leads come from and which marketing efforts are producing results.",
     icon: BarChart3,
   },
-];
+] as const;
 
 const nextSteps = [
   "We review your business, goals, and current challenges.",
   "We identify the highest-impact opportunities.",
   "You receive a clear recommendation and next-step plan.",
-];
+] as const;
+
+const reasons = [
+  "Clear recommendations based on your goals",
+  "Modern, scalable technology",
+  "Solutions designed around your workflow",
+  "Ongoing optimization and measurable reporting",
+] as const;
 
 export default function ContactPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Contact JS Solutions"
-        title="Let’s build a better growth system for your business."
-        description="Tell us what you are working on, where your business is getting stuck, and what you want to accomplish. We will help identify the right website, Local SEO, automation, or marketing solution."
-      />
+      <section className="relative isolate overflow-hidden bg-brand text-white">
+        <GridPattern className="opacity-45" />
+
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 -z-10 size-[48rem] -translate-x-1/2 -translate-y-[62%] rounded-full bg-brand-blue/25 blur-3xl"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute -right-40 top-1/3 -z-10 size-[30rem] rounded-full bg-brand-cyan/15 blur-3xl"
+        />
+
+        <Container className="relative py-20 sm:py-24 lg:py-28">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-cyan-200 backdrop-blur-xl">
+              <Mail
+                aria-hidden="true"
+                className="size-4"
+              />
+
+              Contact JS Solutions
+            </div>
+
+            <h1 className="mt-6 font-heading text-4xl font-bold leading-tight tracking-[-0.05em] text-white sm:text-5xl lg:text-6xl">
+              Let&apos;s build a better growth system for your business.
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+              Tell us what you are working on, where your business is getting
+              stuck, and what you want to accomplish. We&apos;ll help identify
+              the right website, Local SEO, automation, or marketing solution.
+            </p>
+          </div>
+        </Container>
+      </section>
 
       <Section>
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] lg:items-start">
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-soft sm:p-8">
+            <Card
+              variant="elevated"
+              padding="lg"
+            >
               <div className="mb-8">
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand">
-                  Start a conversation
-                </p>
+                <div className="inline-flex items-center gap-2 rounded-full border border-brand-blue/10 bg-brand-blue/[0.045] px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
+                  <Sparkles
+                    aria-hidden="true"
+                    className="size-3.5"
+                  />
 
-                <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-foreground">
+                  Start a conversation
+                </div>
+
+                <h2 className="mt-5 font-heading text-3xl font-bold tracking-tight text-brand">
                   Tell us about your business.
                 </h2>
 
-                <p className="mt-3 max-w-2xl text-muted-foreground">
+                <p className="mt-4 max-w-2xl leading-7 text-muted">
                   Complete the form below and provide as much detail as you can.
-                  We will review your request and follow up with practical next
-                  steps.
+                  We&apos;ll review your request and follow up with practical
+                  next steps.
                 </p>
               </div>
 
               <ContactForm />
-            </div>
+            </Card>
 
             <aside className="space-y-6 lg:sticky lg:top-24">
-              <div className="rounded-2xl border border-border bg-muted/40 p-6">
-                <h2 className="font-heading text-xl font-semibold text-foreground">
+              <Card
+                variant="brand"
+                padding="md"
+              >
+                <h2 className="font-heading text-xl font-semibold text-brand">
                   What happens next?
                 </h2>
 
                 <div className="mt-6 space-y-5">
                   {nextSteps.map((step, index) => (
-                    <div key={step} className="flex gap-3">
-                      <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-semibold text-background">
+                    <div
+                      key={step}
+                      className="flex gap-3"
+                    >
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-semibold text-white">
                         {index + 1}
                       </div>
 
-                      <p className="text-sm leading-6 text-muted-foreground">
+                      <p className="text-sm leading-6 text-muted">
                         {step}
                       </p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-border bg-foreground p-6 text-background">
-                <h2 className="font-heading text-xl font-semibold">
+              <Card
+                variant="default"
+                padding="md"
+                className="border-slate-800 bg-brand text-white"
+              >
+                <h2 className="font-heading text-xl font-semibold text-white">
                   Prefer email?
                 </h2>
 
-                <p className="mt-3 text-sm leading-6 text-background/70">
-                  Send your project details directly and we will get back to
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  Send your project details directly and we&apos;ll get back to
                   you as soon as possible.
                 </p>
 
                 <a
                   href="mailto:jssolutions.tx@gmail.com"
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold hover:opacity-80"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition hover:text-white"
                 >
-                  <Mail className="size-4" />
+                  <Mail
+                    aria-hidden="true"
+                    className="size-4"
+                  />
+
                   jssolutions.tx@gmail.com
                 </a>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-border bg-card p-6">
+              <Card
+                variant="elevated"
+                padding="md"
+              >
                 <div className="flex items-center gap-3">
-                  <MapPin className="size-5 text-brand" />
+                  <span className="flex size-10 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                    <MapPin
+                      aria-hidden="true"
+                      className="size-5"
+                    />
+                  </span>
 
-                  <h2 className="font-heading text-lg font-semibold text-foreground">
+                  <h2 className="font-heading text-lg font-semibold text-brand">
                     Based in Texas
                   </h2>
                 </div>
 
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-4 text-sm leading-6 text-muted">
                   Helping local businesses build stronger websites, better
                   visibility, and more efficient systems.
                 </p>
-              </div>
+              </Card>
             </aside>
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-muted/40">
+      <Section className="border-y border-border bg-slate-50/60">
         <Container>
           <SectionHeader
             eyebrow="How We Help"
             title="One partner for your digital growth."
             description="JS Solutions combines software engineering, marketing strategy, Local SEO, automation, and analytics into practical business systems."
+            align="center"
+            className="mx-auto max-w-3xl"
           />
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => {
-              const Icon = service.icon;
-
-              return (
-                <article
-                  key={service.title}
-                  className="rounded-2xl border border-border bg-card p-6 shadow-soft"
-                >
-                  <div className="flex size-11 items-center justify-center rounded-xl bg-muted">
-                    <Icon className="size-5 text-foreground" />
-                  </div>
-
-                  <h3 className="mt-5 font-heading text-xl font-semibold text-foreground">
-                    {service.title}
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    {service.description}
-                  </p>
-                </article>
-              );
-            })}
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((service) => (
+              <FeatureCard
+                key={service.title}
+                title={service.title}
+                description={service.description}
+                icon={service.icon}
+                tone="brand"
+              />
+            ))}
           </div>
         </Container>
       </Section>
 
       <Section>
         <Container>
-          <div className="grid gap-10 rounded-3xl bg-foreground px-6 py-10 text-background sm:px-10 lg:grid-cols-2 lg:items-center lg:px-12">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-background/60">
-                Built for local businesses
-              </p>
+          <div className="relative overflow-hidden rounded-[2rem] border border-slate-800 bg-brand px-6 py-12 text-white shadow-soft sm:px-10 lg:px-14 lg:py-14">
+            <GridPattern className="opacity-35" />
 
-              <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
-                Practical strategy. Modern technology. Clear results.
-              </h2>
+            <div
+              aria-hidden="true"
+              className="absolute right-0 top-0 size-72 -translate-y-1/2 translate-x-1/3 rounded-full bg-brand-blue/25 blur-3xl"
+            />
 
-              <p className="mt-4 max-w-xl leading-7 text-background/70">
-                You do not need disconnected tools or vague marketing advice.
-                You need a system that helps your business get found, respond
-                faster, build trust, and generate more opportunities.
-              </p>
-            </div>
+            <div className="relative grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300">
+                  <Sparkles
+                    aria-hidden="true"
+                    className="size-3.5"
+                  />
 
-            <div className="space-y-4">
-              {[
-                "Clear recommendations based on your goals",
-                "Modern, scalable technology",
-                "Solutions designed around your workflow",
-                "Ongoing optimization and measurable reporting",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-background" />
-
-                  <p className="text-sm leading-6 text-background/80">
-                    {item}
-                  </p>
+                  Built for growing businesses
                 </div>
-              ))}
+
+                <h2 className="mt-5 font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Practical strategy. Modern technology. Clear results.
+                </h2>
+
+                <p className="mt-5 max-w-xl leading-7 text-slate-300">
+                  You do not need disconnected tools or vague marketing advice.
+                  You need a system that helps your business get found, respond
+                  faster, build trust, and generate more opportunities.
+                </p>
+
+                <div className="mt-8">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    nativeButton={false}
+                    render={<Link href="/services" />}
+                    className="border-white/15 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
+                  >
+                    Explore Services
+
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="ml-1 size-4"
+                    />
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {reasons.map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-4"
+                  >
+                    <CheckCircle2
+                      aria-hidden="true"
+                      className="mt-0.5 size-5 shrink-0 text-emerald-300"
+                    />
+
+                    <p className="text-sm leading-6 text-slate-300">
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Container>
