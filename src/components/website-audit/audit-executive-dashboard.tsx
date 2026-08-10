@@ -17,7 +17,6 @@ import {
 } from "@/components/website-audit/report-ui";
 import {
   Button,
-  Card,
   GridPattern,
 } from "@/components/ui";
 import type { ExecutiveSummary } from "@/lib/website-audit/executive-summary";

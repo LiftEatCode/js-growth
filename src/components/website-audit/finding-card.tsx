@@ -8,7 +8,6 @@ import {
   Sparkles,
   Wrench,
   XCircle,
-  Zap,
 } from "lucide-react";
 
 import {

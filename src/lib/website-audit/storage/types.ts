@@ -21,6 +21,24 @@ export interface AuditReport {
   audit: WebsiteAuditResult;
 }
 
+export interface AuditReportLeadSummary {
+  id: string;
+
+  createdAt: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  email: string;
+
+  phone: string | null;
+
+  company: string | null;
+
+  contacted: boolean;
+}
+
 export interface AuditReportSummary {
   id: string;
 
@@ -41,4 +59,6 @@ export interface AuditReportSummary {
   quickWins: number;
 
   opportunityScore: number;
+
+  lead: AuditReportLeadSummary | null;
 }

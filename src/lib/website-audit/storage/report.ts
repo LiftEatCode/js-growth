@@ -77,5 +77,7 @@ export function summarizeReport(
 
     opportunityScore:
       report.audit.opportunity.score,
+
+    lead: null,
   };
 }

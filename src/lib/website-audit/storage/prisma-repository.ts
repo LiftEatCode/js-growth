@@ -20,9 +20,23 @@ const auditReportSummarySelect = {
   criticalIssues: true,
   quickWins: true,
   opportunityScore: true,
+
+  lead: {
+    select: {
+      id: true,
+      createdAt: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
+      company: true,
+      contacted: true,
+    },
+  },
 } satisfies Prisma.AuditReportSelect;
 
-type StoredAuditReport = Prisma.AuditReportGetPayload<object>;
+type StoredAuditReport =
+  Prisma.AuditReportGetPayload<object>;
 
 type StoredAuditReportSummary =
   Prisma.AuditReportGetPayload<{
@@ -35,7 +49,8 @@ function toAuditReport(
   return {
     id: report.id,
     version: report.version,
-    createdAt: report.createdAt.toISOString(),
+    createdAt:
+      report.createdAt.toISOString(),
     website: report.website,
     hostname: report.hostname,
     reportMode:
@@ -50,16 +65,41 @@ function toAuditReportSummary(
 ): AuditReportSummary {
   return {
     id: report.id,
-    createdAt: report.createdAt.toISOString(),
+    createdAt:
+      report.createdAt.toISOString(),
     website: report.website,
     hostname: report.hostname,
     reportMode:
       report.reportMode as AuditReportSummary["reportMode"],
-    overallScore: report.overallScore,
+    overallScore:
+      report.overallScore,
     grade: report.grade,
-    criticalIssues: report.criticalIssues,
-    quickWins: report.quickWins,
-    opportunityScore: report.opportunityScore,
+    criticalIssues:
+      report.criticalIssues,
+    quickWins:
+      report.quickWins,
+    opportunityScore:
+      report.opportunityScore,
+
+    lead: report.lead
+      ? {
+          id: report.lead.id,
+          createdAt:
+            report.lead.createdAt.toISOString(),
+          firstName:
+            report.lead.firstName,
+          lastName:
+            report.lead.lastName,
+          email:
+            report.lead.email,
+          phone:
+            report.lead.phone,
+          company:
+            report.lead.company,
+          contacted:
+            report.lead.contacted,
+        }
+      : null,
   };
 }
 
@@ -80,33 +120,45 @@ export class PrismaAuditReportRepository
         where: {
           id: report.id,
         },
+
         update: {
           version: report.version,
           website: report.website,
           hostname: report.hostname,
-          reportMode: report.reportMode,
-          overallScore: audit.overallScore,
+          reportMode:
+            report.reportMode,
+          overallScore:
+            audit.overallScore,
           grade,
           criticalIssues:
-            audit.summary.criticalIssues,
-          quickWins: audit.summary.quickWins,
+            audit.summary
+              .criticalIssues,
+          quickWins:
+            audit.summary.quickWins,
           opportunityScore:
             audit.opportunity.score,
           audit:
             audit as unknown as Prisma.InputJsonValue,
         },
+
         create: {
           id: report.id,
           version: report.version,
-          createdAt: new Date(report.createdAt),
+          createdAt: new Date(
+            report.createdAt,
+          ),
           website: report.website,
           hostname: report.hostname,
-          reportMode: report.reportMode,
-          overallScore: audit.overallScore,
+          reportMode:
+            report.reportMode,
+          overallScore:
+            audit.overallScore,
           grade,
           criticalIssues:
-            audit.summary.criticalIssues,
-          quickWins: audit.summary.quickWins,
+            audit.summary
+              .criticalIssues,
+          quickWins:
+            audit.summary.quickWins,
           opportunityScore:
             audit.opportunity.score,
           audit:
@@ -114,7 +166,9 @@ export class PrismaAuditReportRepository
         },
       });
 
-    return toAuditReport(saved);
+    return toAuditReport(
+      saved,
+    );
   }
 
   async findById(
@@ -131,22 +185,32 @@ export class PrismaAuditReportRepository
       return null;
     }
 
-    return toAuditReport(report);
+    return toAuditReport(
+      report,
+    );
   }
 
-  async list(): Promise<AuditReportSummary[]> {
+  async list(): Promise<
+    AuditReportSummary[]
+  > {
     const reports =
       await prisma.auditReport.findMany({
-        select: auditReportSummarySelect,
+        select:
+          auditReportSummarySelect,
+
         orderBy: {
           createdAt: "desc",
         },
       });
 
-    return reports.map(toAuditReportSummary);
+    return reports.map(
+      toAuditReportSummary,
+    );
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(
+    id: string,
+  ): Promise<boolean> {
     try {
       await prisma.auditReport.delete({
         where: {
