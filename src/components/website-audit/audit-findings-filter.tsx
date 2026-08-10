@@ -12,7 +12,7 @@ import {
   InfoPanel,
   StatBadge,
 } from "@/components/website-audit/report-ui";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { getReportConfig } from "@/lib/website-audit/report-config";
 import type {
   AuditCategory,
@@ -118,58 +118,76 @@ const IMPACT_PRIORITY = {
 function sortFindings(
   findings: AuditFinding[],
 ): AuditFinding[] {
-  return [...findings].sort((a, b) => {
-    const statusDifference =
-      STATUS_PRIORITY[a.status] -
-      STATUS_PRIORITY[b.status];
+  return [...findings].sort(
+    (a, b) => {
+      const statusDifference =
+        STATUS_PRIORITY[a.status] -
+        STATUS_PRIORITY[b.status];
 
-    if (statusDifference !== 0) {
-      return statusDifference;
-    }
+      if (statusDifference !== 0) {
+        return statusDifference;
+      }
 
-    const priorityDifference =
-      FINDING_PRIORITY[a.priority] -
-      FINDING_PRIORITY[b.priority];
+      const priorityDifference =
+        FINDING_PRIORITY[a.priority] -
+        FINDING_PRIORITY[b.priority];
 
-    if (priorityDifference !== 0) {
-      return priorityDifference;
-    }
+      if (priorityDifference !== 0) {
+        return priorityDifference;
+      }
 
-    const impactDifference =
-      IMPACT_PRIORITY[a.businessImpact] -
-      IMPACT_PRIORITY[b.businessImpact];
+      const impactDifference =
+        IMPACT_PRIORITY[
+          a.businessImpact
+        ] -
+        IMPACT_PRIORITY[
+          b.businessImpact
+        ];
 
-    if (impactDifference !== 0) {
-      return impactDifference;
-    }
+      if (impactDifference !== 0) {
+        return impactDifference;
+      }
 
-    if (a.quickWin !== b.quickWin) {
-      return Number(b.quickWin) -
-        Number(a.quickWin);
-    }
+      if (
+        a.quickWin !== b.quickWin
+      ) {
+        return (
+          Number(b.quickWin) -
+          Number(a.quickWin)
+        );
+      }
 
-    return (
-      b.scoreImpact -
-      a.scoreImpact
-    );
-  });
+      return (
+        b.scoreImpact -
+        a.scoreImpact
+      );
+    },
+  );
 }
 
 export function AuditFindingsFilter({
   findings,
   mode = "public",
 }: AuditFindingsFilterProps) {
-  const config =
-    getReportConfig(mode);
+  const config = getReportConfig(
+    mode,
+  );
 
-  const [statusFilter, setStatusFilter] =
-    useState<StatusFilter>("all");
+  const [
+    statusFilter,
+    setStatusFilter,
+  ] =
+    useState<StatusFilter>(
+      "all",
+    );
 
   const [
     categoryFilter,
     setCategoryFilter,
   ] =
-    useState<CategoryFilter>("all");
+    useState<CategoryFilter>(
+      "all",
+    );
 
   const filteredFindings =
     useMemo(() => {
@@ -177,7 +195,8 @@ export function AuditFindingsFilter({
         findings.filter(
           (finding) => {
             const matchesStatus =
-              statusFilter === "all" ||
+              statusFilter ===
+                "all" ||
               (statusFilter ===
                 "critical" &&
                 finding.status !==
@@ -226,76 +245,58 @@ export function AuditFindingsFilter({
       config.maximumFindings,
     );
 
-  const lockedCount = Math.max(
-    filteredFindings.length -
-      visibleFindings.length,
-    0,
-  );
+  const lockedCount =
+    Math.max(
+      filteredFindings.length -
+        visibleFindings.length,
+      0,
+    );
 
   return (
-    <section
+    <div
       id="audit-findings"
-      aria-labelledby="findings-heading"
       className="space-y-6"
     >
-      <div>
-        <div className="flex items-center gap-2 text-sm font-medium text-primary">
-          <Search
-            aria-hidden="true"
-            className="size-4"
-          />
+      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+        <div className="flex flex-col gap-4 border-b border-border bg-slate-50/60 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
+              <SlidersHorizontal
+                aria-hidden="true"
+                className="size-4"
+              />
 
-          Detailed analysis
-        </div>
+              Filter Findings
+            </div>
 
-        <h2
-          id="findings-heading"
-          className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl"
-        >
-          Audit findings
-        </h2>
-
-        <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
-          Explore the issues detected
-          during the audit. Higher-priority
-          findings appear first so you can
-          focus on the areas with the
-          greatest potential impact.
-        </p>
-      </div>
-
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <SlidersHorizontal
-              aria-hidden="true"
-              className="size-4 text-primary"
-            />
-
-            Filter findings
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Narrow the report by issue type or audit category.
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
             <StatBadge
               label={`${visibleFindings.length} visible`}
-              tone="default"
+            />
+
+            <StatBadge
+              label={`${filteredFindings.length} matching`}
+              tone="primary"
             />
 
             {lockedCount > 0 ? (
               <StatBadge
-                label={`${lockedCount} locked`}
-                tone="primary"
+                label={`${lockedCount} additional`}
+                tone="warning"
               />
             ) : null}
           </div>
         </div>
 
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Issue type
-          </p>
-
-          <div className="flex flex-wrap gap-2">
+        <div className="space-y-6 p-5 sm:p-6">
+          <FilterGroup
+            label="Issue Type"
+          >
             {STATUS_FILTERS.map(
               (filter) => (
                 <Button
@@ -318,15 +319,11 @@ export function AuditFindingsFilter({
                 </Button>
               ),
             )}
-          </div>
-        </div>
+          </FilterGroup>
 
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Category
-          </p>
-
-          <div className="flex flex-wrap gap-2">
+          <FilterGroup
+            label="Category"
+          >
             {CATEGORY_FILTERS.map(
               (filter) => (
                 <Button
@@ -336,8 +333,8 @@ export function AuditFindingsFilter({
                   variant={
                     categoryFilter ===
                     filter.value
-                      ? "secondary"
-                      : "ghost"
+                      ? "default"
+                      : "outline"
                   }
                   onClick={() =>
                     setCategoryFilter(
@@ -349,29 +346,35 @@ export function AuditFindingsFilter({
                 </Button>
               ),
             )}
-          </div>
-        </div>
+          </FilterGroup>
 
-        <div className="border-t border-border pt-4">
-          <p className="text-xs text-muted-foreground">
-            Showing{" "}
-            {visibleFindings.length} of{" "}
-            {filteredFindings.length} matching{" "}
-            {filteredFindings.length === 1
-              ? "finding"
-              : "findings"}
-          </p>
+          <div className="border-t border-border pt-4">
+            <p className="text-xs leading-5 text-muted">
+              Showing{" "}
+              {visibleFindings.length} of{" "}
+              {filteredFindings.length} matching{" "}
+              {filteredFindings.length ===
+              1
+                ? "finding"
+                : "findings"}
+              .
+            </p>
+          </div>
         </div>
       </div>
 
-      {visibleFindings.length > 0 ? (
-        <div className="space-y-4">
+      {visibleFindings.length >
+      0 ? (
+        <div className="space-y-5">
           {visibleFindings.map(
-            (finding) => (
+            (finding, index) => (
               <FindingCard
                 key={finding.id}
                 finding={finding}
                 mode={mode}
+                number={
+                  index + 1
+                }
               />
             ),
           )}
@@ -379,9 +382,8 @@ export function AuditFindingsFilter({
       ) : (
         <InfoPanel
           icon={Search}
-          title="No findings match these filters."
+          title="No findings match these filters"
           description="Try selecting a different issue type or audit category."
-          tone="default"
         />
       )}
 
@@ -390,13 +392,35 @@ export function AuditFindingsFilter({
           icon={LockKeyhole}
           title={`${lockedCount} additional ${
             lockedCount === 1
-              ? "finding is"
-              : "findings are"
-          } available in the full strategy review.`}
-          description="The full report includes the complete findings list, detailed recommendations, estimated implementation effort, priority guidance, and deeper business-impact analysis."
+              ? "finding"
+              : "findings"
+          } available`}
+          description="The full strategy review includes the complete findings list, detailed recommendations, estimated implementation effort, priority guidance, and deeper business-impact analysis."
           tone="primary"
         />
       ) : null}
-    </section>
+    </div>
+  );
+}
+
+interface FilterGroupProps {
+  label: string;
+  children: React.ReactNode;
+}
+
+function FilterGroup({
+  label,
+  children,
+}: FilterGroupProps) {
+  return (
+    <div>
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+        {label}
+      </p>
+
+      <div className="flex flex-wrap gap-2">
+        {children}
+      </div>
+    </div>
   );
 }

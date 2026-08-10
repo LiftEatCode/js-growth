@@ -6,15 +6,19 @@ import {
 } from "react";
 import {
   CheckCircle2,
+  FileDown,
   FileText,
   LoaderCircle,
   LockKeyhole,
   Mail,
+  ShieldCheck,
 } from "lucide-react";
 
 import { captureAuditLead } from "@/app/report/[id]/actions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+  Button,
+  Input,
+} from "@/components/ui";
 
 interface AuditLeadCaptureProps {
   reportId: string;
@@ -25,17 +29,25 @@ export function AuditLeadCapture({
   reportId,
   hostname,
 }: AuditLeadCaptureProps) {
-  const [isPending, startTransition] =
-    useTransition();
+  const [
+    isPending,
+    startTransition,
+  ] = useTransition();
 
   const [error, setError] =
-    useState<string | null>(null);
+    useState<string | null>(
+      null,
+    );
 
-  const [submitted, setSubmitted] =
-    useState(false);
+  const [
+    submitted,
+    setSubmitted,
+  ] = useState(false);
 
-  const [emailSent, setEmailSent] =
-    useState(false);
+  const [
+    emailSent,
+    setEmailSent,
+  ] = useState(false);
 
   function handleSubmit(
     formData: FormData,
@@ -59,7 +71,8 @@ export function AuditLeadCapture({
       }
 
       setEmailSent(
-        result.emailSent ?? false,
+        result.emailSent ??
+          false,
       );
 
       setSubmitted(true);
@@ -68,66 +81,77 @@ export function AuditLeadCapture({
 
   if (submitted) {
     return (
-      <section className="rounded-3xl border border-emerald-500/20 bg-emerald-500/5 p-6 shadow-sm sm:p-8">
-        <div className="flex items-start gap-4">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
-            <CheckCircle2
-              aria-hidden="true"
-              className="size-5"
-            />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
-              Report request received
-            </p>
-
-            <h2 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-              {emailSent
-                ? "Your professional report was emailed."
-                : "Your professional report is ready."}
-            </h2>
-
-            <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-              {emailSent ? (
-                <>
-                  We emailed your professional report for{" "}
-                  <span className="font-medium text-foreground">
-                    {hostname}
-                  </span>
-                  . You can also download a copy below.
-                </>
-              ) : (
-                <>
-                  Your request for{" "}
-                  <span className="font-medium text-foreground">
-                    {hostname}
-                  </span>{" "}
-                  was saved. The email could not be delivered,
-                  but you can download the report below.
-                </>
-              )}
-            </p>
-
-            <Button
-              className="mt-5"
-              nativeButton={false}
-              render={
-                <a
-                  href={`/report/${reportId}/pdf`}
-                  target="_blank"
-                  rel="noreferrer"
-                />
-              }
-            >
-              <FileText
+      <section className="overflow-hidden rounded-[1.75rem] border border-emerald-200 bg-white shadow-sm">
+        <div className="border-b border-emerald-200 bg-emerald-50/70 p-6 sm:p-8">
+          <div className="flex items-start gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white text-emerald-600 shadow-sm">
+              <CheckCircle2
                 aria-hidden="true"
-                className="size-4"
+                className="size-6"
               />
+            </span>
 
-              Download professional PDF
-            </Button>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                Report Ready
+              </p>
+
+              <h2 className="mt-2 font-heading text-2xl font-semibold tracking-tight text-brand sm:text-3xl">
+                {emailSent
+                  ? "Your professional report was emailed."
+                  : "Your professional report is ready."}
+              </h2>
+
+              <p className="mt-3 max-w-2xl leading-7 text-muted">
+                {emailSent ? (
+                  <>
+                    We sent the
+                    professional website
+                    report for{" "}
+                    <span className="font-semibold text-brand">
+                      {hostname}
+                    </span>{" "}
+                    to the email address
+                    you provided. You can
+                    also download it now.
+                  </>
+                ) : (
+                  <>
+                    Your request for{" "}
+                    <span className="font-semibold text-brand">
+                      {hostname}
+                    </span>{" "}
+                    was saved. Email
+                    delivery was not
+                    completed, but your
+                    report is available
+                    below.
+                  </>
+                )}
+              </p>
+            </div>
           </div>
+        </div>
+
+        <div className="p-6 sm:p-8">
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={
+              <a
+                href={`/report/${reportId}/pdf`}
+                target="_blank"
+                rel="noreferrer"
+              />
+            }
+          >
+            <FileDown
+              aria-hidden="true"
+              className="size-4"
+            />
+
+            Download Professional PDF
+          </Button>
         </div>
       </section>
     );
@@ -136,216 +160,284 @@ export function AuditLeadCapture({
   return (
     <section
       aria-labelledby="lead-capture-heading"
-      className="relative overflow-hidden rounded-3xl border border-primary/20 bg-primary/5 p-6 shadow-sm sm:p-8"
+      className="relative overflow-hidden rounded-[2rem] border border-slate-800 bg-brand text-white shadow-soft"
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--primary)_0,transparent_35%)] opacity-[0.05]"
+        className="absolute -right-28 -top-32 size-[28rem] rounded-full bg-brand-blue/25 blur-3xl"
       />
 
-      <div className="relative grid gap-8 lg:grid-cols-[1fr_420px] lg:items-start">
-        <div>
-          <div className="flex items-center gap-2 text-sm font-medium text-primary">
+      <div
+        aria-hidden="true"
+        className="absolute -bottom-36 -left-24 size-[26rem] rounded-full bg-brand-cyan/10 blur-3xl"
+      />
+
+      <div className="relative grid lg:grid-cols-[1fr_430px]">
+        <div className="p-6 sm:p-8 lg:p-10">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300">
             <FileText
               aria-hidden="true"
-              className="size-4"
+              className="size-3.5"
             />
 
-            Professional growth report
+            Professional Growth Report
           </div>
 
           <h2
             id="lead-capture-heading"
-            className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl"
+            className="mt-5 max-w-2xl font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl"
           >
-            Get the full report for {hostname}
+            Keep the full report for{" "}
+            {hostname}.
           </h2>
 
-          <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-            Save your report and receive the professional
-            version built for strategy review, internal
-            discussion, and next-step planning.
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
+            Get a professional PDF you can save, share internally, and use when planning the next round of website improvements.
           </p>
 
-          <div className="mt-6 space-y-3 text-sm text-muted-foreground">
-            <div className="flex items-start gap-3">
-              <LockKeyhole
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-primary"
-              />
+          <div className="mt-8 space-y-4">
+            <ReportBenefit
+              icon={LockKeyhole}
+              title="Complete audit findings"
+              description="Keep the full website analysis and identified growth opportunities in one report."
+            />
 
-              <span>
-                Complete audit findings and growth
-                opportunities
-              </span>
-            </div>
+            <ReportBenefit
+              icon={FileText}
+              title="Strategy and roadmap"
+              description="Use the prioritized findings and improvement roadmap for planning and internal discussion."
+            />
 
-            <div className="flex items-start gap-3">
-              <LockKeyhole
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-primary"
-              />
+            <ReportBenefit
+              icon={Mail}
+              title="Delivered by email"
+              description="Receive the professional report directly in your inbox with a downloadable PDF copy."
+            />
+          </div>
 
-              <span>
-                Executive roadmap and business-impact
-                analysis
-              </span>
-            </div>
+          <div className="mt-8 flex items-center gap-2 border-t border-white/10 pt-6 text-xs text-slate-400">
+            <ShieldCheck
+              aria-hidden="true"
+              className="size-4 text-cyan-300"
+            />
 
-            <div className="flex items-start gap-3">
-              <Mail
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-primary"
-              />
-
-              <span>
-                Professional PDF delivered by email
-              </span>
-            </div>
+            Your information is used to deliver the requested report and follow up about your website strategy.
           </div>
         </div>
 
-        <form
-          action={handleSubmit}
-          className="rounded-2xl border border-border bg-background p-5 shadow-sm"
-        >
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label
-                htmlFor="audit-lead-first-name"
-                className="text-sm font-medium text-foreground"
-              >
-                First name
-              </label>
-
-              <Input
-                id="audit-lead-first-name"
-                name="firstName"
-                autoComplete="given-name"
-                className="mt-2"
-                required
-                disabled={isPending}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="audit-lead-last-name"
-                className="text-sm font-medium text-foreground"
-              >
-                Last name
-              </label>
-
-              <Input
-                id="audit-lead-last-name"
-                name="lastName"
-                autoComplete="family-name"
-                className="mt-2"
-                required
-                disabled={isPending}
-              />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <label
-              htmlFor="audit-lead-email"
-              className="text-sm font-medium text-foreground"
-            >
-              Email
-            </label>
-
-            <Input
-              id="audit-lead-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              className="mt-2"
-              required
-              disabled={isPending}
-            />
-          </div>
-
-          <div className="mt-4">
-            <label
-              htmlFor="audit-lead-company"
-              className="text-sm font-medium text-foreground"
-            >
-              Company
-            </label>
-
-            <Input
-              id="audit-lead-company"
-              name="company"
-              autoComplete="organization"
-              className="mt-2"
-              disabled={isPending}
-            />
-          </div>
-
-          <div className="mt-4">
-            <label
-              htmlFor="audit-lead-phone"
-              className="text-sm font-medium text-foreground"
-            >
-              Phone{" "}
-              <span className="font-normal text-muted-foreground">
-                (optional)
-              </span>
-            </label>
-
-            <Input
-              id="audit-lead-phone"
-              name="phone"
-              type="tel"
-              autoComplete="tel"
-              className="mt-2"
-              disabled={isPending}
-            />
-          </div>
-
-          {error ? (
-            <p
-              role="alert"
-              className="mt-4 text-sm text-destructive"
-            >
-              {error}
-            </p>
-          ) : null}
-
-          <Button
-            type="submit"
-            className="mt-5 w-full"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <>
-                <LoaderCircle
-                  aria-hidden="true"
-                  className="size-4 animate-spin"
-                />
-
-                Preparing your report
-              </>
-            ) : (
-              <>
-                <FileText
-                  aria-hidden="true"
-                  className="size-4"
-                />
-
-                Send my professional report
-              </>
-            )}
-          </Button>
-
-          <p className="mt-3 text-xs leading-5 text-muted-foreground">
-            We&apos;ll use this information to deliver the
-            requested report and follow up about your website
-            strategy. We do not sell your information.
+        <div className="border-t border-white/10 bg-white/[0.055] p-6 backdrop-blur-xl sm:p-8 lg:border-l lg:border-t-0">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300">
+            Send My Report
           </p>
-        </form>
+
+          <h3 className="mt-2 font-heading text-xl font-semibold text-white">
+            Where should we send it?
+          </h3>
+
+          <form
+            action={handleSubmit}
+            className="mt-6"
+          >
+            <div className="grid gap-4 sm:grid-cols-2">
+              <LeadField
+                id="audit-lead-first-name"
+                label="First name"
+              >
+                <Input
+                  id="audit-lead-first-name"
+                  name="firstName"
+                  autoComplete="given-name"
+                  required
+                  disabled={
+                    isPending
+                  }
+                  className="border-white/15 bg-white text-brand"
+                />
+              </LeadField>
+
+              <LeadField
+                id="audit-lead-last-name"
+                label="Last name"
+              >
+                <Input
+                  id="audit-lead-last-name"
+                  name="lastName"
+                  autoComplete="family-name"
+                  required
+                  disabled={
+                    isPending
+                  }
+                  className="border-white/15 bg-white text-brand"
+                />
+              </LeadField>
+            </div>
+
+            <div className="mt-4">
+              <LeadField
+                id="audit-lead-email"
+                label="Email"
+              >
+                <Input
+                  id="audit-lead-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  disabled={
+                    isPending
+                  }
+                  className="border-white/15 bg-white text-brand"
+                />
+              </LeadField>
+            </div>
+
+            <div className="mt-4">
+              <LeadField
+                id="audit-lead-company"
+                label="Company"
+                optional
+              >
+                <Input
+                  id="audit-lead-company"
+                  name="company"
+                  autoComplete="organization"
+                  disabled={
+                    isPending
+                  }
+                  className="border-white/15 bg-white text-brand"
+                />
+              </LeadField>
+            </div>
+
+            <div className="mt-4">
+              <LeadField
+                id="audit-lead-phone"
+                label="Phone"
+                optional
+              >
+                <Input
+                  id="audit-lead-phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  disabled={
+                    isPending
+                  }
+                  className="border-white/15 bg-white text-brand"
+                />
+              </LeadField>
+            </div>
+
+            {error ? (
+              <div
+                role="alert"
+                className="mt-4 rounded-xl border border-red-300/20 bg-red-300/10 p-3 text-sm text-red-200"
+              >
+                {error}
+              </div>
+            ) : null}
+
+            <Button
+              type="submit"
+              size="lg"
+              className="mt-6 w-full"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <>
+                  <LoaderCircle
+                    aria-hidden="true"
+                    className="size-4 animate-spin"
+                  />
+
+                  Preparing Report…
+                </>
+              ) : (
+                <>
+                  <Mail
+                    aria-hidden="true"
+                    className="size-4"
+                  />
+
+                  Email My Professional Report
+                </>
+              )}
+            </Button>
+
+            <p className="mt-4 text-xs leading-5 text-slate-400">
+              We do not sell your contact information.
+            </p>
+          </form>
+        </div>
       </div>
     </section>
+  );
+}
+
+interface ReportBenefitProps {
+  icon: typeof FileText;
+  title: string;
+  description: string;
+}
+
+function ReportBenefit({
+  icon: Icon,
+  title,
+  description,
+}: ReportBenefitProps) {
+  return (
+    <div className="flex items-start gap-4">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.07] text-cyan-300">
+        <Icon
+          aria-hidden="true"
+          className="size-4"
+        />
+      </span>
+
+      <div>
+        <p className="font-heading font-semibold text-white">
+          {title}
+        </p>
+
+        <p className="mt-1 text-sm leading-6 text-slate-400">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+interface LeadFieldProps {
+  id: string;
+  label: string;
+  optional?: boolean;
+  children: React.ReactNode;
+}
+
+function LeadField({
+  id,
+  label,
+  optional = false,
+  children,
+}: LeadFieldProps) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="text-sm font-medium text-slate-200"
+      >
+        {label}
+
+        {optional ? (
+          <span className="ml-1 font-normal text-slate-400">
+            (optional)
+          </span>
+        ) : null}
+      </label>
+
+      <div className="mt-2">
+        {children}
+      </div>
+    </div>
   );
 }

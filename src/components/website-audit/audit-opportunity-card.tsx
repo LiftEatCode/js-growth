@@ -199,9 +199,9 @@ export function AuditOpportunityCard({
 
   return (
     <ReportSection
-      eyebrow="Modeled business potential"
+      eyebrow="Growth Potential"
       title="Business opportunity"
-      description="The audit identified opportunities that may improve search visibility, lead generation, and overall website performance."
+      description="The audit identified areas where improvements may strengthen search visibility, customer experience, lead generation, and overall website performance."
       icon={TrendingUp}
     >
       <div className="flex flex-wrap gap-2">
@@ -221,7 +221,6 @@ export function AuditOpportunityCard({
               .toUpperCase()}${opportunity.confidence.slice(
               1,
             )} confidence`}
-            tone="default"
           />
         ) : null}
       </div>
@@ -237,7 +236,7 @@ export function AuditOpportunityCard({
           icon={BarChart3}
           label="Opportunity score"
           value={`${opportunity.score}/100`}
-          description="Based on the size and severity of detected growth gaps."
+          description="Modeled from the size and severity of detected growth gaps."
         />
 
         <MetricCard
@@ -268,12 +267,12 @@ export function AuditOpportunityCard({
         ) : null}
       </div>
 
-      <div className="mt-4">
+      <div className="mt-5">
         {isPublic ? (
           <InfoPanel
             icon={LockKeyhole}
-            title="Full business-impact model"
-            description="The full strategy review includes modeled lead potential, revenue opportunity, implementation effort, confidence, and the assumptions behind the estimates."
+            title="Additional business modeling available"
+            description="The full strategy review includes modeled lead potential, revenue opportunity, implementation effort, confidence, and the assumptions behind those estimates."
             tone="primary"
           />
         ) : (
@@ -284,22 +283,22 @@ export function AuditOpportunityCard({
       </div>
 
       {visibleInsights.length > 0 ? (
-        <div className="mt-8">
-          <p className="text-sm font-medium text-primary">
-            Strategic insights
+        <div className="mt-9 border-t border-border pt-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
+            Strategic Insights
           </p>
 
-          <h3 className="mt-1 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-            Executive growth opportunities
+          <h3 className="mt-2 font-heading text-2xl font-semibold tracking-tight text-brand">
+            Where the strongest growth opportunities appear.
           </h3>
 
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-            These opportunities were
-            generated from the actual issues
-            detected during the audit.
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-muted">
+            These opportunities are generated from the actual
+            issues detected during the audit rather than a
+            generic website checklist.
           </p>
 
-          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+          <div className="mt-6 grid gap-5 lg:grid-cols-2">
             {visibleInsights.map(
               (insight) => (
                 <OpportunityInsightCard
@@ -313,15 +312,15 @@ export function AuditOpportunityCard({
 
           {isPublic &&
           lockedInsightsCount > 0 ? (
-            <div className="mt-4">
+            <div className="mt-5">
               <InfoPanel
                 icon={LockKeyhole}
                 title={`${lockedInsightsCount} additional growth ${
                   lockedInsightsCount === 1
-                    ? "opportunity is"
-                    : "opportunities are"
-                } included in the full strategy review.`}
-                description="The complete review connects each opportunity to business impact, implementation priority, and recommended next steps."
+                    ? "opportunity"
+                    : "opportunities"
+                } available`}
+                description="The complete strategy review connects every opportunity to business impact, implementation priority, and recommended next steps."
                 tone="primary"
               />
             </div>
@@ -330,9 +329,9 @@ export function AuditOpportunityCard({
       ) : (
         <div className="mt-8">
           <InfoPanel
-            title="No major growth gaps were identified."
+            title="No major growth gaps were identified"
             description="The current audit did not identify enough actionable issues to generate specific growth opportunities."
-            tone="default"
+            tone="success"
           />
         </div>
       )}
@@ -350,23 +349,22 @@ export function AuditOpportunityCard({
 
       {isConsultation ||
       isClient ? (
-        <details className="mt-8 rounded-2xl border border-border bg-background">
-          <summary className="cursor-pointer px-5 py-4 text-sm font-medium text-foreground">
-            View estimate methodology
-            and assumptions
+        <details className="mt-8 overflow-hidden rounded-2xl border border-border bg-slate-50/60">
+          <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-brand">
+            View estimate methodology and assumptions
           </summary>
 
-          <div className="border-t border-border px-5 py-4">
-            <ul className="space-y-2 text-sm leading-6 text-muted-foreground">
+          <div className="border-t border-border bg-white px-5 py-4">
+            <ul className="space-y-2 text-sm leading-6 text-muted">
               {opportunity.assumptions.map(
                 (assumption) => (
                   <li
                     key={assumption}
-                    className="flex gap-2"
+                    className="flex gap-3"
                   >
                     <span
                       aria-hidden="true"
-                      className="text-primary"
+                      className="font-bold text-brand-blue"
                     >
                       •
                     </span>
@@ -391,20 +389,19 @@ function RevenueOpportunity({
   opportunity: AuditOpportunity;
 }) {
   return (
-    <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5 sm:p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="rounded-2xl border border-brand-blue/15 bg-brand-blue/[0.045] p-5 sm:p-6">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-sm font-medium text-primary">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-blue">
             <DollarSign
               aria-hidden="true"
               className="size-4"
             />
 
-            Modeled monthly revenue
-            opportunity
+            Modeled monthly revenue opportunity
           </div>
 
-          <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">
+          <p className="mt-3 font-heading text-3xl font-bold tracking-tight text-brand">
             {formatCurrency(
               opportunity
                 .monthlyRevenueOpportunity
@@ -419,12 +416,10 @@ function RevenueOpportunity({
           </p>
         </div>
 
-        <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-          This is a directional model rather
-          than a guarantee. Actual results
-          depend on traffic, conversion rate,
-          customer value, competition, and
-          implementation.
+        <p className="max-w-xl text-sm leading-6 text-muted">
+          This is a directional model, not a guarantee. Actual
+          results depend on traffic, conversion rate, customer
+          value, competition, and implementation.
         </p>
       </div>
     </div>
@@ -444,10 +439,10 @@ function OpportunityInsightCard({
     mode === "public";
 
   return (
-    <article className="rounded-2xl border border-border bg-background p-5">
+    <article className="rounded-2xl border border-border bg-slate-50/60 p-5 transition-shadow hover:shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex min-w-0 gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="flex min-w-0 gap-4">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-brand-blue/10 bg-white text-brand-blue shadow-sm">
             <InsightIcon
               icon={insight.icon}
               className="size-5"
@@ -455,11 +450,11 @@ function OpportunityInsightCard({
           </div>
 
           <div className="min-w-0">
-            <h4 className="font-semibold text-foreground">
+            <h4 className="font-heading text-lg font-semibold text-brand">
               {insight.title}
             </h4>
 
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            <p className="mt-2 text-sm leading-6 text-muted">
               {insight.description}
             </p>
           </div>
@@ -478,21 +473,21 @@ function OpportunityInsightCard({
       </div>
 
       {!isPublic ? (
-        <div className="mt-4 rounded-xl border border-border/70 bg-muted/30 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Business value
+        <div className="mt-5 rounded-xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+            Why it matters
           </p>
 
-          <p className="mt-2 text-sm leading-6 text-foreground">
+          <p className="mt-2 text-sm leading-6 text-brand">
             {insight.businessValue}
           </p>
         </div>
       ) : (
-        <div className="mt-4">
+        <div className="mt-5">
           <InfoPanel
             icon={LockKeyhole}
-            title="Business-impact analysis locked"
-            description="Detailed business value and prioritization are included in the full strategy review."
+            title="Why this matters"
+            description="Detailed business-value analysis and prioritization are included in the full strategy review."
             tone="primary"
           />
         </div>

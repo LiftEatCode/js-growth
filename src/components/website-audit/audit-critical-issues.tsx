@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  ArrowRight,
   Clock3,
   Gauge,
   LockKeyhole,
@@ -34,8 +35,12 @@ function formatMinutes(
     return `${minutes} min`;
   }
 
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+  const hours = Math.floor(
+    minutes / 60,
+  );
+
+  const remainingMinutes =
+    minutes % 60;
 
   if (remainingMinutes === 0) {
     return `${hours} hr`;
@@ -102,8 +107,9 @@ export function AuditCriticalIssues({
   findings,
   mode = "public",
 }: AuditCriticalIssuesProps) {
-  const config =
-    getReportConfig(mode);
+  const config = getReportConfig(
+    mode,
+  );
 
   const criticalIssues = findings
     .filter(
@@ -136,11 +142,11 @@ export function AuditCriticalIssues({
 
   return (
     <ReportSection
-      eyebrow="Immediate attention"
+      eyebrow="Immediate Attention"
       title="Highest-priority issues"
-      description="These findings represent the most important issues detected during the audit and should generally be addressed before lower-priority improvements."
+      description="These are the problems most likely to affect visibility, usability, lead generation, or the overall effectiveness of the website."
       icon={AlertTriangle}
-      className="border-destructive/20 bg-destructive/5"
+      className="border-red-200"
     >
       <div className="flex flex-wrap items-center gap-2">
         <StatBadge
@@ -154,19 +160,20 @@ export function AuditCriticalIssues({
 
         {lockedCount > 0 ? (
           <StatBadge
-            label={`${lockedCount} locked`}
+            label={`${lockedCount} additional`}
             tone="primary"
           />
         ) : null}
       </div>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-5">
         {visibleIssues.map(
-          (finding) => (
+          (finding, index) => (
             <CriticalIssueCard
               key={finding.id}
               finding={finding}
               mode={mode}
+              number={index + 1}
             />
           ),
         )}
@@ -178,10 +185,10 @@ export function AuditCriticalIssues({
             icon={LockKeyhole}
             title={`${lockedCount} additional priority ${
               lockedCount === 1
-                ? "issue is"
-                : "issues are"
-            } included in the full strategy review.`}
-            description="The complete review includes all priority issues, detailed recommendations, implementation effort, and the recommended order of work."
+                ? "issue"
+                : "issues"
+            } included in the full strategy review`}
+            description="The complete review includes all priority issues, detailed recommendations, estimated implementation effort, and the recommended order of work."
             tone="primary"
           />
         </div>
@@ -193,26 +200,38 @@ export function AuditCriticalIssues({
 interface CriticalIssueCardProps {
   finding: AuditFinding;
   mode: ReportMode;
+  number: number;
 }
 
 function CriticalIssueCard({
   finding,
   mode,
+  number,
 }: CriticalIssueCardProps) {
-  const config =
-    getReportConfig(mode);
+  const config = getReportConfig(
+    mode,
+  );
 
   return (
-    <article className="rounded-2xl border border-border bg-background p-5">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div className="min-w-0">
-          <h3 className="font-semibold text-foreground">
-            {finding.title}
-          </h3>
+    <article className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      <div className="flex flex-col gap-5 border-b border-border bg-slate-50/50 p-5 sm:flex-row sm:items-start sm:justify-between sm:p-6">
+        <div className="flex min-w-0 gap-4">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-red-200 bg-red-50 font-heading text-sm font-semibold text-red-600">
+            {String(number).padStart(
+              2,
+              "0",
+            )}
+          </span>
 
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {finding.description}
-          </p>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-red-600">
+              Priority issue
+            </p>
+
+            <h3 className="mt-2 font-heading text-xl font-semibold tracking-tight text-brand">
+              {finding.title}
+            </h3>
+          </div>
         </div>
 
         {config.showBusinessImpact ? (
@@ -227,70 +246,91 @@ function CriticalIssueCard({
         ) : null}
       </div>
 
-      {mode === "public" ? (
-        <div className="mt-4">
-          <InfoPanel
-            icon={LockKeyhole}
-            title="Detailed fix guidance locked"
-            description="Estimated effort and implementation recommendations are included in the full strategy review."
-            tone="primary"
-          />
-        </div>
-      ) : (
-        <>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {config.showBusinessImpact ? (
-              <MetricCard
-                icon={TrendingUp}
-                label="Business impact"
-                value={getImpactLabel(
-                  finding.businessImpact,
-                )}
-              />
-            ) : null}
+      <div className="p-5 sm:p-6">
+        <div className="grid gap-5 lg:grid-cols-[1fr_auto]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+              What we found
+            </p>
 
-            <MetricCard
-              icon={Gauge}
-              label="Score impact"
-              value={`${finding.scoreImpact} pts`}
-            />
-
-            {config.showEstimatedTime ? (
-              <MetricCard
-                icon={Clock3}
-                label="Estimated effort"
-                value={formatMinutes(
-                  finding.estimatedFixMinutes,
-                )}
-              />
-            ) : null}
+            <p className="mt-2 leading-7 text-muted">
+              {finding.description}
+            </p>
           </div>
 
-          {config.showRecommendations &&
-          finding.recommendation ? (
-            <div className="mt-4">
-              <InfoPanel
-                title="Recommendation"
-                description={
-                  finding.recommendation
-                }
-                tone="default"
-              />
-            </div>
-          ) : null}
+          <div className="flex items-center lg:pt-5">
+            <ArrowRight
+              aria-hidden="true"
+              className="hidden size-5 text-slate-300 lg:block"
+            />
+          </div>
+        </div>
 
-          {config.showImplementation ? (
-            <div className="mt-4">
-              <InfoPanel
-                icon={TrendingUp}
-                title="Client implementation guidance"
-                description="AI-generated technical implementation guidance will appear here once the client AI layer is enabled."
-                tone="primary"
+        {mode === "public" ? (
+          <div className="mt-5">
+            <InfoPanel
+              icon={LockKeyhole}
+              title="How to fix it"
+              description="Detailed implementation recommendations and estimated effort are included in the full strategy review."
+              tone="primary"
+            />
+          </div>
+        ) : (
+          <>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {config.showBusinessImpact ? (
+                <MetricCard
+                  icon={TrendingUp}
+                  label="Business impact"
+                  value={getImpactLabel(
+                    finding.businessImpact,
+                  )}
+                />
+              ) : null}
+
+              <MetricCard
+                icon={Gauge}
+                label="Score impact"
+                value={`${finding.scoreImpact} pts`}
               />
+
+              {config.showEstimatedTime ? (
+                <MetricCard
+                  icon={Clock3}
+                  label="Estimated effort"
+                  value={formatMinutes(
+                    finding.estimatedFixMinutes,
+                  )}
+                />
+              ) : null}
             </div>
-          ) : null}
-        </>
-      )}
+
+            {config.showRecommendations &&
+            finding.recommendation ? (
+              <div className="mt-5">
+                <InfoPanel
+                  title="Recommended action"
+                  description={
+                    finding.recommendation
+                  }
+                  tone="success"
+                />
+              </div>
+            ) : null}
+
+            {config.showImplementation ? (
+              <div className="mt-4">
+                <InfoPanel
+                  icon={TrendingUp}
+                  title="Implementation guidance"
+                  description="AI-generated technical implementation guidance will appear here once the client AI layer is enabled."
+                  tone="primary"
+                />
+              </div>
+            ) : null}
+          </>
+        )}
+      </div>
     </article>
   );
 }

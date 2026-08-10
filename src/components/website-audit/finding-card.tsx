@@ -11,7 +11,10 @@ import {
   Zap,
 } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
+import {
+  InfoPanel,
+  StatBadge,
+} from "@/components/website-audit/report-ui";
 import { getFindingVisibility } from "@/lib/website-audit/report-mode";
 import type {
   AuditCategory,
@@ -26,6 +29,7 @@ import type {
 interface FindingCardProps {
   finding: AuditFinding;
   mode?: ReportMode;
+  number?: number;
 }
 
 const CATEGORY_LABELS: Record<
@@ -54,57 +58,85 @@ function getStatusLabel(
   return "Failed";
 }
 
-function getStatusClasses(
+function getStatusStyles(
   status: AuditStatus,
 ): {
-  card: string;
+  border: string;
+  accent: string;
   icon: string;
-  badge: string;
+  badgeTone:
+    | "success"
+    | "warning"
+    | "danger";
 } {
   if (status === "pass") {
     return {
-      card: "border-emerald-500/20 bg-emerald-500/5",
-      icon:
-        "text-emerald-600 dark:text-emerald-400",
-      badge:
-        "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+      border:
+        "border-emerald-200",
+      accent:
+        "bg-emerald-50",
+      icon: "text-emerald-600",
+      badgeTone: "success",
     };
   }
 
   if (status === "warning") {
     return {
-      card: "border-amber-500/20 bg-amber-500/5",
-      icon:
-        "text-amber-600 dark:text-amber-400",
-      badge:
-        "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400",
+      border:
+        "border-amber-200",
+      accent:
+        "bg-amber-50",
+      icon: "text-amber-600",
+      badgeTone: "warning",
     };
   }
 
   return {
-    card: "border-destructive/20 bg-destructive/5",
-    icon: "text-destructive",
-    badge:
-      "border-destructive/30 bg-destructive/10 text-destructive",
+    border: "border-red-200",
+    accent: "bg-red-50",
+    icon: "text-red-600",
+    badgeTone: "danger",
   };
 }
 
-function getPriorityClasses(
+function getPriorityTone(
   priority: AuditPriority,
-): string {
+):
+  | "danger"
+  | "warning"
+  | "primary"
+  | "default" {
   if (priority === "critical") {
-    return "border-destructive/30 bg-destructive/10 text-destructive";
+    return "danger";
   }
 
   if (priority === "high") {
-    return "border-orange-500/30 bg-orange-500/10 text-orange-700 dark:text-orange-400";
+    return "primary";
   }
 
   if (priority === "medium") {
-    return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400";
+    return "warning";
   }
 
-  return "border-border bg-muted text-muted-foreground";
+  return "default";
+}
+
+function getPriorityLabel(
+  priority: AuditPriority,
+): string {
+  if (priority === "critical") {
+    return "Critical priority";
+  }
+
+  if (priority === "high") {
+    return "High priority";
+  }
+
+  if (priority === "medium") {
+    return "Medium priority";
+  }
+
+  return "Low priority";
 }
 
 function getImpactLabel(
@@ -146,8 +178,12 @@ function formatMinutes(
     return `${minutes} min`;
   }
 
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+  const hours = Math.floor(
+    minutes / 60,
+  );
+
+  const remainingMinutes =
+    minutes % 60;
 
   if (remainingMinutes === 0) {
     return `${hours} hr`;
@@ -192,187 +228,217 @@ function StatusIcon({
 export function FindingCard({
   finding,
   mode = "public",
+  number,
 }: FindingCardProps) {
-  const classes =
-    getStatusClasses(
+  const styles =
+    getStatusStyles(
       finding.status,
     );
 
   const visibility =
-    getFindingVisibility(mode);
+    getFindingVisibility(
+      mode,
+    );
 
   const isActionable =
     finding.status !== "pass";
 
   return (
     <article
-      className={`rounded-2xl border p-5 shadow-sm ${classes.card}`}
+      className={`overflow-hidden rounded-2xl border bg-white shadow-sm ${styles.border}`}
     >
-      <div className="flex items-start gap-4">
-        <div className="mt-0.5 shrink-0">
-          <StatusIcon
-            status={finding.status}
-            className={`size-5 ${classes.icon}`}
-          />
-        </div>
-
-        <div className="min-w-0 flex-1 space-y-4">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div className="min-w-0">
-              <h3 className="text-base font-semibold text-foreground">
-                {finding.title}
-              </h3>
-
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                {finding.description}
-              </p>
+      <div
+        className={`border-b border-border/70 p-5 sm:p-6 ${styles.accent}`}
+      >
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex min-w-0 gap-4">
+            <div
+              className={`flex size-11 shrink-0 items-center justify-center rounded-xl border border-white/70 bg-white shadow-sm ${styles.icon}`}
+            >
+              <StatusIcon
+                status={
+                  finding.status
+                }
+                className="size-5"
+              />
             </div>
 
-            <div className="flex shrink-0 flex-wrap gap-2">
-              <Badge
-                variant="outline"
-                className={classes.badge}
-              >
-                {getStatusLabel(
-                  finding.status,
-                )}
-              </Badge>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                {typeof number ===
+                "number" ? (
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                    Finding{" "}
+                    {String(
+                      number,
+                    ).padStart(
+                      2,
+                      "0",
+                    )}
+                  </span>
+                ) : null}
 
-              <Badge variant="secondary">
-                {
-                  CATEGORY_LABELS[
-                    finding.category
-                  ]
-                }
-              </Badge>
+                <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                  {
+                    CATEGORY_LABELS[
+                      finding.category
+                    ]
+                  }
+                </span>
+              </div>
 
-              {visibility.showPriority &&
-              isActionable ? (
-                <Badge
-                  variant="outline"
-                  className={getPriorityClasses(
-                    finding.priority,
-                  )}
-                >
-                  {finding.priority}
-                </Badge>
-              ) : null}
-
-              {visibility.showQuickWin &&
-              finding.quickWin &&
-              isActionable ? (
-                <Badge
-                  variant="outline"
-                  className="border-primary/30 bg-primary/10 text-primary"
-                >
-                  <Zap
-                    aria-hidden="true"
-                    className="mr-1 size-3"
-                  />
-                  Quick win
-                </Badge>
-              ) : null}
+              <h3 className="mt-2 font-heading text-xl font-semibold tracking-tight text-brand">
+                {finding.title}
+              </h3>
             </div>
           </div>
 
-          {isActionable ? (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {visibility.showBusinessImpact ? (
-                <FindingMetric
-                  icon={Gauge}
-                  label="Business impact"
-                  value={getImpactLabel(
-                    finding.businessImpact,
-                  )}
-                />
-              ) : null}
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <StatBadge
+              label={getStatusLabel(
+                finding.status,
+              )}
+              tone={
+                styles.badgeTone
+              }
+            />
 
-              {visibility.showDifficulty ? (
-                <FindingMetric
-                  icon={Wrench}
-                  label="Difficulty"
-                  value={getDifficultyLabel(
-                    finding.difficulty,
-                  )}
-                />
-              ) : null}
-
-              {visibility.showEstimatedTime ? (
-                <FindingMetric
-                  icon={Clock3}
-                  label="Estimated time"
-                  value={formatMinutes(
-                    finding.estimatedFixMinutes,
-                  )}
-                />
-              ) : null}
-
-              <FindingMetric
-                icon={Sparkles}
-                label="Score impact"
-                value={`${finding.scoreImpact} pts`}
+            {visibility.showPriority &&
+            isActionable ? (
+              <StatBadge
+                label={getPriorityLabel(
+                  finding.priority,
+                )}
+                tone={getPriorityTone(
+                  finding.priority,
+                )}
               />
-            </div>
-          ) : null}
+            ) : null}
 
-          {finding.recommendation &&
-          visibility.showRecommendation ? (
-            <div className="flex items-start gap-3 rounded-xl border border-border/70 bg-background/80 p-4">
-              <Lightbulb
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-primary"
+            {visibility.showQuickWin &&
+            finding.quickWin &&
+            isActionable ? (
+              <StatBadge
+                label="Quick win"
+                tone="success"
               />
-
-              <div>
-                <p className="text-sm font-medium text-foreground">
-                  Recommendation
-                </p>
-
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  {finding.recommendation}
-                </p>
-              </div>
-            </div>
-          ) : null}
-
-          {isActionable &&
-          mode === "public" &&
-          !visibility.showRecommendation ? (
-            <div className="flex items-start gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
-              <LockKeyhole
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-primary"
-              />
-
-              <div>
-                <p className="text-sm font-medium text-foreground">
-                  Detailed recommendation locked
-                </p>
-
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  A detailed implementation recommendation
-                  is available as part of the full strategy
-                  review.
-                </p>
-              </div>
-            </div>
-          ) : null}
-
-          {visibility.showImplementation &&
-          isActionable ? (
-            <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-4">
-              <p className="text-sm font-medium text-foreground">
-                Client implementation guidance
-              </p>
-
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                AI-generated implementation instructions
-                will be displayed here once the client AI
-                layer is enabled.
-              </p>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
+      </div>
+
+      <div className="p-5 sm:p-6">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+            What we found
+          </p>
+
+          <p className="mt-2 leading-7 text-muted">
+            {finding.description}
+          </p>
+        </div>
+
+        {isActionable ? (
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {visibility.showBusinessImpact ? (
+              <FindingMetric
+                icon={Gauge}
+                label="Business impact"
+                value={getImpactLabel(
+                  finding.businessImpact,
+                )}
+              />
+            ) : null}
+
+            {visibility.showDifficulty ? (
+              <FindingMetric
+                icon={Wrench}
+                label="Difficulty"
+                value={getDifficultyLabel(
+                  finding.difficulty,
+                )}
+              />
+            ) : null}
+
+            {visibility.showEstimatedTime ? (
+              <FindingMetric
+                icon={Clock3}
+                label="Estimated time"
+                value={formatMinutes(
+                  finding.estimatedFixMinutes,
+                )}
+              />
+            ) : null}
+
+            <FindingMetric
+              icon={Sparkles}
+              label="Score impact"
+              value={`${finding.scoreImpact} pts`}
+            />
+          </div>
+        ) : (
+          <div className="mt-5">
+            <InfoPanel
+              icon={CheckCircle2}
+              title="This check passed"
+              description="No action is currently recommended for this specific audit signal."
+              tone="success"
+            />
+          </div>
+        )}
+
+        {finding.recommendation &&
+        visibility.showRecommendation ? (
+          <div className="mt-5">
+            <div className="rounded-2xl border border-brand-blue/10 bg-brand-blue/[0.04] p-5">
+              <div className="flex items-start gap-4">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-brand-blue/10 bg-white text-brand-blue">
+                  <Lightbulb
+                    aria-hidden="true"
+                    className="size-4"
+                  />
+                </span>
+
+                <div>
+                  <p className="font-heading font-semibold text-brand">
+                    Recommended action
+                  </p>
+
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    {
+                      finding.recommendation
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {isActionable &&
+        mode === "public" &&
+        !visibility.showRecommendation ? (
+          <div className="mt-5">
+            <InfoPanel
+              icon={LockKeyhole}
+              title="Detailed recommendation available"
+              description="The full strategy review includes the specific implementation recommendation, effort estimate, and priority guidance for this finding."
+              tone="primary"
+            />
+          </div>
+        ) : null}
+
+        {visibility.showImplementation &&
+        isActionable ? (
+          <div className="mt-5">
+            <InfoPanel
+              icon={Wrench}
+              title="Implementation guidance"
+              description="AI-generated implementation instructions will appear here once the client AI layer is enabled."
+              tone="primary"
+            />
+          </div>
+        ) : null}
       </div>
     </article>
   );
@@ -390,17 +456,17 @@ function FindingMetric({
   value,
 }: FindingMetricProps) {
   return (
-    <div className="rounded-xl border border-border/70 bg-background/70 p-3">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+    <div className="rounded-xl border border-border bg-slate-50/70 p-4">
+      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-muted">
         <Icon
           aria-hidden="true"
-          className="size-3.5 text-primary"
+          className="size-3.5 text-brand-blue"
         />
 
         {label}
       </div>
 
-      <p className="mt-1 text-sm font-semibold text-foreground">
+      <p className="mt-2 font-heading text-sm font-semibold text-brand">
         {value}
       </p>
     </div>

@@ -93,8 +93,9 @@ export function AuditRecommendedRoadmap({
   findings,
   mode = "public",
 }: AuditRecommendedRoadmapProps) {
-  const config =
-    getReportConfig(mode);
+  const config = getReportConfig(
+    mode,
+  );
 
   const roadmap =
     buildRoadmap(findings);
@@ -111,23 +112,27 @@ export function AuditRecommendedRoadmap({
     0,
   );
 
+  if (roadmap.length === 0) {
+    return null;
+  }
+
   return (
     <ReportSection
-      eyebrow="Implementation strategy"
-      title="Recommended roadmap"
-      description="The roadmap organizes detected issues into a practical sequence based on priority, business impact, and implementation effort."
+      eyebrow="Recommended Sequence"
+      title="Your improvement roadmap"
+      description="These phases organize the detected issues into a practical order based on urgency, business impact, and implementation effort."
       icon={Target}
     >
       {mode === "public" ? (
         <InfoPanel
           icon={LockKeyhole}
-          title="Free roadmap preview"
-          description="This report shows the recommended phases and a limited preview of the highest-value actions. Detailed recommendations and implementation guidance are included in the full strategy review."
+          title="Roadmap preview"
+          description="The free audit shows the strongest starting points. The full strategy review includes every action, detailed recommendations, implementation effort, and execution guidance."
           tone="primary"
         />
       ) : null}
 
-      <div className="mt-6 space-y-5">
+      <div className="mt-7 space-y-6">
         {visiblePhases.map(
           (phase, index) => {
             const visibleFindings =
@@ -146,18 +151,28 @@ export function AuditRecommendedRoadmap({
             return (
               <article
                 key={phase.id}
-                className="rounded-2xl border border-border bg-background p-5 sm:p-6"
+                className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
               >
-                <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <StatBadge
-                        label={`Step ${
-                          index + 1
-                        }`}
-                        tone="default"
-                      />
+                <div className="grid lg:grid-cols-[110px_1fr_auto]">
+                  <div className="flex items-center justify-center border-b border-border bg-brand px-5 py-6 text-white lg:border-b-0 lg:border-r lg:border-slate-800">
+                    <div className="text-center">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300">
+                        Phase
+                      </p>
 
+                      <p className="mt-1 font-heading text-3xl font-bold">
+                        {String(
+                          index + 1,
+                        ).padStart(
+                          2,
+                          "0",
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-5 sm:p-6">
+                    <div className="flex flex-wrap items-center gap-2">
                       <StatBadge
                         label={getPriorityLabel(
                           phase.priority,
@@ -174,31 +189,30 @@ export function AuditRecommendedRoadmap({
                             ? "action"
                             : "actions"
                         }`}
-                        tone="default"
                       />
                     </div>
 
-                    <h3 className="mt-4 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+                    <h3 className="mt-4 font-heading text-2xl font-semibold tracking-tight text-brand">
                       {phase.title}
                     </h3>
 
-                    <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                    <p className="mt-3 max-w-3xl text-sm leading-6 text-muted">
                       {phase.description}
                     </p>
                   </div>
 
                   {config.showEstimatedTime ? (
-                    <div className="shrink-0 rounded-xl border border-border bg-card p-4">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <div className="border-t border-border bg-slate-50/70 p-5 lg:border-l lg:border-t-0 lg:p-6">
+                      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
                         <CalendarClock
                           aria-hidden="true"
-                          className="size-3.5 text-primary"
+                          className="size-4 text-brand-blue"
                         />
 
                         Estimated effort
                       </div>
 
-                      <p className="mt-2 text-lg font-semibold text-foreground">
+                      <p className="mt-2 font-heading text-xl font-semibold text-brand">
                         {formatMinutes(
                           phase.estimatedFixMinutes,
                         )}
@@ -207,32 +221,34 @@ export function AuditRecommendedRoadmap({
                   ) : null}
                 </div>
 
-                <div className="mt-6 space-y-3">
-                  {visibleFindings.map(
-                    (finding) => (
-                      <RoadmapFinding
-                        key={finding.id}
-                        finding={finding}
-                        mode={mode}
-                      />
-                    ),
-                  )}
-                </div>
-
-                {lockedFindingCount > 0 ? (
-                  <div className="mt-4">
-                    <InfoPanel
-                      icon={LockKeyhole}
-                      title={`${lockedFindingCount} additional ${
-                        lockedFindingCount === 1
-                          ? "action is"
-                          : "actions are"
-                      } included in this phase.`}
-                      description="The full strategy review includes the complete action list, detailed recommendations, implementation effort, and execution guidance."
-                      tone="primary"
-                    />
+                <div className="border-t border-border bg-slate-50/40 p-5 sm:p-6">
+                  <div className="space-y-3">
+                    {visibleFindings.map(
+                      (finding) => (
+                        <RoadmapFinding
+                          key={finding.id}
+                          finding={finding}
+                          mode={mode}
+                        />
+                      ),
+                    )}
                   </div>
-                ) : null}
+
+                  {lockedFindingCount > 0 ? (
+                    <div className="mt-4">
+                      <InfoPanel
+                        icon={LockKeyhole}
+                        title={`${lockedFindingCount} additional ${
+                          lockedFindingCount === 1
+                            ? "action"
+                            : "actions"
+                        } in this phase`}
+                        description="The full strategy review includes the complete action list, detailed recommendations, estimated effort, and execution guidance."
+                        tone="primary"
+                      />
+                    </div>
+                  ) : null}
+                </div>
               </article>
             );
           },
@@ -245,10 +261,10 @@ export function AuditRecommendedRoadmap({
             icon={LockKeyhole}
             title={`${lockedPhaseCount} additional roadmap ${
               lockedPhaseCount === 1
-                ? "phase is"
-                : "phases are"
-            } included in the full strategy review.`}
-            description="The complete roadmap covers the full sequence of improvements needed to move from immediate fixes into long-term growth optimization."
+                ? "phase"
+                : "phases"
+            } available`}
+            description="The complete roadmap continues beyond the immediate fixes into broader optimization and long-term growth improvements."
             tone="primary"
           />
         </div>
@@ -266,20 +282,23 @@ function RoadmapFinding({
   finding,
   mode,
 }: RoadmapFindingProps) {
-  const config =
-    getReportConfig(mode);
+  const config = getReportConfig(
+    mode,
+  );
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
+    <div className="rounded-xl border border-border bg-white p-4">
       <div className="flex items-start gap-3">
-        <CheckCircle2
-          aria-hidden="true"
-          className="mt-0.5 size-4 shrink-0 text-primary"
-        />
+        <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-600">
+          <CheckCircle2
+            aria-hidden="true"
+            className="size-4"
+          />
+        </span>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="font-medium text-foreground">
+            <h4 className="font-heading font-semibold text-brand">
               {finding.title}
             </h4>
 
@@ -287,21 +306,21 @@ function RoadmapFinding({
             finding.quickWin ? (
               <StatBadge
                 label="Quick win"
-                tone="primary"
+                tone="success"
               />
             ) : null}
           </div>
 
-          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+          <p className="mt-2 text-sm leading-6 text-muted">
             {finding.description}
           </p>
 
           {config.showRecommendations &&
           finding.recommendation ? (
-            <div className="mt-3 flex items-start gap-2 text-sm text-primary">
+            <div className="mt-4 flex items-start gap-3 rounded-xl border border-brand-blue/10 bg-brand-blue/[0.04] p-4 text-sm leading-6 text-brand">
               <ArrowRight
                 aria-hidden="true"
-                className="mt-0.5 size-3.5 shrink-0"
+                className="mt-0.5 size-4 shrink-0 text-brand-blue"
               />
 
               <span>
@@ -314,7 +333,7 @@ function RoadmapFinding({
             <div className="mt-4">
               <InfoPanel
                 icon={Target}
-                title="Client implementation guidance"
+                title="Implementation guidance"
                 description="AI-generated execution steps and technical guidance will appear here once the client AI layer is enabled."
                 tone="primary"
               />
@@ -323,7 +342,7 @@ function RoadmapFinding({
         </div>
 
         {config.showEstimatedTime ? (
-          <span className="shrink-0 text-xs text-muted-foreground">
+          <span className="shrink-0 rounded-full border border-border bg-slate-50 px-2.5 py-1 text-xs font-medium text-muted">
             {formatMinutes(
               finding.estimatedFixMinutes,
             )}

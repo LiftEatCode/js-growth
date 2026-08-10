@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type ChangeEvent,
   type FormEvent,
   useState,
   useTransition,
@@ -8,13 +9,18 @@ import {
 import {
   AlertCircle,
   ArrowRight,
+  CheckCircle2,
   Globe2,
   LoaderCircle,
+  SearchCheck,
 } from "lucide-react";
 
 import { auditWebsite } from "@/app/website-audit/actions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+  Button,
+  Card,
+  Input,
+} from "@/components/ui";
 import type {
   WebsiteAuditResponse,
   WebsiteAuditSuccessResponse,
@@ -25,6 +31,14 @@ interface AuditFormProps {
     result: WebsiteAuditSuccessResponse,
   ) => void;
 }
+
+const auditSteps = [
+  "Connecting to the website",
+  "Reviewing page structure",
+  "Analyzing SEO and local signals",
+  "Building your scored report",
+] as const;
+
 export function AuditForm({
   onAuditComplete,
 }: AuditFormProps) {
@@ -71,99 +85,166 @@ export function AuditForm({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4"
-    >
-      <div className="space-y-2">
-        <label
-          htmlFor="website-audit-url"
-          className="text-sm font-medium text-foreground"
-        >
-          Website URL
-        </label>
+    <div className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5"
+      >
+        <div className="space-y-2">
+          <label
+            htmlFor="website-audit-url"
+            className="text-sm font-semibold text-brand"
+          >
+            Website URL
+          </label>
 
-        <div className="relative">
-          <Globe2
-            aria-hidden="true"
-            className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-          />
+          <div className="relative">
+            <Globe2
+              aria-hidden="true"
+              className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted"
+            />
 
-          <Input
-            id="website-audit-url"
-            name="url"
-            type="text"
-            inputMode="url"
-            autoComplete="url"
-            placeholder="example.com"
-            value={url}
-            onChange={(event) =>
-              setUrl(event.target.value)
-            }
-            disabled={isPending}
-            aria-describedby={
-              error
-                ? "website-audit-error"
-                : "website-audit-help"
-            }
-            aria-invalid={Boolean(error)}
-            className="h-12 pl-10 text-base"
-            required
-          />
+            <Input
+              id="website-audit-url"
+              name="url"
+              type="text"
+              inputMode="url"
+              autoComplete="url"
+              placeholder="example.com"
+              value={url}
+              onChange={(
+                event: ChangeEvent<HTMLInputElement>,
+              ) => setUrl(event.target.value)}
+              disabled={isPending}
+              aria-describedby={
+                error
+                  ? "website-audit-error"
+                  : "website-audit-help"
+              }
+              aria-invalid={Boolean(error)}
+              className="h-14 rounded-xl pl-12 pr-4 text-base"
+              required
+            />
+          </div>
+
+          <p
+            id="website-audit-help"
+            className="text-sm leading-6 text-muted"
+          >
+            Enter a public homepage URL. You can leave off
+            the https:// prefix.
+          </p>
         </div>
 
-        <p
-          id="website-audit-help"
-          className="text-sm text-muted-foreground"
+        {error ? (
+          <div
+            id="website-audit-error"
+            role="alert"
+            className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+          >
+            <AlertCircle
+              aria-hidden="true"
+              className="mt-0.5 size-5 shrink-0"
+            />
+
+            <span>{error}</span>
+          </div>
+        ) : null}
+
+        <Button
+          type="submit"
+          size="xl"
+          disabled={isPending || !url.trim()}
+          className="w-full sm:w-auto"
         >
-          Enter a public homepage URL. You can leave off
-          the https:// prefix.
-        </p>
+          {isPending ? (
+            <>
+              <LoaderCircle
+                aria-hidden="true"
+                className="animate-spin"
+              />
+
+              Running website audit…
+            </>
+          ) : (
+            <>
+              Run Free Website Audit
+
+              <ArrowRight
+                aria-hidden="true"
+                className="ml-1 size-4"
+              />
+            </>
+          )}
+        </Button>
+      </form>
+
+      {isPending ? (
+        <AuditProgress />
+      ) : (
+        <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-5">
+          <div className="inline-flex items-center gap-2 text-sm text-muted">
+            <CheckCircle2
+              aria-hidden="true"
+              className="size-4 text-emerald-600"
+            />
+
+            No website changes
+          </div>
+
+          <div className="inline-flex items-center gap-2 text-sm text-muted">
+            <SearchCheck
+              aria-hidden="true"
+              className="size-4 text-brand-blue"
+            />
+
+            Read-only analysis
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AuditProgress() {
+  return (
+    <Card
+      variant="brand"
+      padding="md"
+      className="overflow-hidden"
+    >
+      <div className="flex items-center gap-3">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-brand-blue/10 bg-white text-brand-blue">
+          <LoaderCircle
+            aria-hidden="true"
+            className="size-5 animate-spin"
+          />
+        </span>
+
+        <div>
+          <p className="font-heading font-semibold text-brand">
+            Analyzing your website
+          </p>
+
+          <p className="mt-1 text-sm leading-6 text-muted">
+            This usually completes quickly. Please keep this
+            page open while the report is generated.
+          </p>
+        </div>
       </div>
 
-      {error ? (
-        <div
-          id="website-audit-error"
-          role="alert"
-          className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
-        >
-          <AlertCircle
-            aria-hidden="true"
-            className="mt-0.5 size-4 shrink-0"
-          />
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {auditSteps.map((step) => (
+          <div
+            key={step}
+            className="flex items-center gap-2 rounded-lg border border-brand-blue/10 bg-white/80 px-3 py-2.5 text-sm text-muted"
+          >
+            <span className="size-1.5 shrink-0 rounded-full bg-brand-blue" />
 
-          <span>{error}</span>
-        </div>
-      ) : null}
-
-      <Button
-        type="submit"
-        size="lg"
-        disabled={isPending || !url.trim()}
-        className="h-12 w-full px-5 sm:w-auto"
-      >
-        {isPending ? (
-          <>
-            <LoaderCircle
-              aria-hidden="true"
-              className="animate-spin"
-            />
-            Auditing website…
-          </>
-        ) : (
-          <>
-            Run free audit
-            <ArrowRight aria-hidden="true" />
-          </>
-        )}
-      </Button>
-
-      <p className="text-xs leading-5 text-muted-foreground">
-        The MVP analyzes the submitted homepage&apos;s
-        HTML, metadata, technical setup, accessibility
-        signals, and local business signals. It does not
-        modify the website.
-      </p>
-    </form>
+            {step}
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }
