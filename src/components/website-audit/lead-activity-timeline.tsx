@@ -3,9 +3,12 @@ import {
     Clock3,
     FileText,
     History,
+    Mail,
     NotebookPen,
+    Phone,
     Target,
     UserRoundPlus,
+    Users,
   } from "lucide-react";
   
   import {
@@ -65,14 +68,35 @@ import {
     ).format(date);
   }
   
+  function getManualActivityLabel(
+    value: string | null,
+  ): string {
+    if (value === "CALL") {
+      return "Call";
+    }
+  
+    if (value === "EMAIL") {
+      return "Email";
+    }
+  
+    if (value === "MEETING") {
+      return "Meeting";
+    }
+  
+    if (value === "FOLLOW_UP") {
+      return "Follow-Up";
+    }
+  
+    return "Note";
+  }
+  
   function ActivityIcon({
-    type,
+    activity,
   }: {
-    type:
-      LeadActivityItem["type"];
+    activity: LeadActivityItem;
   }) {
     if (
-      type ===
+      activity.type ===
       "STATUS_CHANGED"
     ) {
       return (
@@ -84,7 +108,7 @@ import {
     }
   
     if (
-      type ===
+      activity.type ===
       "FOLLOW_UP_CHANGED"
     ) {
       return (
@@ -96,7 +120,7 @@ import {
     }
   
     if (
-      type ===
+      activity.type ===
       "NOTES_UPDATED"
     ) {
       return (
@@ -106,11 +130,59 @@ import {
         />
       );
     }
-
+  
     if (
-      type ===
+      activity.type ===
       "MANUAL_NOTE"
     ) {
+      if (
+        activity.fromValue ===
+        "CALL"
+      ) {
+        return (
+          <Phone
+            aria-hidden="true"
+            className="size-4"
+          />
+        );
+      }
+  
+      if (
+        activity.fromValue ===
+        "EMAIL"
+      ) {
+        return (
+          <Mail
+            aria-hidden="true"
+            className="size-4"
+          />
+        );
+      }
+  
+      if (
+        activity.fromValue ===
+        "MEETING"
+      ) {
+        return (
+          <Users
+            aria-hidden="true"
+            className="size-4"
+          />
+        );
+      }
+  
+      if (
+        activity.fromValue ===
+        "FOLLOW_UP"
+      ) {
+        return (
+          <CalendarClock
+            aria-hidden="true"
+            className="size-4"
+          />
+        );
+      }
+  
       return (
         <FileText
           aria-hidden="true"
@@ -128,38 +200,53 @@ import {
   }
   
   function getActivityLabel(
-    type:
-      LeadActivityItem["type"],
+    activity: LeadActivityItem,
   ): string {
     if (
-      type ===
+      activity.type ===
       "STATUS_CHANGED"
     ) {
       return "Pipeline";
     }
   
     if (
-      type ===
+      activity.type ===
       "FOLLOW_UP_CHANGED"
     ) {
       return "Follow-Up";
     }
   
     if (
-      type ===
+      activity.type ===
       "NOTES_UPDATED"
     ) {
       return "Notes";
     }
-
+  
     if (
-      type ===
+      activity.type ===
       "MANUAL_NOTE"
     ) {
-      return "Note";
+      return getManualActivityLabel(
+        activity.fromValue,
+      );
     }
   
     return "Lead";
+  }
+  
+  function getPrimaryActivityText(
+    activity: LeadActivityItem,
+  ): string {
+    if (
+      activity.type ===
+        "MANUAL_NOTE" &&
+      activity.toValue
+    ) {
+      return activity.toValue;
+    }
+  
+    return activity.description;
   }
   
   export function LeadActivityTimeline({
@@ -181,14 +268,19 @@ import {
             {
               id:
                 "lead-created",
+  
               createdAt:
                 leadCreatedAt,
+  
               type:
                 "CREATED" as const,
+  
               description:
                 "Lead captured from the website audit report.",
+  
               fromValue:
                 null,
+  
               toValue:
                 null,
             },
@@ -225,7 +317,7 @@ import {
             </h2>
   
             <p className="mt-2 text-sm leading-6 text-muted">
-              Pipeline changes, follow-ups, and note updates are recorded here automatically.
+              Calls, emails, meetings, notes, pipeline changes, and follow-ups are recorded chronologically.
             </p>
           </div>
         </div>
@@ -253,8 +345,8 @@ import {
   
                 <span className="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-white text-brand-blue shadow-sm">
                   <ActivityIcon
-                    type={
-                      activity.type
+                    activity={
+                      activity
                     }
                   />
                 </span>
@@ -263,7 +355,7 @@ import {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full border border-border bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted">
                       {getActivityLabel(
-                        activity.type,
+                        activity,
                       )}
                     </span>
   
@@ -279,10 +371,10 @@ import {
                     </span>
                   </div>
   
-                  <p className="mt-2 text-sm font-medium leading-6 text-brand">
-                    {
-                      activity.description
-                    }
+                  <p className="mt-2 whitespace-pre-wrap text-sm font-medium leading-6 text-brand">
+                    {getPrimaryActivityText(
+                      activity,
+                    )}
                   </p>
   
                   {activity.type ===

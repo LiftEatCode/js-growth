@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { getInternalSession } from "@/lib/internal-auth";
 import { prisma } from "@/lib/prisma";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
@@ -48,6 +49,13 @@ type LeadStatusValue =
 
 type ManualActivityValue =
   (typeof MANUAL_ACTIVITY_TYPES)[number];
+
+async function isAuthorized(): Promise<boolean> {
+  const session =
+    await getInternalSession();
+
+  return session !== null;
+}
 
 function isLeadStatus(
   value: string,
@@ -151,6 +159,14 @@ function formatActivityDate(
 export async function deleteReport(
   reportId: string,
 ): Promise<DeleteReportResult> {
+  if (!(await isAuthorized())) {
+    return {
+      success: false,
+      message:
+        "You are not authorized to delete reports.",
+    };
+  }
+
   if (!reportId) {
     return {
       success: false,
@@ -196,6 +212,14 @@ export async function updateLeadContacted(
   leadId: string,
   contacted: boolean,
 ): Promise<UpdateLeadContactedResult> {
+  if (!(await isAuthorized())) {
+    return {
+      success: false,
+      message:
+        "You are not authorized to update leads.",
+    };
+  }
+
   if (!leadId) {
     return {
       success: false,
@@ -308,6 +332,14 @@ export async function updateLeadPipeline(
   reportId: string,
   formData: FormData,
 ): Promise<UpdateLeadPipelineResult> {
+  if (!(await isAuthorized())) {
+    return {
+      success: false,
+      message:
+        "You are not authorized to update the sales pipeline.",
+    };
+  }
+
   if (!leadId) {
     return {
       success: false,
@@ -548,6 +580,14 @@ export async function addLeadActivity(
   reportId: string,
   formData: FormData,
 ): Promise<AddLeadActivityResult> {
+  if (!(await isAuthorized())) {
+    return {
+      success: false,
+      message:
+        "You are not authorized to add lead activity.",
+    };
+  }
+
   if (!leadId) {
     return {
       success: false,
