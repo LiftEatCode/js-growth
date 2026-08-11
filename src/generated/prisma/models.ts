@@ -10,4 +10,5 @@
  */
 export type * from './models/AuditReport'
 export type * from './models/Lead'
+export type * from './models/LeadActivity'
 export type * from './commonInputTypes'

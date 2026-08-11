@@ -23,6 +23,12 @@ import {
   Zap,
 } from "lucide-react";
 
+import {
+  LeadActivityTimeline,
+  type LeadActivityItem,
+} from "@/components/website-audit/lead-activity-timeline";
+import { LeadManualActivityPanel } from "@/components/website-audit/lead-manual-activity-panel";
+import { LeadPipelinePanel } from "@/components/website-audit/lead-pipeline-panel";
 import { StatBadge } from "@/components/website-audit/report-ui";
 import {
   Button,
@@ -43,9 +49,12 @@ interface InternalReportPageProps {
 }
 
 export const metadata: Metadata = {
-  title: "Internal Audit Workspace",
+  title:
+    "Internal Audit Workspace",
+
   description:
     "Internal JS Solutions website audit prospect and lead workspace.",
+
   robots: {
     index: false,
     follow: false,
@@ -90,6 +99,88 @@ function getOpportunityLabel(
         part.slice(1),
     )
     .join(" ");
+}
+
+function getPipelineStatusLabel(
+  status:
+    | "NEW"
+    | "CONTACTED"
+    | "QUALIFIED"
+    | "PROPOSAL"
+    | "WON"
+    | "LOST",
+): string {
+  if (status === "NEW") {
+    return "New";
+  }
+
+  if (
+    status ===
+    "CONTACTED"
+  ) {
+    return "Contacted";
+  }
+
+  if (
+    status ===
+    "QUALIFIED"
+  ) {
+    return "Qualified";
+  }
+
+  if (
+    status ===
+    "PROPOSAL"
+  ) {
+    return "Proposal";
+  }
+
+  if (status === "WON") {
+    return "Won";
+  }
+
+  return "Lost";
+}
+
+function getPipelineStatusTone(
+  status:
+    | "NEW"
+    | "CONTACTED"
+    | "QUALIFIED"
+    | "PROPOSAL"
+    | "WON"
+    | "LOST",
+):
+  | "default"
+  | "primary"
+  | "warning"
+  | "success"
+  | "danger" {
+  if (status === "NEW") {
+    return "warning";
+  }
+
+  if (
+    status ===
+      "CONTACTED" ||
+    status ===
+      "QUALIFIED"
+  ) {
+    return "primary";
+  }
+
+  if (
+    status ===
+    "PROPOSAL"
+  ) {
+    return "warning";
+  }
+
+  if (status === "WON") {
+    return "success";
+  }
+
+  return "danger";
 }
 
 function getPriorityWeight(
@@ -152,7 +243,10 @@ export default async function InternalReportPage({
   const { id } =
     await params;
 
-  const [report, storedReport] =
+  const [
+    report,
+    storedReport,
+  ] =
     await Promise.all([
       auditReportRepository.findById(
         id,
@@ -168,12 +262,34 @@ export default async function InternalReportPage({
             select: {
               id: true,
               createdAt: true,
+              updatedAt: true,
               firstName: true,
               lastName: true,
               email: true,
               phone: true,
               company: true,
               contacted: true,
+              status: true,
+              followUpAt: true,
+              notes: true,
+
+              activities: {
+                orderBy: {
+                  createdAt:
+                    "desc",
+                },
+
+                take: 50,
+
+                select: {
+                  id: true,
+                  createdAt: true,
+                  type: true,
+                  description: true,
+                  fromValue: true,
+                  toValue: true,
+                },
+              },
             },
           },
         },
@@ -216,6 +332,32 @@ export default async function InternalReportPage({
       )
       .slice(0, 5);
 
+  const activities:
+    LeadActivityItem[] =
+    lead
+      ? lead.activities.map(
+          (activity) => ({
+            id:
+              activity.id,
+
+            createdAt:
+              activity.createdAt.toISOString(),
+
+            type:
+              activity.type,
+
+            description:
+              activity.description,
+
+            fromValue:
+              activity.fromValue,
+
+            toValue:
+              activity.toValue,
+          }),
+        )
+      : [];
+
   return (
     <main className="min-h-screen bg-slate-50/60">
       <section className="relative isolate overflow-hidden bg-brand text-white">
@@ -229,7 +371,9 @@ export default async function InternalReportPage({
         <Container className="relative py-8 sm:py-10">
           <Button
             variant="outline"
-            nativeButton={false}
+            nativeButton={
+              false
+            }
             render={
               <Link href="/reports" />
             }
@@ -271,15 +415,39 @@ export default async function InternalReportPage({
 
               <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
                 {lead
-                  ? `Review the audit intelligence, lead information, and strongest sales opportunities associated with ${report.hostname}.`
+                  ? `Review the audit intelligence, lead information, pipeline history, and strongest sales opportunities associated with ${report.hostname}.`
                   : `Review the audit intelligence and determine whether ${report.hostname} is worth proactive outreach.`}
               </p>
+
+              {lead ? (
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <StatBadge
+                    label={getPipelineStatusLabel(
+                      lead.status,
+                    )}
+                    tone={getPipelineStatusTone(
+                      lead.status,
+                    )}
+                  />
+
+                  {lead.followUpAt ? (
+                    <StatBadge
+                      label={`Follow up ${formatDate(
+                        lead.followUpAt,
+                      )}`}
+                      tone="primary"
+                    />
+                  ) : null}
+                </div>
+              ) : null}
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button
                 size="lg"
-                nativeButton={false}
+                nativeButton={
+                  false
+                }
                 render={
                   <a
                     href={
@@ -301,7 +469,9 @@ export default async function InternalReportPage({
               <Button
                 size="lg"
                 variant="outline"
-                nativeButton={false}
+                nativeButton={
+                  false
+                }
                 render={
                   <Link
                     href={`/report/${report.id}`}
@@ -321,24 +491,29 @@ export default async function InternalReportPage({
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <HeroMetric
-              icon={BarChart3}
+              icon={
+                BarChart3
+              }
               label="Website Score"
               value={`${audit.overallScore}/100`}
               detail={`Grade ${grade.letter}`}
             />
 
             <HeroMetric
-              icon={TrendingUp}
+              icon={
+                TrendingUp
+              }
               label="Opportunity"
               value={`${audit.opportunity.score}/100`}
               detail={`${getOpportunityLabel(
-                audit.opportunity
-                  .level,
+                audit.opportunity.level,
               )} opportunity`}
             />
 
             <HeroMetric
-              icon={AlertTriangle}
+              icon={
+                AlertTriangle
+              }
               label="Critical Issues"
               value={String(
                 audit.summary
@@ -348,7 +523,9 @@ export default async function InternalReportPage({
             />
 
             <HeroMetric
-              icon={Zap}
+              icon={
+                Zap
+              }
               label="Quick Wins"
               value={String(
                 audit.summary
@@ -407,8 +584,7 @@ export default async function InternalReportPage({
 
                 <StatBadge
                   label={`${getOpportunityLabel(
-                    audit.opportunity
-                      .level,
+                    audit.opportunity.level,
                   )} opportunity`}
                   tone="primary"
                 />
@@ -440,24 +616,29 @@ export default async function InternalReportPage({
 
               <div className="mt-7 grid gap-4 md:grid-cols-2">
                 <SalesSignal
-                  icon={TrendingUp}
+                  icon={
+                    TrendingUp
+                  }
                   title="Growth opportunity"
                   value={`${audit.opportunity.score}/100`}
                   description={`${getOpportunityLabel(
-                    audit.opportunity
-                      .level,
+                    audit.opportunity.level,
                   )} modeled opportunity based on the gaps identified in the audit.`}
                 />
 
                 <SalesSignal
-                  icon={AlertTriangle}
+                  icon={
+                    AlertTriangle
+                  }
                   title="Pain signals"
                   value={`${audit.summary.criticalIssues} critical`}
                   description={`${audit.summary.highImpactFindings} findings were classified as having stronger business impact.`}
                 />
 
                 <SalesSignal
-                  icon={Zap}
+                  icon={
+                    Zap
+                  }
                   title="Quick wins"
                   value={String(
                     audit.summary
@@ -467,7 +648,9 @@ export default async function InternalReportPage({
                 />
 
                 <SalesSignal
-                  icon={BarChart3}
+                  icon={
+                    BarChart3
+                  }
                   title="Current health"
                   value={`${audit.overallScore}/100`}
                   description={`The current audit produced a ${grade.letter} website grade.`}
@@ -576,122 +759,197 @@ export default async function InternalReportPage({
                 </div>
               )}
             </Card>
+
+            {lead ? (
+              <LeadActivityTimeline
+                leadCreatedAt={
+                  lead.createdAt.toISOString()
+                }
+                activities={
+                  activities
+                }
+              />
+            ) : null}
           </div>
 
           <aside className="space-y-6">
             {lead ? (
-              <Card
-                variant="elevated"
-                padding="lg"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <span className="flex size-11 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
-                    <UserRoundCheck
-                      aria-hidden="true"
-                      className="size-5"
-                    />
-                  </span>
-
-                  <StatBadge
-                    label={
-                      lead.contacted
-                        ? "Contacted"
-                        : "Needs follow-up"
-                    }
-                    tone={
-                      lead.contacted
-                        ? "success"
-                        : "warning"
-                    }
-                  />
-                </div>
-
-                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-                  Lead
-                </p>
-
-                <h2 className="mt-2 font-heading text-2xl font-semibold text-brand">
-                  {lead.firstName}{" "}
-                  {lead.lastName}
-                </h2>
-
-                <div className="mt-6 space-y-4">
-                  {lead.company ? (
-                    <ContactRow
-                      icon={Building2}
-                      label="Company"
-                      value={
-                        lead.company
-                      }
-                    />
-                  ) : null}
-
-                  <ContactRow
-                    icon={Mail}
-                    label="Email"
-                    value={
-                      lead.email
-                    }
-                    href={`mailto:${lead.email}`}
-                  />
-
-                  {lead.phone ? (
-                    <ContactRow
-                      icon={Phone}
-                      label="Phone"
-                      value={
-                        lead.phone
-                      }
-                      href={`tel:${lead.phone}`}
-                    />
-                  ) : null}
-
-                  <ContactRow
-                    icon={CalendarDays}
-                    label="Captured"
-                    value={formatDate(
-                      lead.createdAt,
-                    )}
-                  />
-                </div>
-
-                <div className="mt-6 grid gap-3">
-                  <Button
-                    nativeButton={false}
-                    render={
-                      <a
-                        href={`mailto:${lead.email}`}
+              <>
+                <Card
+                  variant="elevated"
+                  padding="lg"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="flex size-11 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                      <UserRoundCheck
+                        aria-hidden="true"
+                        className="size-5"
                       />
+                    </span>
+
+                    <StatBadge
+                      label={getPipelineStatusLabel(
+                        lead.status,
+                      )}
+                      tone={getPipelineStatusTone(
+                        lead.status,
+                      )}
+                    />
+                  </div>
+
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
+                    Lead
+                  </p>
+
+                  <h2 className="mt-2 font-heading text-2xl font-semibold text-brand">
+                    {
+                      lead.firstName
+                    }{" "}
+                    {
+                      lead.lastName
                     }
-                  >
-                    <Mail
-                      aria-hidden="true"
-                      className="size-4"
+                  </h2>
+
+                  <div className="mt-6 space-y-4">
+                    {lead.company ? (
+                      <ContactRow
+                        icon={
+                          Building2
+                        }
+                        label="Company"
+                        value={
+                          lead.company
+                        }
+                      />
+                    ) : null}
+
+                    <ContactRow
+                      icon={
+                        Mail
+                      }
+                      label="Email"
+                      value={
+                        lead.email
+                      }
+                      href={`mailto:${lead.email}`}
                     />
 
-                    Email Lead
-                  </Button>
+                    {lead.phone ? (
+                      <ContactRow
+                        icon={
+                          Phone
+                        }
+                        label="Phone"
+                        value={
+                          lead.phone
+                        }
+                        href={`tel:${lead.phone}`}
+                      />
+                    ) : null}
 
-                  {lead.phone ? (
+                    <ContactRow
+                      icon={
+                        CalendarDays
+                      }
+                      label="Captured"
+                      value={formatDate(
+                        lead.createdAt,
+                      )}
+                    />
+
+                    <ContactRow
+                      icon={
+                        CalendarDays
+                      }
+                      label="Last updated"
+                      value={formatDate(
+                        lead.updatedAt,
+                      )}
+                    />
+
+                    {lead.followUpAt ? (
+                      <ContactRow
+                        icon={
+                          CalendarDays
+                        }
+                        label="Follow up"
+                        value={formatDate(
+                          lead.followUpAt,
+                        )}
+                      />
+                    ) : null}
+                  </div>
+
+                  <div className="mt-6 grid gap-3">
                     <Button
-                      variant="outline"
-                      nativeButton={false}
+                      nativeButton={
+                        false
+                      }
                       render={
                         <a
-                          href={`tel:${lead.phone}`}
+                          href={`mailto:${lead.email}`}
                         />
                       }
                     >
-                      <Phone
+                      <Mail
                         aria-hidden="true"
                         className="size-4"
                       />
 
-                      Call Lead
+                      Email Lead
                     </Button>
-                  ) : null}
-                </div>
-              </Card>
+
+                    {lead.phone ? (
+                      <Button
+                        variant="outline"
+                        nativeButton={
+                          false
+                        }
+                        render={
+                          <a
+                            href={`tel:${lead.phone}`}
+                          />
+                        }
+                      >
+                        <Phone
+                          aria-hidden="true"
+                          className="size-4"
+                        />
+
+                        Call Lead
+                      </Button>
+                    ) : null}
+                  </div>
+                </Card>
+
+                <LeadPipelinePanel
+                  leadId={
+                    lead.id
+                  }
+                  reportId={
+                    report.id
+                  }
+                  status={
+                    lead.status
+                  }
+                  followUpAt={
+                    lead.followUpAt?.toISOString() ??
+                    null
+                  }
+                  notes={
+                    lead.notes
+                  }
+                />
+
+                <LeadManualActivityPanel
+                  leadId={
+                    lead.id
+                  }
+                  reportId={
+                    report.id
+                  }
+                />
+              </>
             ) : (
               <Card
                 variant="elevated"
@@ -739,7 +997,9 @@ export default async function InternalReportPage({
               <div className="mt-5 grid gap-3">
                 <Button
                   variant="outline"
-                  nativeButton={false}
+                  nativeButton={
+                    false
+                  }
                   render={
                     <Link
                       href={`/report/${report.id}`}
@@ -756,7 +1016,9 @@ export default async function InternalReportPage({
 
                 <Button
                   variant="outline"
-                  nativeButton={false}
+                  nativeButton={
+                    false
+                  }
                   render={
                     <a
                       href={`/report/${report.id}/pdf`}
@@ -775,7 +1037,9 @@ export default async function InternalReportPage({
 
                 <Button
                   variant="outline"
-                  nativeButton={false}
+                  nativeButton={
+                    false
+                  }
                   render={
                     <a
                       href={
@@ -832,6 +1096,15 @@ export default async function InternalReportPage({
                     grade.letter
                   }
                 />
+
+                {lead ? (
+                  <DataRow
+                    label="Pipeline status"
+                    value={getPipelineStatusLabel(
+                      lead.status,
+                    )}
+                  />
+                ) : null}
               </div>
             </Card>
           </aside>
@@ -842,9 +1115,13 @@ export default async function InternalReportPage({
 }
 
 interface HeroMetricProps {
-  icon: typeof BarChart3;
+  icon:
+    typeof BarChart3;
+
   label: string;
+
   value: string;
+
   detail: string;
 }
 
@@ -879,10 +1156,15 @@ function HeroMetric({
 }
 
 interface SalesSignalProps {
-  icon: typeof TrendingUp;
+  icon:
+    typeof TrendingUp;
+
   title: string;
+
   value: string;
-  description: string;
+
+  description:
+    string;
 }
 
 function SalesSignal({
@@ -916,9 +1198,13 @@ function SalesSignal({
 }
 
 interface ContactRowProps {
-  icon: typeof Mail;
+  icon:
+    typeof Mail;
+
   label: string;
+
   value: string;
+
   href?: string;
 }
 

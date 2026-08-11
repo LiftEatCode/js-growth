@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   AuditReport: 'AuditReport',
-  Lead: 'Lead'
+  Lead: 'Lead',
+  LeadActivity: 'LeadActivity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -93,16 +94,33 @@ export type AuditReportScalarFieldEnum = (typeof AuditReportScalarFieldEnum)[key
 export const LeadScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   firstName: 'firstName',
   lastName: 'lastName',
   email: 'email',
   phone: 'phone',
   company: 'company',
   website: 'website',
-  contacted: 'contacted'
+  contacted: 'contacted',
+  status: 'status',
+  followUpAt: 'followUpAt',
+  notes: 'notes'
 } as const
 
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+export const LeadActivityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  type: 'type',
+  description: 'description',
+  fromValue: 'fromValue',
+  toValue: 'toValue',
+  leadId: 'leadId'
+} as const
+
+export type LeadActivityScalarFieldEnum = (typeof LeadActivityScalarFieldEnum)[keyof typeof LeadActivityScalarFieldEnum]
 
 
 export const SortOrder = {

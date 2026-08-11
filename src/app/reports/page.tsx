@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
-  AlertTriangle,
   ArrowRight,
   BarChart3,
-  FileSearch,
+  CalendarClock,
+  CheckCircle2,
   Flame,
   SearchCheck,
   TrendingUp,
@@ -19,51 +19,203 @@ import {
   GridPattern,
 } from "@/components/ui";
 import { auditReportRepository } from "@/lib/website-audit/storage";
+import type {
+  AuditLeadStatus,
+  AuditReportSummary,
+} from "@/lib/website-audit/storage";
 
 export const metadata: Metadata = {
-  title: "Reports Dashboard",
+  title:
+    "Reports Dashboard",
+
   description:
-    "Internal website audit and prospect intelligence dashboard for JS Solutions.",
+    "Internal website audit, lead pipeline, and prospect intelligence dashboard for JS Solutions.",
+
   robots: {
     index: false,
     follow: false,
   },
 };
 
+const CLOSED_STATUSES: AuditLeadStatus[] =
+  [
+    "WON",
+    "LOST",
+  ];
+
+function isActiveLead(
+  report: AuditReportSummary,
+): boolean {
+  return Boolean(
+    report.lead &&
+      !CLOSED_STATUSES.includes(
+        report.lead.status,
+      ),
+  );
+}
+
+function isFollowUpDue(
+  report: AuditReportSummary,
+): boolean {
+  if (
+    !report.lead?.followUpAt ||
+    CLOSED_STATUSES.includes(
+      report.lead.status,
+    )
+  ) {
+    return false;
+  }
+
+  const followUp =
+    new Date(
+      report.lead.followUpAt,
+    );
+
+  if (
+    Number.isNaN(
+      followUp.getTime(),
+    )
+  ) {
+    return false;
+  }
+
+  const endOfToday =
+    new Date();
+
+  endOfToday.setHours(
+    23,
+    59,
+    59,
+    999,
+  );
+
+  return (
+    followUp <= endOfToday
+  );
+}
+
+function getPipelineLabel(
+  status: AuditLeadStatus,
+): string {
+  if (
+    status === "NEW"
+  ) {
+    return "New";
+  }
+
+  if (
+    status === "CONTACTED"
+  ) {
+    return "Contacted";
+  }
+
+  if (
+    status === "QUALIFIED"
+  ) {
+    return "Qualified";
+  }
+
+  if (
+    status === "PROPOSAL"
+  ) {
+    return "Proposal";
+  }
+
+  if (
+    status === "WON"
+  ) {
+    return "Won";
+  }
+
+  return "Lost";
+}
+
+function getPriorityScore(
+  report: AuditReportSummary,
+): number {
+  const statusWeight: Record<
+    AuditLeadStatus,
+    number
+  > = {
+    NEW: 60,
+    CONTACTED: 45,
+    QUALIFIED: 80,
+    PROPOSAL: 90,
+    WON: -100,
+    LOST: -150,
+  };
+
+  const leadWeight =
+    report.lead
+      ? statusWeight[
+          report.lead.status
+        ]
+      : 10;
+
+  const followUpWeight =
+    isFollowUpDue(report)
+      ? 50
+      : 0;
+
+  return (
+    leadWeight +
+    followUpWeight +
+    report.opportunityScore +
+    Math.max(
+      0,
+      80 -
+        report.overallScore,
+    ) +
+    report.criticalIssues *
+      8 +
+    report.quickWins * 2
+  );
+}
+
 export default async function ReportsPage() {
   const reports =
     await auditReportRepository.list();
 
-  const totalReports =
-    reports.length;
-
   const capturedLeads =
     reports.filter(
       (report) =>
-        report.lead !== null,
+        report.lead !==
+        null,
     ).length;
 
-  const highOpportunitySites =
+  const activePipeline =
     reports.filter(
-      (report) =>
-        report.opportunityScore >= 70,
+      isActiveLead,
     ).length;
 
-  const criticalSites =
+  const followUpsDue =
+    reports.filter(
+      isFollowUpDue,
+    ).length;
+
+  const wonOpportunities =
     reports.filter(
       (report) =>
-        report.criticalIssues > 0,
+        report.lead
+          ?.status === "WON",
     ).length;
+
+  const totalReports =
+    reports.length;
 
   const averageScore =
     totalReports > 0
       ? Math.round(
           reports.reduce(
-            (total, report) =>
+            (
+              total,
+              report,
+            ) =>
               total +
               report.overallScore,
             0,
-          ) / totalReports,
+          ) /
+            totalReports,
         )
       : 0;
 
@@ -71,53 +223,36 @@ export default async function ReportsPage() {
     totalReports > 0
       ? Math.round(
           reports.reduce(
-            (total, report) =>
+            (
+              total,
+              report,
+            ) =>
               total +
               report.opportunityScore,
             0,
-          ) / totalReports,
+          ) /
+            totalReports,
         )
       : 0;
 
   const priorityProspects =
-    reports
+    [...reports]
       .filter(
         (report) =>
-          report.opportunityScore >=
-            65 &&
-          (report.overallScore < 75 ||
-            report.criticalIssues > 0),
+          !report.lead ||
+          !CLOSED_STATUSES.includes(
+            report.lead.status,
+          ),
       )
-      .sort((a, b) => {
-        const leadWeightA =
-          a.lead ? 30 : 0;
-
-        const leadWeightB =
-          b.lead ? 30 : 0;
-
-        const scoreA =
-          a.opportunityScore +
-          a.criticalIssues * 5 +
-          Math.max(
-            0,
-            75 -
-              a.overallScore,
-          ) +
-          leadWeightA;
-
-        const scoreB =
-          b.opportunityScore +
-          b.criticalIssues * 5 +
-          Math.max(
-            0,
-            75 -
-              b.overallScore,
-          ) +
-          leadWeightB;
-
-        return scoreB - scoreA;
-      })
-      .slice(0, 4);
+      .sort(
+        (a, b) =>
+          getPriorityScore(b) -
+          getPriorityScore(a),
+      )
+      .slice(
+        0,
+        4,
+      );
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -147,17 +282,19 @@ export default async function ReportsPage() {
               </div>
 
               <h1 className="mt-5 font-heading text-3xl font-bold tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
-                Reports Dashboard
+                Sales & Reports Dashboard
               </h1>
 
               <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
-                Review website audits, identify strong prospects, track captured leads, and decide where follow-up can create the most value.
+                Manage website audits, captured leads, follow-ups, active opportunities, and the prospects most likely to benefit from JS Solutions.
               </p>
             </div>
 
             <Button
               size="lg"
-              nativeButton={false}
+              nativeButton={
+                false
+              }
               render={
                 <Link href="/website-audit" />
               }
@@ -173,39 +310,47 @@ export default async function ReportsPage() {
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <DashboardMetric
-              icon={FileSearch}
-              label="Total Audits"
-              value={String(
-                totalReports,
-              )}
-              description="Saved website growth reports."
-            />
-
-            <DashboardMetric
-              icon={TrendingUp}
-              label="High Opportunity"
-              value={String(
-                highOpportunitySites,
-              )}
-              description="Sites scoring 70+ for modeled opportunity."
-            />
-
-            <DashboardMetric
-              icon={UserRoundCheck}
+              icon={
+                UserRoundCheck
+              }
               label="Captured Leads"
               value={String(
                 capturedLeads,
               )}
-              description="Audit visitors who requested their professional report."
+              description="People who requested a professional audit report."
             />
 
             <DashboardMetric
-              icon={AlertTriangle}
-              label="Critical Sites"
+              icon={
+                TrendingUp
+              }
+              label="Active Pipeline"
               value={String(
-                criticalSites,
+                activePipeline,
               )}
-              description="Audits containing at least one critical issue."
+              description="Open leads that have not been won or lost."
+            />
+
+            <DashboardMetric
+              icon={
+                CalendarClock
+              }
+              label="Follow-Ups Due"
+              value={String(
+                followUpsDue,
+              )}
+              description="Open leads with a follow-up scheduled for today or earlier."
+            />
+
+            <DashboardMetric
+              icon={
+                CheckCircle2
+              }
+              label="Won Opportunities"
+              value={String(
+                wonOpportunities,
+              )}
+              description="Leads moved successfully through the pipeline."
             />
           </div>
         </Container>
@@ -213,7 +358,7 @@ export default async function ReportsPage() {
 
       <Container className="space-y-10 py-8 sm:py-10 lg:py-12">
         <section
-          aria-labelledby="portfolio-health-heading"
+          aria-labelledby="sales-overview-heading"
           className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]"
         >
           <Card
@@ -221,32 +366,46 @@ export default async function ReportsPage() {
             padding="lg"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-              Portfolio Health
+              Audit Intelligence
             </p>
 
             <h2
-              id="portfolio-health-heading"
+              id="sales-overview-heading"
               className="mt-3 font-heading text-2xl font-semibold tracking-tight text-brand"
             >
-              Current audit averages.
+              Portfolio health.
             </h2>
 
             <p className="mt-3 text-sm leading-6 text-muted">
-              A quick view of the overall quality and growth potential across all saved audits.
+              Website health and opportunity averages across the full audit library.
             </p>
 
             <div className="mt-7 grid gap-4 sm:grid-cols-2">
               <InternalMetric
-                icon={BarChart3}
+                icon={
+                  BarChart3
+                }
                 label="Average score"
                 value={`${averageScore}/100`}
               />
 
               <InternalMetric
-                icon={TrendingUp}
+                icon={
+                  TrendingUp
+                }
                 label="Avg. opportunity"
                 value={`${averageOpportunity}/100`}
               />
+            </div>
+
+            <div className="mt-5 rounded-xl border border-border bg-slate-50/70 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Saved audits
+              </p>
+
+              <p className="mt-2 font-heading text-2xl font-semibold text-brand">
+                {totalReports}
+              </p>
             </div>
           </Card>
 
@@ -254,23 +413,25 @@ export default async function ReportsPage() {
             variant="elevated"
             padding="lg"
           >
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-3">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.07] text-brand-blue">
+                <Flame
+                  aria-hidden="true"
+                  className="size-5"
+                />
+              </span>
+
               <div>
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-                  <Flame
-                    aria-hidden="true"
-                    className="size-4"
-                  />
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
+                  Priority Queue
+                </p>
 
-                  Priority Prospects
-                </div>
-
-                <h2 className="mt-3 font-heading text-2xl font-semibold tracking-tight text-brand">
-                  Sites worth reviewing first.
+                <h2 className="mt-2 font-heading text-2xl font-semibold tracking-tight text-brand">
+                  Opportunities worth reviewing first.
                 </h2>
 
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-                  Prioritized using opportunity score, weak website health, critical issues, and whether a lead has already engaged.
+                  Priority favors active pipeline stages, due follow-ups, stronger opportunity scores, weak website health, critical issues, and quick wins.
                 </p>
               </div>
             </div>
@@ -279,9 +440,13 @@ export default async function ReportsPage() {
             0 ? (
               <div className="mt-6 grid gap-3 md:grid-cols-2">
                 {priorityProspects.map(
-                  (report) => (
+                  (
+                    report,
+                  ) => (
                     <Link
-                      key={report.id}
+                      key={
+                        report.id
+                      }
                       href={`/reports/${report.id}`}
                       className="group rounded-xl border border-border bg-slate-50/60 p-4 transition hover:border-brand-blue/20 hover:bg-brand-blue/[0.035]"
                     >
@@ -306,16 +471,27 @@ export default async function ReportsPage() {
                           </p>
                         </div>
 
-                        {report.lead ? (
-                          <span className="shrink-0 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-emerald-700">
-                            Lead
-                          </span>
-                        ) : (
-                          <span className="shrink-0 rounded-full border border-brand-blue/15 bg-brand-blue/[0.06] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-brand-blue">
-                            Prospect
-                          </span>
-                        )}
+                        <PipelinePill
+                          report={
+                            report
+                          }
+                        />
                       </div>
+
+                      {report.lead ? (
+                        <p className="mt-3 truncate text-sm font-medium text-brand">
+                          {
+                            report.lead.firstName
+                          }{" "}
+                          {
+                            report.lead.lastName
+                          }
+                          {report.lead
+                            .company
+                            ? ` · ${report.lead.company}`
+                            : ""}
+                        </p>
+                      ) : null}
 
                       <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3">
                         <span className="text-xs text-muted">
@@ -341,11 +517,11 @@ export default async function ReportsPage() {
             ) : (
               <div className="mt-6 rounded-xl border border-dashed border-border bg-slate-50/60 p-6 text-center">
                 <p className="font-heading font-semibold text-brand">
-                  No priority prospects yet.
+                  No active opportunities yet.
                 </p>
 
                 <p className="mt-2 text-sm text-muted">
-                  Higher-opportunity audits will appear here automatically.
+                  Open prospects and leads will appear here automatically.
                 </p>
               </div>
             )}
@@ -355,20 +531,22 @@ export default async function ReportsPage() {
         <section>
           <div className="mb-6">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-              Audit Library
+              Pipeline & Audit Library
             </p>
 
             <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-brand">
-              All reports
+              All opportunities
             </h2>
 
             <p className="mt-3 max-w-3xl leading-7 text-muted">
-              Search, filter, sort, open, and manage saved website audits.
+              Search, filter, prioritize, and open prospects and leads across the entire website audit pipeline.
             </p>
           </div>
 
           <ReportsDashboardClient
-            reports={reports}
+            reports={
+              reports
+            }
           />
         </section>
       </Container>
@@ -377,9 +555,12 @@ export default async function ReportsPage() {
 }
 
 interface DashboardMetricProps {
-  icon: typeof FileSearch;
+  icon: typeof UserRoundCheck;
+
   label: string;
+
   value: string;
+
   description: string;
 }
 
@@ -415,7 +596,9 @@ function DashboardMetric({
 
 interface InternalMetricProps {
   icon: typeof BarChart3;
+
   label: string;
+
   value: string;
 }
 
@@ -439,5 +622,43 @@ function InternalMetric({
         {value}
       </p>
     </div>
+  );
+}
+
+function PipelinePill({
+  report,
+}: {
+  report: AuditReportSummary;
+}) {
+  if (
+    !report.lead
+  ) {
+    return (
+      <span className="shrink-0 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-600">
+        Prospect
+      </span>
+    );
+  }
+
+  const status =
+    report.lead.status;
+
+  const classes =
+    status === "WON"
+      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+      : status === "LOST"
+        ? "border-red-200 bg-red-50 text-red-700"
+        : status === "PROPOSAL"
+          ? "border-amber-200 bg-amber-50 text-amber-700"
+          : "border-brand-blue/15 bg-brand-blue/[0.06] text-brand-blue";
+
+  return (
+    <span
+      className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] ${classes}`}
+    >
+      {getPipelineLabel(
+        status,
+      )}
+    </span>
   );
 }

@@ -8,7 +8,9 @@ export type {
 } from "./repository";
 
 export type {
+  AuditLeadStatus,
   AuditReport,
+  AuditReportLeadSummary,
   AuditReportSummary,
 } from "./types";
 

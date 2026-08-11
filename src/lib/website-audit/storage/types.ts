@@ -5,6 +5,14 @@ import type {
 
 export const AUDIT_REPORT_VERSION = 1;
 
+export type AuditLeadStatus =
+  | "NEW"
+  | "CONTACTED"
+  | "QUALIFIED"
+  | "PROPOSAL"
+  | "WON"
+  | "LOST";
+
 export interface AuditReport {
   id: string;
 
@@ -26,6 +34,8 @@ export interface AuditReportLeadSummary {
 
   createdAt: string;
 
+  updatedAt: string;
+
   firstName: string;
 
   lastName: string;
@@ -37,6 +47,12 @@ export interface AuditReportLeadSummary {
   company: string | null;
 
   contacted: boolean;
+
+  status: AuditLeadStatus;
+
+  followUpAt: string | null;
+
+  notes: string | null;
 }
 
 export interface AuditReportSummary {

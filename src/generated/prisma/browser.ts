@@ -27,3 +27,8 @@ export type AuditReport = Prisma.AuditReportModel
  * 
  */
 export type Lead = Prisma.LeadModel
+/**
+ * Model LeadActivity
+ * 
+ */
+export type LeadActivity = Prisma.LeadActivityModel

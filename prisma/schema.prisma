@@ -7,27 +7,44 @@ datasource db {
   provider = "postgresql"
 }
 
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+enum LeadActivityType {
+  CREATED
+  STATUS_CHANGED
+  FOLLOW_UP_CHANGED
+  NOTES_UPDATED
+  MANUAL_NOTE
+}
+
 model AuditReport {
-  id               String   @id
-  version          Int
-  createdAt        DateTime @default(now())
+  id        String   @id
+  version   Int
+  createdAt DateTime @default(now())
 
-  website          String
-  hostname         String
-  reportMode       String
+  website    String
+  hostname   String
+  reportMode String
 
-  overallScore     Int
-  grade            String
+  overallScore Int
+  grade        String
 
   criticalIssues   Int
   quickWins        Int
   opportunityScore Int
 
-  audit            Json
+  audit Json
 
-  leadId           String?
+  leadId String?
 
-  lead             Lead?    @relation(fields: [leadId], references: [id])
+  lead Lead? @relation(fields: [leadId], references: [id])
 
   @@index([hostname])
   @@index([createdAt])
@@ -37,25 +54,56 @@ model AuditReport {
 }
 
 model Lead {
-  id          String   @id @default(cuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  createdAt   DateTime @default(now())
+  firstName String
+  lastName  String
 
-  firstName   String
-  lastName    String
+  email String
 
-  email       String
+  phone String?
 
-  phone       String?
+  company String?
 
-  company     String?
+  website String
 
-  website     String
+  contacted Boolean @default(false)
 
-  contacted   Boolean  @default(false)
+  status LeadStatus @default(NEW)
 
-  reports     AuditReport[]
+  followUpAt DateTime?
+
+  notes String?
+
+  reports AuditReport[]
+
+  activities LeadActivity[]
 
   @@index([email])
   @@index([website])
+  @@index([status])
+  @@index([followUpAt])
+}
+
+model LeadActivity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  type LeadActivityType
+
+  description String
+
+  fromValue String?
+
+  toValue String?
+
+  leadId String
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([createdAt])
+  @@index([type])
 }

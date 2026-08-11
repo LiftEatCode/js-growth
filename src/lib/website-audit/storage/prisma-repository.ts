@@ -25,12 +25,16 @@ const auditReportSummarySelect = {
     select: {
       id: true,
       createdAt: true,
+      updatedAt: true,
       firstName: true,
       lastName: true,
       email: true,
       phone: true,
       company: true,
       contacted: true,
+      status: true,
+      followUpAt: true,
+      notes: true,
     },
   },
 } satisfies Prisma.AuditReportSelect;
@@ -48,13 +52,19 @@ function toAuditReport(
 ): AuditReport {
   return {
     id: report.id,
+
     version: report.version,
+
     createdAt:
       report.createdAt.toISOString(),
+
     website: report.website,
+
     hostname: report.hostname,
+
     reportMode:
       report.reportMode as AuditReport["reportMode"],
+
     audit:
       report.audit as unknown as AuditReport["audit"],
   };
@@ -65,39 +75,69 @@ function toAuditReportSummary(
 ): AuditReportSummary {
   return {
     id: report.id,
+
     createdAt:
       report.createdAt.toISOString(),
+
     website: report.website,
+
     hostname: report.hostname,
+
     reportMode:
       report.reportMode as AuditReportSummary["reportMode"],
+
     overallScore:
       report.overallScore,
-    grade: report.grade,
+
+    grade:
+      report.grade,
+
     criticalIssues:
       report.criticalIssues,
+
     quickWins:
       report.quickWins,
+
     opportunityScore:
       report.opportunityScore,
 
     lead: report.lead
       ? {
           id: report.lead.id,
+
           createdAt:
             report.lead.createdAt.toISOString(),
+
+          updatedAt:
+            report.lead.updatedAt.toISOString(),
+
           firstName:
             report.lead.firstName,
+
           lastName:
             report.lead.lastName,
+
           email:
             report.lead.email,
+
           phone:
             report.lead.phone,
+
           company:
             report.lead.company,
+
           contacted:
             report.lead.contacted,
+
+          status:
+            report.lead.status,
+
+          followUpAt:
+            report.lead.followUpAt?.toISOString() ??
+            null,
+
+          notes:
+            report.lead.notes,
         }
       : null,
   };
@@ -109,11 +149,13 @@ export class PrismaAuditReportRepository
   async save(
     report: AuditReport,
   ): Promise<AuditReport> {
-    const audit = report.audit;
+    const audit =
+      report.audit;
 
-    const grade = getAuditGrade(
-      audit.overallScore,
-    ).letter;
+    const grade =
+      getAuditGrade(
+        audit.overallScore,
+      ).letter;
 
     const saved =
       await prisma.auditReport.upsert({
@@ -122,45 +164,77 @@ export class PrismaAuditReportRepository
         },
 
         update: {
-          version: report.version,
-          website: report.website,
-          hostname: report.hostname,
+          version:
+            report.version,
+
+          website:
+            report.website,
+
+          hostname:
+            report.hostname,
+
           reportMode:
             report.reportMode,
+
           overallScore:
             audit.overallScore,
+
           grade,
+
           criticalIssues:
             audit.summary
               .criticalIssues,
+
           quickWins:
-            audit.summary.quickWins,
+            audit.summary
+              .quickWins,
+
           opportunityScore:
-            audit.opportunity.score,
+            audit.opportunity
+              .score,
+
           audit:
             audit as unknown as Prisma.InputJsonValue,
         },
 
         create: {
-          id: report.id,
-          version: report.version,
-          createdAt: new Date(
-            report.createdAt,
-          ),
-          website: report.website,
-          hostname: report.hostname,
+          id:
+            report.id,
+
+          version:
+            report.version,
+
+          createdAt:
+            new Date(
+              report.createdAt,
+            ),
+
+          website:
+            report.website,
+
+          hostname:
+            report.hostname,
+
           reportMode:
             report.reportMode,
+
           overallScore:
             audit.overallScore,
+
           grade,
+
           criticalIssues:
             audit.summary
               .criticalIssues,
+
           quickWins:
-            audit.summary.quickWins,
+            audit.summary
+              .quickWins,
+
           opportunityScore:
-            audit.opportunity.score,
+            audit.opportunity
+              .score,
+
           audit:
             audit as unknown as Prisma.InputJsonValue,
         },
@@ -199,7 +273,8 @@ export class PrismaAuditReportRepository
           auditReportSummarySelect,
 
         orderBy: {
-          createdAt: "desc",
+          createdAt:
+            "desc",
         },
       });
 

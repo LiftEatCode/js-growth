@@ -4,15 +4,13 @@ import Link from "next/link";
 import {
   useMemo,
   useState,
-  useTransition,
 } from "react";
 import {
-  AlertCircle,
   AlertTriangle,
   ArrowRight,
   Building2,
+  CalendarClock,
   CalendarDays,
-  CheckCircle2,
   ExternalLink,
   Globe2,
   Mail,
@@ -20,13 +18,11 @@ import {
   Search,
   SlidersHorizontal,
   Target,
-  UserRound,
   UserRoundCheck,
   Users,
   Zap,
 } from "lucide-react";
 
-import { updateLeadContacted } from "@/app/reports/actions";
 import { ReportDeleteButton } from "@/components/website-audit/report-delete-button";
 import { StatBadge } from "@/components/website-audit/report-ui";
 import {
@@ -34,7 +30,10 @@ import {
   Card,
   Input,
 } from "@/components/ui";
-import type { AuditReportSummary } from "@/lib/website-audit/storage";
+import type {
+  AuditLeadStatus,
+  AuditReportSummary,
+} from "@/lib/website-audit/storage";
 
 interface ReportsDashboardClientProps {
   reports: AuditReportSummary[];
@@ -52,21 +51,27 @@ type IssueFilter =
   | "critical"
   | "clean";
 
-type LeadFilter =
+type PipelineFilter =
   | "all"
-  | "leads"
   | "prospects"
-  | "contacted"
-  | "not-contacted";
+  | "NEW"
+  | "CONTACTED"
+  | "QUALIFIED"
+  | "PROPOSAL"
+  | "WON"
+  | "LOST"
+  | "follow-up-due"
+  | "overdue";
 
 type SortOption =
+  | "sales-priority"
   | "newest"
   | "oldest"
   | "score-high"
   | "score-low"
   | "opportunity-high"
   | "opportunity-low"
-  | "sales-priority";
+  | "follow-up";
 
 const GRADE_FILTERS: {
   value: GradeFilter;
@@ -104,37 +109,60 @@ const ISSUE_FILTERS: {
   },
   {
     value: "critical",
-    label: "Has Critical Issues",
+    label:
+      "Has Critical Issues",
   },
   {
     value: "clean",
-    label: "No Critical Issues",
+    label:
+      "No Critical Issues",
   },
 ];
 
-const LEAD_FILTERS: {
-  value: LeadFilter;
+const PIPELINE_FILTERS: {
+  value: PipelineFilter;
   label: string;
 }[] = [
   {
     value: "all",
-    label: "All Reports",
-  },
-  {
-    value: "leads",
-    label: "Captured Leads",
+    label: "All",
   },
   {
     value: "prospects",
-    label: "Prospects Only",
+    label: "Prospects",
   },
   {
-    value: "not-contacted",
-    label: "Needs Follow-Up",
+    value: "NEW",
+    label: "New",
   },
   {
-    value: "contacted",
+    value: "CONTACTED",
     label: "Contacted",
+  },
+  {
+    value: "QUALIFIED",
+    label: "Qualified",
+  },
+  {
+    value: "PROPOSAL",
+    label: "Proposal",
+  },
+  {
+    value: "WON",
+    label: "Won",
+  },
+  {
+    value: "LOST",
+    label: "Lost",
+  },
+  {
+    value:
+      "follow-up-due",
+    label: "Follow-Up Due",
+  },
+  {
+    value: "overdue",
+    label: "Overdue",
   },
 ];
 
@@ -143,34 +171,57 @@ const SORT_OPTIONS: {
   label: string;
 }[] = [
   {
-    value: "sales-priority",
-    label: "Sales priority",
+    value:
+      "sales-priority",
+    label:
+      "Sales priority",
+  },
+  {
+    value: "follow-up",
+    label:
+      "Follow-up date",
   },
   {
     value: "newest",
-    label: "Newest first",
+    label:
+      "Newest first",
   },
   {
     value: "oldest",
-    label: "Oldest first",
+    label:
+      "Oldest first",
   },
   {
-    value: "score-high",
-    label: "Highest score",
+    value:
+      "score-high",
+    label:
+      "Highest score",
   },
   {
-    value: "score-low",
-    label: "Lowest score",
+    value:
+      "score-low",
+    label:
+      "Lowest score",
   },
   {
-    value: "opportunity-high",
-    label: "Highest opportunity",
+    value:
+      "opportunity-high",
+    label:
+      "Highest opportunity",
   },
   {
-    value: "opportunity-low",
-    label: "Lowest opportunity",
+    value:
+      "opportunity-low",
+    label:
+      "Lowest opportunity",
   },
 ];
+
+const CLOSED_STATUSES: AuditLeadStatus[] =
+  [
+    "WON",
+    "LOST",
+  ];
 
 function formatDate(
   value: string,
@@ -189,10 +240,214 @@ function formatDate(
   return new Intl.DateTimeFormat(
     "en-US",
     {
-      dateStyle: "medium",
-      timeStyle: "short",
+      dateStyle:
+        "medium",
+      timeStyle:
+        "short",
     },
   ).format(date);
+}
+
+function formatFollowUpDate(
+  value: string,
+): string {
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime(),
+    )
+  ) {
+    return "Unknown date";
+  }
+
+  return new Intl.DateTimeFormat(
+    "en-US",
+    {
+      dateStyle:
+        "medium",
+    },
+  ).format(date);
+}
+
+function startOfToday(): Date {
+  const date =
+    new Date();
+
+  date.setHours(
+    0,
+    0,
+    0,
+    0,
+  );
+
+  return date;
+}
+
+function endOfToday(): Date {
+  const date =
+    new Date();
+
+  date.setHours(
+    23,
+    59,
+    59,
+    999,
+  );
+
+  return date;
+}
+
+function isClosed(
+  report: AuditReportSummary,
+): boolean {
+  return Boolean(
+    report.lead &&
+      CLOSED_STATUSES.includes(
+        report.lead.status,
+      ),
+  );
+}
+
+function isFollowUpDue(
+  report: AuditReportSummary,
+): boolean {
+  if (
+    !report.lead
+      ?.followUpAt ||
+    isClosed(report)
+  ) {
+    return false;
+  }
+
+  const date =
+    new Date(
+      report.lead
+        .followUpAt,
+    );
+
+  if (
+    Number.isNaN(
+      date.getTime(),
+    )
+  ) {
+    return false;
+  }
+
+  return (
+    date <=
+    endOfToday()
+  );
+}
+
+function isOverdue(
+  report: AuditReportSummary,
+): boolean {
+  if (
+    !report.lead
+      ?.followUpAt ||
+    isClosed(report)
+  ) {
+    return false;
+  }
+
+  const date =
+    new Date(
+      report.lead
+        .followUpAt,
+    );
+
+  if (
+    Number.isNaN(
+      date.getTime(),
+    )
+  ) {
+    return false;
+  }
+
+  return (
+    date <
+    startOfToday()
+  );
+}
+
+function getPipelineLabel(
+  status: AuditLeadStatus,
+): string {
+  if (
+    status === "NEW"
+  ) {
+    return "New";
+  }
+
+  if (
+    status ===
+    "CONTACTED"
+  ) {
+    return "Contacted";
+  }
+
+  if (
+    status ===
+    "QUALIFIED"
+  ) {
+    return "Qualified";
+  }
+
+  if (
+    status ===
+    "PROPOSAL"
+  ) {
+    return "Proposal";
+  }
+
+  if (
+    status === "WON"
+  ) {
+    return "Won";
+  }
+
+  return "Lost";
+}
+
+function getPipelineTone(
+  status: AuditLeadStatus,
+):
+  | "default"
+  | "primary"
+  | "warning"
+  | "success"
+  | "danger" {
+  if (
+    status === "NEW"
+  ) {
+    return "warning";
+  }
+
+  if (
+    status ===
+      "CONTACTED" ||
+    status ===
+      "QUALIFIED"
+  ) {
+    return "primary";
+  }
+
+  if (
+    status ===
+    "PROPOSAL"
+  ) {
+    return "warning";
+  }
+
+  if (
+    status === "WON"
+  ) {
+    return "success";
+  }
+
+  return "danger";
 }
 
 function getGradeTone(
@@ -204,26 +459,36 @@ function getGradeTone(
   | "danger"
   | "default" {
   if (
-    grade.startsWith("A")
+    grade.startsWith(
+      "A",
+    )
   ) {
     return "success";
   }
 
   if (
-    grade.startsWith("B")
+    grade.startsWith(
+      "B",
+    )
   ) {
     return "primary";
   }
 
   if (
-    grade.startsWith("C")
+    grade.startsWith(
+      "C",
+    )
   ) {
     return "warning";
   }
 
   if (
-    grade.startsWith("D") ||
-    grade.startsWith("F")
+    grade.startsWith(
+      "D",
+    ) ||
+    grade.startsWith(
+      "F",
+    )
   ) {
     return "danger";
   }
@@ -266,8 +531,12 @@ function matchesGrade(
   }
 
   return (
-    grade.startsWith("D") ||
-    grade.startsWith("F")
+    grade.startsWith(
+      "D",
+    ) ||
+    grade.startsWith(
+      "F",
+    )
   );
 }
 
@@ -297,22 +566,14 @@ function matchesIssueFilter(
   );
 }
 
-function matchesLeadFilter(
+function matchesPipelineFilter(
   report: AuditReportSummary,
-  filter: LeadFilter,
+  filter: PipelineFilter,
 ): boolean {
   if (
     filter === "all"
   ) {
     return true;
-  }
-
-  if (
-    filter === "leads"
-  ) {
-    return (
-      report.lead !== null
-    );
   }
 
   if (
@@ -326,53 +587,72 @@ function matchesLeadFilter(
 
   if (
     filter ===
-    "contacted"
+    "follow-up-due"
   ) {
-    return (
-      report.lead?.contacted ===
-      true
+    return isFollowUpDue(
+      report,
+    );
+  }
+
+  if (
+    filter === "overdue"
+  ) {
+    return isOverdue(
+      report,
     );
   }
 
   return (
-    report.lead !== null &&
-    !report.lead.contacted
+    report.lead
+      ?.status ===
+    filter
   );
 }
 
 function getSalesPriorityScore(
   report: AuditReportSummary,
 ): number {
-  const leadScore =
+  const stageWeight: Record<
+    AuditLeadStatus,
+    number
+  > = {
+    NEW: 60,
+    CONTACTED: 45,
+    QUALIFIED: 80,
+    PROPOSAL: 90,
+    WON: -100,
+    LOST: -150,
+  };
+
+  const leadWeight =
     report.lead
-      ? report.lead.contacted
-        ? 20
-        : 50
-      : 0;
+      ? stageWeight[
+          report.lead
+            .status
+        ]
+      : 10;
 
-  const opportunityScore =
-    report.opportunityScore;
+  const followUpWeight =
+    isOverdue(report)
+      ? 70
+      : isFollowUpDue(
+            report,
+          )
+        ? 45
+        : 0;
 
-  const weakSiteScore =
+  return (
+    leadWeight +
+    followUpWeight +
+    report.opportunityScore +
     Math.max(
       0,
       80 -
         report.overallScore,
-    );
-
-  const criticalScore =
+    ) +
     report.criticalIssues *
-    8;
-
-  const quickWinScore =
-    report.quickWins * 2;
-
-  return (
-    leadScore +
-    opportunityScore +
-    weakSiteScore +
-    criticalScore +
-    quickWinScore
+      8 +
+    report.quickWins * 2
   );
 }
 
@@ -380,7 +660,9 @@ function sortReports(
   reports: AuditReportSummary[],
   sort: SortOption,
 ): AuditReportSummary[] {
-  return [...reports].sort(
+  return [
+    ...reports,
+  ].sort(
     (a, b) => {
       if (
         sort ===
@@ -397,7 +679,34 @@ function sortReports(
       }
 
       if (
-        sort === "newest"
+        sort ===
+        "follow-up"
+      ) {
+        const aTime =
+          a.lead
+            ?.followUpAt
+            ? new Date(
+                a.lead.followUpAt,
+              ).getTime()
+            : Number.POSITIVE_INFINITY;
+
+        const bTime =
+          b.lead
+            ?.followUpAt
+            ? new Date(
+                b.lead.followUpAt,
+              ).getTime()
+            : Number.POSITIVE_INFINITY;
+
+        return (
+          aTime -
+          bTime
+        );
+      }
+
+      if (
+        sort ===
+        "newest"
       ) {
         return (
           new Date(
@@ -410,7 +719,8 @@ function sortReports(
       }
 
       if (
-        sort === "oldest"
+        sort ===
+        "oldest"
       ) {
         return (
           new Date(
@@ -471,18 +781,27 @@ function matchesSearch(
   const fields = [
     report.hostname,
     report.website,
-    report.lead?.firstName,
-    report.lead?.lastName,
-    report.lead?.email,
-    report.lead?.company,
-    report.lead?.phone,
+    report.lead
+      ?.firstName,
+    report.lead
+      ?.lastName,
+    report.lead
+      ?.email,
+    report.lead
+      ?.company,
+    report.lead
+      ?.phone,
+    report.lead
+      ?.notes,
   ];
 
   return fields.some(
     (field) =>
       field
         ?.toLowerCase()
-        .includes(search),
+        .includes(
+          search,
+        ),
   );
 }
 
@@ -492,7 +811,8 @@ export function ReportsDashboardClient({
   const [
     search,
     setSearch,
-  ] = useState("");
+  ] =
+    useState("");
 
   const [
     gradeFilter,
@@ -511,10 +831,10 @@ export function ReportsDashboardClient({
     );
 
   const [
-    leadFilter,
-    setLeadFilter,
+    pipelineFilter,
+    setPipelineFilter,
   ] =
-    useState<LeadFilter>(
+    useState<PipelineFilter>(
       "all",
     );
 
@@ -526,12 +846,6 @@ export function ReportsDashboardClient({
       "sales-priority",
     );
 
-  const [
-    localReports,
-    setLocalReports,
-  ] =
-    useState(reports);
-
   const visibleReports =
     useMemo(() => {
       const normalizedSearch =
@@ -540,8 +854,10 @@ export function ReportsDashboardClient({
           .toLowerCase();
 
       const filtered =
-        localReports.filter(
-          (report) =>
+        reports.filter(
+          (
+            report,
+          ) =>
             matchesSearch(
               report,
               normalizedSearch,
@@ -554,9 +870,9 @@ export function ReportsDashboardClient({
               report,
               issueFilter,
             ) &&
-            matchesLeadFilter(
+            matchesPipelineFilter(
               report,
-              leadFilter,
+              pipelineFilter,
             ),
         );
 
@@ -565,55 +881,31 @@ export function ReportsDashboardClient({
         sort,
       );
     }, [
-      localReports,
+      reports,
       search,
       gradeFilter,
       issueFilter,
-      leadFilter,
+      pipelineFilter,
       sort,
     ]);
 
   function resetFilters(): void {
     setSearch("");
+
     setGradeFilter(
       "all",
     );
+
     setIssueFilter(
       "all",
     );
-    setLeadFilter(
+
+    setPipelineFilter(
       "all",
     );
+
     setSort(
       "sales-priority",
-    );
-  }
-
-  function updateLocalLeadStatus(
-    leadId: string,
-    contacted: boolean,
-  ): void {
-    setLocalReports(
-      (currentReports) =>
-        currentReports.map(
-          (report) => {
-            if (
-              report.lead?.id !==
-              leadId
-            ) {
-              return report;
-            }
-
-            return {
-              ...report,
-
-              lead: {
-                ...report.lead,
-                contacted,
-              },
-            };
-          },
-        ),
     );
   }
 
@@ -631,7 +923,7 @@ export function ReportsDashboardClient({
                 className="size-4"
               />
 
-              Report Filters
+              Pipeline Filters
             </div>
 
             <h3 className="mt-2 font-heading text-xl font-semibold text-brand">
@@ -639,17 +931,19 @@ export function ReportsDashboardClient({
             </h3>
 
             <p className="mt-2 text-sm leading-6 text-muted">
-              Search websites,
-              contacts, companies, or
-              email addresses and
-              narrow the list by lead
-              state or audit health.
+              Search websites, contacts, companies, emails, or internal notes and filter by pipeline stage, follow-up state, grade, or audit health.
             </p>
           </div>
 
           <div className="rounded-full border border-border bg-slate-50 px-3 py-1.5 text-xs font-medium text-muted">
-            {visibleReports.length} of{" "}
-            {localReports.length} reports
+            {
+              visibleReports.length
+            }{" "}
+            of{" "}
+            {
+              reports.length
+            }{" "}
+            reports
           </div>
         </div>
 
@@ -661,22 +955,33 @@ export function ReportsDashboardClient({
             />
 
             <Input
-              value={search}
-              onChange={(event) =>
+              value={
+                search
+              }
+              onChange={(
+                event,
+              ) =>
                 setSearch(
-                  event.target.value,
+                  event
+                    .target
+                    .value,
                 )
               }
-              placeholder="Search website, company, contact, email..."
+              placeholder="Search website, company, contact, email, notes..."
               className="h-11 pl-11"
             />
           </div>
 
           <select
-            value={sort}
-            onChange={(event) =>
+            value={
+              sort
+            }
+            onChange={(
+              event,
+            ) =>
               setSort(
-                event.target
+                event
+                  .target
                   .value as SortOption,
               )
             }
@@ -684,7 +989,9 @@ export function ReportsDashboardClient({
             aria-label="Sort reports"
           >
             {SORT_OPTIONS.map(
-              (option) => (
+              (
+                option,
+              ) => (
                 <option
                   key={
                     option.value
@@ -702,10 +1009,12 @@ export function ReportsDashboardClient({
           </select>
         </div>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-3">
-          <FilterGroup label="Lead Status">
-            {LEAD_FILTERS.map(
-              (filter) => (
+        <div className="mt-6">
+          <FilterGroup label="Pipeline">
+            {PIPELINE_FILTERS.map(
+              (
+                filter,
+              ) => (
                 <Button
                   key={
                     filter.value
@@ -713,13 +1022,13 @@ export function ReportsDashboardClient({
                   type="button"
                   size="sm"
                   variant={
-                    leadFilter ===
+                    pipelineFilter ===
                     filter.value
                       ? "default"
                       : "outline"
                   }
                   onClick={() =>
-                    setLeadFilter(
+                    setPipelineFilter(
                       filter.value,
                     )
                   }
@@ -731,10 +1040,14 @@ export function ReportsDashboardClient({
               ),
             )}
           </FilterGroup>
+        </div>
 
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <FilterGroup label="Website Grade">
             {GRADE_FILTERS.map(
-              (filter) => (
+              (
+                filter,
+              ) => (
                 <Button
                   key={
                     filter.value
@@ -763,7 +1076,9 @@ export function ReportsDashboardClient({
 
           <FilterGroup label="Critical Issues">
             {ISSUE_FILTERS.map(
-              (filter) => (
+              (
+                filter,
+              ) => (
                 <Button
                   key={
                     filter.value
@@ -793,11 +1108,7 @@ export function ReportsDashboardClient({
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
           <p className="text-xs leading-5 text-muted">
-            Sales priority favors
-            engaged leads, high
-            opportunity scores, weak
-            website health, critical
-            issues, and quick wins.
+            Sales priority favors qualified opportunities, proposals, due follow-ups, high opportunity scores, weak website health, critical issues, and quick wins.
           </p>
 
           <Button
@@ -817,12 +1128,15 @@ export function ReportsDashboardClient({
       0 ? (
         <div className="space-y-5">
           {visibleReports.map(
-            (report) => (
+            (
+              report,
+            ) => (
               <ReportCard
-                key={report.id}
-                report={report}
-                onLeadStatusChange={
-                  updateLocalLeadStatus
+                key={
+                  report.id
+                }
+                report={
+                  report
                 }
               />
             ),
@@ -836,13 +1150,11 @@ export function ReportsDashboardClient({
           />
 
           <h2 className="mt-4 font-heading text-xl font-semibold text-brand">
-            No matching reports
+            No matching opportunities
           </h2>
 
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted">
-            Try changing the search,
-            lead status, grade, or
-            critical-issue filters.
+            Try changing the search, pipeline stage, grade, follow-up state, or critical-issue filters.
           </p>
 
           <Button
@@ -861,139 +1173,144 @@ export function ReportsDashboardClient({
   );
 }
 
-interface ReportCardProps {
-  report: AuditReportSummary;
-  onLeadStatusChange: (
-    leadId: string,
-    contacted: boolean,
-  ) => void;
-}
-
 function ReportCard({
   report,
-  onLeadStatusChange,
-}: ReportCardProps) {
+}: {
+  report: AuditReportSummary;
+}) {
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md">
       <div className="grid xl:grid-cols-[1fr_360px]">
         <div className="p-5 sm:p-6">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-            <div className="min-w-0">
-              <div className="flex flex-wrap gap-2">
-                <StatBadge
-                  label={
-                    report.grade
-                  }
-                  tone={getGradeTone(
-                    report.grade,
-                  )}
-                />
+          <div className="flex flex-wrap gap-2">
+            <StatBadge
+              label={
+                report.grade
+              }
+              tone={getGradeTone(
+                report.grade,
+              )}
+            />
 
-                <StatBadge
-                  label={`${report.overallScore}/100 website`}
-                />
+            <StatBadge
+              label={`${report.overallScore}/100 website`}
+            />
 
-                <StatBadge
-                  label={`${report.opportunityScore}/100 opportunity`}
-                  tone="primary"
-                />
+            <StatBadge
+              label={`${report.opportunityScore}/100 opportunity`}
+              tone="primary"
+            />
 
-                {report.lead ? (
-                  <StatBadge
-                    label={
-                      report.lead
-                        .contacted
-                        ? "Contacted"
-                        : "Needs follow-up"
-                    }
-                    tone={
-                      report.lead
-                        .contacted
-                        ? "success"
-                        : "warning"
-                    }
-                  />
-                ) : (
-                  <StatBadge
-                    label="Prospect"
-                  />
+            {report.lead ? (
+              <StatBadge
+                label={getPipelineLabel(
+                  report.lead
+                    .status,
                 )}
-              </div>
+                tone={getPipelineTone(
+                  report.lead
+                    .status,
+                )}
+              />
+            ) : (
+              <StatBadge
+                label="Prospect"
+              />
+            )}
 
-              <div className="mt-5 flex items-center gap-2 text-sm text-muted">
-                <Globe2
-                  aria-hidden="true"
-                  className="size-4 text-brand-blue"
-                />
+            {isOverdue(
+              report,
+            ) ? (
+              <StatBadge
+                label="Follow-up overdue"
+                tone="danger"
+              />
+            ) : isFollowUpDue(
+                report,
+              ) ? (
+              <StatBadge
+                label="Follow-up due"
+                tone="warning"
+              />
+            ) : null}
+          </div>
 
-                {
-                  report.hostname
+          <div className="mt-5 flex items-center gap-2 text-sm text-muted">
+            <Globe2
+              aria-hidden="true"
+              className="size-4 text-brand-blue"
+            />
+
+            {
+              report.hostname
+            }
+          </div>
+
+          <h2 className="mt-1 break-all font-heading text-xl font-semibold tracking-tight text-brand sm:text-2xl">
+            {
+              report.website
+            }
+          </h2>
+
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted">
+            <span className="inline-flex items-center gap-2">
+              <CalendarDays
+                aria-hidden="true"
+                className="size-4"
+              />
+
+              {formatDate(
+                report.createdAt,
+              )}
+            </span>
+
+            <span className="inline-flex items-center gap-2">
+              <AlertTriangle
+                aria-hidden="true"
+                className={
+                  report.criticalIssues >
+                  0
+                    ? "size-4 text-red-500"
+                    : "size-4"
                 }
-              </div>
+              />
 
-              <h2 className="mt-1 break-all font-heading text-xl font-semibold tracking-tight text-brand sm:text-2xl">
-                {report.website}
-              </h2>
+              {
+                report.criticalIssues
+              }{" "}
+              critical
+            </span>
 
-              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted">
-                <span className="inline-flex items-center gap-2">
-                  <CalendarDays
-                    aria-hidden="true"
-                    className="size-4"
-                  />
+            <span className="inline-flex items-center gap-2">
+              <Zap
+                aria-hidden="true"
+                className="size-4 text-brand-blue"
+              />
 
-                  {formatDate(
-                    report.createdAt,
-                  )}
-                </span>
+              {
+                report.quickWins
+              }{" "}
+              quick wins
+            </span>
 
-                <span className="inline-flex items-center gap-2">
-                  <AlertTriangle
-                    aria-hidden="true"
-                    className={
-                      report.criticalIssues >
-                      0
-                        ? "size-4 text-red-500"
-                        : "size-4"
-                    }
-                  />
+            <span className="inline-flex items-center gap-2">
+              <Target
+                aria-hidden="true"
+                className="size-4"
+              />
 
-                  {
-                    report.criticalIssues
-                  }{" "}
-                  critical
-                </span>
-
-                <span className="inline-flex items-center gap-2">
-                  <Zap
-                    aria-hidden="true"
-                    className="size-4 text-brand-blue"
-                  />
-
-                  {
-                    report.quickWins
-                  }{" "}
-                  quick wins
-                </span>
-
-                <span className="inline-flex items-center gap-2">
-                  <Target
-                    aria-hidden="true"
-                    className="size-4"
-                  />
-
-                  {
-                    report.opportunityScore
-                  }{" "}
-                  opportunity
-                </span>
-              </div>
-            </div>
+              {
+                report.opportunityScore
+              }{" "}
+              opportunity
+            </span>
           </div>
 
           <div className="mt-6 flex flex-col gap-3 border-t border-border pt-5 sm:flex-row">
             <Button
-              nativeButton={false}
+              nativeButton={
+                false
+              }
               render={
                 <Link
                   href={`/reports/${report.id}`}
@@ -1010,7 +1327,9 @@ function ReportCard({
 
             <Button
               variant="outline"
-              nativeButton={false}
+              nativeButton={
+                false
+              }
               render={
                 <a
                   href={
@@ -1042,12 +1361,9 @@ function ReportCard({
 
         <div className="border-t border-border bg-slate-50/60 p-5 sm:p-6 xl:border-l xl:border-t-0">
           {report.lead ? (
-            <LeadPanel
-              lead={
-                report.lead
-              }
-              onStatusChange={
-                onLeadStatusChange
+            <LeadSummaryPanel
+              report={
+                report
               }
             />
           ) : (
@@ -1059,65 +1375,16 @@ function ReportCard({
   );
 }
 
-interface LeadPanelProps {
-  lead: NonNullable<
-    AuditReportSummary["lead"]
-  >;
-  onStatusChange: (
-    leadId: string,
-    contacted: boolean,
-  ) => void;
-}
+function LeadSummaryPanel({
+  report,
+}: {
+  report: AuditReportSummary;
+}) {
+  const lead =
+    report.lead;
 
-function LeadPanel({
-  lead,
-  onStatusChange,
-}: LeadPanelProps) {
-  const [
-    isPending,
-    startTransition,
-  ] = useTransition();
-
-  const [
-    error,
-    setError,
-  ] =
-    useState<string | null>(
-      null,
-    );
-
-  function handleStatusChange(): void {
-    setError(null);
-
-    const nextContacted =
-      !lead.contacted;
-
-    startTransition(
-      async () => {
-        const result =
-          await updateLeadContacted(
-            lead.id,
-            nextContacted,
-          );
-
-        if (
-          !result.success
-        ) {
-          setError(
-            result.message ??
-              "Could not update lead.",
-          );
-
-          return;
-        }
-
-        onStatusChange(
-          lead.id,
-          result.contacted ??
-            nextContacted,
-        );
-      },
-    );
+  if (!lead) {
+    return null;
   }
 
   return (
@@ -1134,28 +1401,31 @@ function LeadPanel({
           </div>
 
           <h3 className="mt-2 font-heading text-lg font-semibold text-brand">
-            {lead.firstName}{" "}
-            {lead.lastName}
+            {
+              lead.firstName
+            }{" "}
+            {
+              lead.lastName
+            }
           </h3>
         </div>
 
-        <span
-          className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] ${
-            lead.contacted
-              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-              : "border-amber-200 bg-amber-50 text-amber-700"
-          }`}
-        >
-          {lead.contacted
-            ? "Contacted"
-            : "Follow Up"}
-        </span>
+        <StatBadge
+          label={getPipelineLabel(
+            lead.status,
+          )}
+          tone={getPipelineTone(
+            lead.status,
+          )}
+        />
       </div>
 
       <div className="mt-5 space-y-3">
         {lead.company ? (
           <LeadDetail
-            icon={Building2}
+            icon={
+              Building2
+            }
             value={
               lead.company
             }
@@ -1163,71 +1433,83 @@ function LeadPanel({
         ) : null}
 
         <LeadDetail
-          icon={Mail}
-          value={lead.email}
+          icon={
+            Mail
+          }
+          value={
+            lead.email
+          }
           href={`mailto:${lead.email}`}
         />
 
         {lead.phone ? (
           <LeadDetail
-            icon={Phone}
-            value={lead.phone}
+            icon={
+              Phone
+            }
+            value={
+              lead.phone
+            }
             href={`tel:${lead.phone}`}
           />
         ) : null}
 
-        <LeadDetail
-          icon={CalendarDays}
-          value={`Captured ${formatDate(
-            lead.createdAt,
-          )}`}
-        />
+        {lead.followUpAt ? (
+          <LeadDetail
+            icon={
+              CalendarClock
+            }
+            value={`Follow up ${formatFollowUpDate(
+              lead.followUpAt,
+            )}`}
+            emphasis={
+              isFollowUpDue(
+                report,
+              )
+            }
+          />
+        ) : (
+          <LeadDetail
+            icon={
+              CalendarClock
+            }
+            value="No follow-up scheduled"
+          />
+        )}
       </div>
 
-      {error ? (
-        <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs leading-5 text-red-700">
-          <AlertCircle
-            aria-hidden="true"
-            className="mt-0.5 size-4 shrink-0"
-          />
+      {lead.notes ? (
+        <div className="mt-5 rounded-xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+            Latest notes
+          </p>
 
-          {error}
+          <p className="mt-2 line-clamp-3 whitespace-pre-wrap text-sm leading-6 text-muted">
+            {
+              lead.notes
+            }
+          </p>
         </div>
       ) : null}
 
       <Button
-        type="button"
         size="sm"
-        variant={
-          lead.contacted
-            ? "outline"
-            : "default"
-        }
         className="mt-5 w-full"
-        disabled={isPending}
-        onClick={
-          handleStatusChange
+        nativeButton={
+          false
+        }
+        render={
+          <Link
+            href={`/reports/${report.id}`}
+          />
         }
       >
-        {lead.contacted ? (
-          <>
-            <UserRound
-              aria-hidden="true"
-              className="size-4"
-            />
+        Manage Opportunity
 
-            Mark Not Contacted
-          </>
-        ) : (
-          <>
-            <CheckCircle2
-              aria-hidden="true"
-              className="size-4"
-            />
-
-            Mark Contacted
-          </>
-        )}
+        <ArrowRight
+          aria-hidden="true"
+          className="ml-1 size-4"
+        />
       </Button>
     </div>
   );
@@ -1242,7 +1524,7 @@ function ProspectPanel() {
           className="size-4"
         />
 
-        Prospect Only
+        Prospect
       </div>
 
       <h3 className="mt-2 font-heading text-lg font-semibold text-brand">
@@ -1250,21 +1532,16 @@ function ProspectPanel() {
       </h3>
 
       <p className="mt-3 text-sm leading-6 text-muted">
-        This audit exists in the
-        report library, but nobody
-        has submitted the professional
-        report form for it yet.
+        This website has been audited, but nobody has submitted contact information for the professional report.
       </p>
 
       <div className="mt-5 rounded-xl border border-brand-blue/10 bg-brand-blue/[0.04] p-4">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-blue">
-          Sales Opportunity
+          Outreach Opportunity
         </p>
 
         <p className="mt-2 text-sm leading-6 text-muted">
-          Use the audit results to
-          evaluate whether this site
-          is worth proactive outreach.
+          Review the audit and decide whether this site is worth proactive outreach.
         </p>
       </div>
     </div>
@@ -1272,24 +1549,40 @@ function ProspectPanel() {
 }
 
 interface LeadDetailProps {
-  icon: typeof Mail;
+  icon:
+    typeof Mail;
+
   value: string;
+
   href?: string;
+
+  emphasis?: boolean;
 }
 
 function LeadDetail({
   icon: Icon,
   value,
   href,
+  emphasis = false,
 }: LeadDetailProps) {
   const content = (
     <>
       <Icon
         aria-hidden="true"
-        className="size-4 shrink-0 text-brand-blue"
+        className={`size-4 shrink-0 ${
+          emphasis
+            ? "text-amber-600"
+            : "text-brand-blue"
+        }`}
       />
 
-      <span className="min-w-0 break-words">
+      <span
+        className={`min-w-0 break-words ${
+          emphasis
+            ? "font-medium text-amber-700"
+            : ""
+        }`}
+      >
         {value}
       </span>
     </>
@@ -1298,7 +1591,9 @@ function LeadDetail({
   if (href) {
     return (
       <a
-        href={href}
+        href={
+          href
+        }
         className="flex items-start gap-3 text-sm leading-6 text-muted transition hover:text-brand-blue"
       >
         {content}
@@ -1315,7 +1610,9 @@ function LeadDetail({
 
 interface FilterGroupProps {
   label: string;
-  children: React.ReactNode;
+
+  children:
+    React.ReactNode;
 }
 
 function FilterGroup({
