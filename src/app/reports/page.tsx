@@ -11,7 +11,8 @@ import {
   UserRoundCheck,
 } from "lucide-react";
 
-import { ReportsDashboardClient } from "@/components/website-audit/reports-dashboard-client";
+import { FollowUpCommandCenter } from "@/components/website-audit/follow-up-command-center";
+import { ReportsViewSwitcher } from "@/components/website-audit/reports-view-switcher";
 import {
   Button,
   Card,
@@ -90,7 +91,8 @@ function isFollowUpDue(
   );
 
   return (
-    followUp <= endOfToday
+    followUp <=
+    endOfToday
   );
 }
 
@@ -153,7 +155,9 @@ function getPriorityScore(
       : 10;
 
   const followUpWeight =
-    isFollowUpDue(report)
+    isFollowUpDue(
+      report,
+    )
       ? 50
       : 0;
 
@@ -197,7 +201,8 @@ export default async function ReportsPage() {
     reports.filter(
       (report) =>
         report.lead
-          ?.status === "WON",
+          ?.status ===
+        "WON",
     ).length;
 
   const totalReports =
@@ -236,7 +241,9 @@ export default async function ReportsPage() {
       : 0;
 
   const priorityProspects =
-    [...reports]
+    [
+      ...reports,
+    ]
       .filter(
         (report) =>
           !report.lead ||
@@ -246,8 +253,12 @@ export default async function ReportsPage() {
       )
       .sort(
         (a, b) =>
-          getPriorityScore(b) -
-          getPriorityScore(a),
+          getPriorityScore(
+            b,
+          ) -
+          getPriorityScore(
+            a,
+          ),
       )
       .slice(
         0,
@@ -357,6 +368,12 @@ export default async function ReportsPage() {
       </section>
 
       <Container className="space-y-10 py-8 sm:py-10 lg:py-12">
+        <FollowUpCommandCenter
+          reports={
+            reports
+          }
+        />
+
         <section
           aria-labelledby="sales-overview-heading"
           className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]"
@@ -404,7 +421,9 @@ export default async function ReportsPage() {
               </p>
 
               <p className="mt-2 font-heading text-2xl font-semibold text-brand">
-                {totalReports}
+                {
+                  totalReports
+                }
               </p>
             </div>
           </Card>
@@ -529,21 +548,7 @@ export default async function ReportsPage() {
         </section>
 
         <section>
-          <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-              Pipeline & Audit Library
-            </p>
-
-            <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-brand">
-              All opportunities
-            </h2>
-
-            <p className="mt-3 max-w-3xl leading-7 text-muted">
-              Search, filter, prioritize, and open prospects and leads across the entire website audit pipeline.
-            </p>
-          </div>
-
-          <ReportsDashboardClient
+          <ReportsViewSwitcher
             reports={
               reports
             }
@@ -555,7 +560,8 @@ export default async function ReportsPage() {
 }
 
 interface DashboardMetricProps {
-  icon: typeof UserRoundCheck;
+  icon:
+    typeof UserRoundCheck;
 
   label: string;
 
@@ -595,7 +601,8 @@ function DashboardMetric({
 }
 
 interface InternalMetricProps {
-  icon: typeof BarChart3;
+  icon:
+    typeof BarChart3;
 
   label: string;
 
@@ -628,7 +635,8 @@ function InternalMetric({
 function PipelinePill({
   report,
 }: {
-  report: AuditReportSummary;
+  report:
+    AuditReportSummary;
 }) {
   if (
     !report.lead
@@ -646,9 +654,11 @@ function PipelinePill({
   const classes =
     status === "WON"
       ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-      : status === "LOST"
+      : status ===
+          "LOST"
         ? "border-red-200 bg-red-50 text-red-700"
-        : status === "PROPOSAL"
+        : status ===
+            "PROPOSAL"
           ? "border-amber-200 bg-amber-50 text-amber-700"
           : "border-brand-blue/15 bg-brand-blue/[0.06] text-brand-blue";
 

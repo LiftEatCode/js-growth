@@ -6,7 +6,6 @@ import {
   ArrowLeft,
   ArrowRight,
   BarChart3,
-  Building2,
   CalendarDays,
   CheckCircle2,
   Download,
@@ -27,8 +26,10 @@ import {
   LeadActivityTimeline,
   type LeadActivityItem,
 } from "@/components/website-audit/lead-activity-timeline";
+import { LeadDetailsEditor } from "@/components/website-audit/lead-details-editor";
 import { LeadManualActivityPanel } from "@/components/website-audit/lead-manual-activity-panel";
 import { LeadPipelinePanel } from "@/components/website-audit/lead-pipeline-panel";
+import { ProspectToLeadPanel } from "@/components/website-audit/prospect-to-lead-panel";
 import { StatBadge } from "@/components/website-audit/report-ui";
 import {
   Button,
@@ -49,8 +50,7 @@ interface InternalReportPageProps {
 }
 
 export const metadata: Metadata = {
-  title:
-    "Internal Audit Workspace",
+  title: "Internal Audit Workspace",
 
   description:
     "Internal JS Solutions website audit prospect and lead workspace.",
@@ -275,8 +275,7 @@ export default async function InternalReportPage({
 
               activities: {
                 orderBy: {
-                  createdAt:
-                    "desc",
+                  createdAt: "desc",
                 },
 
                 take: 50,
@@ -371,9 +370,7 @@ export default async function InternalReportPage({
         <Container className="relative py-8 sm:py-10">
           <Button
             variant="outline"
-            nativeButton={
-              false
-            }
+            nativeButton={false}
             render={
               <Link href="/reports" />
             }
@@ -416,7 +413,7 @@ export default async function InternalReportPage({
               <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
                 {lead
                   ? `Review the audit intelligence, lead information, pipeline history, and strongest sales opportunities associated with ${report.hostname}.`
-                  : `Review the audit intelligence and determine whether ${report.hostname} is worth proactive outreach.`}
+                  : `Review the audit intelligence and decide whether ${report.hostname} should enter the JS Solutions sales pipeline.`}
               </p>
 
               {lead ? (
@@ -439,15 +436,19 @@ export default async function InternalReportPage({
                     />
                   ) : null}
                 </div>
-              ) : null}
+              ) : (
+                <div className="mt-5">
+                  <StatBadge
+                    label="Prospect"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button
                 size="lg"
-                nativeButton={
-                  false
-                }
+                nativeButton={false}
                 render={
                   <a
                     href={
@@ -469,9 +470,7 @@ export default async function InternalReportPage({
               <Button
                 size="lg"
                 variant="outline"
-                nativeButton={
-                  false
-                }
+                nativeButton={false}
                 render={
                   <Link
                     href={`/report/${report.id}`}
@@ -491,18 +490,14 @@ export default async function InternalReportPage({
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <HeroMetric
-              icon={
-                BarChart3
-              }
+              icon={BarChart3}
               label="Website Score"
               value={`${audit.overallScore}/100`}
               detail={`Grade ${grade.letter}`}
             />
 
             <HeroMetric
-              icon={
-                TrendingUp
-              }
+              icon={TrendingUp}
               label="Opportunity"
               value={`${audit.opportunity.score}/100`}
               detail={`${getOpportunityLabel(
@@ -511,9 +506,7 @@ export default async function InternalReportPage({
             />
 
             <HeroMetric
-              icon={
-                AlertTriangle
-              }
+              icon={AlertTriangle}
               label="Critical Issues"
               value={String(
                 audit.summary
@@ -523,9 +516,7 @@ export default async function InternalReportPage({
             />
 
             <HeroMetric
-              icon={
-                Zap
-              }
+              icon={Zap}
               label="Quick Wins"
               value={String(
                 audit.summary
@@ -616,9 +607,7 @@ export default async function InternalReportPage({
 
               <div className="mt-7 grid gap-4 md:grid-cols-2">
                 <SalesSignal
-                  icon={
-                    TrendingUp
-                  }
+                  icon={TrendingUp}
                   title="Growth opportunity"
                   value={`${audit.opportunity.score}/100`}
                   description={`${getOpportunityLabel(
@@ -627,18 +616,14 @@ export default async function InternalReportPage({
                 />
 
                 <SalesSignal
-                  icon={
-                    AlertTriangle
-                  }
+                  icon={AlertTriangle}
                   title="Pain signals"
                   value={`${audit.summary.criticalIssues} critical`}
                   description={`${audit.summary.highImpactFindings} findings were classified as having stronger business impact.`}
                 />
 
                 <SalesSignal
-                  icon={
-                    Zap
-                  }
+                  icon={Zap}
                   title="Quick wins"
                   value={String(
                     audit.summary
@@ -648,9 +633,7 @@ export default async function InternalReportPage({
                 />
 
                 <SalesSignal
-                  icon={
-                    BarChart3
-                  }
+                  icon={BarChart3}
                   title="Current health"
                   value={`${audit.overallScore}/100`}
                   description={`The current audit produced a ${grade.letter} website grade.`}
@@ -775,6 +758,30 @@ export default async function InternalReportPage({
           <aside className="space-y-6">
             {lead ? (
               <>
+                <LeadDetailsEditor
+                  leadId={
+                    lead.id
+                  }
+                  reportId={
+                    report.id
+                  }
+                  firstName={
+                    lead.firstName
+                  }
+                  lastName={
+                    lead.lastName
+                  }
+                  email={
+                    lead.email
+                  }
+                  phone={
+                    lead.phone
+                  }
+                  company={
+                    lead.company
+                  }
+                />
+
                 <Card
                   variant="elevated"
                   padding="lg"
@@ -798,7 +805,7 @@ export default async function InternalReportPage({
                   </div>
 
                   <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-                    Lead
+                    Lead Status
                   </p>
 
                   <h2 className="mt-2 font-heading text-2xl font-semibold text-brand">
@@ -811,46 +818,8 @@ export default async function InternalReportPage({
                   </h2>
 
                   <div className="mt-6 space-y-4">
-                    {lead.company ? (
-                      <ContactRow
-                        icon={
-                          Building2
-                        }
-                        label="Company"
-                        value={
-                          lead.company
-                        }
-                      />
-                    ) : null}
-
                     <ContactRow
-                      icon={
-                        Mail
-                      }
-                      label="Email"
-                      value={
-                        lead.email
-                      }
-                      href={`mailto:${lead.email}`}
-                    />
-
-                    {lead.phone ? (
-                      <ContactRow
-                        icon={
-                          Phone
-                        }
-                        label="Phone"
-                        value={
-                          lead.phone
-                        }
-                        href={`tel:${lead.phone}`}
-                      />
-                    ) : null}
-
-                    <ContactRow
-                      icon={
-                        CalendarDays
-                      }
+                      icon={CalendarDays}
                       label="Captured"
                       value={formatDate(
                         lead.createdAt,
@@ -858,9 +827,7 @@ export default async function InternalReportPage({
                     />
 
                     <ContactRow
-                      icon={
-                        CalendarDays
-                      }
+                      icon={CalendarDays}
                       label="Last updated"
                       value={formatDate(
                         lead.updatedAt,
@@ -869,9 +836,7 @@ export default async function InternalReportPage({
 
                     {lead.followUpAt ? (
                       <ContactRow
-                        icon={
-                          CalendarDays
-                        }
+                        icon={CalendarDays}
                         label="Follow up"
                         value={formatDate(
                           lead.followUpAt,
@@ -882,9 +847,7 @@ export default async function InternalReportPage({
 
                   <div className="mt-6 grid gap-3">
                     <Button
-                      nativeButton={
-                        false
-                      }
+                      nativeButton={false}
                       render={
                         <a
                           href={`mailto:${lead.email}`}
@@ -902,9 +865,7 @@ export default async function InternalReportPage({
                     {lead.phone ? (
                       <Button
                         variant="outline"
-                        nativeButton={
-                          false
-                        }
+                        nativeButton={false}
                         render={
                           <a
                             href={`tel:${lead.phone}`}
@@ -951,35 +912,46 @@ export default async function InternalReportPage({
                 />
               </>
             ) : (
-              <Card
-                variant="elevated"
-                padding="lg"
-              >
-                <span className="flex size-11 items-center justify-center rounded-xl border border-border bg-slate-50 text-muted">
-                  <UserRound
-                    aria-hidden="true"
-                    className="size-5"
-                  />
-                </span>
+              <>
+                <Card
+                  variant="elevated"
+                  padding="lg"
+                >
+                  <span className="flex size-11 items-center justify-center rounded-xl border border-border bg-slate-50 text-muted">
+                    <UserRound
+                      aria-hidden="true"
+                      className="size-5"
+                    />
+                  </span>
 
-                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-                  Prospect
-                </p>
-
-                <h2 className="mt-2 font-heading text-xl font-semibold text-brand">
-                  No lead captured.
-                </h2>
-
-                <p className="mt-3 text-sm leading-6 text-muted">
-                  This website has been audited, but nobody has requested the professional report yet.
-                </p>
-
-                <div className="mt-5 rounded-xl border border-brand-blue/10 bg-brand-blue/[0.04] p-4">
-                  <p className="text-sm leading-6 text-muted">
-                    Use the audit intelligence to determine whether proactive outreach makes sense.
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+                    Prospect
                   </p>
-                </div>
-              </Card>
+
+                  <h2 className="mt-2 font-heading text-xl font-semibold text-brand">
+                    No lead captured.
+                  </h2>
+
+                  <p className="mt-3 text-sm leading-6 text-muted">
+                    This website has been audited, but no lead is attached yet.
+                  </p>
+
+                  <div className="mt-5 rounded-xl border border-brand-blue/10 bg-brand-blue/[0.04] p-4">
+                    <p className="text-sm leading-6 text-muted">
+                      If this looks like a business worth pursuing, convert it into a lead below and begin tracking outreach.
+                    </p>
+                  </div>
+                </Card>
+
+                <ProspectToLeadPanel
+                  reportId={
+                    report.id
+                  }
+                  hostname={
+                    report.hostname
+                  }
+                />
+              </>
             )}
 
             <Card
@@ -997,9 +969,7 @@ export default async function InternalReportPage({
               <div className="mt-5 grid gap-3">
                 <Button
                   variant="outline"
-                  nativeButton={
-                    false
-                  }
+                  nativeButton={false}
                   render={
                     <Link
                       href={`/report/${report.id}`}
@@ -1016,9 +986,7 @@ export default async function InternalReportPage({
 
                 <Button
                   variant="outline"
-                  nativeButton={
-                    false
-                  }
+                  nativeButton={false}
                   render={
                     <a
                       href={`/report/${report.id}/pdf`}
@@ -1037,9 +1005,7 @@ export default async function InternalReportPage({
 
                 <Button
                   variant="outline"
-                  nativeButton={
-                    false
-                  }
+                  nativeButton={false}
                   render={
                     <a
                       href={
@@ -1104,7 +1070,12 @@ export default async function InternalReportPage({
                       lead.status,
                     )}
                   />
-                ) : null}
+                ) : (
+                  <DataRow
+                    label="CRM status"
+                    value="Prospect"
+                  />
+                )}
               </div>
             </Card>
           </aside>

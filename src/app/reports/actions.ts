@@ -27,6 +27,18 @@ export interface AddLeadActivityResult {
   message?: string;
 }
 
+export interface UpdateLeadBoardStatusResult {
+  success: boolean;
+  message?: string;
+  status?: LeadStatusValue;
+}
+
+export interface CompleteLeadFollowUpResult {
+  success: boolean;
+  message?: string;
+  nextFollowUpAt?: string | null;
+}
+
 const LEAD_STATUSES = [
   "NEW",
   "CONTACTED",
@@ -154,6 +166,29 @@ function formatActivityDate(
       dateStyle: "medium",
     },
   ).format(value);
+}
+
+function parseDateInput(
+  value: string,
+): Date | null {
+  if (!value) {
+    return null;
+  }
+
+  const parsedDate =
+    new Date(
+      `${value}T12:00:00`,
+    );
+
+  if (
+    Number.isNaN(
+      parsedDate.getTime(),
+    )
+  ) {
+    return null;
+  }
+
+  return parsedDate;
 }
 
 export async function deleteReport(
@@ -327,6 +362,310 @@ export async function updateLeadContacted(
   }
 }
 
+export async function updateLeadBoardStatus(
+  leadId: string,
+  reportId: string,
+  nextStatus: string,
+): Promise<UpdateLeadBoardStatusResult> {
+  if (!(await isAuthorized())) {
+    return {
+      success: false,
+      message:
+        "You are not authorized to update the sales pipeline.",
+    };
+  }
+
+  if (!leadId) {
+    return {
+      success: false,
+      message:
+        "A lead ID is required.",
+    };
+  }
+
+  if (!isLeadStatus(nextStatus)) {
+    return {
+      success: false,
+      message:
+        "Select a valid pipeline status.",
+    };
+  }
+
+  try {
+    const existingLead =
+      await prisma.lead.findUnique({
+        where: {
+          id: leadId,
+        },
+
+        select: {
+          status: true,
+        },
+      });
+
+    if (!existingLead) {
+      return {
+        success: false,
+        message:
+          "The lead could not be found.",
+      };
+    }
+
+    if (
+      existingLead.status ===
+      nextStatus
+    ) {
+      return {
+        success: true,
+        status:
+          nextStatus,
+        message:
+          "Lead is already in that stage.",
+      };
+    }
+
+    await prisma.$transaction(
+      async (transaction) => {
+        await transaction.lead.update({
+          where: {
+            id: leadId,
+          },
+
+          data: {
+            status:
+              nextStatus,
+
+            contacted:
+              nextStatus !==
+              "NEW",
+          },
+        });
+
+        await transaction.leadActivity.create({
+          data: {
+            leadId,
+
+            type:
+              "STATUS_CHANGED",
+
+            description:
+              `Pipeline status changed from ${getStatusLabel(
+                existingLead.status,
+              )} to ${getStatusLabel(
+                nextStatus,
+              )}.`,
+
+            fromValue:
+              existingLead.status,
+
+            toValue:
+              nextStatus,
+          },
+        });
+      },
+    );
+
+    revalidatePath(
+      "/reports",
+    );
+
+    if (reportId) {
+      revalidatePath(
+        `/reports/${reportId}`,
+      );
+    }
+
+    return {
+      success: true,
+      status:
+        nextStatus,
+      message:
+        `Moved to ${getStatusLabel(
+          nextStatus,
+        )}.`,
+    };
+  } catch (error) {
+    console.error(
+      "Failed to update lead board status:",
+      error,
+    );
+
+    return {
+      success: false,
+      message:
+        "The pipeline status could not be updated.",
+    };
+  }
+}
+
+export async function completeLeadFollowUp(
+  leadId: string,
+  reportId: string,
+  nextFollowUpDate: string | null,
+): Promise<CompleteLeadFollowUpResult> {
+  if (!(await isAuthorized())) {
+    return {
+      success: false,
+      message:
+        "You are not authorized to update follow-ups.",
+    };
+  }
+
+  if (!leadId) {
+    return {
+      success: false,
+      message:
+        "A lead ID is required.",
+    };
+  }
+
+  const normalizedNextDate =
+    nextFollowUpDate?.trim() ??
+    "";
+
+  let nextFollowUpAt:
+    | Date
+    | null = null;
+
+  if (normalizedNextDate) {
+    nextFollowUpAt =
+      parseDateInput(
+        normalizedNextDate,
+      );
+
+    if (!nextFollowUpAt) {
+      return {
+        success: false,
+        message:
+          "Enter a valid next follow-up date.",
+      };
+    }
+  }
+
+  try {
+    const existingLead =
+      await prisma.lead.findUnique({
+        where: {
+          id: leadId,
+        },
+
+        select: {
+          id: true,
+          followUpAt: true,
+          status: true,
+        },
+      });
+
+    if (!existingLead) {
+      return {
+        success: false,
+        message:
+          "The lead could not be found.",
+      };
+    }
+
+    if (
+      existingLead.status ===
+        "WON" ||
+      existingLead.status ===
+        "LOST"
+    ) {
+      return {
+        success: false,
+        message:
+          "Closed opportunities do not require follow-ups.",
+      };
+    }
+
+    if (!existingLead.followUpAt) {
+      return {
+        success: false,
+        message:
+          "This lead does not have an active follow-up.",
+      };
+    }
+
+    const completedFollowUp =
+      existingLead.followUpAt;
+
+    await prisma.$transaction(
+      async (transaction) => {
+        await transaction.lead.update({
+          where: {
+            id: leadId,
+          },
+
+          data: {
+            followUpAt:
+              nextFollowUpAt,
+          },
+        });
+
+        await transaction.leadActivity.create({
+          data: {
+            leadId,
+
+            type:
+              "FOLLOW_UP_CHANGED",
+
+            description:
+              nextFollowUpAt
+                ? `Follow-up completed. Next follow-up scheduled for ${formatActivityDate(
+                    nextFollowUpAt,
+                  )}.`
+                : `Follow-up completed for ${formatActivityDate(
+                    completedFollowUp,
+                  )}.`,
+
+            fromValue:
+              completedFollowUp.toISOString(),
+
+            toValue:
+              nextFollowUpAt?.toISOString() ??
+              null,
+          },
+        });
+      },
+    );
+
+    revalidatePath(
+      "/reports",
+    );
+
+    if (reportId) {
+      revalidatePath(
+        `/reports/${reportId}`,
+      );
+    }
+
+    return {
+      success: true,
+
+      nextFollowUpAt:
+        nextFollowUpAt?.toISOString() ??
+        null,
+
+      message:
+        nextFollowUpAt
+          ? `Follow-up completed. Next follow-up scheduled for ${formatActivityDate(
+              nextFollowUpAt,
+            )}.`
+          : "Follow-up completed.",
+    };
+  } catch (error) {
+    console.error(
+      "Failed to complete lead follow-up:",
+      error,
+    );
+
+    return {
+      success: false,
+      message:
+        "The follow-up could not be completed.",
+    };
+  }
+}
+
 export async function updateLeadPipeline(
   leadId: string,
   reportId: string,
@@ -378,25 +717,18 @@ export async function updateLeadPipeline(
     | null = null;
 
   if (followUpAtValue) {
-    const parsedDate =
-      new Date(
-        `${followUpAtValue}T12:00:00`,
+    followUpAt =
+      parseDateInput(
+        followUpAtValue,
       );
 
-    if (
-      Number.isNaN(
-        parsedDate.getTime(),
-      )
-    ) {
+    if (!followUpAt) {
       return {
         success: false,
         message:
           "Enter a valid follow-up date.",
       };
     }
-
-    followUpAt =
-      parsedDate;
   }
 
   try {
