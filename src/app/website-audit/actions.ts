@@ -5,6 +5,7 @@ import { fetchWebsitePage } from "@/lib/website-audit/audit-url";
 import { buildAuditRobotsData } from "@/lib/website-audit/robots";
 import { parseWebsiteAuditInput } from "@/lib/website-audit/schema";
 import { scoreWebsiteAudit } from "@/lib/website-audit/scoring";
+import { discoverSite } from "@/lib/website-audit/site-discovery";
 import {
   auditReportRepository,
   createAuditReport,
@@ -57,9 +58,14 @@ export async function auditWebsite(
       ),
     };
 
+    const siteDiscovery = await discoverSite(
+      fetchResult.data.finalUrl,
+    );
+
     const scoring = scoreWebsiteAudit(
       pageData,
       fetchResult.data.finalUrl,
+      siteDiscovery,
     );
 
     const auditResult: WebsiteAuditResult = {
@@ -83,6 +89,8 @@ export async function auditWebsite(
       },
 
       pageData,
+
+      siteDiscovery,
 
       findings:
         scoring.findings,

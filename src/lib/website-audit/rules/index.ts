@@ -9,7 +9,10 @@ import { localSignalsRule } from "./local-signals-rule";
 import { metaDescriptionRule } from "./meta-description-rule";
 import { openGraphRule } from "./open-graph-rule";
 import { performanceRule } from "./performance-rule";
+import { robotsCrawlabilityRule } from "./robots-crawlability-rule";
 import { robotsIndexabilityRule } from "./robots-indexability-rule";
+import { robotsTxtRule } from "./robots-txt-rule";
+import { sitemapRule } from "./sitemap-rule";
 import { structuredDataRule } from "./structured-data-rule";
 import { titleRule } from "./title-rule";
 import { viewportRule } from "./viewport-rule";
@@ -17,6 +20,9 @@ import { viewportRule } from "./viewport-rule";
 export const coreAuditRules: AuditRule[] =
   [
     robotsIndexabilityRule,
+    robotsCrawlabilityRule,
+    robotsTxtRule,
+    sitemapRule,
 
     titleRule,
     metaDescriptionRule,

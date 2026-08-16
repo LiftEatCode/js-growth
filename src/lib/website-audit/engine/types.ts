@@ -2,11 +2,13 @@ import type {
   AuditCategory,
   AuditFinding,
   AuditPageData,
+  AuditSiteDiscoveryData,
   AuditStatus,
 } from "../types";
 
 export interface AuditRuleContext {
   pageData: AuditPageData;
+  siteDiscovery?: AuditSiteDiscoveryData;
   finalUrl: string;
 }
 

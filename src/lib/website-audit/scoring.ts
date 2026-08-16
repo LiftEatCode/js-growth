@@ -6,6 +6,7 @@ import type {
   AuditCategoryScore,
   AuditFinding,
   AuditPageData,
+  AuditSiteDiscoveryData,
   AuditStatus,
   WebsiteAuditResult,
 } from "./types";
@@ -210,11 +211,13 @@ function calculateSummary(
 export function scoreWebsiteAudit(
   pageData: AuditPageData,
   finalUrl: string,
+  siteDiscovery?: AuditSiteDiscoveryData,
 ): ScoringResult {
   const findings = runAuditRules(
     coreAuditRules,
     {
       pageData,
+      siteDiscovery,
       finalUrl,
     },
   );

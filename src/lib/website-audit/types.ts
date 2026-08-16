@@ -179,6 +179,50 @@ export interface AuditRobotsData {
   effective: AuditRobotsEffectiveData;
 }
 
+export interface AuditRobotsTxtData {
+  url: string;
+
+  found: boolean;
+
+  accessible: boolean;
+
+  statusCode: number | null;
+
+  contentType: string | null;
+
+  sitemapUrls: string[];
+
+  blocksAuditedPage: boolean;
+
+  fetchError: string | null;
+}
+
+export interface AuditSitemapCheck {
+  url: string;
+
+  source: "robots.txt" | "conventional";
+
+  found: boolean;
+
+  accessible: boolean;
+
+  statusCode: number | null;
+
+  contentType: string | null;
+
+  fetchError: string | null;
+}
+
+export interface AuditSiteDiscoveryData {
+  robotsTxt: AuditRobotsTxtData;
+
+  sitemaps: AuditSitemapCheck[];
+
+  hasSitemap: boolean;
+
+  hasAccessibleSitemap: boolean;
+}
+
 export interface AuditPageData {
   title: string | null;
   metaDescription: string | null;
@@ -222,6 +266,12 @@ export interface WebsiteAuditResult {
   metadata: AuditPageMetadata;
 
   pageData: AuditPageData;
+
+  /**
+   * Site-level robots.txt and sitemap discovery.
+   * Older stored audits may omit this field.
+   */
+  siteDiscovery?: AuditSiteDiscoveryData;
 
   findings: AuditFinding[];
 
