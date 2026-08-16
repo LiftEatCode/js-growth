@@ -243,6 +243,96 @@ export interface AuditMetaDescriptionData {
   isEmpty: boolean;
 }
 
+export interface AuditContentData {
+  totalVisibleWordCount: number;
+
+  mainContentWordCount: number;
+
+  paragraphCount: number;
+
+  nonEmptyParagraphCount: number;
+
+  substantialParagraphCount: number;
+
+  usedMainElement: boolean;
+}
+
+export type AuditHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface AuditHeadingItem {
+  level: AuditHeadingLevel;
+
+  text: string;
+
+  empty: boolean;
+}
+
+export interface AuditHeadingData {
+  items: AuditHeadingItem[];
+
+  h1Count: number;
+  h2Count: number;
+  h3Count: number;
+  h4Count: number;
+  h5Count: number;
+  h6Count: number;
+
+  h1Values: string[];
+
+  emptyHeadingCount: number;
+  skippedLevelCount: number;
+
+  detailsTruncated: boolean;
+}
+
+export interface AuditInternalLink {
+  href: string;
+
+  resolvedUrl: string | null;
+
+  anchorText: string;
+
+  isSamePage: boolean;
+
+  hasText: boolean;
+
+  hasImage: boolean;
+
+  imageAltText: string | null;
+}
+
+export interface AuditLinkData {
+  totalLinks: number;
+
+  internalLinks: AuditInternalLink[];
+
+  internalLinkCount: number;
+
+  uniqueInternalDestinationCount: number;
+
+  genericAnchorCount: number;
+
+  emptyAnchorCount: number;
+
+  samePageLinkCount: number;
+
+  detailsTruncated: boolean;
+}
+
+export interface AuditImageData {
+  total: number;
+
+  withAlt: number;
+
+  missingAltAttribute: number;
+
+  emptyAlt: number;
+
+  meaningfulAlt: number;
+
+  suspiciousAlt: number;
+}
+
 export interface AuditCanonicalData {
   rawValues: string[];
 
@@ -273,6 +363,14 @@ export interface AuditPageData {
   viewport: string | null;
 
   robots: AuditRobotsData;
+
+  /**
+   * Content-intelligence measurements. Older stored audits omit these.
+   */
+  content?: AuditContentData;
+  headings?: AuditHeadingData;
+  links?: AuditLinkData;
+  images?: AuditImageData;
 
   h1Count: number;
   h1Values: string[];

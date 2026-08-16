@@ -12,6 +12,13 @@ import {
   buildTextFieldData,
   normalizeWhitespace,
 } from "./page-metadata";
+import {
+  extractContentData,
+  extractHeadingData,
+  extractImageData,
+  extractLinkData,
+  extractVisibleText,
+} from "./content-extract";
 
 const PHONE_PATTERN =
   /(?:\+?1[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}/;
@@ -160,24 +167,6 @@ function collectCanonicalHrefs(
   return values;
 }
 
-function normalizeVisibleText(
-  $: CheerioAPI,
-): string {
-  const body =
-    $("body").clone();
-
-  body
-    .find(
-      "script, style, noscript, template, svg",
-    )
-    .remove();
-
-  return body
-    .text()
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function addSchemaType(
   value: unknown,
   schemaTypes: Set<string>,
@@ -309,85 +298,6 @@ function extractStructuredDataTypes(
   );
 }
 
-function classifyLinks(
-  $: CheerioAPI,
-  pageUrl: URL,
-): {
-  internalLinkCount: number;
-  externalLinkCount: number;
-} {
-  let internalLinkCount =
-    0;
-
-  let externalLinkCount =
-    0;
-
-  $("a[href]").each(
-    (
-      _,
-      element,
-    ) => {
-      const rawHref =
-        $(element)
-          .attr("href")
-          ?.trim();
-
-      if (
-        !rawHref ||
-        rawHref.startsWith(
-          "#",
-        ) ||
-        rawHref.startsWith(
-          "mailto:",
-        ) ||
-        rawHref.startsWith(
-          "tel:",
-        ) ||
-        rawHref.startsWith(
-          "javascript:",
-        )
-      ) {
-        return;
-      }
-
-      try {
-        const linkUrl =
-          new URL(
-            rawHref,
-            pageUrl,
-          );
-
-        if (
-          linkUrl.protocol !==
-            "http:" &&
-          linkUrl.protocol !==
-            "https:"
-        ) {
-          return;
-        }
-
-        if (
-          linkUrl.hostname ===
-          pageUrl.hostname
-        ) {
-          internalLinkCount +=
-            1;
-        } else {
-          externalLinkCount +=
-            1;
-        }
-      } catch {
-        // Ignore malformed links while continuing the audit.
-      }
-    },
-  );
-
-  return {
-    internalLinkCount,
-    externalLinkCount,
-  };
-}
-
 function hasPhysicalAddressSignals(
   visibleText: string,
 ): boolean {
@@ -485,56 +395,28 @@ export function analyzeHtml(
       "content",
     );
 
-  const h1Values =
-    collectNormalizedTexts(
+  const headings =
+    extractHeadingData(
       $,
-      "h1",
     );
 
-  const h1Count =
-    h1Values.length;
-
-  const h2Count =
-    $("h2").length;
-
-  const h3Count =
-    $("h3").length;
-
-  const imageCount =
-    $("img").length;
-
-  let imagesWithoutAlt =
-    0;
-
-  $("img").each(
-    (
-      _,
-      element,
-    ) => {
-      const alt =
-        $(element).attr(
-          "alt",
-        );
-
-      if (
-        alt ===
-          undefined ||
-        alt.trim() ===
-          ""
-      ) {
-        imagesWithoutAlt +=
-          1;
-      }
-    },
-  );
+  const images =
+    extractImageData(
+      $,
+    );
 
   const {
-    internalLinkCount,
     externalLinkCount,
+    ...links
   } =
-    classifyLinks(
+    extractLinkData(
       $,
       pageUrl,
+    );
+
+  const content =
+    extractContentData(
+      $,
     );
 
   const structuredDataTypes =
@@ -543,7 +425,7 @@ export function analyzeHtml(
     );
 
   const visibleText =
-    normalizeVisibleText(
+    extractVisibleText(
       $,
     );
 
@@ -588,15 +470,27 @@ export function analyzeHtml(
 
     robotsMetaRaw,
 
-    h1Count,
-    h1Values,
-    h2Count,
-    h3Count,
+    content,
+    headings,
+    links,
+    images,
 
-    imageCount,
-    imagesWithoutAlt,
+    h1Count:
+      headings.h1Count,
+    h1Values:
+      headings.h1Values,
+    h2Count:
+      headings.h2Count,
+    h3Count:
+      headings.h3Count,
 
-    internalLinkCount,
+    imageCount:
+      images.total,
+    imagesWithoutAlt:
+      images.missingAltAttribute,
+
+    internalLinkCount:
+      links.internalLinkCount,
     externalLinkCount,
 
     hasOpenGraphTitle:

@@ -88,6 +88,18 @@ function normalizedHostPort(url: URL): string {
   return usesDefaultPort ? hostname : `${hostname}:${port}`;
 }
 
+export function isSameSiteUrl(left: URL, right: URL): boolean {
+  return normalizedHostPort(left) === normalizedHostPort(right);
+}
+
+export function isSamePageUrl(left: URL, right: URL): boolean {
+  return locationKey(left, true) === locationKey(right, true);
+}
+
+export function getPageLocationKey(url: URL): string {
+  return locationKey(url, true);
+}
+
 function locationKey(
   url: URL,
   includeProtocol: boolean,

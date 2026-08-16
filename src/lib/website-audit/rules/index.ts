@@ -2,6 +2,8 @@ import type { AuditRule } from "../engine/types";
 
 import { canonicalRule } from "./canonical-rule";
 import { contactSignalsRule } from "./contact-signals-rule";
+import { contentDepthRule } from "./content-depth-rule";
+import { contentStructureRule } from "./content-structure-rule";
 import { headingsRule } from "./headings-rule";
 import { imagesRule } from "./images-rule";
 import { internalLinksRule } from "./internal-links-rule";
@@ -32,6 +34,8 @@ export const coreAuditRules: AuditRule[] =
 
     headingsRule,
     titleH1AlignmentRule,
+    contentDepthRule,
+    contentStructureRule,
     imagesRule,
     internalLinksRule,
 

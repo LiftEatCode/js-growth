@@ -133,7 +133,7 @@ export function AuditResults({
             <DetailCard
               icon={ImageIcon}
               label="Images"
-              value={`${result.pageData.imageCount} total · ${result.pageData.imagesWithoutAlt} missing alt`}
+              value={`${result.pageData.images?.total ?? result.pageData.imageCount} total · ${result.pageData.images?.missingAltAttribute ?? result.pageData.imagesWithoutAlt} missing alt`}
             />
 
             <DetailCard
