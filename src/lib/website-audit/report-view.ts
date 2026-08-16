@@ -8,6 +8,7 @@ import {
   REPORT_CATEGORY_DISPLAY_ORDER,
   getReportCategoryLabel,
 } from "./report-categories";
+import { resolveReportTier } from "./report-access";
 import {
   getReportCapabilities,
   getReportCapabilitiesForMode,
@@ -636,9 +637,13 @@ export interface GrowthReportViewModel {
 export function buildGrowthReportViewModel(
   result: WebsiteAuditResult,
   mode: ReportMode = "public",
+  options: { professionallyUnlocked?: boolean } = {},
 ): GrowthReportViewModel {
   const report = normalizeAuditReport(result);
-  const tier = getReportTier(mode);
+  const tier = resolveReportTier({
+    mode,
+    professionallyUnlocked: options.professionallyUnlocked,
+  });
   const capabilities = getReportCapabilities(tier);
   const scorecard = getCategoryScorecard(
     report.categoryScores,
@@ -672,4 +677,9 @@ export function buildGrowthReportViewModel(
   };
 }
 
-export { getReportCapabilities, getReportCapabilitiesForMode, getReportTier };
+export {
+  getReportCapabilities,
+  getReportCapabilitiesForMode,
+  getReportTier,
+};
+export { resolveReportTier } from "./report-access";

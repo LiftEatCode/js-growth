@@ -287,9 +287,17 @@ CONTACT_TO_EMAIL
 GOOGLE_ANALYTICS_ID
 
 NEXT_PUBLIC_GA_MEASUREMENT_ID
+
+STRIPE_SECRET_KEY
+
+STRIPE_WEBHOOK_SECRET
+
+STRIPE_PROFESSIONAL_AUDIT_PRICE_ID
+
+NEXT_PUBLIC_PROFESSIONAL_AUDIT_PRICE_LABEL
 ```
 
-Project-specific variables should be documented separately.
+Project-specific Stripe setup is documented in `docs/development/stripe-paid-audit.md`.
 
 ---
 

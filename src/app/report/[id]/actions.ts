@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 
+import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
 import { getResendClient } from "@/lib/email/resend";
 import { prisma } from "@/lib/prisma";
+import { resolveReportTier } from "@/lib/website-audit/report-access";
 import {
   buildCustomerReportHtml,
   buildCustomerReportText,
@@ -148,10 +150,13 @@ export async function captureAuditLead(
     let emailSent = false;
 
     try {
-      const pdfBuffer =
-        await generateAuditReportPdf(
-          report,
-        );
+      const professionallyUnlocked =
+        await reportHasProfessionalEntitlement(reportId);
+      const canAttachProfessionalPdf =
+        resolveReportTier({
+          mode: report.reportMode,
+          professionallyUnlocked,
+        }) === "professional";
 
       const fromEmail =
         process.env.CONTACT_FROM_EMAIL;
@@ -167,11 +172,6 @@ export async function captureAuditLead(
 
       const resend =
         getResendClient();
-
-      const filename =
-        createAuditReportPdfFilename(
-          report.hostname,
-        );
 
       const customerEmailData = {
         firstName,
@@ -192,6 +192,28 @@ export async function captureAuditLead(
           report.audit.summary
             .highImpactFindings,
       };
+
+      const attachments: Array<{
+        filename: string;
+        content: string;
+      }> = [];
+
+      if (canAttachProfessionalPdf) {
+        const pdfBuffer =
+          await generateAuditReportPdf(
+            report,
+          );
+
+        attachments.push({
+          filename:
+            createAuditReportPdfFilename(
+              report.hostname,
+            ),
+          content: pdfBuffer.toString(
+            "base64",
+          ),
+        });
+      }
 
       const {
         error:
@@ -219,16 +241,10 @@ export async function captureAuditLead(
               customerEmailData,
             ),
 
-          attachments: [
-            {
-              filename,
-
-              content:
-                pdfBuffer.toString(
-                  "base64",
-                ),
-            },
-          ],
+          attachments:
+            attachments.length > 0
+              ? attachments
+              : undefined,
         });
 
       if (customerEmailError) {
@@ -312,8 +328,8 @@ export async function captureAuditLead(
       emailSent,
 
       message: emailSent
-        ? "Your professional report was emailed successfully."
-        : "Your information was saved, but the email could not be delivered. You can still download the report directly.",
+        ? "Your information was emailed successfully."
+        : "Your information was saved, but the email could not be delivered. You can still view the report on this page.",
     };
   } catch (error) {
     console.error(

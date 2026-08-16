@@ -13,16 +13,18 @@ import {
   StatBadge,
 } from "@/components/website-audit/report-ui";
 import { Button } from "@/components/ui";
-import { getReportConfig } from "@/lib/website-audit/report-config";
+import { getReportConfigForTier } from "@/lib/website-audit/report-config";
 import type {
   AuditCategory,
   AuditFinding,
   ReportMode,
+  ReportTier,
 } from "@/lib/website-audit/types";
 
 interface AuditFindingsFilterProps {
   findings: AuditFinding[];
   mode?: ReportMode;
+  tier?: ReportTier;
 }
 
 type StatusFilter =
@@ -172,9 +174,10 @@ function sortFindings(
 export function AuditFindingsFilter({
   findings,
   mode = "public",
+  tier,
 }: AuditFindingsFilterProps) {
-  const config = getReportConfig(
-    mode,
+  const config = getReportConfigForTier(
+    tier ?? (mode === "public" ? "free" : "professional"),
   );
 
   const [
@@ -378,6 +381,7 @@ export function AuditFindingsFilter({
                 key={finding.id}
                 finding={finding}
                 mode={mode}
+                tier={tier}
                 number={
                   index + 1
                 }

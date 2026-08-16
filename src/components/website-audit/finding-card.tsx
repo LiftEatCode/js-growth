@@ -14,7 +14,7 @@ import {
   StatBadge,
 } from "@/components/website-audit/report-ui";
 import { getReportCategoryLabel } from "@/lib/website-audit/report-categories";
-import { getFindingVisibility } from "@/lib/website-audit/report-mode";
+import { getFindingVisibilityForTier, getFindingVisibility } from "@/lib/website-audit/report-mode";
 import type {
   AuditFinding,
   AuditPriority,
@@ -22,11 +22,13 @@ import type {
   BusinessImpact,
   FixDifficulty,
   ReportMode,
+  ReportTier,
 } from "@/lib/website-audit/types";
 
 interface FindingCardProps {
   finding: AuditFinding;
   mode?: ReportMode;
+  tier?: ReportTier;
   number?: number;
 }
 
@@ -214,6 +216,7 @@ function StatusIcon({
 export function FindingCard({
   finding,
   mode = "public",
+  tier,
   number,
 }: FindingCardProps) {
   const styles =
@@ -221,10 +224,9 @@ export function FindingCard({
       finding.status,
     );
 
-  const visibility =
-    getFindingVisibility(
-      mode,
-    );
+  const visibility = tier
+    ? getFindingVisibilityForTier(tier)
+    : getFindingVisibility(mode);
 
   const isActionable =
     finding.status !== "pass";
@@ -396,7 +398,6 @@ export function FindingCard({
         ) : null}
 
         {isActionable &&
-        mode === "public" &&
         !visibility.showRecommendation ? (
           <div className="mt-5">
             <InfoPanel

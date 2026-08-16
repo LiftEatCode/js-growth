@@ -101,6 +101,7 @@ export function ReportCategoryDives({
                     key={finding.id}
                     finding={finding}
                     mode={mode}
+                    tier={view.tier}
                   />
                 ))
             )}

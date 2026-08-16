@@ -399,7 +399,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   AuditReport: 'AuditReport',
   Lead: 'Lead',
-  LeadActivity: 'LeadActivity'
+  LeadActivity: 'LeadActivity',
+  ReportPurchase: 'ReportPurchase'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -641,6 +642,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ReportPurchase: {
+      payload: Prisma.$ReportPurchasePayload<ExtArgs>
+      fields: Prisma.ReportPurchaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReportPurchaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReportPurchaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>
+        }
+        findFirst: {
+          args: Prisma.ReportPurchaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReportPurchaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>
+        }
+        findMany: {
+          args: Prisma.ReportPurchaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>[]
+        }
+        create: {
+          args: Prisma.ReportPurchaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>
+        }
+        createMany: {
+          args: Prisma.ReportPurchaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReportPurchaseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>[]
+        }
+        delete: {
+          args: Prisma.ReportPurchaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>
+        }
+        update: {
+          args: Prisma.ReportPurchaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>
+        }
+        deleteMany: {
+          args: Prisma.ReportPurchaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReportPurchaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReportPurchaseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>[]
+        }
+        upsert: {
+          args: Prisma.ReportPurchaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPurchasePayload>
+        }
+        aggregate: {
+          args: Prisma.ReportPurchaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReportPurchase>
+        }
+        groupBy: {
+          args: Prisma.ReportPurchaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReportPurchaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReportPurchaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReportPurchaseCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -729,6 +804,23 @@ export const LeadActivityScalarFieldEnum = {
 } as const
 
 export type LeadActivityScalarFieldEnum = (typeof LeadActivityScalarFieldEnum)[keyof typeof LeadActivityScalarFieldEnum]
+
+
+export const ReportPurchaseScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  paidAt: 'paidAt',
+  reportId: 'reportId',
+  stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  stripeCustomerId: 'stripeCustomerId',
+  customerEmail: 'customerEmail',
+  amountTotal: 'amountTotal',
+  currency: 'currency',
+  status: 'status'
+} as const
+
+export type ReportPurchaseScalarFieldEnum = (typeof ReportPurchaseScalarFieldEnum)[keyof typeof ReportPurchaseScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -865,6 +957,20 @@ export type EnumLeadActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'LeadActivityType[]'
  */
 export type ListEnumLeadActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadActivityType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PurchaseStatus'
+ */
+export type EnumPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PurchaseStatus[]'
+ */
+export type ListEnumPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseStatus[]'>
     
 
 
@@ -1035,6 +1141,7 @@ export type GlobalOmitConfig = {
   auditReport?: Prisma.AuditReportOmit
   lead?: Prisma.LeadOmit
   leadActivity?: Prisma.LeadActivityOmit
+  reportPurchase?: Prisma.ReportPurchaseOmit
 }
 
 /* Types for Logging */

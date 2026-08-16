@@ -53,7 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   AuditReport: 'AuditReport',
   Lead: 'Lead',
-  LeadActivity: 'LeadActivity'
+  LeadActivity: 'LeadActivity',
+  ReportPurchase: 'ReportPurchase'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -121,6 +122,23 @@ export const LeadActivityScalarFieldEnum = {
 } as const
 
 export type LeadActivityScalarFieldEnum = (typeof LeadActivityScalarFieldEnum)[keyof typeof LeadActivityScalarFieldEnum]
+
+
+export const ReportPurchaseScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  paidAt: 'paidAt',
+  reportId: 'reportId',
+  stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  stripeCustomerId: 'stripeCustomerId',
+  customerEmail: 'customerEmail',
+  amountTotal: 'amountTotal',
+  currency: 'currency',
+  status: 'status'
+} as const
+
+export type ReportPurchaseScalarFieldEnum = (typeof ReportPurchaseScalarFieldEnum)[keyof typeof ReportPurchaseScalarFieldEnum]
 
 
 export const SortOrder = {

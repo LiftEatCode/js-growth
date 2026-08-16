@@ -23,11 +23,13 @@ import {
 interface AuditLeadCaptureProps {
   reportId: string;
   hostname: string;
+  canDownloadPdf?: boolean;
 }
 
 export function AuditLeadCapture({
   reportId,
   hostname,
+  canDownloadPdf = false,
 }: AuditLeadCaptureProps) {
   const [
     isPending,
@@ -98,22 +100,21 @@ export function AuditLeadCapture({
 
               <h2 className="mt-2 font-heading text-2xl font-semibold tracking-tight text-brand sm:text-3xl">
                 {emailSent
-                  ? "Your professional report was emailed."
-                  : "Your professional report is ready."}
+                  ? "Your details were emailed."
+                  : "Your details were saved."}
               </h2>
 
               <p className="mt-3 max-w-2xl leading-7 text-muted">
                 {emailSent ? (
                   <>
-                    We sent the
-                    professional website
-                    report for{" "}
+                    We saved your information for{" "}
                     <span className="font-semibold text-brand">
                       {hostname}
                     </span>{" "}
-                    to the email address
-                    you provided. You can
-                    also download it now.
+                    and sent a confirmation email.
+                    {canDownloadPdf
+                      ? " You can also download the professional report now."
+                      : " You can return to this report anytime using the saved link."}
                   </>
                 ) : (
                   <>
@@ -124,8 +125,8 @@ export function AuditLeadCapture({
                     was saved. Email
                     delivery was not
                     completed, but your
-                    report is available
-                    below.
+                    report is still available
+                    on this page.
                   </>
                 )}
               </p>
@@ -133,6 +134,7 @@ export function AuditLeadCapture({
           </div>
         </div>
 
+        {canDownloadPdf ? (
         <div className="p-6 sm:p-8">
           <Button
             size="lg"
@@ -153,6 +155,7 @@ export function AuditLeadCapture({
             Download Professional PDF
           </Button>
         </div>
+        ) : null}
       </section>
     );
   }

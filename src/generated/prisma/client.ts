@@ -56,3 +56,8 @@ export type Lead = Prisma.LeadModel
  * 
  */
 export type LeadActivity = Prisma.LeadActivityModel
+/**
+ * Model ReportPurchase
+ * 
+ */
+export type ReportPurchase = Prisma.ReportPurchaseModel

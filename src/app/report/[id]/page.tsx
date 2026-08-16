@@ -12,6 +12,7 @@ import {
   Button,
   Container,
 } from "@/components/ui";
+import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 interface ReportPageProps {
@@ -59,6 +60,9 @@ export default async function ReportPage({
   if (!report) {
     notFound();
   }
+
+  const professionallyUnlocked =
+    await reportHasProfessionalEntitlement(report.id);
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -112,6 +116,7 @@ export default async function ReportPage({
           result={report.audit}
           mode={report.reportMode}
           reportId={report.id}
+          professionallyUnlocked={professionallyUnlocked}
         />
       </Container>
     </main>

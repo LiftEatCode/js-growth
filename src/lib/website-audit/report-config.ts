@@ -1,3 +1,4 @@
+import { resolveReportTier } from "./report-access";
 import type { ReportMode, ReportTier } from "./types";
 
 export interface ReportCapabilities {
@@ -71,8 +72,11 @@ const PROFESSIONAL_CAPABILITIES: ReportCapabilities = {
   maxFindings: null,
 };
 
-export function getReportTier(mode: ReportMode): ReportTier {
-  return mode === "public" ? "free" : "professional";
+export function getReportTier(
+  mode: ReportMode,
+  professionallyUnlocked = false,
+): ReportTier {
+  return resolveReportTier({ mode, professionallyUnlocked });
 }
 
 export function getReportCapabilities(
@@ -85,8 +89,13 @@ export function getReportCapabilities(
 
 export function getReportCapabilitiesForMode(
   mode: ReportMode,
+  professionallyUnlocked = false,
 ): ReportCapabilities {
-  return getReportCapabilities(getReportTier(mode));
+  return getReportCapabilities(getReportTier(mode, professionallyUnlocked));
+}
+
+export function getReportConfigForTier(tier: ReportTier): ReportAccessConfig {
+  return capabilitiesToAccessConfig(getReportCapabilities(tier));
 }
 
 function capabilitiesToAccessConfig(
@@ -119,6 +128,9 @@ export const REPORT_CONFIG: Record<ReportMode, ReportAccessConfig> = {
   client: capabilitiesToAccessConfig(PROFESSIONAL_CAPABILITIES),
 };
 
-export function getReportConfig(mode: ReportMode): ReportAccessConfig {
-  return REPORT_CONFIG[mode];
+export function getReportConfig(
+  mode: ReportMode,
+  professionallyUnlocked = false,
+): ReportAccessConfig {
+  return getReportConfigForTier(getReportTier(mode, professionallyUnlocked));
 }

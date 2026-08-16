@@ -46,6 +46,8 @@ model AuditReport {
 
   lead Lead? @relation(fields: [leadId], references: [id])
 
+  purchases ReportPurchase[]
+
   @@index([hostname])
   @@index([createdAt])
   @@index([overallScore])
@@ -106,4 +108,36 @@ model LeadActivity {
   @@index([leadId])
   @@index([createdAt])
   @@index([type])
+}
+
+enum PurchaseStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model ReportPurchase {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  paidAt    DateTime?
+
+  reportId String
+  report   AuditReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  stripeCheckoutSessionId String  @unique
+  stripePaymentIntentId   String? @unique
+  stripeCustomerId        String?
+  customerEmail           String?
+
+  amountTotal Int?
+  currency    String?
+
+  status PurchaseStatus @default(PENDING)
+
+  // REFUNDED is reserved for later refund handling. V1 does not revoke
+  // Professional access automatically when a Stripe refund occurs.
+
+  @@index([reportId])
+  @@index([status])
 }

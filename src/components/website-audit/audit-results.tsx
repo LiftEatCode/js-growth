@@ -35,19 +35,23 @@ interface AuditResultsProps {
   result: WebsiteAuditResult;
   mode?: ReportMode;
   reportId?: string;
+  professionallyUnlocked?: boolean;
 }
 
 export function AuditResults({
   result,
   mode = "public",
   reportId,
+  professionallyUnlocked = false,
 }: AuditResultsProps) {
-  const view = buildGrowthReportViewModel(result, mode);
+  const view = buildGrowthReportViewModel(result, mode, {
+    professionallyUnlocked,
+  });
   const hostname = getHostname(result.metadata.finalUrl);
 
   return (
     <div className="space-y-10">
-      <AuditExecutiveDashboard view={view} />
+      <AuditExecutiveDashboard view={view} reportId={reportId} />
 
       <ReportNav view={view} />
 
@@ -182,6 +186,7 @@ export function AuditResults({
           <AuditFindingsFilter
             findings={view.report.findings}
             mode={mode}
+            tier={view.tier}
           />
         </section>
       ) : null}
@@ -194,7 +199,11 @@ export function AuditResults({
 
       {reportId ? (
         <div className="print:hidden">
-          <AuditLeadCapture reportId={reportId} hostname={hostname} />
+        <AuditLeadCapture
+          reportId={reportId}
+          hostname={hostname}
+          canDownloadPdf={view.capabilities.showPdfExport}
+        />
         </div>
       ) : null}
 

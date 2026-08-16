@@ -30,3 +30,13 @@ export const LeadActivityType = {
 } as const
 
 export type LeadActivityType = (typeof LeadActivityType)[keyof typeof LeadActivityType]
+
+
+export const PurchaseStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PurchaseStatus = (typeof PurchaseStatus)[keyof typeof PurchaseStatus]

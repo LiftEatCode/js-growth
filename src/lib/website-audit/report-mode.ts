@@ -1,5 +1,6 @@
-import { getReportCapabilitiesForMode } from "./report-config";
-import type { ReportMode } from "./types";
+import { resolveReportTier } from "./report-access";
+import { getReportCapabilities, getReportCapabilitiesForMode } from "./report-config";
+import type { ReportMode, ReportTier } from "./types";
 
 export interface FindingVisibility {
   showRecommendation: boolean;
@@ -11,8 +12,8 @@ export interface FindingVisibility {
   showImplementation: boolean;
 }
 
-export function getFindingVisibility(mode: ReportMode): FindingVisibility {
-  const capabilities = getReportCapabilitiesForMode(mode);
+export function getFindingVisibilityForTier(tier: ReportTier): FindingVisibility {
+  const capabilities = getReportCapabilities(tier);
 
   return {
     showRecommendation: capabilities.showRecommendations,
@@ -23,6 +24,15 @@ export function getFindingVisibility(mode: ReportMode): FindingVisibility {
     showQuickWin: capabilities.showQuickWins,
     showImplementation: false,
   };
+}
+
+export function getFindingVisibility(
+  mode: ReportMode,
+  professionallyUnlocked = false,
+): FindingVisibility {
+  return getFindingVisibilityForTier(
+    resolveReportTier({ mode, professionallyUnlocked }),
+  );
 }
 
 export function getMaximumVisibleFindings(mode: ReportMode): number {

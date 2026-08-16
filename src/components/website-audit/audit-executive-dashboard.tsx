@@ -1,5 +1,6 @@
 import {
   Clock3,
+  Download,
   ExternalLink,
   Globe2,
   ShieldCheck,
@@ -16,6 +17,7 @@ import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
 
 interface AuditExecutiveDashboardProps {
   view: GrowthReportViewModel;
+  reportId?: string;
 }
 
 function formatDate(value: string): string {
@@ -40,6 +42,7 @@ function getHostname(url: string): string {
 
 export function AuditExecutiveDashboard({
   view,
+  reportId,
 }: AuditExecutiveDashboardProps) {
   const hostname = getHostname(view.report.metadata.finalUrl);
   const { summary, counts, scoreBand } = view;
@@ -104,6 +107,25 @@ export function AuditExecutiveDashboard({
               </div>
             </div>
 
+            <div className="print:hidden flex shrink-0 flex-col gap-3">
+            {view.capabilities.showPdfExport && reportId ? (
+              <Button
+                size="lg"
+                variant="outline"
+                nativeButton={false}
+                render={
+                  <a
+                    href={`/report/${reportId}/pdf`}
+                    target="_blank"
+                    rel="noreferrer"
+                  />
+                }
+                className="border-white/15 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
+              >
+                Download PDF
+                <Download aria-hidden="true" className="ml-1 size-4" />
+              </Button>
+            ) : null}
             <Button
               size="lg"
               variant="outline"
@@ -120,6 +142,7 @@ export function AuditExecutiveDashboard({
               Open Website
               <ExternalLink aria-hidden="true" className="ml-1 size-4" />
             </Button>
+            </div>
           </div>
         </div>
 

@@ -38,6 +38,7 @@ import {
   GridPattern,
 } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
+import { formatCentsAsUsd } from "@/lib/payments/product";
 import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
 import { getAuditGrade } from "@/lib/website-audit/grading";
 import { auditReportRepository } from "@/lib/website-audit/storage";
@@ -291,6 +292,22 @@ export default async function InternalReportPage({
               },
             },
           },
+
+          purchases: {
+            where: {
+              status: "PAID",
+            },
+            orderBy: {
+              paidAt: "desc",
+            },
+            take: 1,
+            select: {
+              status: true,
+              paidAt: true,
+              amountTotal: true,
+              currency: true,
+            },
+          },
         },
       }),
     ]);
@@ -302,6 +319,9 @@ export default async function InternalReportPage({
   const lead =
     storedReport?.lead ??
     null;
+
+  const paidPurchase =
+    storedReport?.purchases[0] ?? null;
 
   const audit =
     report.audit;
@@ -1059,6 +1079,39 @@ export default async function InternalReportPage({
                     report.reportMode
                   }
                 />
+
+                <DataRow
+                  label="Access"
+                  value={
+                    paidPurchase
+                      ? "Professional — paid"
+                      : report.reportMode ===
+                          "public"
+                        ? "Free"
+                        : "Professional — internal"
+                  }
+                />
+
+                {paidPurchase?.paidAt ? (
+                  <DataRow
+                    label="Paid at"
+                    value={formatDate(
+                      paidPurchase.paidAt,
+                    )}
+                  />
+                ) : null}
+
+                {paidPurchase?.amountTotal !=
+                  null &&
+                paidPurchase.currency ? (
+                  <DataRow
+                    label="Amount"
+                    value={formatCentsAsUsd(
+                      paidPurchase.amountTotal,
+                      paidPurchase.currency,
+                    )}
+                  />
+                ) : null}
 
                 <DataRow
                   label="Website grade"

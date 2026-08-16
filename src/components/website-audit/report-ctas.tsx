@@ -2,6 +2,10 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { Button, GridPattern } from "@/components/ui";
+import {
+  getProfessionalAuditPriceLabel,
+  PROFESSIONAL_AUDIT_PRODUCT_NAME,
+} from "@/lib/payments/product";
 import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
 
 interface ReportCtasProps {
@@ -16,16 +20,20 @@ const PROFESSIONAL_BENEFITS = [
   "30–90 day action plan",
   "Technical evidence",
   "Complete quick-win list",
-  "Implementation priorities",
+  "Estimated implementation effort",
+  "Professional report / PDF access",
 ];
 
 export function ReportUpgradeCta({
   view,
+  reportId,
   children,
 }: ReportCtasProps) {
   if (!view.capabilities.showUpgradeCta) {
     return null;
   }
+
+  const priceLabel = getProfessionalAuditPriceLabel();
 
   return (
     <section
@@ -35,14 +43,20 @@ export function ReportUpgradeCta({
       <GridPattern className="opacity-30" />
       <div className="relative">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300">
-          Professional report
+          {PROFESSIONAL_AUDIT_PRODUCT_NAME}
         </p>
         <h2 className="mt-3 max-w-2xl font-heading text-3xl font-bold tracking-tight">
           Unlock the Full Website Growth Report
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-          This preview already shows real issues. The professional report adds the complete recommendations, action plan, and implementation detail.
+          This preview already shows real issues. The professional report adds
+          the complete recommendations, action plan, and implementation detail.
         </p>
+        {priceLabel ? (
+          <p className="mt-3 text-sm font-medium text-cyan-200">
+            One-time purchase · {priceLabel}
+          </p>
+        ) : null}
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {PROFESSIONAL_BENEFITS.map((item) => (
             <li key={item} className="flex items-start gap-2 text-sm text-slate-200">
@@ -55,14 +69,23 @@ export function ReportUpgradeCta({
           ))}
         </ul>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Button
-            size="lg"
-            nativeButton={false}
-            render={<Link href="/contact" />}
-          >
-            Get Full Report
-            <ArrowRight aria-hidden="true" className="size-4" />
-          </Button>
+          {reportId ? (
+            <form action={`/api/reports/${reportId}/checkout`} method="post">
+              <Button size="lg" type="submit">
+                Unlock Full Report
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Button>
+            </form>
+          ) : (
+            <Button
+              size="lg"
+              nativeButton={false}
+              render={<Link href="/contact" />}
+            >
+              Get Full Report
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
+          )}
         </div>
         {children ? <div className="mt-8">{children}</div> : null}
       </div>

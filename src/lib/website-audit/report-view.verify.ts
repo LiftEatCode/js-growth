@@ -350,6 +350,16 @@ assert(freeView.topPriorities.length === 3, "free shows 3 priorities");
 assert(freeView.actionPlan.phases.length === 0, "free does not expose action plan");
 assert(freeView.capabilities.showUpgradeCta, "free upgrade visible");
 
+const paidPublicView = buildGrowthReportViewModel(weightedResult, "public", {
+  professionallyUnlocked: true,
+});
+assert(paidPublicView.tier === "professional", "paid public maps to professional");
+assert(paidPublicView.capabilities.showActionPlan, "paid public shows action plan");
+assert(
+  paidPublicView.capabilities.showUpgradeCta === false,
+  "paid public hides upgrade",
+);
+
 const proView = buildGrowthReportViewModel(weightedResult, "consultation");
 assert(proView.tier === "professional", "consultation maps to professional");
 assert(proView.capabilities.showActionPlan, "professional action plan");
@@ -357,3 +367,4 @@ assert(proView.actionPlan.phases.length > 0, "professional has phases");
 assert(proView.topPriorities.length >= 3, "professional has full priorities");
 
 console.log("report view verification passed");
+process.exit(0);
