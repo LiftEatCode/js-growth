@@ -184,6 +184,7 @@ assert(free.showImplementationCta === false, "free keeps implementation CTA seco
 assert(free.showSiteInventory === false, "free hides site inventory");
 assert(free.showSiteOverview === false, "free hides site overview");
 assert(free.showCompetitiveIntelligence === false, "free hides competitive intelligence");
+assert(free.showAiInterpretation === false, "free hides AI interpretation");
 
 const professional = getReportCapabilities("professional");
 assert(professional.showActionPlan === true, "pro action plan");
@@ -194,6 +195,7 @@ assert(professional.showUpgradeCta === false, "pro has no upgrade");
 assert(professional.showSiteOverview === true, "pro site overview");
 assert(professional.showSiteInventory === true, "pro site inventory");
 assert(professional.showCompetitiveIntelligence === true, "pro competitive intelligence");
+assert(professional.showAiInterpretation === true, "pro AI interpretation");
 
 const oldReport = normalizeAuditReport({
   success: true,

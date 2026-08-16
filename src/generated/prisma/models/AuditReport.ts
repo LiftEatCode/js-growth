@@ -32,6 +32,7 @@ export type AuditReportAvgAggregateOutputType = {
   criticalIssues: number | null
   quickWins: number | null
   opportunityScore: number | null
+  aiAttemptCount: number | null
 }
 
 export type AuditReportSumAggregateOutputType = {
@@ -40,6 +41,7 @@ export type AuditReportSumAggregateOutputType = {
   criticalIssues: number | null
   quickWins: number | null
   opportunityScore: number | null
+  aiAttemptCount: number | null
 }
 
 export type AuditReportMinAggregateOutputType = {
@@ -55,6 +57,10 @@ export type AuditReportMinAggregateOutputType = {
   quickWins: number | null
   opportunityScore: number | null
   leadId: string | null
+  aiStatus: $Enums.AiInterpretationStatus | null
+  aiAttemptCount: number | null
+  aiStartedAt: Date | null
+  aiGeneratedAt: Date | null
 }
 
 export type AuditReportMaxAggregateOutputType = {
@@ -70,6 +76,10 @@ export type AuditReportMaxAggregateOutputType = {
   quickWins: number | null
   opportunityScore: number | null
   leadId: string | null
+  aiStatus: $Enums.AiInterpretationStatus | null
+  aiAttemptCount: number | null
+  aiStartedAt: Date | null
+  aiGeneratedAt: Date | null
 }
 
 export type AuditReportCountAggregateOutputType = {
@@ -86,6 +96,11 @@ export type AuditReportCountAggregateOutputType = {
   opportunityScore: number
   audit: number
   leadId: number
+  aiStatus: number
+  aiAttemptCount: number
+  aiStartedAt: number
+  aiGeneratedAt: number
+  aiInterpretation: number
   _all: number
 }
 
@@ -96,6 +111,7 @@ export type AuditReportAvgAggregateInputType = {
   criticalIssues?: true
   quickWins?: true
   opportunityScore?: true
+  aiAttemptCount?: true
 }
 
 export type AuditReportSumAggregateInputType = {
@@ -104,6 +120,7 @@ export type AuditReportSumAggregateInputType = {
   criticalIssues?: true
   quickWins?: true
   opportunityScore?: true
+  aiAttemptCount?: true
 }
 
 export type AuditReportMinAggregateInputType = {
@@ -119,6 +136,10 @@ export type AuditReportMinAggregateInputType = {
   quickWins?: true
   opportunityScore?: true
   leadId?: true
+  aiStatus?: true
+  aiAttemptCount?: true
+  aiStartedAt?: true
+  aiGeneratedAt?: true
 }
 
 export type AuditReportMaxAggregateInputType = {
@@ -134,6 +155,10 @@ export type AuditReportMaxAggregateInputType = {
   quickWins?: true
   opportunityScore?: true
   leadId?: true
+  aiStatus?: true
+  aiAttemptCount?: true
+  aiStartedAt?: true
+  aiGeneratedAt?: true
 }
 
 export type AuditReportCountAggregateInputType = {
@@ -150,6 +175,11 @@ export type AuditReportCountAggregateInputType = {
   opportunityScore?: true
   audit?: true
   leadId?: true
+  aiStatus?: true
+  aiAttemptCount?: true
+  aiStartedAt?: true
+  aiGeneratedAt?: true
+  aiInterpretation?: true
   _all?: true
 }
 
@@ -253,6 +283,11 @@ export type AuditReportGroupByOutputType = {
   opportunityScore: number
   audit: runtime.JsonValue
   leadId: string | null
+  aiStatus: $Enums.AiInterpretationStatus | null
+  aiAttemptCount: number
+  aiStartedAt: Date | null
+  aiGeneratedAt: Date | null
+  aiInterpretation: runtime.JsonValue | null
   _count: AuditReportCountAggregateOutputType | null
   _avg: AuditReportAvgAggregateOutputType | null
   _sum: AuditReportSumAggregateOutputType | null
@@ -292,6 +327,11 @@ export type AuditReportWhereInput = {
   opportunityScore?: Prisma.IntFilter<"AuditReport"> | number
   audit?: Prisma.JsonFilter<"AuditReport">
   leadId?: Prisma.StringNullableFilter<"AuditReport"> | string | null
+  aiStatus?: Prisma.EnumAiInterpretationStatusNullableFilter<"AuditReport"> | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFilter<"AuditReport"> | number
+  aiStartedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
+  aiGeneratedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
+  aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   purchases?: Prisma.ReportPurchaseListRelationFilter
 }
@@ -310,6 +350,11 @@ export type AuditReportOrderByWithRelationInput = {
   opportunityScore?: Prisma.SortOrder
   audit?: Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
+  aiStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiGeneratedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiInterpretation?: Prisma.SortOrderInput | Prisma.SortOrder
   lead?: Prisma.LeadOrderByWithRelationInput
   purchases?: Prisma.ReportPurchaseOrderByRelationAggregateInput
 }
@@ -331,6 +376,11 @@ export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
   opportunityScore?: Prisma.IntFilter<"AuditReport"> | number
   audit?: Prisma.JsonFilter<"AuditReport">
   leadId?: Prisma.StringNullableFilter<"AuditReport"> | string | null
+  aiStatus?: Prisma.EnumAiInterpretationStatusNullableFilter<"AuditReport"> | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFilter<"AuditReport"> | number
+  aiStartedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
+  aiGeneratedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
+  aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   purchases?: Prisma.ReportPurchaseListRelationFilter
 }, "id">
@@ -349,6 +399,11 @@ export type AuditReportOrderByWithAggregationInput = {
   opportunityScore?: Prisma.SortOrder
   audit?: Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
+  aiStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiGeneratedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiInterpretation?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AuditReportCountOrderByAggregateInput
   _avg?: Prisma.AuditReportAvgOrderByAggregateInput
   _max?: Prisma.AuditReportMaxOrderByAggregateInput
@@ -373,6 +428,11 @@ export type AuditReportScalarWhereWithAggregatesInput = {
   opportunityScore?: Prisma.IntWithAggregatesFilter<"AuditReport"> | number
   audit?: Prisma.JsonWithAggregatesFilter<"AuditReport">
   leadId?: Prisma.StringNullableWithAggregatesFilter<"AuditReport"> | string | null
+  aiStatus?: Prisma.EnumAiInterpretationStatusNullableWithAggregatesFilter<"AuditReport"> | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntWithAggregatesFilter<"AuditReport"> | number
+  aiStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AuditReport"> | Date | string | null
+  aiGeneratedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AuditReport"> | Date | string | null
+  aiInterpretation?: Prisma.JsonNullableWithAggregatesFilter<"AuditReport">
 }
 
 export type AuditReportCreateInput = {
@@ -388,6 +448,11 @@ export type AuditReportCreateInput = {
   quickWins: number
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
 }
@@ -406,6 +471,11 @@ export type AuditReportUncheckedCreateInput = {
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
   leadId?: string | null
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
 }
 
@@ -422,6 +492,11 @@ export type AuditReportUpdateInput = {
   quickWins?: Prisma.IntFieldUpdateOperationsInput | number
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
 }
@@ -440,6 +515,11 @@ export type AuditReportUncheckedUpdateInput = {
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
 }
 
@@ -457,6 +537,11 @@ export type AuditReportCreateManyInput = {
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
   leadId?: string | null
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportUpdateManyMutationInput = {
@@ -472,6 +557,11 @@ export type AuditReportUpdateManyMutationInput = {
   quickWins?: Prisma.IntFieldUpdateOperationsInput | number
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportUncheckedUpdateManyInput = {
@@ -488,6 +578,11 @@ export type AuditReportUncheckedUpdateManyInput = {
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportCountOrderByAggregateInput = {
@@ -504,6 +599,11 @@ export type AuditReportCountOrderByAggregateInput = {
   opportunityScore?: Prisma.SortOrder
   audit?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
+  aiStatus?: Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
+  aiStartedAt?: Prisma.SortOrder
+  aiGeneratedAt?: Prisma.SortOrder
+  aiInterpretation?: Prisma.SortOrder
 }
 
 export type AuditReportAvgOrderByAggregateInput = {
@@ -512,6 +612,7 @@ export type AuditReportAvgOrderByAggregateInput = {
   criticalIssues?: Prisma.SortOrder
   quickWins?: Prisma.SortOrder
   opportunityScore?: Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
 }
 
 export type AuditReportMaxOrderByAggregateInput = {
@@ -527,6 +628,10 @@ export type AuditReportMaxOrderByAggregateInput = {
   quickWins?: Prisma.SortOrder
   opportunityScore?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
+  aiStatus?: Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
+  aiStartedAt?: Prisma.SortOrder
+  aiGeneratedAt?: Prisma.SortOrder
 }
 
 export type AuditReportMinOrderByAggregateInput = {
@@ -542,6 +647,10 @@ export type AuditReportMinOrderByAggregateInput = {
   quickWins?: Prisma.SortOrder
   opportunityScore?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
+  aiStatus?: Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
+  aiStartedAt?: Prisma.SortOrder
+  aiGeneratedAt?: Prisma.SortOrder
 }
 
 export type AuditReportSumOrderByAggregateInput = {
@@ -550,6 +659,7 @@ export type AuditReportSumOrderByAggregateInput = {
   criticalIssues?: Prisma.SortOrder
   quickWins?: Prisma.SortOrder
   opportunityScore?: Prisma.SortOrder
+  aiAttemptCount?: Prisma.SortOrder
 }
 
 export type AuditReportListRelationFilter = {
@@ -581,6 +691,14 @@ export type IntFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type NullableEnumAiInterpretationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AiInterpretationStatus | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -656,6 +774,11 @@ export type AuditReportCreateWithoutLeadInput = {
   quickWins: number
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
 }
 
@@ -672,6 +795,11 @@ export type AuditReportUncheckedCreateWithoutLeadInput = {
   quickWins: number
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
 }
 
@@ -718,6 +846,11 @@ export type AuditReportScalarWhereInput = {
   opportunityScore?: Prisma.IntFilter<"AuditReport"> | number
   audit?: Prisma.JsonFilter<"AuditReport">
   leadId?: Prisma.StringNullableFilter<"AuditReport"> | string | null
+  aiStatus?: Prisma.EnumAiInterpretationStatusNullableFilter<"AuditReport"> | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFilter<"AuditReport"> | number
+  aiStartedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
+  aiGeneratedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
+  aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
 }
 
 export type AuditReportCreateWithoutPurchasesInput = {
@@ -733,6 +866,11 @@ export type AuditReportCreateWithoutPurchasesInput = {
   quickWins: number
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
 }
 
@@ -750,6 +888,11 @@ export type AuditReportUncheckedCreateWithoutPurchasesInput = {
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
   leadId?: string | null
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportCreateOrConnectWithoutPurchasesInput = {
@@ -781,6 +924,11 @@ export type AuditReportUpdateWithoutPurchasesInput = {
   quickWins?: Prisma.IntFieldUpdateOperationsInput | number
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
 }
 
@@ -798,6 +946,11 @@ export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportCreateManyLeadInput = {
@@ -813,6 +966,11 @@ export type AuditReportCreateManyLeadInput = {
   quickWins: number
   opportunityScore: number
   audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportUpdateWithoutLeadInput = {
@@ -828,6 +986,11 @@ export type AuditReportUpdateWithoutLeadInput = {
   quickWins?: Prisma.IntFieldUpdateOperationsInput | number
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
 }
 
@@ -844,6 +1007,11 @@ export type AuditReportUncheckedUpdateWithoutLeadInput = {
   quickWins?: Prisma.IntFieldUpdateOperationsInput | number
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
 }
 
@@ -860,6 +1028,11 @@ export type AuditReportUncheckedUpdateManyWithoutLeadInput = {
   quickWins?: Prisma.IntFieldUpdateOperationsInput | number
   opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
   audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -907,6 +1080,11 @@ export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   opportunityScore?: boolean
   audit?: boolean
   leadId?: boolean
+  aiStatus?: boolean
+  aiAttemptCount?: boolean
+  aiStartedAt?: boolean
+  aiGeneratedAt?: boolean
+  aiInterpretation?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
   purchases?: boolean | Prisma.AuditReport$purchasesArgs<ExtArgs>
   _count?: boolean | Prisma.AuditReportCountOutputTypeDefaultArgs<ExtArgs>
@@ -926,6 +1104,11 @@ export type AuditReportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   opportunityScore?: boolean
   audit?: boolean
   leadId?: boolean
+  aiStatus?: boolean
+  aiAttemptCount?: boolean
+  aiStartedAt?: boolean
+  aiGeneratedAt?: boolean
+  aiInterpretation?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
 }, ExtArgs["result"]["auditReport"]>
 
@@ -943,6 +1126,11 @@ export type AuditReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   opportunityScore?: boolean
   audit?: boolean
   leadId?: boolean
+  aiStatus?: boolean
+  aiAttemptCount?: boolean
+  aiStartedAt?: boolean
+  aiGeneratedAt?: boolean
+  aiInterpretation?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
 }, ExtArgs["result"]["auditReport"]>
 
@@ -960,9 +1148,14 @@ export type AuditReportSelectScalar = {
   opportunityScore?: boolean
   audit?: boolean
   leadId?: boolean
+  aiStatus?: boolean
+  aiAttemptCount?: boolean
+  aiStartedAt?: boolean
+  aiGeneratedAt?: boolean
+  aiInterpretation?: boolean
 }
 
-export type AuditReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "version" | "createdAt" | "website" | "hostname" | "reportMode" | "overallScore" | "grade" | "criticalIssues" | "quickWins" | "opportunityScore" | "audit" | "leadId", ExtArgs["result"]["auditReport"]>
+export type AuditReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "version" | "createdAt" | "website" | "hostname" | "reportMode" | "overallScore" | "grade" | "criticalIssues" | "quickWins" | "opportunityScore" | "audit" | "leadId" | "aiStatus" | "aiAttemptCount" | "aiStartedAt" | "aiGeneratedAt" | "aiInterpretation", ExtArgs["result"]["auditReport"]>
 export type AuditReportInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
   purchases?: boolean | Prisma.AuditReport$purchasesArgs<ExtArgs>
@@ -995,6 +1188,11 @@ export type $AuditReportPayload<ExtArgs extends runtime.Types.Extensions.Interna
     opportunityScore: number
     audit: runtime.JsonValue
     leadId: string | null
+    aiStatus: $Enums.AiInterpretationStatus | null
+    aiAttemptCount: number
+    aiStartedAt: Date | null
+    aiGeneratedAt: Date | null
+    aiInterpretation: runtime.JsonValue | null
   }, ExtArgs["result"]["auditReport"]>
   composites: {}
 }
@@ -1433,6 +1631,11 @@ export interface AuditReportFieldRefs {
   readonly opportunityScore: Prisma.FieldRef<"AuditReport", 'Int'>
   readonly audit: Prisma.FieldRef<"AuditReport", 'Json'>
   readonly leadId: Prisma.FieldRef<"AuditReport", 'String'>
+  readonly aiStatus: Prisma.FieldRef<"AuditReport", 'AiInterpretationStatus'>
+  readonly aiAttemptCount: Prisma.FieldRef<"AuditReport", 'Int'>
+  readonly aiStartedAt: Prisma.FieldRef<"AuditReport", 'DateTime'>
+  readonly aiGeneratedAt: Prisma.FieldRef<"AuditReport", 'DateTime'>
+  readonly aiInterpretation: Prisma.FieldRef<"AuditReport", 'Json'>
 }
     
 

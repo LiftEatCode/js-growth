@@ -226,13 +226,49 @@ export function PrivacyPolicyContent() {
         <p>
           Trusted service providers help us operate the website. This currently
           includes providers used for hosting and infrastructure, database
-          storage, payment processing, analytics (when configured), and email
-          delivery.
+          storage, payment processing, analytics (when configured), email
+          delivery, and — for Professional audits — AI interpretation.
         </p>
         <p>
           Audit reports, lead records, and purchase records are stored in a
           PostgreSQL database hosted with Neon. Neon may process that
           information according to its own privacy practices.
+        </p>
+      </LegalSection>
+
+      <LegalSection
+        id="ai-interpretation"
+        title="Professional AI Interpretation"
+      >
+        <p>
+          After a Professional Website Growth Audit is purchased, JS Growth may
+          generate a written Executive Growth Analysis that interprets the
+          structured findings already produced by the audit. Free audits do not
+          use this feature, and JS Growth does not generate this analysis
+          before Professional entitlement is confirmed.
+        </p>
+        <p>
+          For that interpretation, structured audit findings derived from
+          publicly accessible website content may be sent to an AI provider
+          (currently OpenAI). The information sent is limited to curated
+          website-audit evidence such as scores, findings, site-scan patterns,
+          and competitive measurements when those exist. JS Growth does not
+          send customer email addresses, lead-form details, payment records, or
+          Stripe identifiers to the AI provider for this feature.
+        </p>
+        <p>
+          Website scores, technical findings, and competitive measurements are
+          produced by JS Growth&apos;s deterministic audit engine. The AI
+          analysis is an interpretation of that evidence. It is not a
+          guarantee of rankings, traffic, leads, or revenue.
+        </p>
+        <p>
+          The AI provider may process that structured audit information
+          according to its own privacy practices. See{" "}
+          <LegalExternalLink href={THIRD_PARTY_POLICIES.openai}>
+            OpenAI’s Privacy Policy
+          </LegalExternalLink>
+          .
         </p>
       </LegalSection>
 
@@ -244,9 +280,9 @@ export function PrivacyPolicyContent() {
         <p>
           We may share information with service providers that perform services
           on our behalf, such as payment processing, hosting and
-          infrastructure, database storage, analytics, and email delivery.
-          Those providers are given access only as needed to perform their
-          services.
+          infrastructure, database storage, analytics, email delivery, and AI
+          interpretation of Professional audit findings. Those providers are
+          given access only as needed to perform their services.
         </p>
         <p>
           We may also disclose information if we believe it is reasonably

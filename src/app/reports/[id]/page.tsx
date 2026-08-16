@@ -259,6 +259,11 @@ export default async function InternalReportPage({
         },
 
         select: {
+          aiStatus: true,
+          aiAttemptCount: true,
+          aiStartedAt: true,
+          aiGeneratedAt: true,
+          aiInterpretation: true,
           lead: {
             select: {
               id: true,
@@ -322,6 +327,10 @@ export default async function InternalReportPage({
 
   const paidPurchase =
     storedReport?.purchases[0] ?? null;
+
+  const aiMetadata = readAiAdminMetadata(
+    storedReport?.aiInterpretation ?? null,
+  );
 
   const audit =
     report.audit;
@@ -1092,6 +1101,49 @@ export default async function InternalReportPage({
                   }
                 />
 
+                <DataRow
+                  label="AI interpretation"
+                  value={formatAiStatus(
+                    storedReport?.aiStatus ?? null,
+                    paidPurchase ? "paid" : "unpaid",
+                  )}
+                />
+
+                <DataRow
+                  label="AI attempts"
+                  value={String(
+                    storedReport?.aiAttemptCount ?? 0,
+                  )}
+                />
+
+                {aiMetadata?.version ? (
+                  <DataRow
+                    label="AI version"
+                    value={aiMetadata.version}
+                  />
+                ) : null}
+
+                {aiMetadata?.model ? (
+                  <DataRow
+                    label="AI model"
+                    value={aiMetadata.model}
+                  />
+                ) : null}
+
+                {aiMetadata?.generatedAt ? (
+                  <DataRow
+                    label="AI generated"
+                    value={aiMetadata.generatedAt}
+                  />
+                ) : null}
+
+                {aiMetadata?.tokens ? (
+                  <DataRow
+                    label="AI tokens"
+                    value={aiMetadata.tokens}
+                  />
+                ) : null}
+
                 {paidPurchase?.paidAt ? (
                   <DataRow
                     label="Paid at"
@@ -1299,4 +1351,65 @@ function DataRow({
       </p>
     </div>
   );
+}
+
+function formatAiStatus(
+  status: string | null,
+  access: "paid" | "unpaid",
+): string {
+  if (access === "unpaid") {
+    return status ? `${status} (not customer-visible)` : "Not generated";
+  }
+
+  if (!status) {
+    return "Not generated";
+  }
+
+  return status;
+}
+
+function readAiAdminMetadata(value: unknown): {
+  version: string | null;
+  model: string | null;
+  generatedAt: string | null;
+  tokens: string | null;
+} | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const record = value as {
+    version?: unknown;
+    model?: unknown;
+    generatedAt?: unknown;
+    usage?: {
+      inputTokens?: unknown;
+      outputTokens?: unknown;
+      totalTokens?: unknown;
+    };
+  };
+
+  const inputTokens =
+    typeof record.usage?.inputTokens === "number"
+      ? record.usage.inputTokens
+      : null;
+  const outputTokens =
+    typeof record.usage?.outputTokens === "number"
+      ? record.usage.outputTokens
+      : null;
+  const totalTokens =
+    typeof record.usage?.totalTokens === "number"
+      ? record.usage.totalTokens
+      : null;
+
+  return {
+    version: typeof record.version === "string" ? record.version : null,
+    model: typeof record.model === "string" ? record.model : null,
+    generatedAt:
+      typeof record.generatedAt === "string" ? record.generatedAt : null,
+    tokens:
+      totalTokens != null
+        ? `${totalTokens} total${inputTokens != null ? ` · ${inputTokens} in` : ""}${outputTokens != null ? ` · ${outputTokens} out` : ""}`
+        : null,
+  };
 }

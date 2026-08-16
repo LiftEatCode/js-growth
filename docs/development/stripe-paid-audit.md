@@ -26,6 +26,8 @@ Copy `.env.example` to `.env.local`. Never commit secrets.
 
 `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` must never be prefixed with `NEXT_PUBLIC_`.
 
+The Stripe webhook verifies payment and grants Professional entitlement. It does **not** call OpenAI. AI Interpretation is generated later on the first entitled Professional report view.
+
 ## Create the Stripe product (test mode)
 
 1. Open the Stripe Dashboard in **Test mode**.

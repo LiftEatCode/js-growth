@@ -21,9 +21,12 @@ import {
   import type {
     AuditReport,
   } from "@/lib/website-audit/storage";
+  import type { AiInterpretationView } from "@/lib/website-audit/ai-interpretation/types";
+  import { AI_DISCLOSURE } from "@/lib/website-audit/ai-interpretation/constants";
   
   interface AuditReportPdfProps {
     report: AuditReport;
+    interpretation?: AiInterpretationView | null;
   }
   
   const COLORS = {
@@ -731,6 +734,7 @@ import {
   
   export function AuditReportPdf({
     report,
+    interpretation,
   }: AuditReportPdfProps) {
     const audit = report.audit;
   
@@ -900,6 +904,61 @@ import {
               {executiveSummary.summary}
             </Text>
           </View>
+
+          {interpretation && interpretation.status === "completed" && interpretation.record ? (
+            <View style={styles.section} wrap>
+              <Text style={styles.eyebrow}>
+                Executive Growth Analysis
+              </Text>
+              <Text style={styles.sectionTitle}>
+                {interpretation.record.content.strategicDiagnosis.headline}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {interpretation.record.content.executiveSummary}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {interpretation.record.content.strategicDiagnosis.explanation}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {AI_DISCLOSURE}
+              </Text>
+              {interpretation.record.content.topPriorities.map((priority) => (
+                <Text
+                  key={`${priority.rank}-${priority.title}`}
+                  style={styles.sectionDescription}
+                >
+                  {`Priority ${priority.rank}: ${priority.title}. ${priority.whyItMatters} Evidence: ${priority.evidence}`}
+                </Text>
+              ))}
+              <Text style={styles.sectionTitle}>
+                30 / 60 / 90 day strategy
+              </Text>
+              {interpretation.record.content.ninetyDayStrategy.first30Days.map((item) => (
+                <Text key={item} style={styles.sectionDescription}>
+                  {`First 30 days: ${item}`}
+                </Text>
+              ))}
+              {interpretation.record.content.ninetyDayStrategy.days31To60.map((item) => (
+                <Text key={item} style={styles.sectionDescription}>
+                  {`Days 31-60: ${item}`}
+                </Text>
+              ))}
+              {interpretation.record.content.ninetyDayStrategy.days61To90.map((item) => (
+                <Text key={item} style={styles.sectionDescription}>
+                  {`Days 61-90: ${item}`}
+                </Text>
+              ))}
+            </View>
+          ) : interpretation && interpretation.status === "unavailable" ? (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>
+                Executive Growth Analysis
+              </Text>
+              <Text style={styles.sectionDescription}>
+                Strategic interpretation is temporarily unavailable. Your full Professional audit remains available.
+              </Text>
+            </View>
+          ) : null}
 
           {audit.siteData ? (
             <View style={styles.section}>

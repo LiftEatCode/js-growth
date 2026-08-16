@@ -28,4 +28,6 @@ export const COMMERCIAL_EVENTS = {
   professionalCheckoutStarted: "professional_checkout_started",
   multiPageAuditCompleted: "multi_page_audit_completed",
   competitiveAuditCompleted: "competitive_audit_completed",
+  aiInterpretationCompleted: "ai_interpretation_completed",
+  aiInterpretationFailed: "ai_interpretation_failed",
 } as const;

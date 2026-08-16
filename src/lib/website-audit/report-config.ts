@@ -16,6 +16,7 @@ export interface ReportCapabilities {
   showSiteOverview: boolean;
   showSiteInventory: boolean;
   showCompetitiveIntelligence: boolean;
+  showAiInterpretation: boolean;
   maxPriorityFindings: number | null;
   maxQuickWins: number | null;
   maxFindings: number | null;
@@ -56,6 +57,7 @@ const FREE_CAPABILITIES: ReportCapabilities = {
   showSiteOverview: false,
   showSiteInventory: false,
   showCompetitiveIntelligence: false,
+  showAiInterpretation: false,
   maxPriorityFindings: 3,
   maxQuickWins: 3,
   maxFindings: 6,
@@ -76,6 +78,7 @@ const PROFESSIONAL_CAPABILITIES: ReportCapabilities = {
   showSiteOverview: true,
   showSiteInventory: true,
   showCompetitiveIntelligence: true,
+  showAiInterpretation: true,
   maxPriorityFindings: 5,
   maxQuickWins: 5,
   maxFindings: null,
@@ -214,6 +217,11 @@ export function getAuditTierComparison(): AuditTierComparisonRow[] {
       feature: "Competitive comparison",
       free: "Locked teaser when competitor URLs are supplied",
       professional: "Full Competitive Intelligence",
+    },
+    {
+      feature: "Executive growth analysis",
+      free: "Not included",
+      professional: "Included",
     },
     {
       feature: "Professional report / PDF",

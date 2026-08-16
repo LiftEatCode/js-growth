@@ -34,9 +34,9 @@ export function ReportActionPlan({ view }: ReportActionPlanProps) {
   return (
     <div id="report-action-plan">
       <ReportSection
-        eyebrow="30–90 Day Action Plan"
-        title="A practical order of work."
-        description={`${view.estimatedEffortLabel} estimated across the findings in this scan. Actual implementation time depends on the website platform, codebase, and complexity. This is not a price quote.`}
+          eyebrow="30–90 Day Action Plan"
+          title="A practical checklist of work."
+          description={`${view.estimatedEffortLabel} estimated across the findings in this scan. This checklist comes from the audit engine. The Executive Growth Analysis above explains the strategic sequence. Actual implementation time depends on the website platform, codebase, and complexity. This is not a price quote.`}
       >
         <div className="space-y-6">
           {view.actionPlan.phases.map((phase) => (

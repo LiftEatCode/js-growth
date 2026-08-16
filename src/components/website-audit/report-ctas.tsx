@@ -10,6 +10,7 @@ import {
   getProfessionalAuditPricePresentation,
   PROFESSIONAL_AUDIT_PRODUCT_NAME,
 } from "@/lib/payments/product";
+import { FREE_AI_CAPABILITY_COPY } from "@/lib/website-audit/ai-interpretation/copy";
 import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
 
 interface ReportCtasProps {
@@ -21,6 +22,7 @@ interface ReportCtasProps {
 const PROFESSIONAL_BENEFITS = [
   "Complete issue breakdown",
   "Full recommendations",
+  "Executive growth analysis",
   "30–90 day action plan",
   "Complete quick-win list",
   "Technical evidence",
@@ -57,6 +59,9 @@ export function ReportUpgradeCta({
           This free report already shows real issues. The professional report
           gives you the complete roadmap: full recommendations, an action plan,
           evidence, and a PDF you can keep.
+        </p>
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">
+          {FREE_AI_CAPABILITY_COPY}
         </p>
         <p className="mt-4 text-lg font-semibold text-white">
           {pricePresentation}

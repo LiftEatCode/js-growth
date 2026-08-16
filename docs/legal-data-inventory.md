@@ -40,7 +40,7 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 - **Purpose:** generate and display Website Growth Audits; retain the report for later viewing, Professional upgrade, and support.
 - **How collected:** HTTP fetch of publicly accessible HTML and related public response headers for the submitted URL, plus a bounded number of same-site publicly linked pages (representative multi-page scan, not a complete crawl). When the user optionally supplies competitor URLs, a smaller bounded sample of publicly accessible pages may also be fetched from those competitor websites. Private/localhost/internal addresses are blocked. The audit does not log into password-protected admin areas or private databases.
 - **Storage:** PostgreSQL via Prisma (`AuditReport`). Public viewing uses a report UUID link at `/report/[id]` (disallowed in robots). Internal staff viewing uses `/reports/[id]`.
-- **Third parties:** Neon (database); hosting/infrastructure for the Next.js application.
+- **Third parties:** Neon (database); hosting/infrastructure for the Next.js application. For Professional audits, structured website-audit findings derived from publicly accessible pages may be sent to OpenAI to generate an Executive Growth Analysis. Free audits do not send data to OpenAI. Customer email, lead-form details, payment records, Stripe identifiers, IP addresses, and analytics identifiers are not included in that AI request.
 
 ### Payments
 
@@ -54,7 +54,7 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 ### Analytics
 
 - **Service:** Google Analytics via `@next/third-parties/google`, loaded only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set.
-- **Potential data:** pages viewed, browser/device characteristics, approximate geography, referral/source information, and interaction events. Custom events currently include `audit_completed`, `professional_checkout_started`, `multi_page_audit_completed`, and `competitive_audit_completed` (competitor counts only, not competitor URLs) when `gtag` is present.
+- **Potential data:** pages viewed, browser/device characteristics, approximate geography, referral/source information, and interaction events. Custom events currently include `audit_completed`, `professional_checkout_started`, `multi_page_audit_completed`, `competitive_audit_completed` (competitor counts only, not competitor URLs), `ai_interpretation_completed`, and `ai_interpretation_failed` (`model`/`status` only) when `gtag` is present.
 - **Purpose:** understand website usage and funnel behavior.
 - **Storage / third parties:** Google Analytics / Google. JS Growth does not persist analytics payloads in the application database.
 - **Consent:** no cookie-consent or opt-in banner is implemented. Evaluate additional consent tooling before targeting jurisdictions that require opt-in analytics consent.
@@ -80,10 +80,9 @@ Named because they appear in application code or confirmed configuration:
 - Resend
 - Google Analytics (`@next/third-parties/google`)
 - Neon / PostgreSQL (`@neondatabase/serverless`, `@prisma/adapter-neon`)
+- OpenAI (`openai` SDK) — Professional AI Interpretation only; structured website-audit findings, not PII/payment records
 
 Not currently used as product integrations (do not disclose as active vendors in customer policies unless that changes):
-
-- OpenAI
 - Meta / Facebook Pixel
 - Google Business Profile APIs
 - Rank-tracking providers

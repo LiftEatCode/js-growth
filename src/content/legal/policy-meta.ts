@@ -16,4 +16,5 @@ export const THIRD_PARTY_POLICIES = {
   stripe: "https://stripe.com/privacy",
   google: "https://policies.google.com/privacy",
   resend: "https://resend.com/legal/privacy-policy",
+  openai: "https://openai.com/policies/privacy-policy",
 } as const;

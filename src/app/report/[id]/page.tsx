@@ -13,7 +13,11 @@ import {
   Container,
 } from "@/components/ui";
 import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
+import { ensureAiInterpretationForEntitledReport } from "@/lib/website-audit/ai-interpretation/ensure";
 import { auditReportRepository } from "@/lib/website-audit/storage";
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 interface ReportPageProps {
   params: Promise<{
@@ -68,6 +72,13 @@ export default async function ReportPage({
   const professionallyUnlocked =
     await reportHasProfessionalEntitlement(report.id);
 
+  const interpretation = professionallyUnlocked
+    ? await ensureAiInterpretationForEntitledReport({
+        reportId: report.id,
+        audit: report.audit,
+      })
+    : null;
+
   return (
     <main className="min-h-screen bg-slate-50/60">
       <div className="border-b border-border bg-white">
@@ -121,6 +132,7 @@ export default async function ReportPage({
           mode={report.reportMode}
           reportId={report.id}
           professionallyUnlocked={professionallyUnlocked}
+          interpretation={interpretation}
         />
       </Container>
     </main>

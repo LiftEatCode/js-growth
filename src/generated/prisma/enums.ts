@@ -40,3 +40,12 @@ export const PurchaseStatus = {
 } as const
 
 export type PurchaseStatus = (typeof PurchaseStatus)[keyof typeof PurchaseStatus]
+
+
+export const AiInterpretationStatus = {
+  GENERATING: 'GENERATING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type AiInterpretationStatus = (typeof AiInterpretationStatus)[keyof typeof AiInterpretationStatus]

@@ -57,6 +57,15 @@ assert(
   ),
   "comparison reflects action plan capabilities",
 );
+assert(
+  comparison.some(
+    (row) =>
+      row.feature === "Executive growth analysis" &&
+      row.free === "Not included" &&
+      row.professional === "Included",
+  ),
+  "comparison reflects AI interpretation capability",
+);
 
 console.log("report access verification passed");
 process.exit(0);

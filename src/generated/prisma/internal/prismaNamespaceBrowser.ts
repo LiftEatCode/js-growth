@@ -86,7 +86,12 @@ export const AuditReportScalarFieldEnum = {
   quickWins: 'quickWins',
   opportunityScore: 'opportunityScore',
   audit: 'audit',
-  leadId: 'leadId'
+  leadId: 'leadId',
+  aiStatus: 'aiStatus',
+  aiAttemptCount: 'aiAttemptCount',
+  aiStartedAt: 'aiStartedAt',
+  aiGeneratedAt: 'aiGeneratedAt',
+  aiInterpretation: 'aiInterpretation'
 } as const
 
 export type AuditReportScalarFieldEnum = (typeof AuditReportScalarFieldEnum)[keyof typeof AuditReportScalarFieldEnum]
@@ -154,6 +159,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

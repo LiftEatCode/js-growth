@@ -295,6 +295,10 @@ STRIPE_WEBHOOK_SECRET
 STRIPE_PROFESSIONAL_AUDIT_PRICE_ID
 
 NEXT_PUBLIC_PROFESSIONAL_AUDIT_PRICE_LABEL
+
+OPENAI_API_KEY
+
+OPENAI_AUDIT_MODEL
 ```
 
 Project-specific Stripe setup is documented in `docs/development/stripe-paid-audit.md`.

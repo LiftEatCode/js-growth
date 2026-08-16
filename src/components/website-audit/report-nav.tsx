@@ -5,11 +5,15 @@ import {
 
 interface ReportNavProps {
   view: GrowthReportViewModel;
+  showAiInterpretation?: boolean;
 }
 
-export function ReportNav({ view }: ReportNavProps) {
+export function ReportNav({ view, showAiInterpretation = false }: ReportNavProps) {
   const items = [
     { href: "#report-overview", label: "Overview" },
+    showAiInterpretation
+      ? { href: "#report-ai-analysis", label: "Strategy" }
+      : null,
     { href: "#report-priorities", label: "Priorities" },
     view.capabilities.showQuickWins
       ? { href: "#report-quick-wins", label: "Quick Wins" }

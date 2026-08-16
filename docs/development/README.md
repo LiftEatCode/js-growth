@@ -6,3 +6,4 @@
 - [Performance Intelligence V2](./performance-intelligence-v2.md) — static HTML/resource performance signals versus measured Core Web Vitals.
 - [Multi-Page Site Intelligence V1](./multi-page-site-intelligence-v1.md) — bounded same-site crawl, site-level findings, and Professional Site Overview.
 - [Competitive Intelligence V1](./competitive-intelligence-v1.md) — optional explicit competitor URLs, bounded competitor scans, and Professional comparison (no rankings, discovery, or AI).
+- [AI Interpretation V1](./ai-interpretation-v1.md) — Professional-only OpenAI strategist layer over stored deterministic audit evidence.

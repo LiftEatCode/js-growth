@@ -122,7 +122,9 @@ export function TermsOfServiceContent() {
         </p>
         <p>
           Professional access unlocks the report features described at the time
-          of purchase for the related report. Access is provided through the
+          of purchase for the related report. For Professional audits, this may
+          include an AI-generated executive analysis based on the stored
+          structured audit findings. Access is provided through the
           report link while the service remains available, subject to these
           Terms.
         </p>

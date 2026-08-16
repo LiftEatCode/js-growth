@@ -48,6 +48,12 @@ model AuditReport {
 
   purchases ReportPurchase[]
 
+  aiStatus          AiInterpretationStatus?
+  aiAttemptCount    Int                     @default(0)
+  aiStartedAt       DateTime?
+  aiGeneratedAt     DateTime?
+  aiInterpretation  Json?
+
   @@index([hostname])
   @@index([createdAt])
   @@index([overallScore])
@@ -115,6 +121,12 @@ enum PurchaseStatus {
   PAID
   FAILED
   REFUNDED
+}
+
+enum AiInterpretationStatus {
+  GENERATING
+  COMPLETED
+  FAILED
 }
 
 model ReportPurchase {

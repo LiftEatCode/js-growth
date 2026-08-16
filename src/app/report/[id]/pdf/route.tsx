@@ -3,9 +3,12 @@ import {
   generateAuditReportPdf,
 } from "@/lib/website-audit/pdf/generate-audit-report-pdf";
 import { canServeProfessionalReportArtifact } from "@/lib/payments/report-artifacts";
+import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
+import { ensureAiInterpretationForEntitledReport } from "@/lib/website-audit/ai-interpretation/ensure";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function GET(
   _request: Request,
@@ -39,7 +42,15 @@ export async function GET(
     );
   }
 
-  const pdfBuffer = await generateAuditReportPdf(report);
+  const entitled = await reportHasProfessionalEntitlement(report.id);
+  const interpretation = entitled
+    ? await ensureAiInterpretationForEntitledReport({
+        reportId: report.id,
+        audit: report.audit,
+      })
+    : null;
+
+  const pdfBuffer = await generateAuditReportPdf(report, interpretation);
   const filename = createAuditReportPdfFilename(report.hostname);
 
   return new Response(new Uint8Array(pdfBuffer), {

@@ -11,6 +11,7 @@ import { AuditExecutiveDashboard } from "@/components/website-audit/audit-execut
 import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
 import { AuditLeadCapture } from "@/components/website-audit/audit-lead-capture";
 import { ReportActionPlan } from "@/components/website-audit/report-action-plan";
+import { ReportAiInterpretation } from "@/components/website-audit/report-ai-interpretation";
 import { ReportCategoryDives } from "@/components/website-audit/report-category-dives";
 import { ReportCategoryScorecard } from "@/components/website-audit/report-category-scorecard";
 import {
@@ -35,12 +36,14 @@ import {
 } from "@/lib/website-audit/page-metadata";
 import { buildGrowthReportViewModel } from "@/lib/website-audit/report-view";
 import type { ReportMode, WebsiteAuditResult } from "@/lib/website-audit/types";
+import type { AiInterpretationView } from "@/lib/website-audit/ai-interpretation/types";
 
 interface AuditResultsProps {
   result: WebsiteAuditResult;
   mode?: ReportMode;
   reportId?: string;
   professionallyUnlocked?: boolean;
+  interpretation?: AiInterpretationView | null;
 }
 
 export function AuditResults({
@@ -48,6 +51,7 @@ export function AuditResults({
   mode = "public",
   reportId,
   professionallyUnlocked = false,
+  interpretation = null,
 }: AuditResultsProps) {
   const view = buildGrowthReportViewModel(result, mode, {
     professionallyUnlocked,
@@ -58,9 +62,15 @@ export function AuditResults({
     <div className="space-y-10">
       <AuditExecutiveDashboard view={view} reportId={reportId} />
 
-      <ReportNav view={view} />
+      <ReportNav view={view} showAiInterpretation={Boolean(interpretation && interpretation.status !== "hidden")} />
 
       <ReportSiteScanNotice view={view} />
+
+      <ReportAiInterpretation
+        interpretation={interpretation}
+        showAiInterpretation={view.capabilities.showAiInterpretation}
+        reportId={reportId}
+      />
 
       <ReportSiteOverview view={view} />
 

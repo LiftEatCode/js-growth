@@ -529,10 +529,6 @@ export type EnumLeadStatusFieldUpdateOperationsInput = {
   set?: $Enums.LeadStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type LeadCreateNestedOneWithoutActivitiesInput = {
   create?: Prisma.XOR<Prisma.LeadCreateWithoutActivitiesInput, Prisma.LeadUncheckedCreateWithoutActivitiesInput>
   connectOrCreate?: Prisma.LeadCreateOrConnectWithoutActivitiesInput
