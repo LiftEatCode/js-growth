@@ -17,6 +17,7 @@ export interface FetchedWebsitePage {
   finalUrl: string;
   statusCode: number;
   contentType: string | null;
+  xRobotsTag: string | null;
   html: string;
   fetchedAt: string;
 }
@@ -308,6 +309,7 @@ export async function fetchWebsitePage(
           finalUrl: currentUrl.toString(),
           statusCode: response.status,
           contentType,
+          xRobotsTag: response.headers.get("x-robots-tag"),
           html,
           fetchedAt: new Date().toISOString(),
         },

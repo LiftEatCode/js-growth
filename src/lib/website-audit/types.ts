@@ -132,7 +132,7 @@ export interface AuditPageMetadata {
   fetchedAt: string;
 }
 
-export interface AuditRobotsData {
+export interface AuditRobotsDirectiveData {
   raw: string | null;
 
   directives: string[];
@@ -152,6 +152,31 @@ export interface AuditRobotsData {
   maxImagePreview: string | null;
 
   maxVideoPreview: string | null;
+}
+
+export interface AuditRobotsEffectiveData {
+  noindex: boolean;
+
+  nofollow: boolean;
+
+  noarchive: boolean;
+
+  nosnippet: boolean;
+}
+
+/**
+ * Combined HTML meta robots + HTTP X-Robots-Tag data.
+ *
+ * Newly generated audits use this nested shape.
+ * Older stored audits may still contain the previous flat
+ * `AuditRobotsDirectiveData` object under `pageData.robots`.
+ */
+export interface AuditRobotsData {
+  meta: AuditRobotsDirectiveData;
+
+  header: AuditRobotsDirectiveData;
+
+  effective: AuditRobotsEffectiveData;
 }
 
 export interface AuditPageData {

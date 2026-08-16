@@ -2,6 +2,7 @@
 
 import { analyzeHtml } from "@/lib/website-audit/analyze-html";
 import { fetchWebsitePage } from "@/lib/website-audit/audit-url";
+import { buildAuditRobotsData } from "@/lib/website-audit/robots";
 import { parseWebsiteAuditInput } from "@/lib/website-audit/schema";
 import { scoreWebsiteAudit } from "@/lib/website-audit/scoring";
 import {
@@ -9,6 +10,7 @@ import {
   createAuditReport,
 } from "@/lib/website-audit/storage";
 import type {
+  AuditPageData,
   WebsiteAuditResponse,
   WebsiteAuditResult,
 } from "@/lib/website-audit/types";
@@ -39,10 +41,21 @@ export async function auditWebsite(
   }
 
   try {
-    const pageData = analyzeHtml(
+    const {
+      robotsMetaRaw,
+      ...htmlPageData
+    } = analyzeHtml(
       fetchResult.data.html,
       fetchResult.data.finalUrl,
     );
+
+    const pageData: AuditPageData = {
+      ...htmlPageData,
+      robots: buildAuditRobotsData(
+        robotsMetaRaw,
+        fetchResult.data.xRobotsTag,
+      ),
+    };
 
     const scoring = scoreWebsiteAudit(
       pageData,

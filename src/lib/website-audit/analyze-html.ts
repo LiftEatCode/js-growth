@@ -5,7 +5,6 @@ import {
 
 import type {
   AuditPageData,
-  AuditRobotsData,
 } from "./types";
 
 const PHONE_PATTERN =
@@ -342,105 +341,17 @@ function hasLocalBusinessSchema(
   );
 }
 
-function parseRobotsDirectives(
-  rawValue: string | null,
-): AuditRobotsData {
-  const directives =
-    rawValue
-      ? rawValue
-          .split(",")
-          .map(
-            (directive) =>
-              directive
-                .trim()
-                .toLowerCase(),
-          )
-          .filter(Boolean)
-      : [];
-
-  const directiveSet =
-    new Set(
-      directives,
-    );
-
-  const none =
-    directiveSet.has(
-      "none",
-    );
-
-  const noindex =
-    none ||
-    directiveSet.has(
-      "noindex",
-    );
-
-  const nofollow =
-    none ||
-    directiveSet.has(
-      "nofollow",
-    );
-
-  const maxSnippet =
-    directives.find(
-      (directive) =>
-        directive.startsWith(
-          "max-snippet:",
-        ),
-    ) ??
-    null;
-
-  const maxImagePreview =
-    directives.find(
-      (directive) =>
-        directive.startsWith(
-          "max-image-preview:",
-        ),
-    ) ??
-    null;
-
-  const maxVideoPreview =
-    directives.find(
-      (directive) =>
-        directive.startsWith(
-          "max-video-preview:",
-        ),
-    ) ??
-    null;
-
-  return {
-    raw:
-      rawValue,
-
-    directives,
-
-    noindex,
-
-    nofollow,
-
-    none,
-
-    noarchive:
-      directiveSet.has(
-        "noarchive",
-      ),
-
-    nosnippet:
-      directiveSet.has(
-        "nosnippet",
-      ),
-
-    maxSnippet,
-
-    maxImagePreview,
-
-    maxVideoPreview,
-  };
-}
+export type AnalyzedHtmlPage = Omit<
+  AuditPageData,
+  "robots"
+> & {
+  robotsMetaRaw: string | null;
+};
 
 export function analyzeHtml(
   html: string,
   finalUrl: string,
-): AuditPageData {
+): AnalyzedHtmlPage {
   const $ =
     load(html);
 
@@ -476,16 +387,11 @@ export function analyzeHtml(
       "content",
     );
 
-  const robotsRaw =
+  const robotsMetaRaw =
     getTrimmedAttribute(
       $,
       'meta[name="robots"]',
       "content",
-    );
-
-  const robots =
-    parseRobotsDirectives(
-      robotsRaw,
     );
 
   const h1Count =
@@ -583,7 +489,7 @@ export function analyzeHtml(
     canonicalUrl,
     viewport,
 
-    robots,
+    robotsMetaRaw,
 
     h1Count,
     h2Count,
