@@ -132,11 +132,35 @@ export interface AuditPageMetadata {
   fetchedAt: string;
 }
 
+export interface AuditRobotsData {
+  raw: string | null;
+
+  directives: string[];
+
+  noindex: boolean;
+
+  nofollow: boolean;
+
+  none: boolean;
+
+  noarchive: boolean;
+
+  nosnippet: boolean;
+
+  maxSnippet: string | null;
+
+  maxImagePreview: string | null;
+
+  maxVideoPreview: string | null;
+}
+
 export interface AuditPageData {
   title: string | null;
   metaDescription: string | null;
   canonicalUrl: string | null;
   viewport: string | null;
+
+  robots: AuditRobotsData;
 
   h1Count: number;
   h2Count: number;

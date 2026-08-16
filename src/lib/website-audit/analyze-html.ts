@@ -1,6 +1,12 @@
-import { load, type CheerioAPI } from "cheerio";
+import {
+  load,
+  type CheerioAPI,
+} from "cheerio";
 
-import type { AuditPageData } from "./types";
+import type {
+  AuditPageData,
+  AuditRobotsData,
+} from "./types";
 
 const PHONE_PATTERN =
   /(?:\+?1[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}/;
@@ -22,29 +28,34 @@ const LOCAL_TEXT_SIGNALS = [
   "located in",
 ];
 
-const LOCAL_BUSINESS_SCHEMA_TYPES = new Set([
-  "LocalBusiness",
-  "AutomotiveBusiness",
-  "AutoRepair",
-  "Dentist",
-  "MedicalBusiness",
-  "ProfessionalService",
-  "HomeAndConstructionBusiness",
-  "Electrician",
-  "GeneralContractor",
-  "HVACBusiness",
-  "Plumber",
-  "RoofingContractor",
-  "Restaurant",
-  "Store",
-]);
+const LOCAL_BUSINESS_SCHEMA_TYPES =
+  new Set([
+    "LocalBusiness",
+    "AutomotiveBusiness",
+    "AutoRepair",
+    "Dentist",
+    "MedicalBusiness",
+    "ProfessionalService",
+    "HomeAndConstructionBusiness",
+    "Electrician",
+    "GeneralContractor",
+    "HVACBusiness",
+    "Plumber",
+    "RoofingContractor",
+    "Restaurant",
+    "Store",
+  ]);
 
 function getTrimmedAttribute(
   $: CheerioAPI,
   selector: string,
   attribute: string,
 ): string | null {
-  const value = $(selector).first().attr(attribute)?.trim();
+  const value =
+    $(selector)
+      .first()
+      .attr(attribute)
+      ?.trim();
 
   return value || null;
 }
@@ -53,15 +64,26 @@ function getTrimmedText(
   $: CheerioAPI,
   selector: string,
 ): string | null {
-  const value = $(selector).first().text().trim();
+  const value =
+    $(selector)
+      .first()
+      .text()
+      .trim();
 
   return value || null;
 }
 
-function normalizeVisibleText($: CheerioAPI): string {
-  const body = $("body").clone();
+function normalizeVisibleText(
+  $: CheerioAPI,
+): string {
+  const body =
+    $("body").clone();
 
-  body.find("script, style, noscript, template, svg").remove();
+  body
+    .find(
+      "script, style, noscript, template, svg",
+    )
+    .remove();
 
   return body
     .text()
@@ -73,14 +95,27 @@ function addSchemaType(
   value: unknown,
   schemaTypes: Set<string>,
 ): void {
-  if (typeof value === "string") {
-    schemaTypes.add(value);
+  if (
+    typeof value ===
+    "string"
+  ) {
+    schemaTypes.add(
+      value,
+    );
+
     return;
   }
 
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      addSchemaType(item, schemaTypes);
+  if (
+    Array.isArray(value)
+  ) {
+    for (
+      const item of value
+    ) {
+      addSchemaType(
+        item,
+        schemaTypes,
+      );
     }
   }
 }
@@ -89,45 +124,80 @@ function collectStructuredDataTypes(
   value: unknown,
   schemaTypes: Set<string>,
 ): void {
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      collectStructuredDataTypes(item, schemaTypes);
+  if (
+    Array.isArray(value)
+  ) {
+    for (
+      const item of value
+    ) {
+      collectStructuredDataTypes(
+        item,
+        schemaTypes,
+      );
     }
 
     return;
   }
 
   if (
-    typeof value !== "object" ||
+    typeof value !==
+      "object" ||
     value === null
   ) {
     return;
   }
 
-  const record = value as Record<string, unknown>;
+  const record =
+    value as Record<
+      string,
+      unknown
+    >;
 
-  addSchemaType(record["@type"], schemaTypes);
+  addSchemaType(
+    record["@type"],
+    schemaTypes,
+  );
 
-  for (const nestedValue of Object.values(record)) {
-    collectStructuredDataTypes(nestedValue, schemaTypes);
+  for (
+    const nestedValue of Object.values(
+      record,
+    )
+  ) {
+    collectStructuredDataTypes(
+      nestedValue,
+      schemaTypes,
+    );
   }
 }
 
 function extractStructuredDataTypes(
   $: CheerioAPI,
 ): string[] {
-  const schemaTypes = new Set<string>();
+  const schemaTypes =
+    new Set<string>();
 
-  $('script[type="application/ld+json"]').each(
-    (_, element) => {
-      const rawJson = $(element).html()?.trim();
+  $(
+    'script[type="application/ld+json"]',
+  ).each(
+    (
+      _,
+      element,
+    ) => {
+      const rawJson =
+        $(element)
+          .html()
+          ?.trim();
 
       if (!rawJson) {
         return;
       }
 
       try {
-        const parsedJson: unknown = JSON.parse(rawJson);
+        const parsedJson:
+          unknown =
+          JSON.parse(
+            rawJson,
+          );
 
         collectStructuredDataTypes(
           parsedJson,
@@ -139,8 +209,16 @@ function extractStructuredDataTypes(
     },
   );
 
-  return [...schemaTypes].sort((a, b) =>
-    a.localeCompare(b),
+  return [
+    ...schemaTypes,
+  ].sort(
+    (
+      a,
+      b,
+    ) =>
+      a.localeCompare(
+        b,
+      ),
   );
 }
 
@@ -151,41 +229,71 @@ function classifyLinks(
   internalLinkCount: number;
   externalLinkCount: number;
 } {
-  let internalLinkCount = 0;
-  let externalLinkCount = 0;
+  let internalLinkCount =
+    0;
 
-  $("a[href]").each((_, element) => {
-    const rawHref = $(element).attr("href")?.trim();
+  let externalLinkCount =
+    0;
 
-    if (
-      !rawHref ||
-      rawHref.startsWith("#") ||
-      rawHref.startsWith("mailto:") ||
-      rawHref.startsWith("tel:") ||
-      rawHref.startsWith("javascript:")
-    ) {
-      return;
-    }
-
-    try {
-      const linkUrl = new URL(rawHref, pageUrl);
+  $("a[href]").each(
+    (
+      _,
+      element,
+    ) => {
+      const rawHref =
+        $(element)
+          .attr("href")
+          ?.trim();
 
       if (
-        linkUrl.protocol !== "http:" &&
-        linkUrl.protocol !== "https:"
+        !rawHref ||
+        rawHref.startsWith(
+          "#",
+        ) ||
+        rawHref.startsWith(
+          "mailto:",
+        ) ||
+        rawHref.startsWith(
+          "tel:",
+        ) ||
+        rawHref.startsWith(
+          "javascript:",
+        )
       ) {
         return;
       }
 
-      if (linkUrl.hostname === pageUrl.hostname) {
-        internalLinkCount += 1;
-      } else {
-        externalLinkCount += 1;
+      try {
+        const linkUrl =
+          new URL(
+            rawHref,
+            pageUrl,
+          );
+
+        if (
+          linkUrl.protocol !==
+            "http:" &&
+          linkUrl.protocol !==
+            "https:"
+        ) {
+          return;
+        }
+
+        if (
+          linkUrl.hostname ===
+          pageUrl.hostname
+        ) {
+          internalLinkCount +=
+            1;
+        } else {
+          externalLinkCount +=
+            1;
+        }
+      } catch {
+        // Ignore malformed links while continuing the audit.
       }
-    } catch {
-      // Ignore malformed links while continuing the audit.
-    }
-  });
+    },
+  );
 
   return {
     internalLinkCount,
@@ -196,7 +304,11 @@ function classifyLinks(
 function hasPhysicalAddressSignals(
   visibleText: string,
 ): boolean {
-  if (STREET_ADDRESS_PATTERN.test(visibleText)) {
+  if (
+    STREET_ADDRESS_PATTERN.test(
+      visibleText,
+    )
+  ) {
     return true;
   }
 
@@ -208,96 +320,270 @@ function hasPhysicalAddressSignals(
 function hasLocalTextSignals(
   visibleText: string,
 ): boolean {
-  const normalizedText = visibleText.toLowerCase();
+  const normalizedText =
+    visibleText.toLowerCase();
 
-  return LOCAL_TEXT_SIGNALS.some((signal) =>
-    normalizedText.includes(signal),
+  return LOCAL_TEXT_SIGNALS.some(
+    (signal) =>
+      normalizedText.includes(
+        signal,
+      ),
   );
 }
 
 function hasLocalBusinessSchema(
   structuredDataTypes: string[],
 ): boolean {
-  return structuredDataTypes.some((type) =>
-    LOCAL_BUSINESS_SCHEMA_TYPES.has(type),
+  return structuredDataTypes.some(
+    (type) =>
+      LOCAL_BUSINESS_SCHEMA_TYPES.has(
+        type,
+      ),
   );
+}
+
+function parseRobotsDirectives(
+  rawValue: string | null,
+): AuditRobotsData {
+  const directives =
+    rawValue
+      ? rawValue
+          .split(",")
+          .map(
+            (directive) =>
+              directive
+                .trim()
+                .toLowerCase(),
+          )
+          .filter(Boolean)
+      : [];
+
+  const directiveSet =
+    new Set(
+      directives,
+    );
+
+  const none =
+    directiveSet.has(
+      "none",
+    );
+
+  const noindex =
+    none ||
+    directiveSet.has(
+      "noindex",
+    );
+
+  const nofollow =
+    none ||
+    directiveSet.has(
+      "nofollow",
+    );
+
+  const maxSnippet =
+    directives.find(
+      (directive) =>
+        directive.startsWith(
+          "max-snippet:",
+        ),
+    ) ??
+    null;
+
+  const maxImagePreview =
+    directives.find(
+      (directive) =>
+        directive.startsWith(
+          "max-image-preview:",
+        ),
+    ) ??
+    null;
+
+  const maxVideoPreview =
+    directives.find(
+      (directive) =>
+        directive.startsWith(
+          "max-video-preview:",
+        ),
+    ) ??
+    null;
+
+  return {
+    raw:
+      rawValue,
+
+    directives,
+
+    noindex,
+
+    nofollow,
+
+    none,
+
+    noarchive:
+      directiveSet.has(
+        "noarchive",
+      ),
+
+    nosnippet:
+      directiveSet.has(
+        "nosnippet",
+      ),
+
+    maxSnippet,
+
+    maxImagePreview,
+
+    maxVideoPreview,
+  };
 }
 
 export function analyzeHtml(
   html: string,
   finalUrl: string,
 ): AuditPageData {
-  const $ = load(html);
-  const pageUrl = new URL(finalUrl);
+  const $ =
+    load(html);
 
-  const title = getTrimmedText($, "title");
+  const pageUrl =
+    new URL(
+      finalUrl,
+    );
 
-  const metaDescription = getTrimmedAttribute(
-    $,
-    'meta[name="description"]',
-    "content",
+  const title =
+    getTrimmedText(
+      $,
+      "title",
+    );
+
+  const metaDescription =
+    getTrimmedAttribute(
+      $,
+      'meta[name="description"]',
+      "content",
+    );
+
+  const canonicalUrl =
+    getTrimmedAttribute(
+      $,
+      'link[rel="canonical"]',
+      "href",
+    );
+
+  const viewport =
+    getTrimmedAttribute(
+      $,
+      'meta[name="viewport"]',
+      "content",
+    );
+
+  const robotsRaw =
+    getTrimmedAttribute(
+      $,
+      'meta[name="robots"]',
+      "content",
+    );
+
+  const robots =
+    parseRobotsDirectives(
+      robotsRaw,
+    );
+
+  const h1Count =
+    $("h1").length;
+
+  const h2Count =
+    $("h2").length;
+
+  const h3Count =
+    $("h3").length;
+
+  const imageCount =
+    $("img").length;
+
+  let imagesWithoutAlt =
+    0;
+
+  $("img").each(
+    (
+      _,
+      element,
+    ) => {
+      const alt =
+        $(element).attr(
+          "alt",
+        );
+
+      if (
+        alt ===
+          undefined ||
+        alt.trim() ===
+          ""
+      ) {
+        imagesWithoutAlt +=
+          1;
+      }
+    },
   );
-
-  const canonicalUrl = getTrimmedAttribute(
-    $,
-    'link[rel="canonical"]',
-    "href",
-  );
-
-  const viewport = getTrimmedAttribute(
-    $,
-    'meta[name="viewport"]',
-    "content",
-  );
-
-  const h1Count = $("h1").length;
-  const h2Count = $("h2").length;
-  const h3Count = $("h3").length;
-
-  const imageCount = $("img").length;
-
-  let imagesWithoutAlt = 0;
-
-  $("img").each((_, element) => {
-    const alt = $(element).attr("alt");
-
-    if (alt === undefined || alt.trim() === "") {
-      imagesWithoutAlt += 1;
-    }
-  });
 
   const {
     internalLinkCount,
     externalLinkCount,
-  } = classifyLinks($, pageUrl);
+  } =
+    classifyLinks(
+      $,
+      pageUrl,
+    );
 
   const structuredDataTypes =
-    extractStructuredDataTypes($);
+    extractStructuredDataTypes(
+      $,
+    );
 
-  const visibleText = normalizeVisibleText($);
+  const visibleText =
+    normalizeVisibleText(
+      $,
+    );
 
   const hasPhoneNumber =
-    PHONE_PATTERN.test(visibleText) ||
-    $('a[href^="tel:"]').length > 0;
+    PHONE_PATTERN.test(
+      visibleText,
+    ) ||
+    $(
+      'a[href^="tel:"]',
+    ).length >
+      0;
 
   const hasEmailAddress =
-    EMAIL_PATTERN.test(visibleText) ||
-    $('a[href^="mailto:"]').length > 0;
+    EMAIL_PATTERN.test(
+      visibleText,
+    ) ||
+    $(
+      'a[href^="mailto:"]',
+    ).length >
+      0;
 
   const physicalAddressDetected =
-    hasPhysicalAddressSignals(visibleText);
+    hasPhysicalAddressSignals(
+      visibleText,
+    );
 
   const localBusinessSchemaDetected =
-    hasLocalBusinessSchema(structuredDataTypes);
+    hasLocalBusinessSchema(
+      structuredDataTypes,
+    );
 
   const localTextDetected =
-    hasLocalTextSignals(visibleText);
+    hasLocalTextSignals(
+      visibleText,
+    );
 
   return {
     title,
     metaDescription,
     canonicalUrl,
     viewport,
+
+    robots,
 
     h1Count,
     h2Count,
@@ -310,17 +596,28 @@ export function analyzeHtml(
     externalLinkCount,
 
     hasOpenGraphTitle:
-      $('meta[property="og:title"][content]').length > 0,
+      $(
+        'meta[property="og:title"][content]',
+      ).length >
+      0,
 
     hasOpenGraphDescription:
-      $('meta[property="og:description"][content]')
-        .length > 0,
+      $(
+        'meta[property="og:description"][content]',
+      ).length >
+      0,
 
     hasOpenGraphImage:
-      $('meta[property="og:image"][content]').length > 0,
+      $(
+        'meta[property="og:image"][content]',
+      ).length >
+      0,
 
     hasStructuredData:
-      $('script[type="application/ld+json"]').length > 0,
+      $(
+        'script[type="application/ld+json"]',
+      ).length >
+      0,
 
     structuredDataTypes,
 
