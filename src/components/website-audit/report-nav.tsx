@@ -17,6 +17,11 @@ export function ReportNav({ view }: ReportNavProps) {
     view.capabilities.showSiteOverview && view.report.siteData
       ? { href: "#report-site-overview", label: "Site Overview" }
       : null,
+    view.report.competitiveData &&
+      (view.capabilities.showCompetitiveIntelligence ||
+        view.report.competitiveData.analyzedCount > 0)
+      ? { href: "#report-competitive", label: "Competitive" }
+      : null,
     view.capabilities.showActionPlan
       ? { href: "#report-action-plan", label: "Action Plan" }
       : null,

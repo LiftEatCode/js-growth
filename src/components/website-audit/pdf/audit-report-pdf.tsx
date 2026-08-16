@@ -9,6 +9,11 @@ import {
   import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
   import { getAuditGrade } from "@/lib/website-audit/grading";
   import { buildRoadmap } from "@/lib/website-audit/roadmap";
+  import {
+    comparisonTableRows,
+    formatBenchmarkLabel,
+  } from "@/lib/website-audit/competitive";
+  import { COMPETITIVE_DISCLOSURE } from "@/lib/website-audit/competitive/constants";
   import type {
     AuditCategory,
     AuditFinding,
@@ -912,6 +917,47 @@ import {
                   {`${page.path} · ${page.pageType} · ${page.fetchStatus === "success" ? `${page.wordCount} words` : "failed"}`}
                 </Text>
               ))}
+            </View>
+          ) : null}
+
+          {audit.competitiveData &&
+          audit.competitiveData.analyzedCount > 0 ? (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>
+                Competitive Intelligence
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {`${audit.competitiveData.analyzedCount} of ${audit.competitiveData.suppliedCount} competitor sites were successfully analyzed. ${formatBenchmarkLabel(audit.competitiveData.analyzedCount)} is shown below.`}
+              </Text>
+              {comparisonTableRows(audit.competitiveData).map((row) => (
+                <Text
+                  key={row.metric}
+                  style={styles.sectionDescription}
+                >
+                  {`${row.metric}: you ${row.customer} · ${formatBenchmarkLabel(audit.competitiveData?.analyzedCount ?? 1).toLowerCase()} ${row.benchmark}`}
+                </Text>
+              ))}
+              {audit.competitiveData.opportunities.slice(0, 5).map((item, index) => (
+                <Text
+                  key={item.id}
+                  style={styles.sectionDescription}
+                >
+                  {`${index + 1}. ${item.title} — ${item.description}`}
+                </Text>
+              ))}
+              {audit.competitiveData.competitors
+                .filter((item) => item.status === "analyzed")
+                .map((competitor) => (
+                  <Text
+                    key={competitor.submittedUrl}
+                    style={styles.sectionDescription}
+                  >
+                    {`${competitor.hostname}: ${competitor.crawl.scannedCount} pages scanned, ${competitor.pages.service} service, ${competitor.local.substantiveLocationPages} location`}
+                  </Text>
+                ))}
+              <Text style={styles.sectionDescription}>
+                {audit.competitiveData.disclosure || COMPETITIVE_DISCLOSURE}
+              </Text>
             </View>
           ) : null}
   

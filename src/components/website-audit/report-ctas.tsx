@@ -25,6 +25,7 @@ const PROFESSIONAL_BENEFITS = [
   "Complete quick-win list",
   "Technical evidence",
   "Estimated implementation effort",
+  "Competitive comparison",
   "Professional report / PDF access",
 ];
 

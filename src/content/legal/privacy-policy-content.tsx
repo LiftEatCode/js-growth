@@ -76,9 +76,12 @@ export function PrivacyPolicyContent() {
         <p>
           The audit is limited to information that is publicly accessible from
           the submitted URL and a limited number of same-site publicly linked
-          pages. JS Growth does not log into private databases,
-          private admin dashboards, password-protected accounts, or
-          authenticated areas of a third-party website as part of the audit.
+          pages. When you optionally request a competitor comparison, the
+          system may also retrieve a limited number of publicly accessible
+          pages from the competitor websites you supply. JS Growth does not log
+          into private databases, private admin dashboards, password-protected
+          accounts, or authenticated areas of a third-party website as part of
+          the audit.
         </p>
         <p>
           The resulting report may be stored so we can provide the requested

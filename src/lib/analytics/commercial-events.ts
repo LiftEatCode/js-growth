@@ -27,4 +27,5 @@ export const COMMERCIAL_EVENTS = {
   auditCompleted: "audit_completed",
   professionalCheckoutStarted: "professional_checkout_started",
   multiPageAuditCompleted: "multi_page_audit_completed",
+  competitiveAuditCompleted: "competitive_audit_completed",
 } as const;

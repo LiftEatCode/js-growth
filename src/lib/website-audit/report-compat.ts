@@ -1,4 +1,5 @@
 import { REPORT_CATEGORY_CONFIG } from "./report-categories";
+import { isCompetitiveData } from "./competitive/visibility";
 import type {
   AuditCategory,
   AuditCategoryScore,
@@ -167,6 +168,7 @@ export interface NormalizedAuditReport {
   metadata: WebsiteAuditResult["metadata"];
   pageData: WebsiteAuditResult["pageData"];
   siteData?: WebsiteAuditResult["siteData"];
+  competitiveData?: WebsiteAuditResult["competitiveData"];
 }
 
 export function normalizeAuditReport(
@@ -194,6 +196,9 @@ export function normalizeAuditReport(
     pageData: result.pageData,
     metadata: result.metadata,
     siteData: result.siteData,
+    competitiveData: isCompetitiveData(result.competitiveData)
+      ? result.competitiveData
+      : undefined,
     summary: {
       passed: asFiniteNumber(result.summary?.passed, passed),
       warnings: asFiniteNumber(result.summary?.warnings, warnings),

@@ -58,6 +58,13 @@ export function WebsiteAuditTool() {
       });
     }
 
+    if (auditResult.competitiveData) {
+      trackCommercialEvent(COMMERCIAL_EVENTS.competitiveAuditCompleted, {
+        competitor_count: auditResult.competitiveData.suppliedCount,
+        successful_competitor_count: auditResult.competitiveData.analyzedCount,
+      });
+    }
+
     window.setTimeout(() => {
       resultsRef.current?.scrollIntoView({
         behavior: "smooth",

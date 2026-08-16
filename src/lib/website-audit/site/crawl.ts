@@ -11,6 +11,7 @@ import {
   guessPageTypeFromSignals,
   isBlogLikePageType,
   selectionReasonFor,
+  type CrawlPriorityPreset,
 } from "./classify-page";
 import { compactFailedPage, compactSitePage } from "./compact";
 import {
@@ -84,6 +85,7 @@ export interface CrawlSiteOptions {
   fetchSitemapBody?: SitemapBodyFetcher;
   now?: () => number;
   limits?: Partial<CrawlLimits>;
+  priorityPreset?: CrawlPriorityPreset;
 }
 
 function robotsRules(
@@ -271,7 +273,11 @@ function enqueueLinks(options: {
   }
 }
 
-function compareFrontier(left: FrontierItem, right: FrontierItem): number {
+function compareFrontier(
+  left: FrontierItem,
+  right: FrontierItem,
+  preset: CrawlPriorityPreset = "default",
+): number {
   const leftType = guessPageTypeFromSignals({
     path: left.path,
     anchorText: left.anchorText,
@@ -286,6 +292,7 @@ function compareFrontier(left: FrontierItem, right: FrontierItem): number {
     inPrimaryNav: left.inPrimaryNav,
     source: left.source,
     isSeed: false,
+    preset,
   });
   const rightScore = crawlPriorityScore({
     pageType: rightType,
@@ -293,6 +300,7 @@ function compareFrontier(left: FrontierItem, right: FrontierItem): number {
     inPrimaryNav: right.inPrimaryNav,
     source: right.source,
     isSeed: false,
+    preset,
   });
 
   if (rightScore !== leftScore) {
@@ -339,6 +347,7 @@ export async function crawlSite(
   options: CrawlSiteOptions,
 ): Promise<AuditSiteData> {
   const limits: CrawlLimits = { ...DEFAULT_LIMITS, ...options.limits };
+  const priorityPreset = options.priorityPreset ?? "default";
   const now = options.now ?? Date.now;
   const startedAt = now();
   const fetchPage = options.fetchPage ?? fetchSitePage;
@@ -462,7 +471,7 @@ export async function crawlSite(
     const batchSize = Math.min(limits.concurrency, remainingSlots);
     const ranked = [...frontier.values()]
       .filter((item) => !crawledIdentities.has(item.identity))
-      .sort(compareFrontier);
+      .sort((left, right) => compareFrontier(left, right, priorityPreset));
 
     const batch: FrontierItem[] = [];
     let blogsInBatch = 0;

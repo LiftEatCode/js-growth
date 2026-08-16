@@ -20,6 +20,7 @@ import {
 import { ReportMethodology } from "@/components/website-audit/report-methodology";
 import { ReportNav } from "@/components/website-audit/report-nav";
 import { ReportQuickWins } from "@/components/website-audit/report-quick-wins";
+import { ReportCompetitive } from "@/components/website-audit/report-competitive";
 import {
   ReportSiteOverview,
   ReportSiteScanNotice,
@@ -62,6 +63,8 @@ export function AuditResults({
       <ReportSiteScanNotice view={view} />
 
       <ReportSiteOverview view={view} />
+
+      <ReportCompetitive view={view} />
 
       {reportId ? (
         <div className="print:hidden">

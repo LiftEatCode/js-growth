@@ -980,6 +980,13 @@ export interface WebsiteAuditResult {
    */
   siteData?: import("./site/types").AuditSiteData;
 
+  /**
+   * Optional Competitive Intelligence V1 snapshot.
+   * Older stored audits omit this field and must still render.
+   * Competitive findings do not change the Website Growth Score.
+   */
+  competitiveData?: import("./competitive/types").CompetitiveData;
+
   findings: AuditFinding[];
 
   categoryScores: AuditCategoryScore[];

@@ -23,7 +23,7 @@ export function ReportMethodology({ view }: ReportMethodologyProps) {
         />
         <InfoPanel
           title="Limits of this scan"
-          description="The audit scans a prioritized sample of important pages and may not include every URL on the website. It does not replace analytics, crawl an entire site, or include Google Business Profile and advertising data. Performance findings come from the HTML document and resource references, not from Lighthouse or Core Web Vitals (LCP, CLS, INP). Some recommendations still need business context before you implement them."
+          description="The audit scans a prioritized sample of important pages and may not include every URL on the website. Optional competitor comparisons use a smaller bounded sample of the websites you supply. The audit does not replace analytics, crawl an entire site, or include Google Business Profile, rankings, traffic, backlinks, or advertising data. Performance findings come from the HTML document and resource references, not from Lighthouse or Core Web Vitals (LCP, CLS, or INP). Some recommendations still need business context before you implement them."
         />
       </div>
     </ReportSection>

@@ -194,25 +194,50 @@ export function selectionReasonFor(
   return "content";
 }
 
+export type CrawlPriorityPreset = "default" | "competitor-commercial";
+
+const DEFAULT_TYPE_SCORE: Record<AuditSitePageType, number> = {
+  home: 900,
+  contact: 860,
+  about: 820,
+  "services-index": 800,
+  service: 760,
+  location: 740,
+  "service-area": 730,
+  other: 400,
+  blog: 140,
+  article: 120,
+};
+
+/**
+ * Competitor crawls spend a smaller page budget, so commercial
+ * service/location pages outrank contact and about.
+ */
+const COMPETITOR_COMMERCIAL_TYPE_SCORE: Record<AuditSitePageType, number> = {
+  home: 900,
+  "services-index": 880,
+  service: 860,
+  location: 840,
+  "service-area": 830,
+  contact: 700,
+  about: 680,
+  other: 400,
+  blog: 80,
+  article: 70,
+};
+
 export function crawlPriorityScore(input: {
   pageType: AuditSitePageType;
   depth: number;
   inPrimaryNav: boolean;
   source: "seed" | "sitemap" | "navigation" | "link";
   isSeed: boolean;
+  preset?: CrawlPriorityPreset;
 }): number {
-  const typeScore: Record<AuditSitePageType, number> = {
-    home: 900,
-    contact: 860,
-    about: 820,
-    "services-index": 800,
-    service: 760,
-    location: 740,
-    "service-area": 730,
-    other: 400,
-    blog: 140,
-    article: 120,
-  };
+  const typeScore =
+    input.preset === "competitor-commercial"
+      ? COMPETITOR_COMMERCIAL_TYPE_SCORE
+      : DEFAULT_TYPE_SCORE;
 
   let score = typeScore[input.pageType];
 

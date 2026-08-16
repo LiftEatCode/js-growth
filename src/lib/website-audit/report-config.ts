@@ -15,6 +15,7 @@ export interface ReportCapabilities {
   showPdfExport: boolean;
   showSiteOverview: boolean;
   showSiteInventory: boolean;
+  showCompetitiveIntelligence: boolean;
   maxPriorityFindings: number | null;
   maxQuickWins: number | null;
   maxFindings: number | null;
@@ -54,6 +55,7 @@ const FREE_CAPABILITIES: ReportCapabilities = {
   showPdfExport: false,
   showSiteOverview: false,
   showSiteInventory: false,
+  showCompetitiveIntelligence: false,
   maxPriorityFindings: 3,
   maxQuickWins: 3,
   maxFindings: 6,
@@ -73,6 +75,7 @@ const PROFESSIONAL_CAPABILITIES: ReportCapabilities = {
   showPdfExport: true,
   showSiteOverview: true,
   showSiteInventory: true,
+  showCompetitiveIntelligence: true,
   maxPriorityFindings: 5,
   maxQuickWins: 5,
   maxFindings: null,
@@ -206,6 +209,11 @@ export function getAuditTierComparison(): AuditTierComparisonRow[] {
       feature: "Representative multi-page scan",
       free: "Summary",
       professional: "Site overview and page inventory",
+    },
+    {
+      feature: "Competitive comparison",
+      free: "Locked teaser when competitor URLs are supplied",
+      professional: "Full Competitive Intelligence",
     },
     {
       feature: "Professional report / PDF",

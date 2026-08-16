@@ -2,6 +2,11 @@
 
 import { analyzeHtml } from "@/lib/website-audit/analyze-html";
 import { fetchWebsitePage } from "@/lib/website-audit/audit-url";
+import { buildCompetitiveIntelligence } from "@/lib/website-audit/competitive";
+import {
+  collectCompetitorRawUrls,
+  parseCompetitorInputs,
+} from "@/lib/website-audit/competitive/input";
 import { buildAuditRobotsData } from "@/lib/website-audit/robots";
 import { parseWebsiteAuditInput } from "@/lib/website-audit/schema";
 import { scoreWebsiteAudit } from "@/lib/website-audit/scoring";
@@ -101,6 +106,28 @@ export async function auditWebsite(
         siteData,
       );
 
+      let competitiveData: WebsiteAuditResult["competitiveData"];
+
+      try {
+        const parsedCompetitors = parseCompetitorInputs(
+          collectCompetitorRawUrls(formData),
+          fetchResult.data.finalUrl,
+        );
+
+        if (parsedCompetitors.attempted && siteData) {
+          competitiveData = await buildCompetitiveIntelligence({
+            customerUrl: fetchResult.data.finalUrl,
+            customerSiteData: siteData,
+            customerPageData: pageData,
+            accepted: parsedCompetitors.accepted,
+            skipped: parsedCompetitors.skipped,
+            submittedCount: parsedCompetitors.submittedCount,
+          });
+        }
+      } catch (error) {
+        console.error("Website audit competitive comparison failed:", error);
+      }
+
       const auditResult: WebsiteAuditResult = {
         success: true,
 
@@ -126,6 +153,8 @@ export async function auditWebsite(
         siteDiscovery,
 
         siteData,
+
+        competitiveData,
 
         findings:
           scoring.findings,

@@ -41,43 +41,41 @@ function normalizeUrl(value: string): string {
   return `https://${trimmedValue}`;
 }
 
+export const publicHttpUrlSchema = z
+  .string()
+  .trim()
+  .min(1, "Enter a website URL.")
+  .max(2_048, "The URL is too long.")
+  .transform(normalizeUrl)
+  .pipe(
+    z
+      .string()
+      .url("Enter a valid website URL.")
+      .refine((value) => {
+        const url = new URL(value);
+
+        return url.protocol === "http:" || url.protocol === "https:";
+      }, "Only HTTP and HTTPS URLs are supported.")
+      .refine((value) => {
+        const url = new URL(value);
+
+        return !url.username && !url.password;
+      }, "URLs containing credentials are not supported.")
+      .refine((value) => {
+        const url = new URL(value);
+
+        return !isPrivateHostname(url.hostname);
+      }, "Private and local network addresses are not supported."),
+  )
+  .transform((url) => {
+    const parsedUrl = new URL(url);
+    parsedUrl.hash = "";
+    return parsedUrl.toString();
+  });
+
 export const websiteAuditInputSchema = z
   .object({
-    url: z
-      .string()
-      .trim()
-      .min(1, "Enter a website URL.")
-      .max(2_048, "The URL is too long.")
-      .transform(normalizeUrl)
-      .pipe(
-        z
-          .string()
-          .url("Enter a valid website URL.")
-          .refine((value) => {
-            const url = new URL(value);
-
-            return url.protocol === "http:" || url.protocol === "https:";
-          }, "Only HTTP and HTTPS URLs are supported.")
-          .refine((value) => {
-            const url = new URL(value);
-
-            return !url.username && !url.password;
-          }, "URLs containing credentials are not supported.")
-          .refine((value) => {
-            const url = new URL(value);
-
-            return !isPrivateHostname(url.hostname);
-          }, "Private and local network addresses are not supported."),
-      ),
-  })
-  .transform(({ url }) => {
-    const parsedUrl = new URL(url);
-
-    parsedUrl.hash = "";
-
-    return {
-      url: parsedUrl.toString(),
-    };
+    url: publicHttpUrlSchema,
   });
 
 export type WebsiteAuditInput = z.infer<typeof websiteAuditInputSchema>;
@@ -105,5 +103,31 @@ export function parseWebsiteAuditInput(input: unknown):
   return {
     success: true,
     data: result.data,
+  };
+}
+
+export function parsePublicWebsiteUrl(input: unknown):
+  | {
+      success: true;
+      url: string;
+    }
+  | {
+      success: false;
+      error: string;
+    } {
+  const result = publicHttpUrlSchema.safeParse(input);
+
+  if (!result.success) {
+    return {
+      success: false,
+      error:
+        result.error.issues[0]?.message ??
+        "Enter a valid public website URL.",
+    };
+  }
+
+  return {
+    success: true,
+    url: result.data,
   };
 }

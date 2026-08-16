@@ -218,6 +218,8 @@ export function scoreWebsiteAudit(
   siteDiscovery?: AuditSiteDiscoveryData,
   siteData?: AuditSiteData,
 ): ScoringResult {
+  // Competitive Intelligence V1 does not feed findings into this function.
+  // Website Growth Score stays independent of which competitor URLs were supplied.
   const pageFindings = runAuditRules(
     coreAuditRules,
     {

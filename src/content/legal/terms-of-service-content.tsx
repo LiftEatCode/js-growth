@@ -88,10 +88,13 @@ export function TermsOfServiceContent() {
         <p>
           The audit accesses publicly available website information from the
           submitted URL and a limited number of same-site publicly linked
-          pages. You do not
+          pages. If you supply competitor websites for comparison, the audit
+          may also retrieve a limited number of publicly accessible pages from
+          those sites. You do not
           need to own every public site you evaluate, but you should only use
           the service for legitimate purposes and in a way that does not harm
-          or disrupt the submitted website or JS Growth.
+          or disrupt the submitted website, supplied competitor websites, or JS
+          Growth.
         </p>
       </LegalSection>
 

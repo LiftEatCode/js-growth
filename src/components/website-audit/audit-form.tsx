@@ -11,6 +11,7 @@ import {
   AlertCircle,
   ArrowRight,
   CheckCircle2,
+  ChevronDown,
   Globe2,
   LoaderCircle,
   SearchCheck,
@@ -42,6 +43,13 @@ const auditStatusMessages = [
   "Reviewing local visibility…",
 ] as const;
 
+const competitiveStatusMessages = [
+  "Analyzing your website…",
+  "Scanning important pages…",
+  "Comparing competitor websites…",
+  "Building your growth report…",
+] as const;
+
 export function AuditForm({
   onAuditComplete,
 }: AuditFormProps) {
@@ -49,7 +57,10 @@ export function AuditForm({
   const [error, setError] = useState<string | null>(
     null,
   );
+  const [showCompetitors, setShowCompetitors] = useState(false);
+  const [competitorUrls, setCompetitorUrls] = useState(["", "", ""]);
   const [isPending, startTransition] = useTransition();
+  const hasCompetitors = competitorUrls.some((value) => value.trim());
 
   function handleSubmit(
     event: FormEvent<HTMLFormElement>,
@@ -140,6 +151,67 @@ export function AuditForm({
           </p>
         </div>
 
+        <div className="rounded-2xl border border-dashed border-border bg-slate-50/60 p-4">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between gap-3 text-left"
+            aria-expanded={showCompetitors}
+            onClick={() => setShowCompetitors((current) => !current)}
+            disabled={isPending}
+          >
+            <span>
+              <span className="text-sm font-semibold text-brand">
+                Compare against competitors
+              </span>
+              <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Optional
+              </span>
+            </span>
+            <ChevronDown
+              aria-hidden="true"
+              className={`size-4 shrink-0 text-muted transition ${showCompetitors ? "rotate-180" : ""}`}
+            />
+          </button>
+
+          {showCompetitors ? (
+            <p className="mt-4 text-sm leading-6 text-muted">
+              Add up to 3 competitor websites for a side-by-side Professional
+              comparison. Comparisons use a prioritized sample of public pages.
+              They are not rankings, traffic, or revenue data.
+            </p>
+          ) : null}
+
+          <div className={showCompetitors ? "mt-4 space-y-3" : "hidden"}>
+            {competitorUrls.map((value, index) => (
+              <div key={`competitor-${index + 1}`} className="space-y-1">
+                <label
+                  htmlFor={`website-audit-competitor-${index + 1}`}
+                  className="text-xs font-semibold uppercase tracking-[0.12em] text-muted"
+                >
+                  Competitor {index + 1}
+                  {index === 0 ? "" : " (optional)"}
+                </label>
+                <Input
+                  id={`website-audit-competitor-${index + 1}`}
+                  name={`competitorUrl${index + 1}`}
+                  type="text"
+                  inputMode="url"
+                  autoComplete="url"
+                  placeholder="competitor.com"
+                  value={value}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    const next = [...competitorUrls];
+                    next[index] = event.target.value;
+                    setCompetitorUrls(next);
+                  }}
+                  disabled={isPending}
+                  className="h-12 rounded-xl px-4"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
         {error ? (
           <div
             id="website-audit-error"
@@ -184,7 +256,7 @@ export function AuditForm({
       </form>
 
       {isPending ? (
-        <AuditProgress />
+        <AuditProgress includeCompetitors={hasCompetitors} />
       ) : (
         <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-5">
           <div className="inline-flex items-center gap-2 text-sm text-muted">
@@ -210,18 +282,23 @@ export function AuditForm({
   );
 }
 
-function AuditProgress() {
+function AuditProgress({
+  includeCompetitors,
+}: {
+  includeCompetitors: boolean;
+}) {
   const [messageIndex, setMessageIndex] = useState(0);
+  const messages = includeCompetitors
+    ? competitiveStatusMessages
+    : auditStatusMessages;
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setMessageIndex(
-        (current) => (current + 1) % auditStatusMessages.length,
-      );
+      setMessageIndex((current) => (current + 1) % messages.length);
     }, 2200);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [messages.length]);
 
   return (
     <Card
@@ -246,7 +323,7 @@ function AuditProgress() {
             className="mt-1 text-sm leading-6 text-muted"
             aria-live="polite"
           >
-            {auditStatusMessages[messageIndex]}
+            {messages[messageIndex]}
           </p>
         </div>
       </div>
