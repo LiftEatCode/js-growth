@@ -10,6 +10,11 @@ import { headingsRule } from "./headings-rule";
 import { imagesRule } from "./images-rule";
 import { internalLinksRule } from "./internal-links-rule";
 import { leadFormRule } from "./lead-form-rule";
+import { localGeographicRelevanceRule } from "./local-geographic-relevance-rule";
+import { localHoursRule } from "./local-hours-rule";
+import { localLocationPageRule } from "./local-location-page-rule";
+import { localNapRule } from "./local-nap-rule";
+import { localSchemaRule } from "./local-schema-rule";
 import { localSignalsRule } from "./local-signals-rule";
 import { metaDescriptionRule } from "./meta-description-rule";
 import { openGraphRule } from "./open-graph-rule";
@@ -47,6 +52,11 @@ export const coreAuditRules: AuditRule[] =
     structuredDataRule,
 
     contactSignalsRule,
+    localSchemaRule,
+    localNapRule,
+    localGeographicRelevanceRule,
+    localHoursRule,
+    localLocationPageRule,
     localSignalsRule,
 
     conversionPathRule,

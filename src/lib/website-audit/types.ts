@@ -553,6 +553,173 @@ export interface AuditConversionData {
   path: AuditConversionPathData;
 }
 
+export type AuditLocalSignalSource =
+  | "visible-text"
+  | "heading"
+  | "title"
+  | "schema"
+  | "link";
+
+export interface AuditLocalitySignal {
+  value: string;
+
+  source: AuditLocalSignalSource;
+}
+
+export interface AuditNapData {
+  hasBusinessNameSignal: boolean;
+
+  hasAddressSignal: boolean;
+
+  hasPhoneSignal: boolean;
+
+  completenessCount: number;
+
+  schemaNamePresent: boolean;
+  schemaAddressPresent: boolean;
+  schemaPhonePresent: boolean;
+
+  addressEvidenceCount: number;
+  addressEvidence: string[];
+  detailsTruncated: boolean;
+}
+
+export interface AuditLocationSignals {
+  items: AuditLocalitySignal[];
+
+  uniqueValues: string[];
+
+  detailsTruncated: boolean;
+}
+
+export interface AuditHoursData {
+  hasHoursSignal: boolean;
+
+  hasSchemaHours: boolean;
+
+  visibleHoursSignal: boolean;
+
+  hasTwentyFourSevenSignal: boolean;
+}
+
+export interface AuditLocalSchemaData {
+  hasLocalBusinessSchema: boolean;
+
+  detectedTypes: string[];
+
+  hasName: boolean;
+  hasTelephone: boolean;
+  hasAddress: boolean;
+
+  hasPostalCode: boolean;
+  hasAddressLocality: boolean;
+  hasAddressRegion: boolean;
+
+  hasOpeningHours: boolean;
+
+  hasGeo: boolean;
+
+  hasUrl: boolean;
+
+  hasSameAs: boolean;
+
+  hasAggregateRating: boolean;
+
+  hasAreaServed: boolean;
+
+  completenessCount: number;
+}
+
+export interface AuditServiceAreaData {
+  hasServiceAreaLanguage: boolean;
+
+  hasSchemaAreaServed: boolean;
+
+  mentionedLocations: string[];
+
+  evidenceCount: number;
+
+  evidence: string[];
+
+  detailsTruncated: boolean;
+}
+
+export interface AuditDirectionsData {
+  hasDirectionsLink: boolean;
+
+  hasMapLink: boolean;
+
+  hasEmbeddedMap: boolean;
+}
+
+export interface AuditLocalIntentData {
+  locationInTitle: boolean;
+
+  locationInH1: boolean;
+
+  locationInHeadings: boolean;
+
+  locationInMainContent: boolean;
+
+  serviceAreaLanguagePresent: boolean;
+
+  geographicSignalCount: number;
+}
+
+export interface AuditLocationPageData {
+  likelyLocationPage: boolean;
+
+  locationPathSignal: boolean;
+
+  locationHeadingSignal: boolean;
+}
+
+export interface AuditLocalReputationData {
+  hasReviewSignal: boolean;
+
+  hasAggregateRatingSchema: boolean;
+
+  hasTestimonialSignal: boolean;
+}
+
+export interface AuditLocalBusinessLikelihood {
+  likelyLocalBusiness: boolean;
+
+  evidenceCount: number;
+
+  evidence: string[];
+}
+
+export type AuditLocalPageType =
+  | "local-business-homepage"
+  | "location-page"
+  | "service-area-page"
+  | "other";
+
+export interface AuditLocalData {
+  nap: AuditNapData;
+
+  location: AuditLocationSignals;
+
+  hours: AuditHoursData;
+
+  schema: AuditLocalSchemaData;
+
+  serviceArea: AuditServiceAreaData;
+
+  directions: AuditDirectionsData;
+
+  localIntent: AuditLocalIntentData;
+
+  locationPage: AuditLocationPageData;
+
+  reputation: AuditLocalReputationData;
+
+  likelihood: AuditLocalBusinessLikelihood;
+
+  pageType: AuditLocalPageType;
+}
+
 export interface AuditCanonicalData {
   rawValues: string[];
 
@@ -593,6 +760,7 @@ export interface AuditPageData {
   links?: AuditLinkData;
   images?: AuditImageData;
   conversion?: AuditConversionData;
+  local?: AuditLocalData;
 
   h1Count: number;
   h1Values: string[];

@@ -8,8 +8,15 @@ import {
     category: "local",
     title: "Contact signals",
   
-    evaluate({ pageData }) {
-      const findings = [];
+  evaluate({ pageData }) {
+    if (
+      pageData.local &&
+      !pageData.local.likelihood.likelyLocalBusiness
+    ) {
+      return [];
+    }
+
+    const findings = [];
   
       if (pageData.hasPhoneNumber) {
         findings.push(
@@ -23,7 +30,7 @@ import {
             scoreImpact: 4,
           }),
         );
-      } else {
+      } else if (!pageData.local?.schema.hasTelephone) {
         findings.push(
           createFinding({
             id: "phone-missing",

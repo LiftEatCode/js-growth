@@ -20,38 +20,11 @@ import {
   extractVisibleText,
 } from "./content-extract";
 import { extractConversionData } from "./conversion-extract";
-
-const STREET_ADDRESS_PATTERN =
-  /\b\d{1,6}\s+[A-Za-z0-9.'#-]+(?:\s+[A-Za-z0-9.'#-]+){0,5}\s+(?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|court|ct|parkway|pkwy|highway|hwy|circle|cir|trail|trl|way|place|pl)\b/i;
-
-const LOCAL_TEXT_SIGNALS = [
-  "service area",
-  "serving",
-  "directions",
-  "business hours",
-  "hours of operation",
-  "get directions",
-  "visit us",
-  "located in",
-];
-
-const LOCAL_BUSINESS_SCHEMA_TYPES =
-  new Set([
-    "LocalBusiness",
-    "AutomotiveBusiness",
-    "AutoRepair",
-    "Dentist",
-    "MedicalBusiness",
-    "ProfessionalService",
-    "HomeAndConstructionBusiness",
-    "Electrician",
-    "GeneralContractor",
-    "HVACBusiness",
-    "Plumber",
-    "RoofingContractor",
-    "Restaurant",
-    "Store",
-  ]);
+import {
+  extractStructuredDataTypes,
+  parseJsonLdDocuments,
+} from "./json-ld";
+import { extractLocalData } from "./local-extract";
 
 function getTrimmedAttribute(
   $: CheerioAPI,
@@ -162,178 +135,6 @@ function collectCanonicalHrefs(
   return values;
 }
 
-function addSchemaType(
-  value: unknown,
-  schemaTypes: Set<string>,
-): void {
-  if (
-    typeof value ===
-    "string"
-  ) {
-    schemaTypes.add(
-      value,
-    );
-
-    return;
-  }
-
-  if (
-    Array.isArray(value)
-  ) {
-    for (
-      const item of value
-    ) {
-      addSchemaType(
-        item,
-        schemaTypes,
-      );
-    }
-  }
-}
-
-function collectStructuredDataTypes(
-  value: unknown,
-  schemaTypes: Set<string>,
-): void {
-  if (
-    Array.isArray(value)
-  ) {
-    for (
-      const item of value
-    ) {
-      collectStructuredDataTypes(
-        item,
-        schemaTypes,
-      );
-    }
-
-    return;
-  }
-
-  if (
-    typeof value !==
-      "object" ||
-    value === null
-  ) {
-    return;
-  }
-
-  const record =
-    value as Record<
-      string,
-      unknown
-    >;
-
-  addSchemaType(
-    record["@type"],
-    schemaTypes,
-  );
-
-  for (
-    const nestedValue of Object.values(
-      record,
-    )
-  ) {
-    collectStructuredDataTypes(
-      nestedValue,
-      schemaTypes,
-    );
-  }
-}
-
-function extractStructuredDataTypes(
-  $: CheerioAPI,
-): string[] {
-  const schemaTypes =
-    new Set<string>();
-
-  $(
-    'script[type="application/ld+json"]',
-  ).each(
-    (
-      _,
-      element,
-    ) => {
-      const rawJson =
-        $(element)
-          .html()
-          ?.trim();
-
-      if (!rawJson) {
-        return;
-      }
-
-      try {
-        const parsedJson:
-          unknown =
-          JSON.parse(
-            rawJson,
-          );
-
-        collectStructuredDataTypes(
-          parsedJson,
-          schemaTypes,
-        );
-      } catch {
-        // Invalid JSON-LD should not stop the entire audit.
-      }
-    },
-  );
-
-  return [
-    ...schemaTypes,
-  ].sort(
-    (
-      a,
-      b,
-    ) =>
-      a.localeCompare(
-        b,
-      ),
-  );
-}
-
-function hasPhysicalAddressSignals(
-  visibleText: string,
-): boolean {
-  if (
-    STREET_ADDRESS_PATTERN.test(
-      visibleText,
-    )
-  ) {
-    return true;
-  }
-
-  return /\b[A-Z][a-z]+,\s*[A-Z]{2}\s+\d{5}(?:-\d{4})?\b/.test(
-    visibleText,
-  );
-}
-
-function hasLocalTextSignals(
-  visibleText: string,
-): boolean {
-  const normalizedText =
-    visibleText.toLowerCase();
-
-  return LOCAL_TEXT_SIGNALS.some(
-    (signal) =>
-      normalizedText.includes(
-        signal,
-      ),
-  );
-}
-
-function hasLocalBusinessSchema(
-  structuredDataTypes: string[],
-): boolean {
-  return structuredDataTypes.some(
-    (type) =>
-      LOCAL_BUSINESS_SCHEMA_TYPES.has(
-        type,
-      ),
-  );
-}
-
 export type AnalyzedHtmlPage = Omit<
   AuditPageData,
   "robots"
@@ -414,9 +215,14 @@ export function analyzeHtml(
       $,
     );
 
+  const jsonLdDocuments =
+    parseJsonLdDocuments(
+      $,
+    );
+
   const structuredDataTypes =
     extractStructuredDataTypes(
-      $,
+      jsonLdDocuments,
     );
 
   const visibleText =
@@ -434,6 +240,17 @@ export function analyzeHtml(
       visibleText,
     });
 
+  const local =
+    extractLocalData($, {
+      pageUrl,
+      title,
+      headings,
+      content,
+      visibleText,
+      jsonLdDocuments,
+      conversion,
+    });
+
   const hasPhoneNumber =
     conversion.phone.visiblePhonePresent ||
     conversion.phone.telLinkCount > 0;
@@ -441,21 +258,6 @@ export function analyzeHtml(
   const hasEmailAddress =
     conversion.email.visibleEmailPresent ||
     conversion.email.mailtoLinkCount > 0;
-
-  const physicalAddressDetected =
-    hasPhysicalAddressSignals(
-      visibleText,
-    );
-
-  const localBusinessSchemaDetected =
-    hasLocalBusinessSchema(
-      structuredDataTypes,
-    );
-
-  const localTextDetected =
-    hasLocalTextSignals(
-      visibleText,
-    );
 
   return {
     title,
@@ -470,6 +272,7 @@ export function analyzeHtml(
     links,
     images,
     conversion,
+    local,
 
     h1Count:
       headings.h1Count,
@@ -519,11 +322,11 @@ export function analyzeHtml(
     hasEmailAddress,
 
     hasPhysicalAddressSignals:
-      physicalAddressDetected,
+      local.nap.hasAddressSignal,
 
     hasLocalBusinessSignals:
-      localBusinessSchemaDetected ||
-      physicalAddressDetected ||
-      localTextDetected,
+      local.likelihood.likelyLocalBusiness ||
+      local.schema.hasLocalBusinessSchema ||
+      local.nap.hasAddressSignal,
   };
 }
