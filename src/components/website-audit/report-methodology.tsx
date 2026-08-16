@@ -19,7 +19,7 @@ export function ReportMethodology({ view }: ReportMethodologyProps) {
       <div className="grid gap-4 md:grid-cols-2">
         <InfoPanel
           title="What the score means"
-          description="Checks contribute positively or negatively. Higher-impact problems affect category scores more. Scores help prioritize work. They do not predict Google rankings, traffic, or revenue."
+          description="Your Website Growth Score summarizes the website signals evaluated in this audit. Higher-impact problems affect the score more. It is a prioritization tool, not a Google ranking score, and it does not guarantee traffic, leads, or revenue."
         />
         <InfoPanel
           title="Limits of this scan"

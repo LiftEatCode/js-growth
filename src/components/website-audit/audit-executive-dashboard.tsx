@@ -14,6 +14,7 @@ import {
 } from "@/components/website-audit/report-ui";
 import { Button, GridPattern } from "@/components/ui";
 import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
+import { FREE_AUDIT_PRODUCT_NAME } from "@/lib/payments/product";
 
 interface AuditExecutiveDashboardProps {
   view: GrowthReportViewModel;
@@ -70,8 +71,8 @@ export function AuditExecutiveDashboard({
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-medium text-slate-300">
                   {view.tier === "professional"
-                    ? "Professional report"
-                    : "Free preview"}
+                    ? "Professional Audit Unlocked"
+                    : FREE_AUDIT_PRODUCT_NAME}
                 </span>
               </div>
 
@@ -88,9 +89,10 @@ export function AuditExecutiveDashboard({
               </h1>
 
               <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">
-                This report evaluates the website across search visibility,
-                content, conversion, local visibility, technical health, and
-                performance signals.
+                Your Website Growth Score summarizes the signals evaluated in
+                this audit across search, content, conversion, local visibility,
+                technical health, and performance. It is a prioritization tool,
+                not a Google ranking score.
               </p>
 
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-400">

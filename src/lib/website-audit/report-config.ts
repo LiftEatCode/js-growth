@@ -48,7 +48,7 @@ const FREE_CAPABILITIES: ReportCapabilities = {
   showEstimatedEffort: true,
   showMethodology: true,
   showUpgradeCta: true,
-  showImplementationCta: true,
+  showImplementationCta: false,
   showPdfExport: false,
   maxPriorityFindings: 3,
   maxQuickWins: 3,
@@ -133,4 +133,73 @@ export function getReportConfig(
   professionallyUnlocked = false,
 ): ReportAccessConfig {
   return getReportConfigForTier(getReportTier(mode, professionallyUnlocked));
+}
+
+export interface AuditTierComparisonRow {
+  feature: string;
+  free: string;
+  professional: string;
+}
+
+export function getAuditTierComparison(): AuditTierComparisonRow[] {
+  const free = FREE_CAPABILITIES;
+  const professional = PROFESSIONAL_CAPABILITIES;
+
+  return [
+    {
+      feature: "Website Growth Score",
+      free: "Included",
+      professional: "Included",
+    },
+    {
+      feature: "Category scores",
+      free: "Included",
+      professional: "Included",
+    },
+    {
+      feature: "Top priority findings",
+      free: free.maxPriorityFindings
+        ? `Up to ${free.maxPriorityFindings}`
+        : "Full",
+      professional: professional.maxPriorityFindings
+        ? `Up to ${professional.maxPriorityFindings}`
+        : "Full",
+    },
+    {
+      feature: "Quick wins",
+      free: free.maxQuickWins ? `Up to ${free.maxQuickWins}` : "Full",
+      professional: professional.maxQuickWins
+        ? `Up to ${professional.maxQuickWins}`
+        : "Full",
+    },
+    {
+      feature: "Complete recommendations",
+      free: free.showRecommendations ? "Included" : "Not included",
+      professional: professional.showRecommendations ? "Included" : "Not included",
+    },
+    {
+      feature: "30–90 day action plan",
+      free: free.showActionPlan ? "Included" : "Not included",
+      professional: professional.showActionPlan ? "Included" : "Not included",
+    },
+    {
+      feature: "Technical evidence",
+      free: free.showTechnicalEvidence ? "Included" : "Not included",
+      professional: professional.showTechnicalEvidence
+        ? "Included"
+        : "Not included",
+    },
+    {
+      feature: "Category deep dives",
+      free: free.showCategoryDeepDives ? "Included" : "Not included",
+      professional: professional.showCategoryDeepDives
+        ? "Included"
+        : "Not included",
+    },
+    {
+      feature: "Professional report / PDF",
+      free: free.showPdfExport ? "Included" : "Not included",
+      professional: professional.showPdfExport ? "Included" : "Not included",
+    },
+  ];
 }

@@ -68,6 +68,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: getAbsoluteUrl("/website-audit"),
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
+    {
       url: getAbsoluteUrl("/contact"),
       lastModified: now,
       changeFrequency: "monthly" as const,

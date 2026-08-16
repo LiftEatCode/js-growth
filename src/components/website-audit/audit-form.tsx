@@ -3,6 +3,7 @@
 import {
   type ChangeEvent,
   type FormEvent,
+  useEffect,
   useState,
   useTransition,
 } from "react";
@@ -32,11 +33,12 @@ interface AuditFormProps {
   ) => void;
 }
 
-const auditSteps = [
-  "Connecting to the website",
-  "Reviewing page structure",
-  "Analyzing SEO and local signals",
-  "Building your scored report",
+const auditStatusMessages = [
+  "Analyzing technical health…",
+  "Reviewing search signals…",
+  "Evaluating content…",
+  "Checking conversion paths…",
+  "Reviewing local visibility…",
 ] as const;
 
 export function AuditForm({
@@ -69,7 +71,7 @@ export function AuditForm({
         );
 
         setError(
-          "The audit could not be completed. Please try again.",
+          "We could not complete the audit. Check the website address and try again.",
         );
 
         return;
@@ -89,6 +91,7 @@ export function AuditForm({
       <form
         onSubmit={handleSubmit}
         className="space-y-5"
+        aria-busy={isPending}
       >
         <div className="space-y-2">
           <label
@@ -131,8 +134,8 @@ export function AuditForm({
             id="website-audit-help"
             className="text-sm leading-6 text-muted"
           >
-            Enter a public homepage URL. You can leave off
-            the https:// prefix.
+            Enter a public homepage. example.com is fine — you can leave off
+            https://.
           </p>
         </div>
 
@@ -168,7 +171,7 @@ export function AuditForm({
             </>
           ) : (
             <>
-              Run Free Website Audit
+              Run My Free Website Audit
 
               <ArrowRight
                 aria-hidden="true"
@@ -189,7 +192,7 @@ export function AuditForm({
               className="size-4 text-emerald-600"
             />
 
-            No website changes
+            No credit card required
           </div>
 
           <div className="inline-flex items-center gap-2 text-sm text-muted">
@@ -207,6 +210,18 @@ export function AuditForm({
 }
 
 function AuditProgress() {
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setMessageIndex(
+        (current) => (current + 1) % auditStatusMessages.length,
+      );
+    }, 2200);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
     <Card
       variant="brand"
@@ -223,28 +238,22 @@ function AuditProgress() {
 
         <div>
           <p className="font-heading font-semibold text-brand">
-            Analyzing your website
+            The audit is running
           </p>
 
-          <p className="mt-1 text-sm leading-6 text-muted">
-            This usually completes quickly. Please keep this
-            page open while the report is generated.
+          <p
+            className="mt-1 text-sm leading-6 text-muted"
+            aria-live="polite"
+          >
+            {auditStatusMessages[messageIndex]}
           </p>
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        {auditSteps.map((step) => (
-          <div
-            key={step}
-            className="flex items-center gap-2 rounded-lg border border-brand-blue/10 bg-white/80 px-3 py-2.5 text-sm text-muted"
-          >
-            <span className="size-1.5 shrink-0 rounded-full bg-brand-blue" />
-
-            {step}
-          </div>
-        ))}
-      </div>
+      <p className="mt-4 text-sm leading-6 text-muted">
+        This usually takes a moment. We are reviewing public page signals —
+        please keep this page open.
+      </p>
     </Card>
   );
 }

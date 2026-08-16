@@ -179,6 +179,7 @@ assert(free.showActionPlan === false, "free hides action plan");
 assert(free.showFullFindings === false, "free hides all findings");
 assert(free.showRecommendations === false, "free limits recommendations");
 assert(free.showUpgradeCta === true, "free shows upgrade");
+assert(free.showImplementationCta === false, "free keeps implementation CTA secondary");
 
 const professional = getReportCapabilities("professional");
 assert(professional.showActionPlan === true, "pro action plan");

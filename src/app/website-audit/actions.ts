@@ -38,6 +38,9 @@ export async function auditWebsite(
   );
 
   if (!fetchResult.success) {
+    console.info("[audit] fetch failed", {
+      code: fetchResult.error.code,
+    });
     return fetchResult;
   }
 

@@ -12,11 +12,13 @@ import {
 } from "@/components/marketing";
 import { businessProblems } from "@/content/home";
 import { HomeGrowthSystemSection } from "@/components/sections/home-growth-system-section";
+import { HomeWebsiteAuditSection } from "@/components/sections/home-website-audit-section";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <HomeWebsiteAuditSection />
       <BusinessProblemsSection {...businessProblems} />
       <HomeGrowthSystemSection />
       <ServicesSection />

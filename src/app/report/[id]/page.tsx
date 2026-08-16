@@ -34,6 +34,10 @@ export async function generateMetadata({
   if (!report) {
     return {
       title: "Website Audit Report",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 

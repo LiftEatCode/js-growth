@@ -12,6 +12,8 @@ interface PurchaseStatusScreenProps {
   primaryLabel?: string;
   primaryHref?: string;
   retryCheckout?: boolean;
+  retryLabel?: string;
+  showContact?: boolean;
 }
 
 export function PurchaseStatusScreen({
@@ -22,6 +24,8 @@ export function PurchaseStatusScreen({
   primaryLabel = "Return to Report",
   primaryHref,
   retryCheckout = false,
+  retryLabel = "Unlock Professional Report",
+  showContact = false,
 }: PurchaseStatusScreenProps) {
   const reportHref = `/report/${reportId}`;
   const href = primaryHref ?? reportHref;
@@ -51,7 +55,7 @@ export function PurchaseStatusScreen({
               <p className="mt-3 text-base leading-7 text-muted">{description}</p>
             </div>
           </div>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button nativeButton={false} render={<Link href={href} />}>
               {primaryLabel}
               {tone === "success" ? (
@@ -60,10 +64,19 @@ export function PurchaseStatusScreen({
             </Button>
             {retryCheckout ? (
               <form action={`/api/reports/${reportId}/checkout`} method="post">
-                <Button type="submit" variant="outline">
-                  Try Again
+                <Button type="submit" variant="outline" className="w-full sm:w-auto">
+                  {retryLabel}
                 </Button>
               </form>
+            ) : null}
+            {showContact ? (
+              <Button
+                variant="outline"
+                nativeButton={false}
+                render={<Link href="/contact" />}
+              >
+                Contact JS Solutions
+              </Button>
             ) : null}
           </div>
         </div>

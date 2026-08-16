@@ -2,6 +2,7 @@ import { PurchaseStatusScreen } from "@/components/website-audit/purchase-status
 import { PROFESSIONAL_AUDIT_PRODUCT_NAME } from "@/lib/payments/product";
 import {
   isReportId,
+  reportHasProfessionalEntitlement,
   retrieveAndFulfillCheckoutSession,
 } from "@/lib/payments/professional-audit";
 import { auditReportRepository } from "@/lib/website-audit/storage";
@@ -27,19 +28,26 @@ export default async function PurchaseSuccessPage({
     return (
       <PurchaseStatusScreen
         reportId={id}
+        showContact
         title="We could not find this report"
         description="This purchase confirmation does not match a saved website audit report."
       />
     );
   }
 
+  const alreadyUnlocked = await reportHasProfessionalEntitlement(id);
+
+  if (alreadyUnlocked) {
+    return <UnlockedScreen reportId={id} />;
+  }
+
   if (!sessionId) {
     return (
       <PurchaseStatusScreen
         reportId={id}
-        retryCheckout
-        title="We could not verify this purchase yet"
-        description="If payment was completed, refresh this page in a moment or contact JS Growth."
+        showContact
+        title="We couldn't verify your purchase yet"
+        description="If you completed payment, refresh this page in a moment. If the issue continues, contact JS Solutions — don't pay again until we confirm the unlock."
       />
     );
   }
@@ -47,16 +55,7 @@ export default async function PurchaseSuccessPage({
   const verification = await verifyPurchase(sessionId, id);
 
   if (verification.state === "granted") {
-    return (
-      <PurchaseStatusScreen
-        reportId={id}
-        tone="success"
-        title={`Your ${PROFESSIONAL_AUDIT_PRODUCT_NAME} is unlocked.`}
-        description="The complete findings, recommendations, and action plan are now available on this report."
-        primaryLabel="View Full Report"
-        primaryHref={`/report/${id}`}
-      />
-    );
+    return <UnlockedScreen reportId={id} />;
   }
 
   if (verification.state === "pending") {
@@ -64,9 +63,9 @@ export default async function PurchaseSuccessPage({
       <PurchaseStatusScreen
         reportId={id}
         tone="pending"
-        retryCheckout
+        showContact
         title="Payment is still processing"
-        description="This can take a moment. Refresh the page shortly. If payment was completed, your Professional report will unlock automatically."
+        description="This can take a moment. Refresh the page shortly. If payment was completed, your Professional report will unlock automatically — don't start a new checkout yet."
       />
     );
   }
@@ -74,9 +73,22 @@ export default async function PurchaseSuccessPage({
   return (
     <PurchaseStatusScreen
       reportId={id}
-      retryCheckout
-      title="We could not verify this purchase yet"
-      description="If payment was completed, refresh the page in a moment or contact JS Growth."
+      showContact
+      title="We couldn't verify your purchase yet"
+      description="If you completed payment, refresh this page in a moment. If the issue continues, contact JS Solutions — don't pay again until we confirm the unlock."
+    />
+  );
+}
+
+function UnlockedScreen({ reportId }: { reportId: string }) {
+  return (
+    <PurchaseStatusScreen
+      reportId={reportId}
+      tone="success"
+      title={`Your ${PROFESSIONAL_AUDIT_PRODUCT_NAME} is unlocked.`}
+      description="Your full recommendations and action plan are ready."
+      primaryLabel="View Professional Report"
+      primaryHref={`/report/${reportId}`}
     />
   );
 }

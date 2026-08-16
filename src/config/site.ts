@@ -85,7 +85,7 @@ export const siteConfig = {
         {
           name: "Website Growth Audit",
           description:
-            "Analyze your website for SEO, technical, performance, and growth opportunities.",
+            "See what is holding your website back — search, content, conversion, local visibility, and technical health.",
           href: "/website-audit",
         },
       ],

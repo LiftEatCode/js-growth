@@ -80,7 +80,7 @@ function mapSecureFetchError(
     case "TIMEOUT":
       return createError(
         "FETCH_FAILED",
-        "The website took too long to respond.",
+        "The website took too long to respond. Check the address and try again.",
       );
     case "REDIRECT_LOOP":
       return createError(
@@ -123,7 +123,7 @@ export async function fetchWebsitePage(
   if (!isAllowedContentType(result.data.contentType)) {
     return createError(
       "INVALID_CONTENT_TYPE",
-      "The URL did not return an HTML webpage.",
+        "This URL did not return a webpage we can audit. Enter a homepage such as example.com and try again.",
     );
   }
 

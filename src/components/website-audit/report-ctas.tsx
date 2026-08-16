@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { Button, GridPattern } from "@/components/ui";
+import { COMMERCIAL_EVENTS, trackCommercialEvent } from "@/lib/analytics/commercial-events";
 import {
-  getProfessionalAuditPriceLabel,
+  getProfessionalAuditPricePresentation,
   PROFESSIONAL_AUDIT_PRODUCT_NAME,
 } from "@/lib/payments/product";
 import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
@@ -18,8 +21,8 @@ const PROFESSIONAL_BENEFITS = [
   "Complete issue breakdown",
   "Full recommendations",
   "30–90 day action plan",
-  "Technical evidence",
   "Complete quick-win list",
+  "Technical evidence",
   "Estimated implementation effort",
   "Professional report / PDF access",
 ];
@@ -33,7 +36,7 @@ export function ReportUpgradeCta({
     return null;
   }
 
-  const priceLabel = getProfessionalAuditPriceLabel();
+  const pricePresentation = getProfessionalAuditPricePresentation();
 
   return (
     <section
@@ -46,17 +49,16 @@ export function ReportUpgradeCta({
           {PROFESSIONAL_AUDIT_PRODUCT_NAME}
         </p>
         <h2 className="mt-3 max-w-2xl font-heading text-3xl font-bold tracking-tight">
-          Unlock the Full Website Growth Report
+          Unlock your Professional Website Growth Audit
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-          This preview already shows real issues. The professional report adds
-          the complete recommendations, action plan, and implementation detail.
+          This free report already shows real issues. The professional report
+          gives you the complete roadmap: full recommendations, an action plan,
+          evidence, and a PDF you can keep.
         </p>
-        {priceLabel ? (
-          <p className="mt-3 text-sm font-medium text-cyan-200">
-            One-time purchase · {priceLabel}
-          </p>
-        ) : null}
+        <p className="mt-4 text-lg font-semibold text-white">
+          {pricePresentation}
+        </p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {PROFESSIONAL_BENEFITS.map((item) => (
             <li key={item} className="flex items-start gap-2 text-sm text-slate-200">
@@ -68,10 +70,19 @@ export function ReportUpgradeCta({
             </li>
           ))}
         </ul>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
           {reportId ? (
-            <form action={`/api/reports/${reportId}/checkout`} method="post">
-              <Button size="lg" type="submit">
+            <form
+              action={`/api/reports/${reportId}/checkout`}
+              method="post"
+              onSubmit={() => {
+                trackCommercialEvent(
+                  COMMERCIAL_EVENTS.professionalCheckoutStarted,
+                  { report_id: reportId },
+                );
+              }}
+            >
+              <Button size="lg" type="submit" className="w-full sm:w-auto">
                 Unlock Full Report
                 <ArrowRight aria-hidden="true" className="size-4" />
               </Button>
@@ -87,6 +98,10 @@ export function ReportUpgradeCta({
             </Button>
           )}
         </div>
+        <p className="mt-4 text-sm text-slate-400">
+          Payment is securely processed through Stripe Checkout. One-time
+          purchase — not a subscription.
+        </p>
         {children ? <div className="mt-8">{children}</div> : null}
       </div>
     </section>
@@ -104,10 +119,12 @@ export function ReportImplementationCta({ view }: ReportCtasProps) {
         Next step
       </p>
       <h2 className="mt-3 font-heading text-2xl font-semibold tracking-tight text-brand sm:text-3xl">
-        Want help fixing these issues?
+        Want help implementing these improvements?
       </h2>
       <p className="mt-4 max-w-3xl leading-7 text-muted">
-        JS Solutions can help prioritize and implement the improvements identified in this report. We do not guarantee rankings, traffic, or revenue.
+        JS Solutions can help prioritize and implement the website, SEO, local
+        visibility, conversion, and performance improvements identified in this
+        audit. We do not guarantee rankings, traffic, or revenue.
       </p>
       <div className="mt-6">
         <Button nativeButton={false} render={<Link href="/contact" />}>

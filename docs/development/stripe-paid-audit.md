@@ -92,8 +92,11 @@ Production needs all of the following, in **Live** mode:
 - Production webhook endpoint: `https://<domain>/api/stripe/webhook`
 - Production `STRIPE_WEBHOOK_SECRET`
 - Production `NEXT_PUBLIC_SITE_URL`
+- Production `NEXT_PUBLIC_PROFESSIONAL_AUDIT_PRICE_LABEL` matching the live Price
 
 Do not mix test Price IDs with live keys. The app does not switch itself to live mode.
+
+The commercial launch checklist is in `docs/commercial-launch-v1.md`.
 
 ## Entitlement
 

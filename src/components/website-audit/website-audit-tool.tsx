@@ -2,10 +2,12 @@
 
 import {
   CheckCircle2,
-  Gauge,
+  FileSearch,
+  MousePointerClick,
   Search,
   ShieldCheck,
   Sparkles,
+  Timer,
 } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -15,33 +17,20 @@ import {
   Card,
   FeatureCard,
 } from "@/components/ui";
+import {
+  AUDIT_CATEGORY_OVERVIEW,
+  FREE_AUDIT_PRODUCT_NAME,
+} from "@/lib/payments/product";
+import { trackCommercialEvent, COMMERCIAL_EVENTS } from "@/lib/analytics/commercial-events";
 import type { WebsiteAuditSuccessResponse } from "@/lib/website-audit/types";
 
-const auditCategories = [
-  {
-    title: "Technical SEO",
-    description:
-      "Metadata, canonical setup, structured data, mobile configuration, and page architecture.",
-    icon: Search,
-  },
-  {
-    title: "Search Optimization",
-    description:
-      "Titles, descriptions, headings, links, page structure, and search-facing content signals.",
-    icon: Gauge,
-  },
-  {
-    title: "Local SEO",
-    description:
-      "Phone, address, service-area, location, and LocalBusiness signals that support local visibility.",
-    icon: Sparkles,
-  },
-  {
-    title: "Accessibility",
-    description:
-      "Image text, semantic structure, and common accessibility opportunities that affect usability.",
-    icon: ShieldCheck,
-  },
+const categoryIcons = [
+  Search,
+  ShieldCheck,
+  FileSearch,
+  MousePointerClick,
+  Sparkles,
+  Timer,
 ] as const;
 
 export function WebsiteAuditTool() {
@@ -54,6 +43,9 @@ export function WebsiteAuditTool() {
     auditResult: WebsiteAuditSuccessResponse,
   ): void {
     setResult(auditResult);
+    trackCommercialEvent(COMMERCIAL_EVENTS.auditCompleted, {
+      report_id: auditResult.reportId,
+    });
 
     window.setTimeout(() => {
       resultsRef.current?.scrollIntoView({
@@ -70,6 +62,7 @@ export function WebsiteAuditTool() {
           variant="elevated"
           padding="lg"
           className="overflow-hidden"
+          id="audit-form"
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-brand-blue/10 bg-brand-blue/[0.045] px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
             <Sparkles
@@ -77,17 +70,16 @@ export function WebsiteAuditTool() {
               className="size-3.5"
             />
 
-            Start your audit
+            {FREE_AUDIT_PRODUCT_NAME}
           </div>
 
           <h2 className="mt-5 font-heading text-3xl font-bold tracking-tight text-brand sm:text-4xl">
-            Get a clear picture of what your website needs next.
+            Enter your website and get a clear first picture.
           </h2>
 
           <p className="mt-4 max-w-2xl leading-7 text-muted">
-            Enter your homepage and we&apos;ll analyze the technical,
-            search, local, accessibility, and content signals we can evaluate
-            directly from the page.
+            We review the public homepage you submit. You&apos;ll see a Website
+            Growth Score, category results, and the first issues to work on.
           </p>
 
           <div className="mt-8">
@@ -103,16 +95,16 @@ export function WebsiteAuditTool() {
             padding="lg"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">
-              What you&apos;ll get
+              Your free audit includes
             </p>
 
             <div className="mt-5 space-y-4">
               {[
-                "An overall website score and grade",
-                "Priority issues that deserve attention first",
-                "Category-level SEO and technical scores",
-                "A practical recommended improvement roadmap",
-                "Detailed findings you can review individually",
+                "Website Growth Score",
+                "Category scores",
+                "Top priority opportunities",
+                "Quick wins",
+                "A basic website health assessment",
               ].map((item) => (
                 <div
                   key={item}
@@ -136,13 +128,12 @@ export function WebsiteAuditTool() {
             padding="md"
           >
             <p className="font-heading text-lg font-semibold text-brand">
-              Safe, read-only analysis
+              No credit card required
             </p>
 
             <p className="mt-2 text-sm leading-6 text-muted">
-              The audit only analyzes publicly available website information.
-              It does not log in, modify content, or make changes to the
-              website.
+              The audit only reads publicly available website information. It
+              does not log in, change the site, or require an account.
             </p>
           </Card>
         </div>
@@ -174,46 +165,37 @@ function AuditPreview() {
     >
       <div className="mx-auto max-w-3xl text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-blue">
-          Instant analysis
+          What we review
         </p>
 
         <h2
           id="audit-preview-heading"
           className="mt-3 font-heading text-3xl font-bold tracking-tight text-brand sm:text-4xl"
         >
-          See what the audit evaluates before you run it.
+          A practical look at whether the website is helping the business grow.
         </h2>
 
         <p className="mt-4 leading-7 text-muted">
-          The current audit focuses on the submitted homepage and looks for
-          the website signals most likely to affect visibility, usability,
-          structure, and lead-generation performance.
+          This scan focuses on the submitted homepage. It is a prioritization
+          tool, not a Google ranking score or a full-site crawl.
         </p>
       </div>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {auditCategories.map((category) => (
-          <FeatureCard
-            key={category.title}
-            title={category.title}
-            description={category.description}
-            icon={category.icon}
-            tone="default"
-          />
-        ))}
-      </div>
+      <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {AUDIT_CATEGORY_OVERVIEW.map((category, index) => {
+          const Icon = categoryIcons[index] ?? Search;
 
-      <Card
-        variant="default"
-        padding="md"
-        className="mx-auto mt-8 max-w-3xl border-dashed"
-      >
-        <p className="text-center text-sm leading-6 text-muted">
-          This version analyzes the submitted homepage. Full-site crawling,
-          browser-based performance testing, and deeper competitive analysis
-          can be added as the audit platform continues to expand.
-        </p>
-      </Card>
+          return (
+            <FeatureCard
+              key={category.title}
+              title={category.title}
+              description={category.description}
+              icon={Icon}
+              tone="default"
+            />
+          );
+        })}
+      </div>
     </section>
   );
 }

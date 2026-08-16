@@ -1,5 +1,5 @@
 import { resolveReportTier } from "./report-access";
-import { getReportCapabilities } from "./report-config";
+import { getAuditTierComparison, getReportCapabilities } from "./report-config";
 
 function assert(condition: unknown, message: string): void {
   if (!condition) {
@@ -46,6 +46,17 @@ const client = resolveReportTier({
   professionallyUnlocked: false,
 });
 assert(client === "professional", "client remains professional without payment");
+
+const comparison = getAuditTierComparison();
+assert(
+  comparison.some(
+    (row) =>
+      row.feature === "30–90 day action plan" &&
+      row.free === "Not included" &&
+      row.professional === "Included",
+  ),
+  "comparison reflects action plan capabilities",
+);
 
 console.log("report access verification passed");
 process.exit(0);

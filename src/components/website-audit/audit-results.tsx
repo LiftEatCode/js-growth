@@ -93,6 +93,10 @@ export function AuditResults({
         </p>
       ) : null}
 
+      {view.capabilities.showUpgradeCta ? (
+        <ReportUpgradeCta view={view} reportId={reportId} />
+      ) : null}
+
       <ReportActionPlan view={view} />
 
       <ReportCategoryDives view={view} mode={mode} />
@@ -192,10 +196,6 @@ export function AuditResults({
       ) : null}
 
       <ReportMethodology view={view} />
-
-      {view.capabilities.showUpgradeCta ? (
-        <ReportUpgradeCta view={view} reportId={reportId} />
-      ) : null}
 
       {reportId ? (
         <div className="print:hidden">
