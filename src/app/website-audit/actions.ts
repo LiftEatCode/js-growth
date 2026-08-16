@@ -6,6 +6,7 @@ import { buildAuditRobotsData } from "@/lib/website-audit/robots";
 import { parseWebsiteAuditInput } from "@/lib/website-audit/schema";
 import { scoreWebsiteAudit } from "@/lib/website-audit/scoring";
 import { discoverSite } from "@/lib/website-audit/site-discovery";
+import { crawlSite } from "@/lib/website-audit/site/crawl";
 import {
   auditReportRepository,
   createAuditReport,
@@ -33,96 +34,114 @@ export async function auditWebsite(
     };
   }
 
-  const fetchResult = await fetchWebsitePage(
-    parsedInput.data.url,
-  );
-
-  if (!fetchResult.success) {
-    console.info("[audit] fetch failed", {
-      code: fetchResult.error.code,
-    });
-    return fetchResult;
-  }
-
-  try {
-    const {
-      robotsMetaRaw,
-      ...htmlPageData
-    } = analyzeHtml(
-      fetchResult.data.html,
-      fetchResult.data.finalUrl,
-      {
-        advertisedContentLength:
-          fetchResult.data.advertisedContentLength,
-        contentEncoding:
-          fetchResult.data.contentEncoding,
-        cacheControl:
-          fetchResult.data.cacheControl,
-        expires: fetchResult.data.expires,
-        etag: fetchResult.data.etag,
-        lastModified: fetchResult.data.lastModified,
-        documentFetchDurationMs:
-          fetchResult.data.documentFetchDurationMs,
-      },
+    const fetchResult = await fetchWebsitePage(
+      parsedInput.data.url,
     );
 
-    const pageData: AuditPageData = {
-      ...htmlPageData,
-      robots: buildAuditRobotsData(
+    if (!fetchResult.success) {
+      console.info("[audit] fetch failed", {
+        code: fetchResult.error.code,
+      });
+      return fetchResult;
+    }
+
+    try {
+      const {
         robotsMetaRaw,
-        fetchResult.data.xRobotsTag,
-      ),
-    };
+        ...htmlPageData
+      } = analyzeHtml(
+        fetchResult.data.html,
+        fetchResult.data.finalUrl,
+        {
+          advertisedContentLength:
+            fetchResult.data.advertisedContentLength,
+          contentEncoding:
+            fetchResult.data.contentEncoding,
+          cacheControl:
+            fetchResult.data.cacheControl,
+          expires: fetchResult.data.expires,
+          etag: fetchResult.data.etag,
+          lastModified: fetchResult.data.lastModified,
+          documentFetchDurationMs:
+            fetchResult.data.documentFetchDurationMs,
+        },
+      );
 
-    const siteDiscovery = await discoverSite(
-      fetchResult.data.finalUrl,
-    );
+      const pageData: AuditPageData = {
+        ...htmlPageData,
+        robots: buildAuditRobotsData(
+          robotsMetaRaw,
+          fetchResult.data.xRobotsTag,
+        ),
+      };
 
-    const scoring = scoreWebsiteAudit(
-      pageData,
-      fetchResult.data.finalUrl,
-      siteDiscovery,
-    );
+      const siteDiscovery = await discoverSite(
+        fetchResult.data.finalUrl,
+      );
 
-    const auditResult: WebsiteAuditResult = {
-      success: true,
+      let siteData: WebsiteAuditResult["siteData"];
 
-      metadata: {
-        requestedUrl:
-          fetchResult.data.requestedUrl,
+      try {
+        siteData = await crawlSite({
+          seedRequestedUrl: fetchResult.data.requestedUrl,
+          seedFinalUrl: fetchResult.data.finalUrl,
+          seedHtml: fetchResult.data.html,
+          seedPageData: pageData,
+          seedStatusCode: fetchResult.data.statusCode,
+          siteDiscovery,
+        });
+      } catch (error) {
+        console.error("Website audit site crawl failed:", error);
+      }
 
-        finalUrl:
-          fetchResult.data.finalUrl,
+      const scoring = scoreWebsiteAudit(
+        pageData,
+        fetchResult.data.finalUrl,
+        siteDiscovery,
+        siteData,
+      );
 
-        statusCode:
-          fetchResult.data.statusCode,
+      const auditResult: WebsiteAuditResult = {
+        success: true,
 
-        contentType:
-          fetchResult.data.contentType,
+        metadata: {
+          requestedUrl:
+            fetchResult.data.requestedUrl,
 
-        fetchedAt:
-          fetchResult.data.fetchedAt,
-      },
+          finalUrl:
+            fetchResult.data.finalUrl,
 
-      pageData,
+          statusCode:
+            fetchResult.data.statusCode,
 
-      siteDiscovery,
+          contentType:
+            fetchResult.data.contentType,
 
-      findings:
-        scoring.findings,
+          fetchedAt:
+            fetchResult.data.fetchedAt,
+        },
 
-      categoryScores:
-        scoring.categoryScores,
+        pageData,
 
-      overallScore:
-        scoring.overallScore,
+        siteDiscovery,
 
-      summary:
-        scoring.summary,
+        siteData,
 
-      opportunity:
-        scoring.opportunity,
-    };
+        findings:
+          scoring.findings,
+
+        categoryScores:
+          scoring.categoryScores,
+
+        overallScore:
+          scoring.overallScore,
+
+        summary:
+          scoring.summary,
+
+        opportunity:
+          scoring.opportunity,
+      };
 
     const report = createAuditReport(
       auditResult,

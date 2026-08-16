@@ -35,9 +35,10 @@ interface AuditFormProps {
 
 const auditStatusMessages = [
   "Analyzing technical health…",
-  "Reviewing search signals…",
-  "Evaluating content…",
-  "Checking conversion paths…",
+  "Discovering important pages…",
+  "Reviewing service pages…",
+  "Checking site-wide consistency…",
+  "Analyzing conversion paths…",
   "Reviewing local visibility…",
 ] as const;
 
@@ -134,7 +135,7 @@ export function AuditForm({
             id="website-audit-help"
             className="text-sm leading-6 text-muted"
           >
-            Enter a public homepage. example.com is fine — you can leave off
+            Enter a public website URL. example.com is fine — you can leave off
             https://.
           </p>
         </div>

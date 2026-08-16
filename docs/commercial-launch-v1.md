@@ -81,7 +81,7 @@ Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set
 
 ## Known limitations
 
-- Homepage / submitted URL audit — not a full-site crawl
+- Representative multi-page scan of the submitted URL — not a complete crawl of every page
 - No competitor data
 - No Google Business Profile data
 - No rank tracking

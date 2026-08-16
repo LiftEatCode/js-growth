@@ -181,12 +181,17 @@ assert(free.showRecommendations === false, "free limits recommendations");
 assert(free.showUpgradeCta === true, "free shows upgrade");
 assert(free.showImplementationCta === false, "free keeps implementation CTA secondary");
 
+assert(free.showSiteInventory === false, "free hides site inventory");
+assert(free.showSiteOverview === false, "free hides site overview");
+
 const professional = getReportCapabilities("professional");
 assert(professional.showActionPlan === true, "pro action plan");
 assert(professional.showFullFindings === true, "pro all findings");
 assert(professional.showRecommendations === true, "pro recommendations");
 assert(professional.maxPriorityFindings === 5, "pro 5 priorities");
 assert(professional.showUpgradeCta === false, "pro has no upgrade");
+assert(professional.showSiteOverview === true, "pro site overview");
+assert(professional.showSiteInventory === true, "pro site inventory");
 
 const oldReport = normalizeAuditReport({
   success: true,
@@ -250,6 +255,7 @@ const oldReport = normalizeAuditReport({
 });
 
 assert(oldReport.overallScore === 50, "old overall score preserved");
+assert(oldReport.siteData === undefined, "legacy reports have no siteData");
 assert(oldReport.findings[0]?.priority === "medium", "legacy finding gets defaults");
 assert(
   Number.isFinite(oldReport.overallScore) && oldReport.overallScore >= 0,

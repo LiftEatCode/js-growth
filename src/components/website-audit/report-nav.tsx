@@ -14,6 +14,9 @@ export function ReportNav({ view }: ReportNavProps) {
     view.capabilities.showQuickWins
       ? { href: "#report-quick-wins", label: "Quick Wins" }
       : null,
+    view.capabilities.showSiteOverview && view.report.siteData
+      ? { href: "#report-site-overview", label: "Site Overview" }
+      : null,
     view.capabilities.showActionPlan
       ? { href: "#report-action-plan", label: "Action Plan" }
       : null,

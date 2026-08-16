@@ -166,6 +166,7 @@ export interface NormalizedAuditReport {
   summary: WebsiteAuditResult["summary"];
   metadata: WebsiteAuditResult["metadata"];
   pageData: WebsiteAuditResult["pageData"];
+  siteData?: WebsiteAuditResult["siteData"];
 }
 
 export function normalizeAuditReport(
@@ -192,6 +193,7 @@ export function normalizeAuditReport(
     overallScore,
     pageData: result.pageData,
     metadata: result.metadata,
+    siteData: result.siteData,
     summary: {
       passed: asFiniteNumber(result.summary?.passed, passed),
       warnings: asFiniteNumber(result.summary?.warnings, warnings),

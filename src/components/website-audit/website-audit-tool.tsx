@@ -45,7 +45,18 @@ export function WebsiteAuditTool() {
     setResult(auditResult);
     trackCommercialEvent(COMMERCIAL_EVENTS.auditCompleted, {
       report_id: auditResult.reportId,
+      pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
+      site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
     });
+
+    if (auditResult.siteData) {
+      trackCommercialEvent(COMMERCIAL_EVENTS.multiPageAuditCompleted, {
+        report_id: auditResult.reportId,
+        pages_discovered: auditResult.siteData.crawl.discoveredCount,
+        pages_scanned: auditResult.siteData.crawl.crawledCount,
+        truncated: auditResult.siteData.crawl.truncated,
+      });
+    }
 
     window.setTimeout(() => {
       resultsRef.current?.scrollIntoView({
@@ -78,8 +89,9 @@ export function WebsiteAuditTool() {
           </h2>
 
           <p className="mt-4 max-w-2xl leading-7 text-muted">
-            We review the public homepage you submit. You&apos;ll see a Website
-            Growth Score, category results, and the first issues to work on.
+            We run a representative multi-page scan of the public site you
+            submit. You&apos;ll see a Website Growth Score, category results,
+            and the first issues to work on.
           </p>
 
           <div className="mt-8">
@@ -176,8 +188,9 @@ function AuditPreview() {
         </h2>
 
         <p className="mt-4 leading-7 text-muted">
-          This scan focuses on the submitted homepage. It is a prioritization
-          tool, not a Google ranking score or a full-site crawl.
+          This scan is a prioritized sample of important pages. It is a
+          prioritization tool, not a Google ranking score or a complete crawl of
+          every URL.
         </p>
       </div>
 

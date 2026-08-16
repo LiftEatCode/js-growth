@@ -1,6 +1,8 @@
 import { runAuditRules } from "./engine/run-audit-rules";
 import { calculateAuditOpportunity } from "./opportunity";
 import { coreAuditRules } from "./rules";
+import { siteAuditRules } from "./rules/site";
+import type { AuditSiteData } from "./site/types";
 import type {
   AuditCategory,
   AuditCategoryScore,
@@ -214,15 +216,28 @@ export function scoreWebsiteAudit(
   pageData: AuditPageData,
   finalUrl: string,
   siteDiscovery?: AuditSiteDiscoveryData,
+  siteData?: AuditSiteData,
 ): ScoringResult {
-  const findings = runAuditRules(
+  const pageFindings = runAuditRules(
     coreAuditRules,
     {
       pageData,
       siteDiscovery,
+      siteData,
       finalUrl,
     },
   );
+
+  const siteFindings = siteData
+    ? runAuditRules(siteAuditRules, {
+        pageData,
+        siteDiscovery,
+        siteData,
+        finalUrl,
+      })
+    : [];
+
+  const findings = [...pageFindings, ...siteFindings];
 
   const categoryScores =
     calculateCategoryScores(findings);

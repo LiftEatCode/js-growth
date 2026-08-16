@@ -895,6 +895,25 @@ import {
               {executiveSummary.summary}
             </Text>
           </View>
+
+          {audit.siteData ? (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>
+                Site scan
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {`Discovered ${audit.siteData.crawl.discoveredCount} internal URLs. Scanned ${audit.siteData.crawl.crawledCount} prioritized pages. ${audit.siteData.crawl.failedCount} failed. Cap ${audit.siteData.crawl.maxPages}.${audit.siteData.crawl.truncated ? " Scan capped at the page limit." : ""} This is a representative multi-page scan, not a complete crawl of every URL.`}
+              </Text>
+              {audit.siteData.pages.slice(0, 12).map((page) => (
+                <Text
+                  key={page.identity}
+                  style={styles.sectionDescription}
+                >
+                  {`${page.path} · ${page.pageType} · ${page.fetchStatus === "success" ? `${page.wordCount} words` : "failed"}`}
+                </Text>
+              ))}
+            </View>
+          ) : null}
   
           <View style={styles.metricGrid}>
             <View style={styles.metricCard}>

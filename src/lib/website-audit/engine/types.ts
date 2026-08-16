@@ -1,3 +1,4 @@
+import type { AuditSiteData } from "../site/types";
 import type {
   AuditCategory,
   AuditFinding,
@@ -9,6 +10,7 @@ import type {
 export interface AuditRuleContext {
   pageData: AuditPageData;
   siteDiscovery?: AuditSiteDiscoveryData;
+  siteData?: AuditSiteData;
   finalUrl: string;
 }
 

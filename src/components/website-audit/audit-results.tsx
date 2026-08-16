@@ -20,6 +20,10 @@ import {
 import { ReportMethodology } from "@/components/website-audit/report-methodology";
 import { ReportNav } from "@/components/website-audit/report-nav";
 import { ReportQuickWins } from "@/components/website-audit/report-quick-wins";
+import {
+  ReportSiteOverview,
+  ReportSiteScanNotice,
+} from "@/components/website-audit/report-site-overview";
 import { ReportTopPriorities } from "@/components/website-audit/report-top-priorities";
 import { SavedReportLink } from "@/components/website-audit/saved-report-link";
 import { Card, SectionHeader } from "@/components/ui";
@@ -54,6 +58,10 @@ export function AuditResults({
       <AuditExecutiveDashboard view={view} reportId={reportId} />
 
       <ReportNav view={view} />
+
+      <ReportSiteScanNotice view={view} />
+
+      <ReportSiteOverview view={view} />
 
       {reportId ? (
         <div className="print:hidden">
@@ -109,7 +117,7 @@ export function AuditResults({
           <SectionHeader
             eyebrow="Technical evidence"
             title="Signals collected from the audited page."
-            description="These details support the findings above. They are observations from the scan, not a full crawl of every URL."
+            description="These details support the findings above. They are observations from the submitted page. Cross-page patterns, when available, appear in Site Overview."
           />
           <Card variant="elevated" padding="lg">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

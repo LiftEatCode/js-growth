@@ -13,6 +13,8 @@ export interface ReportCapabilities {
   showUpgradeCta: boolean;
   showImplementationCta: boolean;
   showPdfExport: boolean;
+  showSiteOverview: boolean;
+  showSiteInventory: boolean;
   maxPriorityFindings: number | null;
   maxQuickWins: number | null;
   maxFindings: number | null;
@@ -50,6 +52,8 @@ const FREE_CAPABILITIES: ReportCapabilities = {
   showUpgradeCta: true,
   showImplementationCta: false,
   showPdfExport: false,
+  showSiteOverview: false,
+  showSiteInventory: false,
   maxPriorityFindings: 3,
   maxQuickWins: 3,
   maxFindings: 6,
@@ -67,6 +71,8 @@ const PROFESSIONAL_CAPABILITIES: ReportCapabilities = {
   showUpgradeCta: false,
   showImplementationCta: true,
   showPdfExport: true,
+  showSiteOverview: true,
+  showSiteInventory: true,
   maxPriorityFindings: 5,
   maxQuickWins: 5,
   maxFindings: null,
@@ -195,6 +201,11 @@ export function getAuditTierComparison(): AuditTierComparisonRow[] {
       professional: professional.showCategoryDeepDives
         ? "Included"
         : "Not included",
+    },
+    {
+      feature: "Representative multi-page scan",
+      free: "Summary",
+      professional: "Site overview and page inventory",
     },
     {
       feature: "Professional report / PDF",

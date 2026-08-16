@@ -42,8 +42,8 @@ export function HomeWebsiteAuditSection() {
             </p>
             <p className="mt-3 text-sm leading-6 text-muted">
               The audit evaluates search visibility, content, conversion paths,
-              local signals, technical health, and performance from the public
-              homepage you submit.
+              local signals, technical health, and performance from a
+              representative multi-page scan of the public website you submit.
             </p>
           </div>
         </div>

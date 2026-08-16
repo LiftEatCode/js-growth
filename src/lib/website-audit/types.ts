@@ -201,6 +201,15 @@ export interface AuditRobotsTxtData {
 
   blocksAuditedPage: boolean;
 
+  /**
+   * Prefix rules from `User-agent: *` groups.
+   * Used by the bounded site crawl. Older stored audits omit this.
+   */
+  wildcardRules?: Array<{
+    type: "allow" | "disallow";
+    path: string;
+  }>;
+
   fetchError: string | null;
 }
 
@@ -964,6 +973,12 @@ export interface WebsiteAuditResult {
    * Older stored audits may omit this field.
    */
   siteDiscovery?: AuditSiteDiscoveryData;
+
+  /**
+   * Bounded multi-page site intelligence.
+   * Older stored audits omit this field and must still render.
+   */
+  siteData?: import("./site/types").AuditSiteData;
 
   findings: AuditFinding[];
 

@@ -38,7 +38,7 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 
 - **Fields:** submitted website URL, hostname, report mode, scores, grades, issue counts, full audit JSON result, timestamps, optional lead association.
 - **Purpose:** generate and display Website Growth Audits; retain the report for later viewing, Professional upgrade, and support.
-- **How collected:** HTTP fetch of publicly accessible HTML and related public response headers for the submitted URL. Private/localhost/internal addresses are blocked. The audit does not log into password-protected admin areas or private databases.
+- **How collected:** HTTP fetch of publicly accessible HTML and related public response headers for the submitted URL, plus a bounded number of same-site publicly linked pages (representative multi-page scan, not a complete crawl). Private/localhost/internal addresses are blocked. The audit does not log into password-protected admin areas or private databases.
 - **Storage:** PostgreSQL via Prisma (`AuditReport`). Public viewing uses a report UUID link at `/report/[id]` (disallowed in robots). Internal staff viewing uses `/reports/[id]`.
 - **Third parties:** Neon (database); hosting/infrastructure for the Next.js application.
 
@@ -54,7 +54,7 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 ### Analytics
 
 - **Service:** Google Analytics via `@next/third-parties/google`, loaded only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set.
-- **Potential data:** pages viewed, browser/device characteristics, approximate geography, referral/source information, and interaction events. Custom events currently include `audit_completed` and `professional_checkout_started` when `gtag` is present.
+- **Potential data:** pages viewed, browser/device characteristics, approximate geography, referral/source information, and interaction events. Custom events currently include `audit_completed`, `professional_checkout_started`, and `multi_page_audit_completed` when `gtag` is present.
 - **Purpose:** understand website usage and funnel behavior.
 - **Storage / third parties:** Google Analytics / Google. JS Growth does not persist analytics payloads in the application database.
 - **Consent:** no cookie-consent or opt-in banner is implemented. Evaluate additional consent tooling before targeting jurisdictions that require opt-in analytics consent.

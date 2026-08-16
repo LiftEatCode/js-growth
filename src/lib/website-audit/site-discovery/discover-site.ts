@@ -82,6 +82,7 @@ async function fetchRobotsTxt(
         auditedPageUrl,
         parsed.wildcardRules,
       ),
+      wildcardRules: parsed.wildcardRules,
       fetchError: null,
     };
   } catch {

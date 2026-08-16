@@ -45,7 +45,9 @@ export function TermsOfServiceContent() {
         </p>
         <p>
           The Website Growth Audit evaluates observable signals on a publicly
-          accessible website URL that you submit. It is an informational
+          accessible website URL that you submit, plus a limited number of
+          same-site publicly linked pages included in a representative scan.
+          It is an informational
           assessment intended to identify potential improvement opportunities.
           It is not a guarantee of search rankings, traffic, leads, conversions,
           or revenue.
@@ -84,7 +86,9 @@ export function TermsOfServiceContent() {
           abuse third-party systems.
         </p>
         <p>
-          The audit accesses publicly available website information. You do not
+          The audit accesses publicly available website information from the
+          submitted URL and a limited number of same-site publicly linked
+          pages. You do not
           need to own every public site you evaluate, but you should only use
           the service for legitimate purposes and in a way that does not harm
           or disrupt the submitted website or JS Growth.
