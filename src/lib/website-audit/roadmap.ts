@@ -59,9 +59,19 @@ export function buildRoadmap(
     estimatedFixMinutes: 0,
   };
 
+  const conversionPhase: RoadmapPhase = {
+    id: "conversion",
+    title: "Phase 4 · Conversion Readiness",
+    description:
+      "Make it easier for visitors to understand the offer, trust the business, and take the next step.",
+    priority: "medium",
+    findings: [],
+    estimatedFixMinutes: 0,
+  };
+
   const experiencePhase: RoadmapPhase = {
     id: "experience",
-    title: "Phase 4 · Performance & User Experience",
+    title: "Phase 5 · Performance & User Experience",
     description:
       "Improve accessibility, usability, performance, and the overall visitor experience.",
     priority: "low",
@@ -113,6 +123,15 @@ export function buildRoadmap(
       continue;
     }
 
+    if (finding.category === "cro") {
+      addFindingToPhase(
+        conversionPhase,
+        finding,
+      );
+
+      continue;
+    }
+
     addFindingToPhase(
       experiencePhase,
       finding,
@@ -123,6 +142,7 @@ export function buildRoadmap(
     criticalPhase,
     searchPhase,
     contentPhase,
+    conversionPhase,
     experiencePhase,
   ];
 

@@ -12,6 +12,7 @@ export type AuditCategory =
   | "technical"
   | "seo"
   | "content"
+  | "cro"
   | "accessibility"
   | "local"
   | "performance";
@@ -57,6 +58,7 @@ export interface OpportunityInsight {
   category:
     | "seo"
     | "content"
+    | "cro"
     | "technical"
     | "local"
     | "performance";
@@ -66,6 +68,7 @@ export interface OpportunityInsight {
     | "map"
     | "speed"
     | "content"
+    | "conversion"
     | "technical";
 }
 
@@ -333,6 +336,223 @@ export interface AuditImageData {
   suspiciousAlt: number;
 }
 
+export type AuditCtaElementType = "link" | "button" | "submit";
+
+export type AuditCtaType =
+  | "phone"
+  | "email"
+  | "contact"
+  | "quote"
+  | "estimate"
+  | "booking"
+  | "consultation"
+  | "service"
+  | "generic-conversion";
+
+export type AuditCtaLocation =
+  | "header"
+  | "navigation"
+  | "main"
+  | "footer"
+  | "other";
+
+export interface AuditCta {
+  text: string;
+
+  elementType: AuditCtaElementType;
+
+  href: string | null;
+
+  type: AuditCtaType;
+
+  location: AuditCtaLocation;
+
+  isInternal: boolean | null;
+}
+
+export interface AuditCtaData {
+  count: number;
+
+  uniqueTypes: AuditCtaType[];
+
+  phoneCtaCount: number;
+
+  contactCtaCount: number;
+
+  quoteCtaCount: number;
+
+  bookingCtaCount: number;
+
+  details: AuditCta[];
+
+  detailsTruncated: boolean;
+}
+
+export type AuditFormPurposeGuess =
+  | "lead"
+  | "search"
+  | "login"
+  | "newsletter"
+  | "job"
+  | "checkout"
+  | "other";
+
+export interface AuditFormDetail {
+  purposeGuess: AuditFormPurposeGuess;
+
+  fieldCount: number;
+
+  hasSubmitControl: boolean;
+
+  location: AuditCtaLocation;
+}
+
+export interface AuditFormData {
+  totalForms: number;
+
+  contactLikeForms: number;
+
+  formsWithSubmitControl: number;
+
+  formsWithoutSubmitControl: number;
+
+  totalInputFields: number;
+
+  maxFieldsInSingleForm: number;
+
+  likelyLeadFormCount: number;
+
+  maxLeadFormFields: number;
+
+  details: AuditFormDetail[];
+
+  detailsTruncated: boolean;
+}
+
+export interface AuditPhoneConversionData {
+  visiblePhonePresent: boolean;
+
+  visiblePhoneCount: number;
+
+  telLinkCount: number;
+
+  phoneCtaCount: number;
+}
+
+export interface AuditEmailConversionData {
+  visibleEmailPresent: boolean;
+
+  mailtoLinkCount: number;
+}
+
+export type AuditTrustCategory =
+  | "testimonials"
+  | "reviews"
+  | "guarantee"
+  | "warranty"
+  | "certification"
+  | "license"
+  | "insured"
+  | "experience"
+  | "about"
+  | "team"
+  | "case-study"
+  | "portfolio";
+
+export interface AuditTrustData {
+  testimonialSignals: number;
+  reviewSignals: number;
+
+  guaranteeSignals: number;
+  warrantySignals: number;
+
+  certificationSignals: number;
+  licenseSignals: number;
+  insuredSignals: number;
+
+  experienceSignals: number;
+
+  aboutSignals: number;
+  teamSignals: number;
+
+  caseStudySignals: number;
+  portfolioSignals: number;
+
+  trustCategoryCount: number;
+  presentCategories: AuditTrustCategory[];
+
+  evidence: string[];
+  detailsTruncated: boolean;
+}
+
+export type AuditConversionIntentType =
+  | "contact"
+  | "quote"
+  | "estimate"
+  | "booking"
+  | "consultation"
+  | "service";
+
+export interface AuditConversionIntentData {
+  types: AuditConversionIntentType[];
+
+  phraseCount: number;
+
+  evidence: string[];
+
+  detailsTruncated: boolean;
+}
+
+export interface AuditOfferClarityData {
+  hasMeaningfulTitle: boolean;
+
+  hasMeaningfulH1: boolean;
+
+  titleH1Aligned: boolean | null;
+
+  hasSubstantialContent: boolean;
+
+  hasConversionIntent: boolean;
+}
+
+export interface AuditConversionPathData {
+  hasClickToCall: boolean;
+
+  hasLeadForm: boolean;
+
+  hasMailto: boolean;
+
+  hasQuoteCta: boolean;
+
+  hasBookingCta: boolean;
+
+  hasConsultationCta: boolean;
+
+  hasContactCta: boolean;
+
+  pathTypes: string[];
+
+  locations: AuditCtaLocation[];
+}
+
+export interface AuditConversionData {
+  ctas: AuditCtaData;
+
+  forms: AuditFormData;
+
+  phone: AuditPhoneConversionData;
+
+  email: AuditEmailConversionData;
+
+  trust: AuditTrustData;
+
+  intent: AuditConversionIntentData;
+
+  offerClarity: AuditOfferClarityData;
+
+  path: AuditConversionPathData;
+}
+
 export interface AuditCanonicalData {
   rawValues: string[];
 
@@ -365,12 +585,14 @@ export interface AuditPageData {
   robots: AuditRobotsData;
 
   /**
-   * Content-intelligence measurements. Older stored audits omit these.
+   * Content-intelligence and conversion measurements.
+   * Older stored audits omit these.
    */
   content?: AuditContentData;
   headings?: AuditHeadingData;
   links?: AuditLinkData;
   images?: AuditImageData;
+  conversion?: AuditConversionData;
 
   h1Count: number;
   h1Values: string[];

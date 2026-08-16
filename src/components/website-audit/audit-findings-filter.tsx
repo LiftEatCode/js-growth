@@ -83,6 +83,10 @@ const CATEGORY_FILTERS: {
     label: "Content",
   },
   {
+    value: "cro",
+    label: "Conversion",
+  },
+  {
     value: "accessibility",
     label: "Accessibility",
   },

@@ -19,12 +19,7 @@ import {
   extractLinkData,
   extractVisibleText,
 } from "./content-extract";
-
-const PHONE_PATTERN =
-  /(?:\+?1[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}/;
-
-const EMAIL_PATTERN =
-  /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+import { extractConversionData } from "./conversion-extract";
 
 const STREET_ADDRESS_PATTERN =
   /\b\d{1,6}\s+[A-Za-z0-9.'#-]+(?:\s+[A-Za-z0-9.'#-]+){0,5}\s+(?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|court|ct|parkway|pkwy|highway|hwy|circle|cir|trail|trl|way|place|pl)\b/i;
@@ -429,23 +424,23 @@ export function analyzeHtml(
       $,
     );
 
-  const hasPhoneNumber =
-    PHONE_PATTERN.test(
+  const conversion =
+    extractConversionData($, {
+      pageUrl,
+      title,
+      headings,
+      content,
+      structuredDataTypes,
       visibleText,
-    ) ||
-    $(
-      'a[href^="tel:"]',
-    ).length >
-      0;
+    });
+
+  const hasPhoneNumber =
+    conversion.phone.visiblePhonePresent ||
+    conversion.phone.telLinkCount > 0;
 
   const hasEmailAddress =
-    EMAIL_PATTERN.test(
-      visibleText,
-    ) ||
-    $(
-      'a[href^="mailto:"]',
-    ).length >
-      0;
+    conversion.email.visibleEmailPresent ||
+    conversion.email.mailtoLinkCount > 0;
 
   const physicalAddressDetected =
     hasPhysicalAddressSignals(
@@ -474,6 +469,7 @@ export function analyzeHtml(
     headings,
     links,
     images,
+    conversion,
 
     h1Count:
       headings.h1Count,

@@ -38,6 +38,7 @@ const CATEGORY_LABELS: Record<
   technical: "Technical SEO",
   seo: "Search Optimization",
   content: "Content",
+  cro: "Conversion",
   accessibility: "Accessibility",
   local: "Local SEO",
   performance: "Performance",

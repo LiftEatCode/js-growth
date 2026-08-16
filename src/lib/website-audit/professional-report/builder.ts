@@ -104,6 +104,9 @@ import type {
   
       case "content":
         return "Content weaknesses can make it harder for visitors and search engines to understand services, expertise, and relevance.";
+
+      case "cro":
+        return "Conversion weaknesses can stop interested visitors from calling, requesting a quote, or otherwise becoming a lead.";
   
       case "accessibility":
         return "Accessibility weaknesses can create unnecessary friction for users and may reduce the overall usability and trustworthiness of the website.";
@@ -132,6 +135,9 @@ import type {
   
       case "content":
         return `Website content is currently ${healthLabel}. This affects how clearly the business communicates its services, value, and relevance.`;
+
+      case "cro":
+        return `Conversion readiness is currently ${healthLabel}. This area influences whether visitors can understand the offer, trust the business, and take the next step.`;
   
       case "accessibility":
         return `Accessibility is currently ${healthLabel}. This area influences usability across a wider range of visitors and devices.`;

@@ -7,6 +7,7 @@ import {
   MapPin,
   Search,
   Settings2,
+  Target,
 } from "lucide-react";
 
 import type {
@@ -24,6 +25,7 @@ const CATEGORY_ICONS = {
   technical: Settings2,
   seo: Search,
   content: FileText,
+  cro: Target,
   accessibility: Accessibility,
   local: MapPin,
   performance: Gauge,
@@ -269,6 +271,10 @@ function getCategorySummary(
 
   if (category === "content") {
     return `Homepage content signals are ${condition}.`;
+  }
+
+  if (category === "cro") {
+    return `Conversion readiness is ${condition}.`;
   }
 
   if (

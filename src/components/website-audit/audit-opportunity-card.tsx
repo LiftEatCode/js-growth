@@ -128,6 +128,10 @@ function InsightIcon({
     return <FileText {...props} />;
   }
 
+  if (icon === "conversion") {
+    return <TrendingUp {...props} />;
+  }
+
   return <Settings2 {...props} />;
 }
 

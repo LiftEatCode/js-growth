@@ -87,26 +87,46 @@ import type {
       });
     }
   
-    if (hasContentIssues) {
-      insights.push({
-        id: "content",
-  
-        title:
-          "Expand High-Value Content",
-  
-        description:
-          "Content quality and structure can be improved.",
-  
-        businessValue:
-          "Better content helps attract more search traffic and builds customer trust.",
-  
-        priority: "medium",
-  
-        category: "content",
-  
-        icon: "content",
-      });
-    }
+  if (hasContentIssues) {
+    insights.push({
+      id: "content",
+
+      title:
+        "Expand High-Value Content",
+
+      description:
+        "Content quality and structure can be improved.",
+
+      businessValue:
+        "Better content helps attract more search traffic and builds customer trust.",
+
+      priority: "medium",
+
+      category: "content",
+
+      icon: "content",
+    });
+  }
+
+  const hasCroIssues =
+    actionable.some(
+      (finding) =>
+        finding.category === "cro",
+    );
+
+  if (hasCroIssues) {
+    insights.push({
+      id: "conversion",
+      title: "Make It Easier To Convert",
+      description:
+        "The page has conversion-path or trust gaps that can stop interested visitors from contacting the business.",
+      businessValue:
+        "Clearer calls to action and authentic trust evidence help more visitors take the next step.",
+      priority: "high",
+      category: "cro",
+      icon: "conversion",
+    });
+  }
   
     if (hasPerformanceIssues) {
       insights.push({

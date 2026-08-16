@@ -26,6 +26,7 @@ const CATEGORY_LABELS: Record<
   technical: "Technical SEO",
   seo: "Search Optimization",
   content: "Content",
+  cro: "Conversion",
   accessibility: "Accessibility",
   local: "Local SEO",
   performance: "Performance",
@@ -35,11 +36,12 @@ const CATEGORY_MAX_SCORES: Record<
   AuditCategory,
   number
 > = {
-  technical: 25,
-  seo: 25,
+  technical: 20,
+  seo: 20,
   content: 15,
+  cro: 15,
   accessibility: 10,
-  local: 15,
+  local: 10,
   performance: 10,
 };
 
