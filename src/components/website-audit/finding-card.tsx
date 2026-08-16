@@ -5,7 +5,6 @@ import {
   Gauge,
   Lightbulb,
   LockKeyhole,
-  Sparkles,
   Wrench,
   XCircle,
 } from "lucide-react";
@@ -14,9 +13,9 @@ import {
   InfoPanel,
   StatBadge,
 } from "@/components/website-audit/report-ui";
+import { getReportCategoryLabel } from "@/lib/website-audit/report-categories";
 import { getFindingVisibility } from "@/lib/website-audit/report-mode";
 import type {
-  AuditCategory,
   AuditFinding,
   AuditPriority,
   AuditStatus,
@@ -30,19 +29,6 @@ interface FindingCardProps {
   mode?: ReportMode;
   number?: number;
 }
-
-const CATEGORY_LABELS: Record<
-  AuditCategory,
-  string
-> = {
-  technical: "Technical SEO",
-  seo: "Search Optimization",
-  content: "Content",
-  cro: "Conversion",
-  accessibility: "Accessibility",
-  local: "Local SEO",
-  performance: "Performance",
-};
 
 function getStatusLabel(
   status: AuditStatus,
@@ -280,9 +266,9 @@ export function FindingCard({
 
                 <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
                   {
-                    CATEGORY_LABELS[
-                      finding.category
-                    ]
+                    getReportCategoryLabel(
+                      finding.category,
+                    )
                   }
                 </span>
               </div>
@@ -330,7 +316,7 @@ export function FindingCard({
       <div className="p-5 sm:p-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
-            What we found
+            Why this matters
           </p>
 
           <p className="mt-2 leading-7 text-muted">
@@ -369,12 +355,6 @@ export function FindingCard({
                 )}
               />
             ) : null}
-
-            <FindingMetric
-              icon={Sparkles}
-              label="Score impact"
-              value={`${finding.scoreImpact} pts`}
-            />
           </div>
         ) : (
           <div className="mt-5">
@@ -433,8 +413,8 @@ export function FindingCard({
           <div className="mt-5">
             <InfoPanel
               icon={Wrench}
-              title="Implementation guidance"
-              description="AI-generated implementation instructions will appear here once the client AI layer is enabled."
+              title="Implementation notes"
+              description="Use the recommendation above as the next implementation step. More detailed build guidance can be added after a consultation."
               tone="primary"
             />
           </div>

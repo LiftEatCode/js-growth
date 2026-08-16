@@ -238,3 +238,18 @@
         rgb(37 99 235 / 0.14);
   }
 }
+
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+
+  a[href]::after {
+    content: none !important;
+  }
+
+  body {
+    background: white;
+    color: #0f172a;
+  }
+}

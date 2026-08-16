@@ -80,7 +80,7 @@ export default async function ReportPage({
                     className="size-3.5"
                   />
 
-                  Saved Website Audit
+                  Website Growth Audit
                 </div>
 
                 <p className="mt-1 font-heading font-semibold text-brand">

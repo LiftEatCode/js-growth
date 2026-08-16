@@ -3,6 +3,10 @@ export type ReportMode =
   | "consultation"
   | "client";
 
+export type ReportTier =
+  | "free"
+  | "professional";
+
 export type AuditStatus =
   | "pass"
   | "warning"

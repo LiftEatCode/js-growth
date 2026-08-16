@@ -315,6 +315,10 @@ export default async function InternalReportPage({
     buildExecutiveSummary(
       audit.findings,
       audit.summary,
+      {
+        overallScore: audit.overallScore,
+        categoryScores: audit.categoryScores,
+      },
     );
 
   const priorityFindings =

@@ -13,7 +13,7 @@ import { siteConfig } from "@/config/site";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
+    <header className="print:hidden sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
       <Container className="flex h-16 items-center gap-6">
         <Link
           href="/"

@@ -27,7 +27,7 @@ interface AuditFindingsFilterProps {
 
 type StatusFilter =
   | "all"
-  | "critical"
+  | "high-priority"
   | "warnings"
   | "quick-wins"
   | "passed";
@@ -45,8 +45,8 @@ const STATUS_FILTERS: {
     label: "All",
   },
   {
-    value: "critical",
-    label: "Critical",
+    value: "high-priority",
+    label: "High Priority",
   },
   {
     value: "warnings",
@@ -202,11 +202,13 @@ export function AuditFindingsFilter({
               statusFilter ===
                 "all" ||
               (statusFilter ===
-                "critical" &&
+                "high-priority" &&
                 finding.status !==
                   "pass" &&
-                finding.priority ===
-                  "critical") ||
+                (finding.priority ===
+                  "critical" ||
+                  finding.priority ===
+                    "high")) ||
               (statusFilter ===
                 "warnings" &&
                 finding.status ===
@@ -261,7 +263,7 @@ export function AuditFindingsFilter({
       id="audit-findings"
       className="space-y-6"
     >
-      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      <div className="print:hidden overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
         <div className="flex flex-col gap-4 border-b border-border bg-slate-50/60 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-blue">

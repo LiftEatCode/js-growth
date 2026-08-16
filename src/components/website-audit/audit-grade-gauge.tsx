@@ -1,3 +1,4 @@
+import { getScoreBand } from "@/lib/website-audit/report-view";
 import { getAuditGrade } from "@/lib/website-audit/grading";
 
 interface AuditGradeGaugeProps {
@@ -53,6 +54,7 @@ export function AuditGradeGauge({
   const grade = getAuditGrade(
     normalizedScore,
   );
+  const band = getScoreBand(normalizedScore);
 
   const radius = 84;
   const circumference =
@@ -106,7 +108,7 @@ export function AuditGradeGauge({
 
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         <span className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          SEO Grade
+          Score
         </span>
 
         <span
@@ -114,15 +116,15 @@ export function AuditGradeGauge({
             grade.color,
           )}`}
         >
-          {grade.letter}
+          {normalizedScore}
         </span>
 
         <span className="mt-1 text-lg font-semibold text-foreground">
-          {normalizedScore}/100
+          {band.label}
         </span>
 
         <span className="mt-1 text-sm text-muted-foreground">
-          {grade.label}
+          {normalizedScore}/100
         </span>
       </div>
     </div>

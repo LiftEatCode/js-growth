@@ -1,0 +1,31 @@
+import { InfoPanel, ReportSection } from "@/components/website-audit/report-ui";
+import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
+
+interface ReportMethodologyProps {
+  view: GrowthReportViewModel;
+}
+
+export function ReportMethodology({ view }: ReportMethodologyProps) {
+  if (!view.capabilities.showMethodology) {
+    return null;
+  }
+
+  return (
+    <ReportSection
+      eyebrow="Methodology"
+      title="How this audit works."
+      description="This audit evaluates observable technical, search, content, conversion, local, and performance signals found during the website scan."
+    >
+      <div className="grid gap-4 md:grid-cols-2">
+        <InfoPanel
+          title="What the score means"
+          description="Checks contribute positively or negatively. Higher-impact problems affect category scores more. Scores help prioritize work. They do not predict Google rankings, traffic, or revenue."
+        />
+        <InfoPanel
+          title="Limits of this scan"
+          description="The audit does not replace analytics, review every page on the site, or include Google Business Profile and advertising data. Some recommendations still need business context before you implement them."
+        />
+      </div>
+    </ReportSection>
+  );
+}
