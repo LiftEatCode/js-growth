@@ -6,6 +6,12 @@ import {
 import type {
   AuditPageData,
 } from "./types";
+import {
+  buildCanonicalData,
+  buildMetaDescriptionData,
+  buildTextFieldData,
+  normalizeWhitespace,
+} from "./page-metadata";
 
 const PHONE_PATTERN =
   /(?:\+?1[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}/;
@@ -59,17 +65,99 @@ function getTrimmedAttribute(
   return value || null;
 }
 
-function getTrimmedText(
+function collectNormalizedTexts(
   $: CheerioAPI,
   selector: string,
-): string | null {
-  const value =
-    $(selector)
-      .first()
-      .text()
-      .trim();
+): string[] {
+  const values: string[] = [];
 
-  return value || null;
+  $(selector).each(
+    (
+      _,
+      element,
+    ) => {
+      values.push(
+        normalizeWhitespace(
+          $(element).text(),
+        ),
+      );
+    },
+  );
+
+  return values;
+}
+
+function collectMetaDescriptionValues(
+  $: CheerioAPI,
+): string[] {
+  const values: string[] = [];
+
+  $("meta[name]").each(
+    (
+      _,
+      element,
+    ) => {
+      const name =
+        $(element)
+          .attr("name")
+          ?.trim()
+          .toLowerCase();
+
+      if (name !== "description") {
+        return;
+      }
+
+      const content =
+        $(element).attr(
+          "content",
+        );
+
+      values.push(
+        content == null
+          ? ""
+          : content,
+      );
+    },
+  );
+
+  return values;
+}
+
+function collectCanonicalHrefs(
+  $: CheerioAPI,
+): string[] {
+  const values: string[] = [];
+
+  $("link[rel]").each(
+    (
+      _,
+      element,
+    ) => {
+      const relTokens =
+        $(element)
+          .attr("rel")
+          ?.toLowerCase()
+          .split(/\s+/)
+          .filter(Boolean) ??
+        [];
+
+      if (
+        !relTokens.includes(
+          "canonical",
+        )
+      ) {
+        return;
+      }
+
+      values.push(
+        $(element).attr(
+          "href",
+        ) ?? "",
+      );
+    },
+  );
+
+  return values;
 }
 
 function normalizeVisibleText(
@@ -361,23 +449,26 @@ export function analyzeHtml(
     );
 
   const title =
-    getTrimmedText(
-      $,
-      "title",
+    buildTextFieldData(
+      collectNormalizedTexts(
+        $,
+        "title",
+      ),
     );
 
   const metaDescription =
-    getTrimmedAttribute(
-      $,
-      'meta[name="description"]',
-      "content",
+    buildMetaDescriptionData(
+      collectMetaDescriptionValues(
+        $,
+      ),
     );
 
-  const canonicalUrl =
-    getTrimmedAttribute(
-      $,
-      'link[rel="canonical"]',
-      "href",
+  const canonical =
+    buildCanonicalData(
+      collectCanonicalHrefs(
+        $,
+      ),
+      finalUrl,
     );
 
   const viewport =
@@ -394,8 +485,14 @@ export function analyzeHtml(
       "content",
     );
 
+  const h1Values =
+    collectNormalizedTexts(
+      $,
+      "h1",
+    );
+
   const h1Count =
-    $("h1").length;
+    h1Values.length;
 
   const h2Count =
     $("h2").length;
@@ -486,12 +583,13 @@ export function analyzeHtml(
   return {
     title,
     metaDescription,
-    canonicalUrl,
+    canonical,
     viewport,
 
     robotsMetaRaw,
 
     h1Count,
+    h1Values,
     h2Count,
     h3Count,
 

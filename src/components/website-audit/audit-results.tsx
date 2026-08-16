@@ -22,6 +22,11 @@ import {
   SectionHeader,
 } from "@/components/ui";
 import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
+import {
+  getAuditCanonicalUrl,
+  getAuditMetaDescriptionText,
+  getAuditTitleText,
+} from "@/lib/website-audit/page-metadata";
 import type {
   ReportMode,
   WebsiteAuditResult,
@@ -156,8 +161,9 @@ export function AuditResults({
               icon={Globe2}
               label="Title"
               value={
-                result.pageData.title ??
-                "No title detected"
+                getAuditTitleText(
+                  result.pageData.title,
+                ) ?? "No title detected"
               }
             />
 
@@ -165,7 +171,9 @@ export function AuditResults({
               icon={FileCode2}
               label="Meta description"
               value={
-                result.pageData.metaDescription ??
+                getAuditMetaDescriptionText(
+                  result.pageData.metaDescription,
+                ) ??
                 "No meta description detected"
               }
             />
@@ -174,7 +182,9 @@ export function AuditResults({
               icon={Link2}
               label="Canonical URL"
               value={
-                result.pageData.canonicalUrl ??
+                getAuditCanonicalUrl(
+                  result.pageData,
+                ) ??
                 "No canonical URL detected"
               }
             />

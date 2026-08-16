@@ -223,15 +223,59 @@ export interface AuditSiteDiscoveryData {
   hasAccessibleSitemap: boolean;
 }
 
+export interface AuditTitleData {
+  value: string | null;
+
+  count: number;
+
+  length: number;
+
+  isEmpty: boolean;
+}
+
+export interface AuditMetaDescriptionData {
+  value: string | null;
+
+  count: number;
+
+  length: number;
+
+  isEmpty: boolean;
+}
+
+export interface AuditCanonicalData {
+  rawValues: string[];
+
+  count: number;
+
+  value: string | null;
+
+  resolvedUrl: string | null;
+
+  valid: boolean;
+
+  selfReferencing: boolean;
+
+  sameOrigin: boolean;
+
+  protocolMatches: boolean;
+}
+
 export interface AuditPageData {
-  title: string | null;
-  metaDescription: string | null;
-  canonicalUrl: string | null;
+  /**
+   * Newly generated audits use structured title/description/canonical
+   * objects. Older stored audits may still have string `title`,
+   * `metaDescription`, and `canonicalUrl` fields and omit `h1Values`.
+   */
+  title: AuditTitleData;
+  metaDescription: AuditMetaDescriptionData;
+  canonical: AuditCanonicalData;
   viewport: string | null;
 
   robots: AuditRobotsData;
 
   h1Count: number;
+  h1Values: string[];
   h2Count: number;
   h3Count: number;
 

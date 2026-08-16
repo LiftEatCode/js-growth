@@ -14,6 +14,7 @@ import { robotsIndexabilityRule } from "./robots-indexability-rule";
 import { robotsTxtRule } from "./robots-txt-rule";
 import { sitemapRule } from "./sitemap-rule";
 import { structuredDataRule } from "./structured-data-rule";
+import { titleH1AlignmentRule } from "./title-h1-alignment-rule";
 import { titleRule } from "./title-rule";
 import { viewportRule } from "./viewport-rule";
 
@@ -30,6 +31,7 @@ export const coreAuditRules: AuditRule[] =
     viewportRule,
 
     headingsRule,
+    titleH1AlignmentRule,
     imagesRule,
     internalLinksRule,
 
