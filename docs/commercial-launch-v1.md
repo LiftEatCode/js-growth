@@ -67,13 +67,17 @@ Local Stripe testing: `docs/development/stripe-paid-audit.md`
 
 | Policy | Status |
 |---|---|
-| Privacy Policy | **Missing** — no public route |
-| Terms of Service | **Missing** — no public route |
-| Refund policy | **Missing** — do not invent “no refunds” copy without a business decision |
+| Privacy Policy | **Published** — `/privacy` |
+| Terms of Service | **Published** — `/terms` |
+| Refund Policy | **Published** — `/refund-policy` (Professional Audit digital-product terms only) |
 
-Contact path: `/contact`
+These pages are operational drafts based on current application behavior. They should be reviewed by qualified legal counsel as the business scales or data practices change. Internal inventory: `docs/legal-data-inventory.md`.
+
+Contact path: `/contact` and published email `jssolutions.tx@gmail.com`
 
 Payments: Stripe Checkout
+
+Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set. No cookie-consent banner is implemented.
 
 ## Known limitations
 
@@ -137,9 +141,9 @@ Performance Intelligence V2, or Multi-Page Intelligence — not started here.
 ### Trust
 
 - [x] Contact path (`/contact`, footer)
-- [ ] Privacy Policy
-- [ ] Terms of Service
-- [ ] Refund policy (business decision required)
+- [x] Privacy Policy
+- [x] Terms of Service
+- [x] Refund policy (Professional Audit digital-product terms)
 
 ### UX
 

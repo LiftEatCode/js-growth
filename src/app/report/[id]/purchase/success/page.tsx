@@ -85,8 +85,9 @@ function UnlockedScreen({ reportId }: { reportId: string }) {
     <PurchaseStatusScreen
       reportId={reportId}
       tone="success"
+      showContact
       title={`Your ${PROFESSIONAL_AUDIT_PRODUCT_NAME} is unlocked.`}
-      description="Your full recommendations and action plan are ready."
+      description="Your full recommendations and action plan are ready. If the report does not open, contact JS Solutions."
       primaryLabel="View Professional Report"
       primaryHref={`/report/${reportId}`}
     />

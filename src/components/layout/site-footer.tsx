@@ -1,12 +1,19 @@
 import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
+import { POLICY_ROUTES } from "@/content/legal/policy-meta";
 
 const footerLinks = [
   { href: "/website-audit", label: "Free Website Audit" },
   { href: "/contact", label: "Contact" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
+] as const;
+
+const legalLinks = [
+  { href: POLICY_ROUTES.privacy, label: "Privacy" },
+  { href: POLICY_ROUTES.terms, label: "Terms" },
+  { href: POLICY_ROUTES.refund, label: "Refund Policy" },
 ] as const;
 
 export function SiteFooter() {
@@ -23,13 +30,27 @@ export function SiteFooter() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-          <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <div className="flex flex-col gap-4 sm:items-end">
+          <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 text-sm sm:justify-end">
             {footerLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className="font-medium text-brand hover:text-brand-blue"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+          <nav
+            aria-label="Legal"
+            className="flex flex-wrap gap-x-5 gap-y-2 text-sm sm:justify-end"
+          >
+            {legalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-muted hover:text-brand"
               >
                 {link.label}
               </Link>

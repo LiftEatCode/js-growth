@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { Button, GridPattern } from "@/components/ui";
+import { POLICY_ROUTES } from "@/content/legal/policy-meta";
 import { COMMERCIAL_EVENTS, trackCommercialEvent } from "@/lib/analytics/commercial-events";
 import {
   getProfessionalAuditPricePresentation,
@@ -101,6 +102,30 @@ export function ReportUpgradeCta({
         <p className="mt-4 text-sm text-slate-400">
           Payment is securely processed through Stripe Checkout. One-time
           purchase — not a subscription.
+        </p>
+        <p className="mt-2 max-w-2xl text-xs leading-6 text-slate-400">
+          By purchasing, you agree to the{" "}
+          <Link
+            href={POLICY_ROUTES.terms}
+            className="text-cyan-200 underline underline-offset-2 hover:text-white"
+          >
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link
+            href={POLICY_ROUTES.refund}
+            className="text-cyan-200 underline underline-offset-2 hover:text-white"
+          >
+            Refund Policy
+          </Link>
+          . See our{" "}
+          <Link
+            href={POLICY_ROUTES.privacy}
+            className="text-cyan-200 underline underline-offset-2 hover:text-white"
+          >
+            Privacy Policy
+          </Link>
+          .
         </p>
         {children ? <div className="mt-8">{children}</div> : null}
       </div>

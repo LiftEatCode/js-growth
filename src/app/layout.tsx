@@ -52,6 +52,7 @@ export default function RootLayout({
     getOrganizationSchema(),
     getWebsiteSchema(),
   ];
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
 
   return (
     <html
@@ -74,9 +75,7 @@ export default function RootLayout({
 
           <SiteFooter />
         </div>
-        <GoogleAnalytics
-          gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
-        />
+        {gaMeasurementId ? <GoogleAnalytics gaId={gaMeasurementId} /> : null}
       </body>
     </html>
   );
