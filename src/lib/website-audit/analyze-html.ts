@@ -5,6 +5,7 @@ import {
 
 import type {
   AuditPageData,
+  AuditPerformanceDocumentContext,
 } from "./types";
 import {
   buildCanonicalData,
@@ -25,6 +26,7 @@ import {
   parseJsonLdDocuments,
 } from "./json-ld";
 import { extractLocalData } from "./local-extract";
+import { extractPerformanceData } from "./performance-extract";
 
 function getTrimmedAttribute(
   $: CheerioAPI,
@@ -145,6 +147,7 @@ export type AnalyzedHtmlPage = Omit<
 export function analyzeHtml(
   html: string,
   finalUrl: string,
+  document?: AuditPerformanceDocumentContext,
 ): AnalyzedHtmlPage {
   const $ =
     load(html);
@@ -251,6 +254,13 @@ export function analyzeHtml(
       conversion,
     });
 
+  const performance = extractPerformanceData(
+    $,
+    pageUrl,
+    html,
+    document,
+  );
+
   const hasPhoneNumber =
     conversion.phone.visiblePhonePresent ||
     conversion.phone.telLinkCount > 0;
@@ -273,6 +283,7 @@ export function analyzeHtml(
     images,
     conversion,
     local,
+    performance,
 
     h1Count:
       headings.h1Count,

@@ -24,6 +24,13 @@ export interface FetchedPublicResource {
   statusCode: number;
   contentType: string | null;
   xRobotsTag: string | null;
+  contentEncoding: string | null;
+  cacheControl: string | null;
+  expires: string | null;
+  etag: string | null;
+  lastModified: string | null;
+  advertisedContentLength: number | null;
+  responseDurationMs: number;
   body: string;
 }
 
@@ -362,6 +369,7 @@ export async function fetchPublicHttpResource(
   }
 
   const visitedUrls = new Set<string>();
+  const startedAt = Date.now();
 
   try {
     for (
@@ -450,12 +458,25 @@ export async function fetchPublicHttpResource(
 
       const contentType = response.headers.get("content-type");
       const xRobotsTag = response.headers.get("x-robots-tag");
+      const contentEncoding = response.headers.get("content-encoding");
+      const cacheControl = response.headers.get("cache-control");
+      const expires = response.headers.get("expires");
+      const etag = response.headers.get("etag");
+      const lastModified = response.headers.get("last-modified");
       const declaredLength = Number(
         response.headers.get("content-length"),
       );
       const contentLength = Number.isFinite(declaredLength)
         ? declaredLength
         : null;
+      const headerFields = {
+        contentEncoding,
+        cacheControl,
+        expires,
+        etag,
+        lastModified,
+        advertisedContentLength: contentLength,
+      };
       const readBody = shouldReadBody({
         statusCode: response.status,
         contentType,
@@ -473,6 +494,8 @@ export async function fetchPublicHttpResource(
             statusCode: response.status,
             contentType,
             xRobotsTag,
+            ...headerFields,
+            responseDurationMs: Math.max(0, Date.now() - startedAt),
             body: "",
           },
         };
@@ -509,6 +532,8 @@ export async function fetchPublicHttpResource(
           statusCode: response.status,
           contentType,
           xRobotsTag,
+          ...headerFields,
+          responseDurationMs: Math.max(0, Date.now() - startedAt),
           body,
         },
       };

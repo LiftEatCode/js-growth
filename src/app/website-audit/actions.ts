@@ -51,6 +51,19 @@ export async function auditWebsite(
     } = analyzeHtml(
       fetchResult.data.html,
       fetchResult.data.finalUrl,
+      {
+        advertisedContentLength:
+          fetchResult.data.advertisedContentLength,
+        contentEncoding:
+          fetchResult.data.contentEncoding,
+        cacheControl:
+          fetchResult.data.cacheControl,
+        expires: fetchResult.data.expires,
+        etag: fetchResult.data.etag,
+        lastModified: fetchResult.data.lastModified,
+        documentFetchDurationMs:
+          fetchResult.data.documentFetchDurationMs,
+      },
     );
 
     const pageData: AuditPageData = {

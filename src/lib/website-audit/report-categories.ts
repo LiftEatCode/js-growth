@@ -57,7 +57,7 @@ export const REPORT_CATEGORY_CONFIG: Record<
     label: "Performance",
     shortLabel: "Performance",
     description:
-      "Observable page-weight and performance-related signals from the scan.",
+      "Observable page-weight, script, image, and resource-reference signals from the HTML scan — not measured Core Web Vitals.",
     displayOrder: 6,
   },
   accessibility: {

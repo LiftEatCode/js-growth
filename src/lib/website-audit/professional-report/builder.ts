@@ -146,7 +146,7 @@ import type {
         return `Local search readiness is currently ${healthLabel}. This directly affects the site's ability to compete for nearby customers.`;
   
       case "performance":
-        return `Website performance is currently ${healthLabel}. Speed and responsiveness influence user experience, engagement, and search performance.`;
+        return `Website performance signals are currently ${healthLabel}. This category reviews observable HTML, script, image, and resource-reference risks — not measured Core Web Vitals.`;
     }
   }
   

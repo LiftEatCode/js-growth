@@ -133,13 +133,13 @@ import type {
         id: "performance",
   
         title:
-          "Improve Website Speed",
+          "Reduce Unneeded Page Weight",
   
         description:
-          "Performance issues may reduce user engagement.",
+          "Observable loading risks such as extra scripts, images, or third-party tools may be slowing the first impression.",
   
         businessValue:
-          "Faster websites generally improve user experience and conversion rates.",
+          "Lighter pages are usually easier to use on phones and slower connections, which can help more visitors stay long enough to take the next step.",
   
         priority: "medium",
   

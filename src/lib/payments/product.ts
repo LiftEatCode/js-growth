@@ -60,6 +60,6 @@ export const AUDIT_CATEGORY_OVERVIEW = [
   {
     title: "Performance",
     description:
-      "Reviews observable page-weight and speed-related signals that can affect first impressions.",
+      "Reviews observable page-weight, script, image, and loading signals from the HTML scan. It does not measure Lighthouse or Core Web Vitals.",
   },
 ] as const;

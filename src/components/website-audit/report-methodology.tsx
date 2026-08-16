@@ -23,7 +23,7 @@ export function ReportMethodology({ view }: ReportMethodologyProps) {
         />
         <InfoPanel
           title="Limits of this scan"
-          description="The audit does not replace analytics, review every page on the site, or include Google Business Profile and advertising data. Some recommendations still need business context before you implement them."
+          description="The audit does not replace analytics, review every page on the site, or include Google Business Profile and advertising data. Performance findings come from the HTML document and resource references, not from Lighthouse or Core Web Vitals (LCP, CLS, INP). Some recommendations still need business context before you implement them."
         />
       </div>
     </ReportSection>

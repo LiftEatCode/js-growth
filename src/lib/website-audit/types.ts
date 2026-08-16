@@ -724,6 +724,161 @@ export interface AuditLocalData {
   pageType: AuditLocalPageType;
 }
 
+export type AuditPerformanceRiskLevel = "low" | "moderate" | "high";
+
+export type AuditResourceOriginKind =
+  | "same-origin"
+  | "related-host"
+  | "external";
+
+export type AuditImageFormat =
+  | "avif"
+  | "webp"
+  | "jpeg"
+  | "png"
+  | "gif"
+  | "svg"
+  | "other";
+
+export type AuditKnownEmbedKind =
+  | "google-maps"
+  | "youtube"
+  | "vimeo"
+  | "other";
+
+export type AuditKnownScriptKind =
+  | "google-analytics"
+  | "google-tag-manager"
+  | "meta"
+  | "hotjar"
+  | "hubspot"
+  | "intercom"
+  | "google-fonts"
+  | "advertising"
+  | "chat"
+  | "other";
+
+export interface AuditPerformanceDocumentContext {
+  advertisedContentLength: number | null;
+  contentEncoding: string | null;
+  cacheControl: string | null;
+  expires: string | null;
+  etag: string | null;
+  lastModified: string | null;
+  documentFetchDurationMs: number | null;
+}
+
+export interface AuditPerformanceScriptSummary {
+  total: number;
+  external: number;
+  inline: number;
+  async: number;
+  defer: number;
+  module: number;
+  jsonLd: number;
+  blockingHeadCandidates: number;
+  duplicateExternalSources: number;
+  inlineBytes: number;
+  thirdPartyScriptCount: number;
+  thirdPartyScriptOriginCount: number;
+  thirdPartyScriptOrigins: string[];
+  knownScriptKinds: AuditKnownScriptKind[];
+  truncated: boolean;
+}
+
+export interface AuditPerformanceStylesheetSummary {
+  total: number;
+  external: number;
+  inlineStyleTags: number;
+  blockingCandidates: number;
+  duplicateExternalSources: number;
+  inlineBytes: number;
+  truncated: boolean;
+}
+
+export interface AuditPerformanceImageSummary {
+  total: number;
+  lazy: number;
+  eager: number;
+  unspecifiedLoading: number;
+  missingDimensions: number;
+  modernRaster: number;
+  legacyRaster: number;
+  svg: number;
+  truncated: boolean;
+}
+
+export interface AuditPerformanceIframeSummary {
+  total: number;
+  uniqueOrigins: number;
+  youtube: number;
+  maps: number;
+  vimeo: number;
+  exampleOrigins: string[];
+  truncated: boolean;
+}
+
+export interface AuditPerformanceVideoSummary {
+  total: number;
+  autoplay: number;
+  preloadAuto: number;
+  preloadNone: number;
+  withPoster: number;
+  truncated: boolean;
+}
+
+export interface AuditPerformanceHintSummary {
+  preconnectOrigins: string[];
+  dnsPrefetchOrigins: string[];
+  preloadCount: number;
+  preloadFontCount: number;
+  preloadImageCount: number;
+  preloadStyleCount: number;
+  preloadScriptCount: number;
+  modulepreloadCount: number;
+  truncated: boolean;
+}
+
+export interface AuditPerformanceFontSummary {
+  googleFontsStylesheet: boolean;
+  fileCount: number;
+  woff2Count: number;
+  legacyFormatCount: number;
+  preloadFontCount: number;
+  truncated: boolean;
+}
+
+export interface AuditPerformanceOriginSummary {
+  uniqueExternalOriginCount: number;
+  uniqueExternalOrigins: string[];
+  referencedResourceCount: number;
+}
+
+/**
+ * Static performance intelligence from the fetched HTML document.
+ * This is not a Lighthouse / Core Web Vitals measurement.
+ * Older stored audits omit this object.
+ */
+export interface AuditPerformanceData {
+  htmlBytes: number;
+  htmlByteSource: "utf8-body";
+  advertisedContentLength: number | null;
+  compressed: boolean | null;
+  contentEncoding: string | null;
+  cacheControl: string | null;
+  documentFetchDurationMs: number | null;
+  optimizationRisk: AuditPerformanceRiskLevel;
+  scripts: AuditPerformanceScriptSummary;
+  stylesheets: AuditPerformanceStylesheetSummary;
+  images: AuditPerformanceImageSummary;
+  iframes: AuditPerformanceIframeSummary;
+  videos: AuditPerformanceVideoSummary;
+  hints: AuditPerformanceHintSummary;
+  fonts: AuditPerformanceFontSummary;
+  origins: AuditPerformanceOriginSummary;
+  truncated: boolean;
+}
+
 export interface AuditCanonicalData {
   rawValues: string[];
 
@@ -765,6 +920,7 @@ export interface AuditPageData {
   images?: AuditImageData;
   conversion?: AuditConversionData;
   local?: AuditLocalData;
+  performance?: AuditPerformanceData;
 
   h1Count: number;
   h1Values: string[];

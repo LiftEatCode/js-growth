@@ -19,6 +19,13 @@ export interface FetchedWebsitePage {
   xRobotsTag: string | null;
   html: string;
   fetchedAt: string;
+  contentEncoding: string | null;
+  cacheControl: string | null;
+  expires: string | null;
+  etag: string | null;
+  lastModified: string | null;
+  advertisedContentLength: number | null;
+  documentFetchDurationMs: number | null;
 }
 
 export type FetchWebsiteResult =
@@ -137,6 +144,13 @@ export async function fetchWebsitePage(
       xRobotsTag: result.data.xRobotsTag,
       html: result.data.body,
       fetchedAt: new Date().toISOString(),
+      contentEncoding: result.data.contentEncoding,
+      cacheControl: result.data.cacheControl,
+      expires: result.data.expires,
+      etag: result.data.etag,
+      lastModified: result.data.lastModified,
+      advertisedContentLength: result.data.advertisedContentLength,
+      documentFetchDurationMs: result.data.responseDurationMs,
     },
   };
 }

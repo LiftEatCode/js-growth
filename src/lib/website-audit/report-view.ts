@@ -317,6 +317,7 @@ function isShortTermFinding(finding: AuditFinding): boolean {
     finding.category === "content" ||
     finding.category === "cro" ||
     finding.category === "local" ||
+    finding.category === "performance" ||
     finding.difficulty === "easy" ||
     finding.quickWin
   );

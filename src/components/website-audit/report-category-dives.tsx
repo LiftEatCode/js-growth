@@ -1,6 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 
 import { FindingCard } from "@/components/website-audit/finding-card";
+import { ReportPerformanceEvidence } from "@/components/website-audit/report-performance-evidence";
 import { StatBadge } from "@/components/website-audit/report-ui";
 import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
 import { compareActionableFindings } from "@/lib/website-audit/report-view";
@@ -61,6 +62,13 @@ export function ReportCategoryDives({
           </div>
 
           <div className="space-y-5 p-6 sm:p-8">
+            {item.category === "performance" &&
+            view.capabilities.showTechnicalEvidence &&
+            view.report.pageData.performance ? (
+              <ReportPerformanceEvidence
+                performance={view.report.pageData.performance}
+              />
+            ) : null}
             {item.positiveFindings.length > 0 ? (
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
