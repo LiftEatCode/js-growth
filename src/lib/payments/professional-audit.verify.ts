@@ -1,5 +1,6 @@
 import {
   buildProfessionalCheckoutSessionParams,
+  canReuseOpenCheckoutSession,
   inspectProfessionalAuditSession,
   isReportId,
   shouldFulfillStripeEvent,
@@ -106,6 +107,32 @@ assert(
 assert(
   !shouldFulfillStripeEvent("customer.created"),
   "unsupported events are ignored",
+);
+
+assert(
+  canReuseOpenCheckoutSession({
+    status: "open",
+    url: "https://checkout.stripe.com/c/pay/cs_test_123",
+  }),
+  "open checkout with a URL can be reused",
+);
+assert(
+  !canReuseOpenCheckoutSession({ status: "open", url: null }),
+  "open checkout without a URL is not reused",
+);
+assert(
+  !canReuseOpenCheckoutSession({
+    status: "expired",
+    url: "https://checkout.stripe.com/c/pay/cs_test_expired",
+  }),
+  "expired checkout is not reused",
+);
+assert(
+  !canReuseOpenCheckoutSession({
+    status: "complete",
+    url: "https://checkout.stripe.com/c/pay/cs_test_complete",
+  }),
+  "completed checkout is not reused",
 );
 
 const webhookSecret = "whsec_test_secret";

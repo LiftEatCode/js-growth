@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { siteConfig } from "@/config/site";
 import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
 import { getResendClient } from "@/lib/email/resend";
 import { prisma } from "@/lib/prisma";
@@ -17,6 +18,14 @@ import {
   generateAuditReportPdf,
 } from "@/lib/website-audit/pdf/generate-audit-report-pdf";
 import { auditReportRepository } from "@/lib/website-audit/storage";
+
+function publicReportUrl(reportId: string): string {
+  const base = (
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() || siteConfig.url
+  ).replace(/\/+$/, "");
+
+  return `${base}/report/${reportId}`;
+}
 
 export interface CaptureLeadResult {
   success: boolean;
@@ -191,6 +200,9 @@ export async function captureAuditLead(
         highImpactFindings:
           report.audit.summary
             .highImpactFindings,
+        includesProfessionalPdf:
+          canAttachProfessionalPdf,
+        reportUrl: publicReportUrl(reportId),
       };
 
       const attachments: Array<{
@@ -229,7 +241,9 @@ export async function captureAuditLead(
             undefined,
 
           subject:
-            `Your Website Growth Report for ${report.hostname}`,
+            canAttachProfessionalPdf
+              ? `Your Professional Website Growth Report for ${report.hostname}`
+              : `Your free Website Growth Report for ${report.hostname}`,
 
           text:
             buildCustomerReportText(

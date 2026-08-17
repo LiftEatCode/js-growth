@@ -16,6 +16,7 @@ import {
   getReportTier,
   type ReportCapabilities,
 } from "./report-config";
+import { sanitizeFreeGrowthReportView } from "./report-free-payload";
 import type {
   AuditCategory,
   AuditCategoryScore,
@@ -589,7 +590,7 @@ export function buildGrowthReportViewModel(
   const priorityLimit = capabilities.maxPriorityFindings ?? 5;
   const quickWinLimit = capabilities.maxQuickWins ?? 5;
 
-  return {
+  const view: GrowthReportViewModel = {
     report,
     tier,
     capabilities,
@@ -606,6 +607,8 @@ export function buildGrowthReportViewModel(
       : { phases: [] },
     estimatedEffortLabel: summary.estimatedEffortLabel,
   };
+
+  return sanitizeFreeGrowthReportView(view);
 }
 
 export {

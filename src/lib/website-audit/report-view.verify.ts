@@ -15,6 +15,7 @@ import {
   getReportCapabilities,
   buildGrowthReportViewModel,
 } from "./report-view";
+import { listNonEmptyFieldValues } from "./report-free-payload";
 import { normalizeAuditReport } from "./report-compat";
 import type {
   AuditCategoryScore,
@@ -141,6 +142,19 @@ const mixedFindings: AuditFinding[] = [
     status: "pass",
     priority: "low",
     scoreImpact: 5,
+  }),
+  finding({
+    id: "gated-detail",
+    title: "A lower-priority metadata detail",
+    description: "GATED_FINDING_DESCRIPTION",
+    recommendation: "GATED_RECOMMENDATION",
+    category: "seo",
+    status: "warning",
+    priority: "low",
+    businessImpact: "low",
+    difficulty: "hard",
+    scoreImpact: 1,
+    estimatedFixMinutes: 90,
   }),
 ];
 
@@ -411,6 +425,36 @@ assert(freeView.tier === "free", "public maps to free");
 assert(freeView.topPriorities.length === 3, "free shows 3 priorities");
 assert(freeView.actionPlan.phases.length === 0, "free does not expose action plan");
 assert(freeView.capabilities.showUpgradeCta, "free upgrade visible");
+assert(
+  freeView.topPriorities.every((item) => Boolean(item.description)),
+  "free priorities keep descriptions",
+);
+assert(
+  freeView.quickWins.every((item) => Boolean(item.description)),
+  "free quick wins keep descriptions",
+);
+assert(
+  listNonEmptyFieldValues(freeView, "recommendation").length === 0,
+  "free view omits recommendation content",
+);
+assert(
+  freeView.report.findings.some(
+    (item) => !item.description && !("recommendation" in item),
+  ),
+  "free view redacts non-surfaced finding details",
+);
+assert(
+  !JSON.stringify(freeView).includes("GATED_FINDING_DESCRIPTION"),
+  "free view omits gated finding descriptions",
+);
+assert(
+  !JSON.stringify(freeView).includes("GATED_RECOMMENDATION"),
+  "free view omits gated recommendations",
+);
+assert(
+  !JSON.stringify(freeView.report.pageData.title).includes("Example"),
+  "free view redacts technical page evidence",
+);
 
 const paidPublicView = buildGrowthReportViewModel(weightedResult, "public", {
   professionallyUnlocked: true,
@@ -421,12 +465,20 @@ assert(
   paidPublicView.capabilities.showUpgradeCta === false,
   "paid public hides upgrade",
 );
+assert(
+  listNonEmptyFieldValues(paidPublicView, "recommendation").length > 0,
+  "professional public view keeps recommendations",
+);
 
 const proView = buildGrowthReportViewModel(weightedResult, "consultation");
 assert(proView.tier === "professional", "consultation maps to professional");
 assert(proView.capabilities.showActionPlan, "professional action plan");
 assert(proView.actionPlan.phases.length > 0, "professional has phases");
 assert(proView.topPriorities.length >= 3, "professional has full priorities");
+assert(
+  JSON.stringify(proView).includes("GATED_RECOMMENDATION"),
+  "professional view keeps gated recommendations",
+);
 
 console.log("report view verification passed");
 process.exit(0);

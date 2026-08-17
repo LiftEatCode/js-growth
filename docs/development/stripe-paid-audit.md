@@ -108,6 +108,18 @@ Internal `consultation` and `client` reports remain Professional without payment
 
 Refunds are not automated in V1. The `REFUNDED` status exists for later use and does not currently revoke access.
 
+## Duplicate Unlock clicks
+
+A paid/entitled report never starts another Checkout Session. `createProfessionalAuditCheckout` returns `already-unlocked` when a `ReportPurchase` with `status = PAID` exists, or when the report is already Professional by mode (`consultation` / `client`).
+
+For an unpaid public report, V1 reuses the latest **PENDING** Checkout Session when Stripe still reports `status: open` and a hosted `url` is present. Repeated Unlock clicks then return the same Stripe URL instead of creating another TEST/Live session.
+
+If that stored session is expired, complete, missing a URL, or cannot be retrieved, a new Checkout Session is created and a new PENDING row is stored. Unlock further uses a short client-side submit guard so accidental double-clicks are less likely to fire two form posts.
+
+Webhook fulfillment remains authoritative: entitlement is granted only after a paid Checkout Session inspects as valid, and `upsert` is keyed on `stripeCheckoutSessionId`. Duplicate webhook deliveries for the same session stay idempotent.
+
+Remaining limitation: two Unlock requests that race before the first PENDING row exists, or a retrieve failure that falls through to create, can still produce two open Stripe sessions. V1 does not expire leftover sessions or lock checkout at the database. If a customer somehow pays two open sessions, both webhooks would grant `PAID` rows for the same report without creating a second Professional product.
+
 ## Deferred
 
 - Subscriptions, customer accounts, coupons, receipts, email automation, and refund UI

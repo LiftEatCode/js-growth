@@ -16,6 +16,8 @@ import {
   auditReportRepository,
   createAuditReport,
 } from "@/lib/website-audit/storage";
+import { toClientWebsiteAuditResult } from "@/lib/website-audit/report-free-payload";
+import { buildGrowthReportViewModel } from "@/lib/website-audit/report-view";
 import type {
   AuditPageData,
   WebsiteAuditResponse,
@@ -198,7 +200,10 @@ export async function auditWebsite(
     }
 
     return {
-      ...auditResult,
+      ...toClientWebsiteAuditResult(
+        auditResult,
+        buildGrowthReportViewModel(auditResult, "public"),
+      ),
       reportId: report.id,
     };
   } catch (error) {

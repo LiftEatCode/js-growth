@@ -6,6 +6,8 @@ interface CustomerReportEmailData {
     criticalIssues: number;
     quickWins: number;
     highImpactFindings: number;
+    includesProfessionalPdf?: boolean;
+    reportUrl?: string;
   }
   
   interface InternalLeadData {
@@ -35,31 +37,61 @@ interface CustomerReportEmailData {
   export function buildCustomerReportText(
     data: CustomerReportEmailData,
   ): string {
+    const stats = `
+Website Score: ${data.overallScore}/100
+Growth Opportunity Score: ${data.opportunityScore}/100
+Critical Issues: ${data.criticalIssues}
+High-Impact Findings: ${data.highImpactFindings}
+Quick Wins: ${data.quickWins}
+`.trim();
+
+    if (data.includesProfessionalPdf) {
+      return `
+Hi ${data.firstName},
+
+Your Professional Website Growth Report for ${data.hostname} is ready.
+
+${stats}
+
+Your professional PDF report is attached.
+
+The report includes:
+- An executive website overview
+- Category performance scores
+- Priority findings
+- Recommended actions
+- A practical improvement roadmap
+
+If you would like help reviewing the findings or deciding what to tackle first, reply to this email and JS Solutions can walk through the report with you.
+
+JS Solutions
+Grow your business. We build the systems.
+`.trim();
+    }
+
+    const reportLink = data.reportUrl
+      ? `
+Return to your free report anytime:
+${data.reportUrl}
+`
+      : "";
+
     return `
-  Hi ${data.firstName},
-  
-  Your Website Growth Report for ${data.hostname} is ready.
-  
-  Website Score: ${data.overallScore}/100
-  Growth Opportunity Score: ${data.opportunityScore}/100
-  Critical Issues: ${data.criticalIssues}
-  High-Impact Findings: ${data.highImpactFindings}
-  Quick Wins: ${data.quickWins}
-  
-  Your professional PDF report is attached.
-  
-  The report includes:
-  - An executive website overview
-  - Category performance scores
-  - Priority findings
-  - Recommended actions
-  - A practical improvement roadmap
-  
-  If you would like help reviewing the findings or deciding what to tackle first, reply to this email and JS Solutions can walk through the report with you.
-  
-  JS Solutions
-  Grow your business. We build the systems.
-    `.trim();
+Hi ${data.firstName},
+
+Your free Website Growth Report for ${data.hostname} is ready.
+
+${stats}
+${reportLink}
+This email is a recap of your free report. It does not include the Professional PDF, full recommendations, or the improvement roadmap.
+
+When you are ready, you can unlock the Professional Website Growth Audit from the report page for the complete findings, recommended next steps, and a downloadable PDF.
+
+If you would like help reviewing the free results, reply to this email and JS Solutions can walk through them with you.
+
+JS Solutions
+Grow your business. We build the systems.
+`.trim();
   }
   
   export function buildCustomerReportHtml(
@@ -180,12 +212,30 @@ interface CustomerReportEmailData {
                       color:#475569;
                     "
                   >
-                    Your professional website growth report for
+                    ${
+                      data.includesProfessionalPdf
+                        ? `Your professional website growth report for
                     <strong style="color:#0f172a;">
                       ${escapeHtml(data.hostname)}
                     </strong>
-                    is ready. The PDF is attached to this email.
+                    is ready. The PDF is attached to this email.`
+                        : `Your free website growth report for
+                    <strong style="color:#0f172a;">
+                      ${escapeHtml(data.hostname)}
+                    </strong>
+                    is ready. This is a recap with a saved link — not the Professional PDF.`
+                    }
                   </p>
+                  ${
+                    !data.includesProfessionalPdf && data.reportUrl
+                      ? `<p style="margin:16px 0 0;font-size:16px;line-height:26px;color:#475569;">
+                    Reopen your free report:
+                    <a href="${escapeHtml(data.reportUrl)}" style="color:#2563eb;">
+                      ${escapeHtml(data.reportUrl)}
+                    </a>
+                  </p>`
+                      : ""
+                  }
   
                   <table
                     role="presentation"
@@ -236,26 +286,41 @@ interface CustomerReportEmailData {
                         font-weight:700;
                         letter-spacing:1px;
                         text-transform:uppercase;
-                        color:#2563eb;
-                      "
+                      color:#2563eb;
+                    "
                     >
-                      Inside Your Report
+                      ${data.includesProfessionalPdf ? "Inside Your Report" : "Inside This Recap"}
                     </div>
   
-                    ${buildBenefit(
-                      "Executive overview",
-                      "A clear summary of the website's current condition and strongest opportunities.",
-                    )}
-  
+                    ${
+                      data.includesProfessionalPdf
+                        ? `${buildBenefit(
+                            "Executive overview",
+                            "A clear summary of the website's current condition and strongest opportunities.",
+                          )}
                     ${buildBenefit(
                       "Priority findings",
                       `${data.highImpactFindings} high-impact findings and ${data.quickWins} quick wins were identified.`,
                     )}
-  
                     ${buildBenefit(
                       "Improvement roadmap",
                       "A practical order for addressing the strongest issues first.",
+                    )}`
+                        : `${buildBenefit(
+                            "Saved report link",
+                            data.reportUrl
+                              ? "Reopen your free Website Growth Score, top priorities, and quick wins anytime."
+                              : "Your free report recap stays available from the original report page.",
+                          )}
+                    ${buildBenefit(
+                      "What this free report includes",
+                      `${data.highImpactFindings} high-impact findings and ${data.quickWins} quick wins were identified in this scan.`,
                     )}
+                    ${buildBenefit(
+                      "Professional report when you are ready",
+                      "Unlock the Professional audit for full recommendations, an improvement roadmap, and a downloadable PDF.",
+                    )}`
+                    }
                   </div>
   
                   <p

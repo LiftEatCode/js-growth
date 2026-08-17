@@ -115,7 +115,10 @@ export function AuditResults({
       ) : null}
 
       {view.capabilities.showUpgradeCta ? (
-        <ReportUpgradeCta view={view} reportId={reportId} />
+        <ReportUpgradeCta
+          showUpgradeCta={view.capabilities.showUpgradeCta}
+          reportId={reportId}
+        />
       ) : null}
 
       <ReportActionPlan view={view} />
@@ -137,25 +140,25 @@ export function AuditResults({
               <DetailCard
                 icon={ListTree}
                 label="Headings"
-                value={`${result.pageData.h1Count} H1 · ${result.pageData.h2Count} H2 · ${result.pageData.h3Count} H3`}
+                value={`${view.report.pageData.h1Count} H1 · ${view.report.pageData.h2Count} H2 · ${view.report.pageData.h3Count} H3`}
               />
               <DetailCard
                 icon={ImageIcon}
                 label="Images"
-                value={`${result.pageData.images?.total ?? result.pageData.imageCount} total · ${result.pageData.images?.missingAltAttribute ?? result.pageData.imagesWithoutAlt} missing alt`}
+                value={`${view.report.pageData.images?.total ?? view.report.pageData.imageCount} total · ${view.report.pageData.images?.missingAltAttribute ?? view.report.pageData.imagesWithoutAlt} missing alt`}
               />
               <DetailCard
                 icon={Link2}
                 label="Links"
-                value={`${result.pageData.internalLinkCount} internal · ${result.pageData.externalLinkCount} external`}
+                value={`${view.report.pageData.internalLinkCount} internal · ${view.report.pageData.externalLinkCount} external`}
               />
               <DetailCard
                 icon={FileCode2}
                 label="Structured data"
                 value={
-                  result.pageData.structuredDataTypes.length > 0
-                    ? result.pageData.structuredDataTypes.join(", ")
-                    : result.pageData.hasStructuredData
+                  view.report.pageData.structuredDataTypes.length > 0
+                    ? view.report.pageData.structuredDataTypes.join(", ")
+                    : view.report.pageData.hasStructuredData
                       ? "Detected"
                       : "Not detected"
                 }
@@ -164,7 +167,7 @@ export function AuditResults({
                 icon={Globe2}
                 label="Title"
                 value={
-                  getAuditTitleText(result.pageData.title) ??
+                  getAuditTitleText(view.report.pageData.title) ??
                   "No title detected"
                 }
               />
@@ -172,7 +175,7 @@ export function AuditResults({
                 icon={FileCode2}
                 label="Meta description"
                 value={
-                  getAuditMetaDescriptionText(result.pageData.metaDescription) ??
+                  getAuditMetaDescriptionText(view.report.pageData.metaDescription) ??
                   "No meta description detected"
                 }
               />
@@ -180,7 +183,7 @@ export function AuditResults({
                 icon={Link2}
                 label="Canonical URL"
                 value={
-                  getAuditCanonicalUrl(result.pageData) ??
+                  getAuditCanonicalUrl(view.report.pageData) ??
                   "No canonical URL detected"
                 }
               />
@@ -188,7 +191,7 @@ export function AuditResults({
                 icon={MapPin}
                 label="Local signals"
                 value={
-                  result.pageData.hasLocalBusinessSignals
+                  view.report.pageData.hasLocalBusinessSignals
                     ? "Detected"
                     : "Not detected"
                 }
@@ -228,7 +231,9 @@ export function AuditResults({
         </div>
       ) : null}
 
-      <ReportImplementationCta view={view} />
+      <ReportImplementationCta
+        showImplementationCta={view.capabilities.showImplementationCta}
+      />
     </div>
   );
 }

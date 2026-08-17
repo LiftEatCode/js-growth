@@ -75,6 +75,13 @@ export function inspectProfessionalAuditSession(
   return { ok: true, reportId };
 }
 
+export function canReuseOpenCheckoutSession(session: {
+  status?: string | null;
+  url?: string | null;
+}): boolean {
+  return session.status === "open" && Boolean(session.url);
+}
+
 export function getStripeObjectId(
   value: string | { id?: string | null } | null | undefined,
 ): string | null {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
@@ -11,12 +12,15 @@ import {
   PROFESSIONAL_AUDIT_PRODUCT_NAME,
 } from "@/lib/payments/product";
 import { FREE_AI_CAPABILITY_COPY } from "@/lib/website-audit/ai-interpretation/copy";
-import type { GrowthReportViewModel } from "@/lib/website-audit/report-view";
 
-interface ReportCtasProps {
-  view: GrowthReportViewModel;
+interface ReportUpgradeCtaProps {
+  showUpgradeCta: boolean;
   reportId?: string;
   children?: React.ReactNode;
+}
+
+interface ReportImplementationCtaProps {
+  showImplementationCta: boolean;
 }
 
 const PROFESSIONAL_BENEFITS = [
@@ -32,11 +36,13 @@ const PROFESSIONAL_BENEFITS = [
 ];
 
 export function ReportUpgradeCta({
-  view,
+  showUpgradeCta,
   reportId,
   children,
-}: ReportCtasProps) {
-  if (!view.capabilities.showUpgradeCta) {
+}: ReportUpgradeCtaProps) {
+  const [checkoutStarted, setCheckoutStarted] = useState(false);
+
+  if (!showUpgradeCta) {
     return null;
   }
 
@@ -82,14 +88,25 @@ export function ReportUpgradeCta({
             <form
               action={`/api/reports/${reportId}/checkout`}
               method="post"
-              onSubmit={() => {
+              onSubmit={(event) => {
+                if (checkoutStarted) {
+                  event.preventDefault();
+                  return;
+                }
+
+                setCheckoutStarted(true);
                 trackCommercialEvent(
                   COMMERCIAL_EVENTS.professionalCheckoutStarted,
                   { report_id: reportId },
                 );
               }}
             >
-              <Button size="lg" type="submit" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                type="submit"
+                className="w-full sm:w-auto"
+                disabled={checkoutStarted}
+              >
                 Unlock Full Report
                 <ArrowRight aria-hidden="true" className="size-4" />
               </Button>
@@ -139,8 +156,10 @@ export function ReportUpgradeCta({
   );
 }
 
-export function ReportImplementationCta({ view }: ReportCtasProps) {
-  if (!view.capabilities.showImplementationCta) {
+export function ReportImplementationCta({
+  showImplementationCta,
+}: ReportImplementationCtaProps) {
+  if (!showImplementationCta) {
     return null;
   }
 

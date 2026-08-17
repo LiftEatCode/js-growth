@@ -15,6 +15,10 @@ const PRIVATE_IPV4_PATTERNS = [
   /^172\.(1[6-9]|2\d|3[01])\./,
 ];
 
+const EXPLICIT_SCHEME_PATTERN = /^[a-z][a-z0-9+.-]*:/i;
+
+const CUSTOMER_URL_ERROR = "Enter a valid public website URL.";
+
 function isPrivateHostname(hostname: string): boolean {
   const normalizedHostname = hostname.toLowerCase().replace(/\.$/, "");
 
@@ -27,58 +31,135 @@ function isPrivateHostname(hostname: string): boolean {
   );
 }
 
-function normalizeUrl(value: string): string {
-  const trimmedValue = value.trim();
+function tryParseUrl(value: string): URL | null {
+  try {
+    return new URL(value);
+  } catch {
+    return null;
+  }
+}
+
+function hasExplicitScheme(value: string): boolean {
+  return EXPLICIT_SCHEME_PATTERN.test(value);
+}
+
+function isHttpOrHttpsScheme(value: string): boolean {
+  return /^https?:$/i.test(value);
+}
+
+export type PublicWebsiteUrlParseResult =
+  | {
+      success: true;
+      url: string;
+    }
+  | {
+      success: false;
+      error: string;
+    };
+
+export function interpretPublicWebsiteUrl(
+  input: unknown,
+): PublicWebsiteUrlParseResult {
+  if (typeof input !== "string") {
+    return {
+      success: false,
+      error: "Enter a website URL.",
+    };
+  }
+
+  const trimmedValue = input.trim();
 
   if (!trimmedValue) {
-    return trimmedValue;
+    return {
+      success: false,
+      error: "Enter a website URL.",
+    };
   }
 
-  if (/^https?:\/\//i.test(trimmedValue)) {
-    return trimmedValue;
+  if (trimmedValue.length > 2_048) {
+    return {
+      success: false,
+      error: "The URL is too long.",
+    };
   }
 
-  return `https://${trimmedValue}`;
+  if (hasExplicitScheme(trimmedValue)) {
+    const scheme = trimmedValue.match(EXPLICIT_SCHEME_PATTERN)?.[0] ?? "";
+
+    if (!/^https?:$/i.test(scheme)) {
+      return {
+        success: false,
+        error: "Only HTTP and HTTPS URLs are supported.",
+      };
+    }
+  }
+
+  const candidate = hasExplicitScheme(trimmedValue)
+    ? trimmedValue
+    : `https://${trimmedValue}`;
+  const url = tryParseUrl(candidate);
+
+  if (!url || !url.hostname) {
+    return {
+      success: false,
+      error: "Enter a valid website URL.",
+    };
+  }
+
+  if (!isHttpOrHttpsScheme(url.protocol)) {
+    return {
+      success: false,
+      error: "Only HTTP and HTTPS URLs are supported.",
+    };
+  }
+
+  if (url.username || url.password) {
+    return {
+      success: false,
+      error: "URLs containing credentials are not supported.",
+    };
+  }
+
+  if (isPrivateHostname(url.hostname)) {
+    return {
+      success: false,
+      error: "Private and local network addresses are not supported.",
+    };
+  }
+
+  url.hash = "";
+  return {
+    success: true,
+    url: url.toString(),
+  };
 }
 
 export const publicHttpUrlSchema = z
   .string()
-  .trim()
-  .min(1, "Enter a website URL.")
-  .max(2_048, "The URL is too long.")
-  .transform(normalizeUrl)
-  .pipe(
-    z
-      .string()
-      .url("Enter a valid website URL.")
-      .refine((value) => {
-        const url = new URL(value);
+  .superRefine((value, ctx) => {
+    const parsed = interpretPublicWebsiteUrl(value);
 
-        return url.protocol === "http:" || url.protocol === "https:";
-      }, "Only HTTP and HTTPS URLs are supported.")
-      .refine((value) => {
-        const url = new URL(value);
-
-        return !url.username && !url.password;
-      }, "URLs containing credentials are not supported.")
-      .refine((value) => {
-        const url = new URL(value);
-
-        return !isPrivateHostname(url.hostname);
-      }, "Private and local network addresses are not supported."),
-  )
-  .transform((url) => {
-    const parsedUrl = new URL(url);
-    parsedUrl.hash = "";
-    return parsedUrl.toString();
+    if (!parsed.success) {
+      ctx.addIssue({
+        code: "custom",
+        message: parsed.error,
+      });
+    }
+  })
+  .transform((value) => {
+    const parsed = interpretPublicWebsiteUrl(value);
+    return parsed.success ? parsed.url : value;
   });
 
-export const websiteAuditInputSchema = z
-  .object({
-    url: publicHttpUrlSchema,
-  });
+export const websiteAuditInputSchema = z.object({
+  url: publicHttpUrlSchema,
+});
 
 export type WebsiteAuditInput = z.infer<typeof websiteAuditInputSchema>;
+
+function firstIssueMessage(error: z.ZodError): string {
+  return error.issues[0]?.message ?? CUSTOMER_URL_ERROR;
+}
 
 export function parseWebsiteAuditInput(input: unknown):
   | {
@@ -89,21 +170,26 @@ export function parseWebsiteAuditInput(input: unknown):
       success: false;
       error: string;
     } {
-  const result = websiteAuditInputSchema.safeParse(input);
+  try {
+    const result = websiteAuditInputSchema.safeParse(input);
 
-  if (!result.success) {
+    if (!result.success) {
+      return {
+        success: false,
+        error: firstIssueMessage(result.error),
+      };
+    }
+
+    return {
+      success: true,
+      data: result.data,
+    };
+  } catch {
     return {
       success: false,
-      error:
-        result.error.issues[0]?.message ??
-        "Enter a valid public website URL.",
+      error: CUSTOMER_URL_ERROR,
     };
   }
-
-  return {
-    success: true,
-    data: result.data,
-  };
 }
 
 export function parsePublicWebsiteUrl(input: unknown):
@@ -115,19 +201,12 @@ export function parsePublicWebsiteUrl(input: unknown):
       success: false;
       error: string;
     } {
-  const result = publicHttpUrlSchema.safeParse(input);
-
-  if (!result.success) {
+  try {
+    return interpretPublicWebsiteUrl(input);
+  } catch {
     return {
       success: false,
-      error:
-        result.error.issues[0]?.message ??
-        "Enter a valid public website URL.",
+      error: CUSTOMER_URL_ERROR,
     };
   }
-
-  return {
-    success: true,
-    url: result.data,
-  };
 }

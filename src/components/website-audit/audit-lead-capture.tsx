@@ -19,6 +19,7 @@ import {
   Button,
   Input,
 } from "@/components/ui";
+import { getAuditLeadCaptureCopy } from "@/lib/website-audit/email/lead-capture-copy";
 
 interface AuditLeadCaptureProps {
   reportId: string;
@@ -31,6 +32,7 @@ export function AuditLeadCapture({
   hostname,
   canDownloadPdf = false,
 }: AuditLeadCaptureProps) {
+  const copy = getAuditLeadCaptureCopy(canDownloadPdf);
   const [
     isPending,
     startTransition,
@@ -183,39 +185,30 @@ export function AuditLeadCapture({
               className="size-3.5"
             />
 
-            Professional Growth Report
+            {copy.eyebrow}
           </div>
 
           <h2
             id="lead-capture-heading"
             className="mt-5 max-w-2xl font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl"
           >
-            Keep the full report for{" "}
+            {copy.headingPrefix}{" "}
             {hostname}.
           </h2>
 
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-            Get a professional PDF you can save, share internally, and use when planning the next round of website improvements.
+            {copy.description}
           </p>
 
           <div className="mt-8 space-y-4">
-            <ReportBenefit
-              icon={LockKeyhole}
-              title="Complete audit findings"
-              description="Keep the full website analysis and identified growth opportunities in one report."
-            />
-
-            <ReportBenefit
-              icon={FileText}
-              title="Strategy and roadmap"
-              description="Use the prioritized findings and improvement roadmap for planning and internal discussion."
-            />
-
-            <ReportBenefit
-              icon={Mail}
-              title="Delivered by email"
-              description="Receive the professional report directly in your inbox with a downloadable PDF copy."
-            />
+            {copy.benefits.map((benefit, index) => (
+              <ReportBenefit
+                key={benefit.title}
+                icon={[LockKeyhole, FileText, Mail][index] ?? FileText}
+                title={benefit.title}
+                description={benefit.description}
+              />
+            ))}
           </div>
 
           <div className="mt-8 flex items-center gap-2 border-t border-white/10 pt-6 text-xs text-slate-400">
@@ -224,7 +217,7 @@ export function AuditLeadCapture({
               className="size-4 text-cyan-300"
             />
 
-            Your information is used to deliver the requested report and follow up about your website strategy.
+            {copy.privacyNote}
           </div>
         </div>
 
@@ -353,7 +346,7 @@ export function AuditLeadCapture({
                     className="size-4 animate-spin"
                   />
 
-                  Preparing Report…
+                  {copy.pendingLabel}
                 </>
               ) : (
                 <>
@@ -362,7 +355,7 @@ export function AuditLeadCapture({
                     className="size-4"
                   />
 
-                  Email My Professional Report
+                  {copy.buttonLabel}
                 </>
               )}
             </Button>

@@ -4,6 +4,7 @@ import { Prisma, PurchaseStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import {
   buildProfessionalCheckoutSessionParams,
+  canReuseOpenCheckoutSession,
   getStripeObjectId,
   inspectProfessionalAuditSession,
   isReportId,
@@ -99,6 +100,40 @@ export async function createProfessionalAuditCheckout(
 
   try {
     const stripe = getStripe();
+    const pendingPurchase = await prisma.reportPurchase.findFirst({
+      where: {
+        reportId,
+        status: PurchaseStatus.PENDING,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (pendingPurchase?.stripeCheckoutSessionId) {
+      try {
+        const existing = await stripe.checkout.sessions.retrieve(
+          pendingPurchase.stripeCheckoutSessionId,
+        );
+
+        if (canReuseOpenCheckoutSession(existing) && existing.url) {
+          logPaymentEvent("checkout session reused", {
+            reportId,
+            sessionId: existing.id,
+          });
+
+          return {
+            status: "checkout",
+            url: existing.url,
+            sessionId: existing.id,
+          };
+        }
+      } catch (error) {
+        console.error("[payments] checkout session retrieve failed", {
+          reportId,
+          error: error instanceof Error ? error.message : "unknown",
+        });
+      }
+    }
+
     const params = buildProfessionalCheckoutSessionParams({
       reportId,
       priceId: getProfessionalAuditPriceId(),
