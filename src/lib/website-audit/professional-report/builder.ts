@@ -153,7 +153,13 @@ import type {
   function getCategoryInsights(
     audit: WebsiteAuditResult,
   ): ProfessionalReportCategoryInsight[] {
-    return audit.categoryScores.map(
+    return audit.categoryScores
+      .filter(
+        (categoryScore) =>
+          categoryScore.maxScore > 0 &&
+          categoryScore.applicable !== false,
+      )
+      .map(
       (categoryScore) => {
         const health =
           getHealthFromScore(

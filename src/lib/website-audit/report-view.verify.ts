@@ -1,3 +1,8 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { getAuditGrade } from "./grading";
 import {
   getActionPlan,
   getCategoryScorecard,
@@ -22,6 +27,8 @@ function assert(condition: unknown, message: string): void {
     throw new Error(message);
   }
 }
+
+const here = dirname(fileURLToPath(import.meta.url));
 
 function finding(
   partial: Partial<AuditFinding> & Pick<AuditFinding, "id" | "title">,
@@ -48,6 +55,32 @@ assert(getScoreBand(64).id === "needs-improvement", "score band 64");
 assert(getScoreBand(50).id === "significant-opportunities", "score band 50");
 assert(getScoreBand(12).id === "high-priority", "score band 12");
 assert(getScoreBand(Number.NaN).id === "high-priority", "NaN score band");
+
+assert(getScoreBand(59).id === "significant-opportunities", "59 stays opportunities");
+assert(getScoreBand(60).id === "needs-improvement", "60 enters needs improvement");
+assert(getScoreBand(69).id === "needs-improvement", "69 stays needs improvement");
+assert(getScoreBand(70).id === "good-foundation", "70 enters good foundation");
+assert(getScoreBand(79).id === "good-foundation", "79 stays good foundation");
+assert(getScoreBand(80).id === "strong", "80 enters strong");
+assert(getScoreBand(89).id === "strong", "89 stays strong");
+assert(getScoreBand(90).id === "excellent", "90 enters excellent");
+
+assert(getAuditGrade(78).letter === "C+", "78 remains C+");
+assert(getAuditGrade(78).label === getScoreBand(78).label, "78 grade label matches band");
+assert(getAuditGrade(78).label === "Good foundation", "78 descriptive label is Good foundation");
+assert(getAuditGrade(81).letter === "B-", "81 remains B-");
+assert(getAuditGrade(81).label === getScoreBand(81).label, "81 grade label matches band");
+assert(getAuditGrade(81).label === "Strong", "81 descriptive label is Strong");
+
+const pdfSource = readFileSync(
+  join(here, "../../components/website-audit/pdf/audit-report-pdf.tsx"),
+  "utf8",
+);
+assert(!pdfSource.includes("Traffic Potential"), "PDF omits Traffic Potential label");
+assert(
+  !pdfSource.includes("trafficGainPercent"),
+  "PDF does not render modeled traffic ranges",
+);
 
 const categoryScores: AuditCategoryScore[] = [
   { category: "technical", label: "Technical", score: 18, maxScore: 20 },
@@ -123,6 +156,24 @@ assert(
 const scorecard = getCategoryScorecard(categoryScores, mixedFindings);
 assert(getStrongestCategory(scorecard)?.category === "technical", "strongest technical");
 assert(getWeakestCategory(scorecard)?.category === "cro", "weakest conversion");
+
+const notApplicableScorecard = getCategoryScorecard(
+  [
+    ...categoryScores,
+    {
+      category: "accessibility",
+      label: "Accessibility",
+      score: 0,
+      maxScore: 0,
+      applicable: false,
+    },
+  ],
+  mixedFindings,
+);
+assert(
+  !notApplicableScorecard.some((item) => item.category === "accessibility"),
+  "scorecard omits not-applicable categories",
+);
 
 const easyWin = finding({
   id: "phone-link",

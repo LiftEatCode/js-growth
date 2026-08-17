@@ -5,7 +5,10 @@ import { formatBenchmarkLabel } from "./competitive/copy";
 import { classifyGapMagnitude } from "./competitive/gaps";
 import { parseCompetitorInputs } from "./competitive/input";
 import { median } from "./competitive/median";
-import { emptyCompetitiveProfile } from "./competitive/profile";
+import {
+  emptyCompetitiveProfile,
+  pageHasCompetitiveIndexabilityIssue,
+} from "./competitive/profile";
 import type { CompetitiveSiteProfile } from "./competitive/types";
 import { getCompetitiveVisibility } from "./competitive/visibility";
 import { getReportCapabilities } from "./report-config";
@@ -345,6 +348,30 @@ async function main(): Promise<void> {
   assert(formatBenchmarkLabel(1) === "Compared competitor", "single competitor label");
   assert(formatBenchmarkLabel(3) === "Competitor median", "median label");
   assert(
+    pageHasCompetitiveIndexabilityIssue({
+      indexable: true,
+      canonicalUrl: null,
+      canonicalSameOrigin: false,
+    }) === false,
+    "missing canonical without noindex is not an indexability failure",
+  );
+  assert(
+    pageHasCompetitiveIndexabilityIssue({
+      indexable: false,
+      canonicalUrl: null,
+      canonicalSameOrigin: false,
+    }) === true,
+    "noindex still counts as an indexability issue",
+  );
+  assert(
+    pageHasCompetitiveIndexabilityIssue({
+      indexable: true,
+      canonicalUrl: "https://other.test/",
+      canonicalSameOrigin: false,
+    }) === true,
+    "off-site canonical still counts as an indexability issue",
+  );
+  assert(
     getCompetitiveVisibility({} as never, getReportCapabilities("professional")) ===
       "hidden",
     "invalid stored competitive data stays hidden",
@@ -644,6 +671,10 @@ async function main(): Promise<void> {
   assert(compared.analyzedCount === 1, "mocked rival crawled");
   assert(compared.customer.pages.service >= 3, "customer services classified");
   assert(compared.competitors[0]?.pages.service >= 3, "competitor services classified");
+  assert(
+    compared.customer.search.indexabilityIssuePercent === 0,
+    "submitted site with no canonical and no noindex is not an indexability failure",
+  );
 
   const mixed = await buildCompetitiveIntelligence({
     customerUrl: "https://customer.test/",

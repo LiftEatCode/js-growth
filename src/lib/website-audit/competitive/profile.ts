@@ -42,6 +42,27 @@ function ofTypes(
   return pages.filter((page) => types.includes(page.pageType));
 }
 
+/**
+ * Competitive indexability issues are limited to pages that are noindexed
+ * or that have a canonical pointing to a different origin.
+ *
+ * A missing canonical (`canonicalUrl` empty, historically stored as
+ * `canonicalSameOrigin === false`) is a canonical-quality recommendation,
+ * not equivalent to noindex or an off-site canonical.
+ */
+export function pageHasCompetitiveIndexabilityIssue(
+  page: Pick<
+    AuditSitePageSnapshot,
+    "indexable" | "canonicalUrl" | "canonicalSameOrigin"
+  >,
+): boolean {
+  if (page.indexable === false) {
+    return true;
+  }
+
+  return Boolean(page.canonicalUrl) && page.canonicalSameOrigin === false;
+}
+
 function uniquenessPercent(
   pages: AuditSitePageSnapshot[],
   read: (page: AuditSitePageSnapshot) => string | null,
@@ -264,9 +285,7 @@ export function buildCompetitiveProfile(options: {
   );
   const important = ofTypes(scanned, SITE_IMPORTANT_INDEXABLE_TYPES);
   const indexabilityIssues = important.filter(
-    (page) =>
-      page.indexable === false ||
-      page.canonicalSameOrigin === false,
+    pageHasCompetitiveIndexabilityIssue,
   ).length;
   const serviceWordCounts = services.map((page) => page.wordCount);
   const linkedServices = services.filter(

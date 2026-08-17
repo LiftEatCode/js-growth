@@ -7,6 +7,7 @@ import {
   } from "@react-pdf/renderer";
   
   import { buildExecutiveSummary } from "@/lib/website-audit/executive-summary";
+  import { formatEstimatedEffort } from "@/lib/website-audit/report-view";
   import { getAuditGrade } from "@/lib/website-audit/grading";
   import { buildRoadmap } from "@/lib/website-audit/roadmap";
   import {
@@ -1101,20 +1102,13 @@ import {
   
               <View style={styles.metricCardLast}>
                 <Text style={styles.metricLabel}>
-                  Traffic Potential
+                  Estimated Effort
                 </Text>
   
                 <Text style={styles.metricValue}>
-                  {
-                    audit.opportunity
-                      .trafficGainPercent.minimum
-                  }
-                  %–
-                  {
-                    audit.opportunity
-                      .trafficGainPercent.maximum
-                  }
-                  %
+                  {formatEstimatedEffort(
+                    audit.summary.estimatedFixMinutes,
+                  )}
                 </Text>
               </View>
             </View>
@@ -1131,7 +1125,13 @@ import {
             </Text>
   
             <View style={styles.categoryGrid}>
-              {audit.categoryScores.map(
+              {audit.categoryScores
+                .filter(
+                  (category) =>
+                    category.maxScore > 0 &&
+                    category.applicable !== false,
+                )
+                .map(
                 (category) => {
                   const percentage =
                     getCategoryPercentage(

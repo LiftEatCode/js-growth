@@ -5,7 +5,64 @@ import {
 import {
   CONTENT_THIN_STRONG_THRESHOLD,
   CONTENT_THIN_WARNING_THRESHOLD,
+  THIN_CONTENT_EXTRACTION_GAP_WORDS,
+  THIN_CONTENT_UNRELIABLE_MIN_HTML_BYTES,
+  THIN_CONTENT_UNRELIABLE_MIN_INLINE_SCRIPT_BYTES,
+  THIN_CONTENT_UNRELIABLE_MIN_SCRIPT_COUNT,
 } from "../page-content";
+import type { AuditPageData } from "../types";
+
+/**
+ * Static HTML extraction can undercount visible copy on JS-heavy / website-builder
+ * documents. When those signals are present, a low `mainContentWordCount` is not
+ * reliable evidence of a genuinely thin page, so the high-severity
+ * `thin-content-strong` claim is withheld.
+ *
+ * Signals used (all already collected during analysis):
+ * - large HTML payload vs. few extracted words
+ * - high script count or large inline script bytes
+ * - large gap between body-visible words and extracted main-content words
+ *
+ * Genuinely small static pages do not match these signals, so thin-content
+ * detection still fires for them.
+ */
+export function isMainContentExtractionUnreliable(
+  pageData: Pick<AuditPageData, "content" | "performance">,
+): boolean {
+  const content = pageData.content;
+
+  if (!content) {
+    return false;
+  }
+
+  const extracted = content.mainContentWordCount;
+  const visible = content.totalVisibleWordCount;
+  const htmlBytes = pageData.performance?.htmlBytes ?? 0;
+  const scriptCount = pageData.performance?.scripts.total ?? 0;
+  const inlineScriptBytes = pageData.performance?.scripts.inlineBytes ?? 0;
+
+  if (extracted >= CONTENT_THIN_STRONG_THRESHOLD) {
+    return false;
+  }
+
+  if (visible - extracted >= THIN_CONTENT_EXTRACTION_GAP_WORDS) {
+    return true;
+  }
+
+  if (htmlBytes >= THIN_CONTENT_UNRELIABLE_MIN_HTML_BYTES) {
+    return true;
+  }
+
+  if (scriptCount >= THIN_CONTENT_UNRELIABLE_MIN_SCRIPT_COUNT) {
+    return true;
+  }
+
+  if (inlineScriptBytes >= THIN_CONTENT_UNRELIABLE_MIN_INLINE_SCRIPT_BYTES) {
+    return true;
+  }
+
+  return false;
+}
 
 export const contentDepthRule: AuditRule = {
   id: "content-depth",
@@ -23,8 +80,13 @@ export const contentDepthRule: AuditRule = {
     const source = content.usedMainElement
       ? "main content"
       : "visible page copy";
+    const extractionUnreliable = isMainContentExtractionUnreliable(pageData);
 
     if (wordCount < CONTENT_THIN_STRONG_THRESHOLD) {
+      if (extractionUnreliable) {
+        return [];
+      }
+
       return createFinding({
         id: "thin-content-strong",
         title: "Page has very little visible content",
@@ -43,6 +105,10 @@ export const contentDepthRule: AuditRule = {
     }
 
     if (wordCount < CONTENT_THIN_WARNING_THRESHOLD) {
+      if (extractionUnreliable) {
+        return [];
+      }
+
       return createFinding({
         id: "thin-content",
         title: "Page content looks thin",

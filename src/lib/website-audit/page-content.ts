@@ -8,6 +8,19 @@ import { normalizeWhitespace } from "./page-metadata";
 export const SUBSTANTIAL_PARAGRAPH_WORDS = 30;
 export const CONTENT_THIN_STRONG_THRESHOLD = 100;
 export const CONTENT_THIN_WARNING_THRESHOLD = 200;
+/**
+ * Low extracted word counts are treated as unreliable when the fetched
+ * document is this large. Builder/JS-heavy pages often exceed this while
+ * still showing substantial on-page copy that the static extractor missed.
+ */
+export const THIN_CONTENT_UNRELIABLE_MIN_HTML_BYTES = 80_000;
+export const THIN_CONTENT_UNRELIABLE_MIN_SCRIPT_COUNT = 15;
+export const THIN_CONTENT_UNRELIABLE_MIN_INLINE_SCRIPT_BYTES = 40_000;
+/**
+ * If visible body text exceeds extracted main-content words by this much,
+ * `<main>` (or equivalent) likely excluded most of the customer-facing copy.
+ */
+export const THIN_CONTENT_EXTRACTION_GAP_WORDS = 150;
 export const CONTENT_STRUCTURE_MIN_WORDS = 300;
 export const GENERIC_ANCHOR_MIN_COUNT = 3;
 export const GENERIC_ANCHOR_RATE_THRESHOLD = 0.3;

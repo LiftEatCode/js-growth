@@ -113,6 +113,7 @@ export function normalizeCategoryScores(
         REPORT_CATEGORY_CONFIG[score.category]?.label ?? score.label,
       score: Number.isFinite(value) ? value : 0,
       maxScore: maxScore > 0 ? maxScore : 0,
+      applicable: score.applicable !== false && maxScore > 0,
     });
   }
 

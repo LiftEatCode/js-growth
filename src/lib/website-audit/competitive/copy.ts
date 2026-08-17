@@ -344,16 +344,16 @@ const METRIC_COPY: Record<CompetitiveMetric, MetricCopy> = {
     behindTitle: "More important pages show indexability problems",
     aheadTitle: "Fewer important pages show indexability problems",
     behindDescription: (gap, label) =>
-      `${percentSentence(gap, label, "important scanned pages with noindex or off-site canonical issues")}`,
+      `${percentSentence(gap, label, "important scanned pages with noindex or an off-site canonical")}`,
     aheadDescription: (gap, label) =>
-      `${percentSentence(gap, label, "important scanned pages with noindex or off-site canonical issues")}`,
+      `${percentSentence(gap, label, "important scanned pages with noindex or an off-site canonical")}`,
     behindRecommendation:
-      "Review noindex and canonical tags on service, location, and contact pages so they match the intended search visibility.",
+      "Review noindex tags and off-site canonicals on service, location, and contact pages so they match the intended search visibility. A missing canonical is a separate quality recommendation, not the same as blocking indexing.",
     aheadRecommendation:
       "Keep indexability settings consistent as templates change.",
     opportunityTitle: "Fix indexability on important pages",
     opportunityDescription:
-      "Correct noindex or canonical problems on commercial pages that should be found.",
+      "Correct noindex or off-site canonical problems on commercial pages that should be found. A missing canonical is not treated as a noindex issue.",
     effort: "medium",
     businessImpact: "high",
     priorityFor: (magnitude) => (magnitude === "large" ? "high" : "medium"),

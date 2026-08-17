@@ -67,6 +67,25 @@ function clampScore(
   );
 }
 
+/**
+ * A category with zero applicable findings is not scored.
+ *
+ * Awarding 0 would look like a failed category (e.g. accessibility 0/10
+ * when the page had no `<img>` elements and therefore no image-alt checks).
+ * Awarding a perfect score would invent a pass with no evidence.
+ * Those categories are marked not-applicable (`maxScore` 0) and excluded
+ * from the overall Website Growth Score denominator.
+ */
+export function isCategoryScoreApplicable(
+  score: AuditCategoryScore,
+): boolean {
+  if (score.applicable === false) {
+    return false;
+  }
+
+  return score.maxScore > 0;
+}
+
 function calculateCategoryScores(
   findings: AuditFinding[],
 ): AuditCategoryScore[] {
@@ -101,12 +120,19 @@ function calculateCategoryScores(
     const maxScore =
       CATEGORY_MAX_SCORES[category];
 
+    if (possiblePoints === 0) {
+      return {
+        category,
+        label: CATEGORY_LABELS[category],
+        score: 0,
+        maxScore: 0,
+        applicable: false,
+      };
+    }
+
     const normalizedScore =
-      possiblePoints === 0
-        ? 0
-        : (earnedPoints /
-            possiblePoints) *
-          maxScore;
+      (earnedPoints / possiblePoints) *
+      maxScore;
 
     return {
       category,
@@ -119,6 +145,7 @@ function calculateCategoryScores(
         ),
       ),
       maxScore,
+      applicable: true,
     };
   });
 }
@@ -126,15 +153,19 @@ function calculateCategoryScores(
 function calculateOverallScore(
   categoryScores: AuditCategoryScore[],
 ): number {
+  const applicableScores = categoryScores.filter(
+    isCategoryScoreApplicable,
+  );
+
   const earnedScore =
-    categoryScores.reduce(
+    applicableScores.reduce(
       (total, category) =>
         total + category.score,
       0,
     );
 
   const maximumScore =
-    categoryScores.reduce(
+    applicableScores.reduce(
       (total, category) =>
         total + category.maxScore,
       0,

@@ -1,85 +1,64 @@
+import { getScoreBand } from "./score-bands";
+
 export interface AuditGrade {
-    letter: string;
-    label: string;
-    color: string;
+  letter: string;
+  label: string;
+  color: string;
+}
+
+function getAuditLetter(score: number): {
+  letter: string;
+  color: string;
+} {
+  if (score >= 97) {
+    return { letter: "A+", color: "emerald" };
   }
-  
-  export function getAuditGrade(
-    score: number,
-  ): AuditGrade {
-    if (score >= 97)
-      return {
-        letter: "A+",
-        label: "Exceptional",
-        color: "emerald",
-      };
-  
-    if (score >= 93)
-      return {
-        letter: "A",
-        label: "Excellent",
-        color: "emerald",
-      };
-  
-    if (score >= 90)
-      return {
-        letter: "A-",
-        label: "Very Strong",
-        color: "emerald",
-      };
-  
-    if (score >= 87)
-      return {
-        letter: "B+",
-        label: "Strong",
-        color: "blue",
-      };
-  
-    if (score >= 83)
-      return {
-        letter: "B",
-        label: "Good",
-        color: "blue",
-      };
-  
-    if (score >= 80)
-      return {
-        letter: "B-",
-        label: "Above Average",
-        color: "blue",
-      };
-  
-    if (score >= 77)
-      return {
-        letter: "C+",
-        label: "Needs Improvement",
-        color: "amber",
-      };
-  
-    if (score >= 73)
-      return {
-        letter: "C",
-        label: "Needs Work",
-        color: "amber",
-      };
-  
-    if (score >= 70)
-      return {
-        letter: "C-",
-        label: "Needs Attention",
-        color: "amber",
-      };
-  
-    if (score >= 60)
-      return {
-        letter: "D",
-        label: "Poor",
-        color: "red",
-      };
-  
-    return {
-      letter: "F",
-      label: "Critical",
-      color: "red",
-    };
+
+  if (score >= 93) {
+    return { letter: "A", color: "emerald" };
   }
+
+  if (score >= 90) {
+    return { letter: "A-", color: "emerald" };
+  }
+
+  if (score >= 87) {
+    return { letter: "B+", color: "blue" };
+  }
+
+  if (score >= 83) {
+    return { letter: "B", color: "blue" };
+  }
+
+  if (score >= 80) {
+    return { letter: "B-", color: "blue" };
+  }
+
+  if (score >= 77) {
+    return { letter: "C+", color: "amber" };
+  }
+
+  if (score >= 73) {
+    return { letter: "C", color: "amber" };
+  }
+
+  if (score >= 70) {
+    return { letter: "C-", color: "amber" };
+  }
+
+  if (score >= 60) {
+    return { letter: "D", color: "red" };
+  }
+
+  return { letter: "F", color: "red" };
+}
+
+export function getAuditGrade(score: number): AuditGrade {
+  const { letter, color } = getAuditLetter(score);
+
+  return {
+    letter,
+    label: getScoreBand(score).label,
+    color,
+  };
+}

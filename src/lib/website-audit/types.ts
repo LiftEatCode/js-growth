@@ -129,6 +129,12 @@ export interface AuditCategoryScore {
   label: string;
   score: number;
   maxScore: number;
+  /**
+   * False when the engine had no applicable findings for the category.
+   * Those categories are excluded from the overall score instead of
+   * treating “no evidence” as 0/max. Older stored reports omit this field.
+   */
+  applicable?: boolean;
 }
 
 export interface AuditPageMetadata {
