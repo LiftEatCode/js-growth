@@ -46,13 +46,16 @@ export async function ensureAiInterpretationForEntitledReport(options: {
     });
 
     if (view.status === "unavailable" && isAiConfigured()) {
-      console.error("[ai] interpretation unavailable after entitlement", {
-        reportId: options.reportId,
-        version: "v1",
-        model: getOpenAiAuditModel(),
-        status: view.status,
-        attemptCount: view.attemptCount,
-      });
+      console.error(
+        `[ai] interpretation unavailable after entitlement attempts=${view.attemptCount} model=${getOpenAiAuditModel()}`,
+        {
+          reportId: options.reportId,
+          version: "v1",
+          model: getOpenAiAuditModel(),
+          status: view.status,
+          attemptCount: view.attemptCount,
+        },
+      );
     }
 
     return view;

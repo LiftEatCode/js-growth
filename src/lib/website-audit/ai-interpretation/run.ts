@@ -111,14 +111,19 @@ export async function ensureAiInterpretation(options: {
           : error instanceof Error && "category" in error
             ? String((error as { category?: string }).category)
             : "provider";
+    const message = error instanceof Error ? error.message : String(error);
 
-    console.error("[ai] interpretation failed", {
-      reportId: options.reportId,
-      version: "v1",
-      model: options.model ?? getOpenAiAuditModel(),
-      status: "failed",
-      category,
-    });
+    console.error(
+      `[ai] interpretation failed category=${category} ${message}`,
+      {
+        reportId: options.reportId,
+        version: "v1",
+        model: options.model ?? getOpenAiAuditModel(),
+        status: "failed",
+        category,
+        message,
+      },
+    );
 
     return {
       status: "unavailable",

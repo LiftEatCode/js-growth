@@ -89,7 +89,8 @@ Stripe webhook processing remains fast and authoritative. OpenAI failure **does 
 - Official `openai` SDK, server-only (`src/lib/website-audit/ai-interpretation/openai-provider.ts`).
 - API: `client.responses.create` with structured outputs via `zodTextFormat`.
 - One primary model call per successful paid report (bounded retry after failure).
-- Temperature `0.2`, `max_output_tokens: 3500`.
+- For GPT-4.x models: temperature `0.2`, `max_output_tokens: 3500`.
+- For GPT-5+ / o-series reasoning models: omit `temperature` (the API rejects it), use `reasoning.effort: low`, and `max_output_tokens: 8000`.
 - Timeout wrapped in `withTimeout` (`40_000` ms) in addition to the SDK timeout.
 
 Never prefix `OPENAI_API_KEY` with `NEXT_PUBLIC_`. The browser receives only the validated stored interpretation needed to render.

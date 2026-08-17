@@ -3,6 +3,7 @@ import "server-only";
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 
+import { buildOpenAiInterpretationModelParams } from "./openai-params";
 import { aiInterpretationContentSchema } from "./schema";
 import type {
   InterpretationProvider,
@@ -47,6 +48,10 @@ function categorizeOpenAiError(error: unknown): string {
 
   if (lower.includes("429") || lower.includes("rate limit")) {
     return "rate-limit";
+  }
+
+  if (lower.includes("unsupported parameter")) {
+    return "unsupported-parameter";
   }
 
   if (lower.includes("model") && lower.includes("not")) {
@@ -102,8 +107,7 @@ export function createOpenAiInterpretationProvider(options: {
             model: input.model,
             instructions: input.system,
             input: input.user,
-            temperature: 0.2,
-            max_output_tokens: 3_500,
+            ...buildOpenAiInterpretationModelParams(input.model),
             text: {
               format: zodTextFormat(
                 aiInterpretationContentSchema,
@@ -115,6 +119,17 @@ export function createOpenAiInterpretationProvider(options: {
         );
 
         const text = extractOutputText(response);
+
+        if (!text.trim()) {
+          const incompleteReason = response.incomplete_details?.reason;
+          throw new OpenAiProviderError(
+            "invalid-output",
+            response.status === "incomplete"
+              ? `Model response incomplete (${incompleteReason ?? "unknown"}).`
+              : "Model returned empty output.",
+          );
+        }
+
         let parsed: unknown;
 
         try {
@@ -148,7 +163,7 @@ export function createOpenAiInterpretationProvider(options: {
 
         throw new OpenAiProviderError(
           category,
-          "OpenAI generation failed.",
+          error instanceof Error ? error.message : "OpenAI generation failed.",
         );
       }
     },

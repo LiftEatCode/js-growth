@@ -7,7 +7,6 @@ export {
 } from "./constants";
 export { collectCompetitorRawUrls, parseCompetitorInputs } from "./input";
 export { median } from "./median";
-export { buildCompetitiveIntelligence } from "./crawl-competitor";
 export { compareCompetitiveProfiles, comparisonTableRows } from "./compare";
 export { buildCompetitiveProfile, emptyCompetitiveProfile } from "./profile";
 export {

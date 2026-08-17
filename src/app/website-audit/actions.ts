@@ -2,7 +2,7 @@
 
 import { analyzeHtml } from "@/lib/website-audit/analyze-html";
 import { fetchWebsitePage } from "@/lib/website-audit/audit-url";
-import { buildCompetitiveIntelligence } from "@/lib/website-audit/competitive";
+import { buildCompetitiveIntelligence } from "@/lib/website-audit/competitive/crawl-competitor";
 import {
   collectCompetitorRawUrls,
   parseCompetitorInputs,

@@ -13,6 +13,7 @@ import {
   MAX_AI_SITE_PATTERNS,
   MAX_EXECUTIVE_SUMMARY_CHARS,
 } from "./ai-interpretation/constants";
+import { buildOpenAiInterpretationModelParams } from "./ai-interpretation/openai-params";
 import {
   aiContextContainsNeedle,
   buildAiAuditContext,
@@ -418,6 +419,16 @@ assert(
 );
 assert(validateAiInterpretationContent({ hello: "world" }).ok === false, "malformed rejected");
 assert(validateAiInterpretationContent(validContent()).ok === true, "valid content accepted");
+
+const lunaParams = buildOpenAiInterpretationModelParams("gpt-5.6-luna");
+assert(lunaParams.temperature === undefined, "luna omits temperature");
+assert(lunaParams.reasoning?.effort === "low", "luna uses low reasoning effort");
+assert(lunaParams.max_output_tokens === 8_000, "luna allows reasoning output budget");
+
+const miniParams = buildOpenAiInterpretationModelParams("gpt-4.1-mini");
+assert(miniParams.temperature === 0.2, "gpt-4.1-mini keeps temperature");
+assert(miniParams.reasoning === undefined, "gpt-4.1-mini omits reasoning");
+assert(miniParams.max_output_tokens === 3_500, "gpt-4.1-mini keeps compact output budget");
 
 async function main(): Promise<void> {
 const store = createMemoryAiInterpretationStore();
