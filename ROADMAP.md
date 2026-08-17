@@ -21,6 +21,12 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
+**Active milestone:** Production Launch V1 for the Website Growth Audit.
+
+The marketing website is in production. The Website Growth Audit is implemented and is a **launch candidate**, not a planned project.
+
+---
+
 ## Website
 
 Status: 🟢 Production
@@ -39,6 +45,40 @@ Performance Goals
 
 ---
 
+## Website Growth Audit
+
+Status: 🟡 Launch Candidate
+
+Priority: Critical
+
+This is the current commercial product on `js-growth.com`. It is not backlog, planning, or a future SaaS sketch.
+
+Implemented capabilities:
+
+- **Free Website Growth Audit** — score, category scores, limited top priorities, limited quick wins, methodology, representative multi-page scan summary, competitive teaser when competitor URLs are supplied. No credit card. No OpenAI call.
+- **Professional Website Growth Audit** — full recommendations, 30–90 day action plan, technical evidence, category deep dives, complete findings, site overview and page inventory, Competitive Intelligence, Executive Growth Analysis (AI Interpretation), Professional PDF, implementation CTA.
+- **Stripe one-time paid upgrade and entitlement** — Checkout `mode: "payment"` only. Webhook grants `ReportPurchase.status = PAID`. Access is by report URL; there are no customer accounts.
+- **Technical SEO V2** — crawlability, indexability, robots, sitemap, canonical, structured data, Open Graph, viewport, and site-level indexability/canonical/duplicate-metadata patterns.
+- **On-Page SEO / Content Intelligence** — titles, meta descriptions, headings, title/H1 alignment, content depth and structure, images, and internal links, including multi-page content patterns.
+- **Performance Intelligence** — static HTML/resource signals (document size, scripts, styles, images, third-party hosts, resource hints). Not Lighthouse and not measured Core Web Vitals.
+- **Multi-Page Site Intelligence** — bounded same-site crawl (representative scan, not a complete site inventory). Free and Professional run the same crawl once; payment changes report visibility, not recrawl.
+- **CRO / Conversion Intelligence** — conversion paths, contact CTAs, lead forms, trust signals, and site-level conversion coverage.
+- **Local SEO Intelligence** — NAP, LocalBusiness schema, hours, location/service-area pages, and geographic signals from public HTML. Not Google Business Profile, citations, rankings, or reviews APIs.
+- **Competitive Intelligence** — optional explicit competitor URLs (up to three), bounded competitor scans, median/benchmark comparison. No automatic competitor discovery, SERP data, or traffic estimates.
+- **Professional report and PDF** — entitled `/report/[id]` experience plus gated PDF download.
+- **AI Interpretation V1** — Professional-only OpenAI strategist layer over stored deterministic evidence. Generated after entitlement on first Professional view; persisted and reused. Free audits make zero AI calls.
+- **Internal lead/report management** — session-gated `/reports` workspace with pipeline, follow-ups, lead capture, prospect conversion, and report detail.
+- **Published legal pages** — Privacy Policy (`/privacy`), Terms of Service (`/terms`), and Refund Policy (`/refund-policy`).
+
+Known product constraints that remain true at launch:
+
+- Representative scan, not every URL on the site
+- No rank tracking, GBP data, backlinks, or recurring monitoring
+- No customer login; report UUID URLs
+- Policies are operational drafts and should be reviewed by qualified legal counsel as the business scales
+
+---
+
 ## Documentation
 
 Status: 🟢 Active
@@ -54,14 +94,39 @@ Company Documentation
 Services
 
 - ✅ Website Development
-- 🚧 Local SEO
-- ⏳ AI Automation
-- ⏳ Analytics
-- ⏳ Custom Software
+- ✅ Local SEO playbook
+- 🚧 AI Automation
+- 🚧 Analytics
+- 🚧 Custom Software
 
-Playbooks
+Playbooks and SOPs
 
-- 🚧 In Progress
+- ✅ Client lifecycle
+- ✅ Marketing
+- ✅ Development
+- ✅ Operations files
+- 🚧 Remaining service playbooks and SEO/Support SOP coverage
+
+---
+
+# Active Milestone — Production Launch V1
+
+This is the only current product-launch milestone. It is QA, configuration, and go-live work. It does **not** add new audit product features.
+
+1. Automated verification / build / lint — wire existing `*.verify.ts` checks, `npm run lint`, and `npm run build` into a repeatable gate (no GitHub Actions workflow exists yet).
+2. Real-world audit QA — strong site, weak site, local business, and service-area business through the live UI.
+3. Free-to-Professional funnel QA — landing → Free audit → Free report → upgrade CTA → Checkout → Professional report.
+4. AI interpretation QA — Professional-only generation, persistence/reuse, Free path makes zero OpenAI calls, failure does not block entitlement.
+5. Desktop / mobile / report / PDF visual QA.
+6. Stripe **TEST MODE** end-to-end purchase, including webhook entitlement and later return to the same report URL.
+7. Analytics / logging / observability verification — Google Analytics plus commercial events (`audit_completed`, `professional_checkout_started`, multi-page / competitive / AI events) and server AI logs.
+8. Production environment configuration review — `DATABASE_URL`, Stripe, Resend, `OPENAI_API_KEY`, model, site URL, GA. No test keys in production. Never prefix secrets with `NEXT_PUBLIC_`.
+9. Stripe **LIVE** configuration — live Product/Price, secret key, webhook `https://<domain>/api/stripe/webhook`, live Price ID, matching display price label.
+10. Controlled live transaction — confirm `ReportPurchase.status = PAID`, Stripe receipt, Professional report and PDF access on refresh.
+11. Soft launch — limited real traffic with the Free/Professional funnel.
+12. `website-audit-v1.0` release/tag.
+
+Do not mix Stripe test Price IDs with live keys.
 
 ---
 
@@ -79,6 +144,7 @@ Playbooks
 - ✅ Robots.txt
 - ✅ Analytics
 - ✅ Documentation Structure
+- ✅ Privacy Policy, Terms of Service, Refund Policy
 
 ---
 
@@ -90,11 +156,12 @@ Become the trusted online authority for local business technology.
 
 Current Progress
 
-Website Articles
+Published articles
 
-- ✅ Website Cost
-- 🚧 Replace Your Website
-- ✅ What Is Local SEO?
+- ✅ How much does a small business website cost
+- ✅ Why most small business websites don't generate leads
+- ✅ Why local businesses need more than a website
+- ✅ What is Local SEO
 
 Upcoming Articles
 
@@ -147,19 +214,19 @@ Stretch Goal
 
 Priority: ⭐⭐⭐⭐⭐
 
-Website Audit Tool
+Website Growth Audit
 
 Status
 
-Planning
+Launch Candidate — see Production Launch V1
 
 ---
 
-Local SEO Audit
+Local SEO Audit (standalone GBP / citation / ranking product)
 
 Status
 
-Planning
+Planning — distinct from Local SEO Intelligence already shipping inside the Website Growth Audit
 
 ---
 
@@ -189,47 +256,39 @@ Planning
 
 # Phase 4 — Business Systems
 
-CRM
+Implemented for the audit product
 
-Proposal Generator
+- Internal reports dashboard (`/reports`)
+- Lead pipeline, follow-ups, notes, and prospect conversion
+- Internal login (session-gated, no public customer accounts)
 
-Client Portal
+Still planning (company-wide systems, not built as products)
 
-Client Dashboard
-
-Monthly Reports
-
-Automated Reporting
-
-Billing
-
-Project Tracking
-
-Knowledge Base
-
-Internal AI Assistant
-
-Status
-
-Planning
+- Full CRM
+- Proposal Generator
+- Client Portal
+- Client Dashboard
+- Monthly Reports
+- Automated Reporting
+- Billing beyond one-time Professional Audit Checkout
+- Project Tracking
+- Knowledge Base
+- Internal AI Assistant
 
 ---
 
 # Phase 5 — Products
 
-Future SaaS Products
+The first customer-facing product is the Website Growth Audit (launch candidate).
 
-Website Audit Platform
+Later SaaS / product expansion (not the current milestone)
 
-SEO Dashboard
-
-Business Analytics
-
-Marketing Dashboard
-
-Automation Platform
-
-Client Portal
+- Website Audit Platform (multi-tenant / monitoring / historical scores)
+- SEO Dashboard
+- Business Analytics
+- Marketing Dashboard
+- Automation Platform
+- Client Portal
 
 ---
 
@@ -242,12 +301,14 @@ Current
 - Sitemap
 - Robots
 - Metadata
+- Organization and WebSite schema
+- BlogPosting schema
+- Breadcrumb schema on blog posts
 
 Next
 
 - FAQ Schema
 - LocalBusiness Schema
-- Breadcrumb Schema
 - Review Schema
 
 Future
@@ -280,35 +341,23 @@ Testimonials
 
 # Documentation Goals
 
-Complete
+In place
 
-Company
+- Company documentation
+- Website Development service playbook
+- Local SEO service playbook
+- SOP library (client lifecycle, marketing, development, operations)
+- Playbooks
+- Templates
+- Ideas and development notes for the Website Growth Audit
 
-Services
+Still needed
 
-SEO
-
-Marketing
-
-Development
-
-Sales
-
-Ideas
-
-Still Needed
-
-Operations
-
-Knowledge Base
-
-SOP Library
-
-Checklists
-
-Templates
-
-Business Strategy
+- Complete AI Automation, Analytics, and Custom Software playbooks
+- SEO SOP set
+- Support SOP set
+- Knowledge Base
+- External-facing resource center
 
 ---
 
@@ -332,6 +381,8 @@ Build Authority
 
 Generate Consistent Organic Leads
 
+Complete Production Launch V1 for the Website Growth Audit
+
 ---
 
 ## Year Three
@@ -354,11 +405,11 @@ Internal AI Platform
 
 Priority 1
 
-Finish Documentation
+Complete Production Launch V1
 
 Priority 2
 
-Publish High-Quality Content
+Publish high-quality content
 
 Priority 3
 
@@ -366,17 +417,17 @@ Improve SEO
 
 Priority 4
 
-Develop Lead Magnets
+Finish remaining service documentation
 
 Priority 5
 
-Build Internal Systems
+Build remaining internal systems (CRM, client portal) after launch
 
 ---
 
 # Backlog
 
-Website Audit Tool
+Local SEO Audit (standalone product)
 
 Proposal Generator
 
@@ -405,6 +456,12 @@ Meeting Scheduler
 Invoice Integration
 
 Customer Portal
+
+Pricing Calculator
+
+ROI Calculator
+
+AI Readiness Assessment
 
 ---
 
@@ -470,28 +527,43 @@ Performance
 
 Security
 
+Product
+
+Free audits completed
+
+Professional upgrades
+
+Paid entitlement reliability
+
+AI interpretation successful completions
+
 ---
 
 # Recently Completed
 
-- Production Launch
-- Custom Domain
-- Vercel Deployment
-- Contact Form
-- Technical SEO
-- Blog System
-- Documentation Foundation
-- Company Documentation
+- Marketing website production launch
+- Custom domain
+- Vercel deployment
+- Contact form
+- Technical SEO foundations
+- Blog system (4 published articles)
+- Documentation foundation
+- Company documentation
+- Free and Professional Website Growth Audit
+- Stripe one-time Professional upgrade and entitlement
+- Technical SEO V2, On-Page/Content, Performance, Multi-Page, CRO, Local, and Competitive intelligence layers
+- Professional report and PDF
+- AI Interpretation V1
+- Internal lead/report management
+- Published Privacy Policy, Terms of Service, and Refund Policy
 
 ---
 
 # Next Milestone
 
-Complete all service documentation.
+**Production Launch V1** — complete the twelve go-live steps above, then tag `website-audit-v1.0`.
 
-Begin publishing one exceptional article every week.
-
-Launch the first lead generation tool.
+After that, return to content, SEO, and remaining service documentation. Do not start a new audit product milestone until this one ships.
 
 ---
 
@@ -507,6 +579,6 @@ Build technology that helps businesses grow.
 
 **Status:** Active
 
-**Version:** 1.0
+**Version:** 1.1
 
-**Last Updated:** August 2026
+**Last Updated:** August 17, 2026
