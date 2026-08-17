@@ -14,32 +14,52 @@ export interface ExecutiveSummary {
   estimatedFixMinutes: number;
 }
 
+export function isUsableOverallScore(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+const UNAVAILABLE_OVERVIEW =
+  "The audit identified several opportunities that may improve search visibility, usability, local relevance, and the path from visitor to lead.";
+
 export function buildExecutiveSummary(
   findings: AuditFinding[],
   summary: WebsiteAuditResult["summary"],
-  extras?: {
-    overallScore?: number;
+  extras: {
+    overallScore: number | null | undefined;
     categoryScores?: WebsiteAuditResult["categoryScores"];
   },
 ): ExecutiveSummary {
   const normalizedFindings = normalizeFindings(findings);
+  const strengths = normalizedFindings
+    .filter((finding) => finding.status === "pass")
+    .slice(0, 3)
+    .map((finding) => finding.title);
+  const priorities = getTopPriorities(normalizedFindings, 5).map(
+    (finding) => finding.title,
+  );
+
+  if (!isUsableOverallScore(extras.overallScore)) {
+    return {
+      heading: "Website overview",
+      summary: UNAVAILABLE_OVERVIEW,
+      strengths,
+      priorities,
+      estimatedFixMinutes: summary.estimatedFixMinutes,
+    };
+  }
+
   const view = getExecutiveSummary({
     findings: normalizedFindings,
-    categoryScores: extras?.categoryScores ?? [],
-    overallScore: extras?.overallScore ?? 0,
+    categoryScores: extras.categoryScores ?? [],
+    overallScore: extras.overallScore,
     estimatedFixMinutes: summary.estimatedFixMinutes,
   });
 
   return {
     heading: view.heading,
     summary: view.overview,
-    strengths: normalizedFindings
-      .filter((finding) => finding.status === "pass")
-      .slice(0, 3)
-      .map((finding) => finding.title),
-    priorities: getTopPriorities(normalizedFindings, 5).map(
-      (finding) => finding.title,
-    ),
+    strengths,
+    priorities,
     estimatedFixMinutes: summary.estimatedFixMinutes,
   };
 }

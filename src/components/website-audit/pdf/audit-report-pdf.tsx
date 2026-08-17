@@ -747,6 +747,12 @@ import {
       buildExecutiveSummary(
         audit.findings,
         audit.summary,
+        {
+          overallScore:
+            audit.overallScore,
+          categoryScores:
+            audit.categoryScores,
+        },
       );
   
     const roadmap =
