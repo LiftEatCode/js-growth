@@ -82,6 +82,23 @@ assert(
   !pdfSource.includes("trafficGainPercent"),
   "PDF does not render modeled traffic ranges",
 );
+assert(
+  !pdfSource.includes("audit.opportunity.score"),
+  "PDF does not present a second unexplained opportunity /100 score",
+);
+assert(
+  pdfSource.includes("phase.phaseNumber") &&
+    !pdfSource.includes("phaseIndex + 1"),
+  "PDF roadmap uses the shared phaseNumber instead of a competing index",
+);
+assert(
+  pdfSource.includes("flexBasis: 0") && pdfSource.includes("minWidth: 0"),
+  "PDF roadmap content is constrained so long text can wrap",
+);
+assert(
+  pdfSource.includes("minPresenceAhead") && pdfSource.includes("Evidence:"),
+  "PDF keeps Evidence labels with associated content",
+);
 
 const categoryScores: AuditCategoryScore[] = [
   { category: "technical", label: "Technical", score: 18, maxScore: 20 },

@@ -121,7 +121,7 @@ This is the only current product-launch milestone. It is QA, configuration, and 
 6. Stripe **TEST MODE** end-to-end purchase, including webhook entitlement and later return to the same report URL.
 7. Analytics / logging / observability verification — Google Analytics plus commercial events (`audit_completed`, `professional_checkout_started`, multi-page / competitive / AI events) and server AI logs.
 8. Production environment configuration review — `DATABASE_URL`, Stripe, Resend, `OPENAI_API_KEY`, model, site URL, GA. No test keys in production. Never prefix secrets with `NEXT_PUBLIC_`.
-9. Stripe **LIVE** configuration — live Product/Price, secret key, webhook `https://<domain>/api/stripe/webhook`, live Price ID, matching display price label.
+9. Stripe **LIVE** configuration — live Product/Price, secret key, webhook `https://<domain>/api/stripe/webhook`, live Price ID, matching display price label. Confirm Automatic Tax intent, Product tax code/behavior, and legal nexus/obligations separately (TEST tax is not legal confirmation).
 10. Controlled live transaction — confirm `ReportPurchase.status = PAID`, Stripe receipt, Professional report and PDF access on refresh.
 11. Soft launch — limited real traffic with the Free/Professional funnel.
 12. `website-audit-v1.0` release/tag.

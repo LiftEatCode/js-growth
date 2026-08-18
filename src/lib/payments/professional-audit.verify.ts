@@ -1,14 +1,24 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import Stripe from "stripe";
+
 import {
   buildProfessionalCheckoutSessionParams,
   canReuseOpenCheckoutSession,
   inspectProfessionalAuditSession,
   isReportId,
+  resolvePurchasePaidAt,
   shouldFulfillStripeEvent,
 } from "./checkout-session";
+import {
+  getProfessionalAuditPricePresentation,
+  PROFESSIONAL_AUDIT_TAX_DISCLOSURE,
+} from "./product";
 import { verifyStripeWebhook } from "./webhook";
-import Stripe from "stripe";
 
-function assert(condition: unknown, message: string): void {
+function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
     throw new Error(message);
   }
@@ -45,6 +55,10 @@ assert(
   params.cancel_url ===
     `https://example.com/report/${REPORT_ID}/purchase/cancelled`,
   "cancel url is server-controlled",
+);
+assert(
+  !("automatic_tax" in params),
+  "checkout params do not set Automatic Tax",
 );
 
 const paidSession = {
@@ -156,6 +170,147 @@ const signature = Stripe.webhooks.generateTestHeaderString({
 const valid = verifyStripeWebhook(payload, signature, webhookSecret);
 assert(valid.ok === true, "valid signature verifies");
 assert(valid.ok && valid.event.type === "checkout.session.completed", "event type preserved");
+
+const firstPaidAt = new Date("2026-08-17T00:01:51.804Z");
+const replayNow = new Date("2026-08-17T00:03:59.626Z");
+assert(
+  resolvePurchasePaidAt(null, firstPaidAt).getTime() === firstPaidAt.getTime(),
+  "first PAID transition establishes paidAt",
+);
+assert(
+  resolvePurchasePaidAt(undefined, firstPaidAt).getTime() === firstPaidAt.getTime(),
+  "missing paidAt is treated as first transition",
+);
+assert(
+  resolvePurchasePaidAt(firstPaidAt, replayNow).getTime() === firstPaidAt.getTime(),
+  "replay keeps the original paidAt",
+);
+
+type MemoryPurchase = {
+  stripeCheckoutSessionId: string;
+  reportId: string;
+  status: "PENDING" | "PAID";
+  paidAt: Date | null;
+  stripePaymentIntentId: string | null;
+  amountTotal: number | null;
+  currency: string | null;
+};
+
+function fulfillMemoryPurchase(
+  rows: MemoryPurchase[],
+  session: {
+    id: string;
+    reportId: string;
+    payment_intent: string;
+    amount_total: number;
+    currency: string;
+  },
+  now: Date,
+): MemoryPurchase[] {
+  const existing = rows.find((row) => row.stripeCheckoutSessionId === session.id);
+  const next: MemoryPurchase = {
+    stripeCheckoutSessionId: session.id,
+    reportId: session.reportId,
+    status: "PAID",
+    paidAt: resolvePurchasePaidAt(existing?.paidAt, now),
+    stripePaymentIntentId: session.payment_intent,
+    amountTotal: session.amount_total,
+    currency: session.currency,
+  };
+
+  if (!existing) {
+    return [...rows, next];
+  }
+
+  return rows.map((row) =>
+    row.stripeCheckoutSessionId === session.id ? { ...row, ...next } : row,
+  );
+}
+
+const pendingRow: MemoryPurchase = {
+  stripeCheckoutSessionId: paidSession.id,
+  reportId: REPORT_ID,
+  status: "PENDING",
+  paidAt: null,
+  stripePaymentIntentId: null,
+  amountTotal: null,
+  currency: null,
+};
+const fulfillSession = {
+  id: paidSession.id,
+  reportId: REPORT_ID,
+  payment_intent: "pi_test_123",
+  amount_total: 9900,
+  currency: "usd",
+};
+
+let purchases = fulfillMemoryPurchase([pendingRow], fulfillSession, firstPaidAt);
+assert(purchases.length === 1, "first fulfill does not create a second row");
+assert(purchases[0]?.status === "PAID", "first fulfill marks PAID");
+assert(
+  purchases[0]?.paidAt?.getTime() === firstPaidAt.getTime(),
+  "first fulfill captures paidAt",
+);
+assert(
+  purchases[0]?.stripePaymentIntentId === "pi_test_123",
+  "first fulfill stores payment intent",
+);
+const capturedPaidAt = purchases[0]?.paidAt;
+assert(capturedPaidAt, "paidAt is recorded");
+
+purchases = fulfillMemoryPurchase(purchases, fulfillSession, replayNow);
+assert(purchases.length === 1, "replay keeps exactly one purchase row");
+assert(purchases[0]?.status === "PAID", "replay leaves status PAID");
+assert(
+  purchases[0]?.paidAt?.getTime() === capturedPaidAt.getTime(),
+  "replay leaves paidAt exactly unchanged",
+);
+assert(
+  purchases[0]?.stripePaymentIntentId === "pi_test_123",
+  "replay keeps stripe payment identifiers",
+);
+
+assert(
+  PROFESSIONAL_AUDIT_TAX_DISCLOSURE ===
+    "Applicable taxes may be added at checkout.",
+  "tax disclosure copy is centralized",
+);
+assert(
+  !/\$105(?:\.53)?/.test(PROFESSIONAL_AUDIT_TAX_DISCLOSURE),
+  "tax disclosure does not hardcode a TEST tax amount",
+);
+assert(
+  !/\d+%/.test(PROFESSIONAL_AUDIT_TAX_DISCLOSURE),
+  "tax disclosure does not hardcode a tax rate",
+);
+assert(
+  getProfessionalAuditPricePresentation().endsWith(" one-time"),
+  "display price remains the one-time base price",
+);
+
+const here = dirname(fileURLToPath(import.meta.url));
+const ctaSource = readFileSync(
+  join(here, "../../components/website-audit/report-ctas.tsx"),
+  "utf8",
+);
+const auditPageSource = readFileSync(
+  join(here, "../../app/website-audit/page.tsx"),
+  "utf8",
+);
+assert(
+  ctaSource.includes("PROFESSIONAL_AUDIT_TAX_DISCLOSURE"),
+  "upgrade CTA shows tax disclosure",
+);
+assert(
+  ctaSource.includes("not a subscription"),
+  "upgrade CTA keeps not-a-subscription copy",
+);
+assert(
+  auditPageSource.includes("PROFESSIONAL_AUDIT_TAX_DISCLOSURE"),
+  "audit landing price mentions tax disclosure",
+);
+assert(!ctaSource.includes("$105.53"), "CTA does not mention TEST tax total");
+assert(!auditPageSource.includes("$105.53"), "audit page does not mention TEST tax total");
 
 console.log("professional audit payment verification passed");
 process.exit(0);

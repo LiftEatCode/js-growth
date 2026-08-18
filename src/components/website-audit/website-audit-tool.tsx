@@ -44,14 +44,12 @@ export function WebsiteAuditTool() {
   ): void {
     setResult(auditResult);
     trackCommercialEvent(COMMERCIAL_EVENTS.auditCompleted, {
-      report_id: auditResult.reportId,
       pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
       site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
     });
 
     if (auditResult.siteData) {
       trackCommercialEvent(COMMERCIAL_EVENTS.multiPageAuditCompleted, {
-        report_id: auditResult.reportId,
         pages_discovered: auditResult.siteData.crawl.discoveredCount,
         pages_scanned: auditResult.siteData.crawl.crawledCount,
         truncated: auditResult.siteData.crawl.truncated,

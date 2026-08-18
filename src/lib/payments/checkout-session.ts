@@ -22,6 +22,13 @@ export function shouldFulfillStripeEvent(type: string): boolean {
   return (FULFILLABLE_STRIPE_EVENTS as readonly string[]).includes(type);
 }
 
+export function resolvePurchasePaidAt(
+  existingPaidAt: Date | null | undefined,
+  now: Date,
+): Date {
+  return existingPaidAt ?? now;
+}
+
 export interface InspectableCheckoutSession {
   id: string;
   mode?: string | null;

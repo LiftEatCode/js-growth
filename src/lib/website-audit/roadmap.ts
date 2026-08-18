@@ -2,6 +2,8 @@ import type { AuditFinding } from "./types";
 
 export interface RoadmapPhase {
   id: string;
+  phaseNumber: number;
+  name: string;
   title: string;
   description: string;
   findings: AuditFinding[];
@@ -11,6 +13,13 @@ export interface RoadmapPhase {
     | "high"
     | "medium"
     | "low";
+}
+
+export function formatRoadmapPhaseTitle(
+  phaseNumber: number,
+  name: string,
+): string {
+  return `Phase ${phaseNumber} · ${name}`;
 }
 
 function addFindingToPhase(
@@ -31,7 +40,9 @@ export function buildRoadmap(
 
   const criticalPhase: RoadmapPhase = {
     id: "critical",
-    title: "Phase 1 · Critical Fixes",
+    phaseNumber: 0,
+    name: "Critical Fixes",
+    title: "Critical Fixes",
     description:
       "Resolve the highest-priority issues first to remove the biggest barriers to website performance and growth.",
     priority: "critical",
@@ -41,7 +52,9 @@ export function buildRoadmap(
 
   const searchPhase: RoadmapPhase = {
     id: "search",
-    title: "Phase 2 · Search Optimization",
+    phaseNumber: 0,
+    name: "Search Optimization",
+    title: "Search Optimization",
     description:
       "Strengthen search visibility, technical SEO, and local relevance.",
     priority: "high",
@@ -51,7 +64,9 @@ export function buildRoadmap(
 
   const contentPhase: RoadmapPhase = {
     id: "content",
-    title: "Phase 3 · Content Improvements",
+    phaseNumber: 0,
+    name: "Content Improvements",
+    title: "Content Improvements",
     description:
       "Improve content structure, clarity, relevance, and search usefulness.",
     priority: "medium",
@@ -61,7 +76,9 @@ export function buildRoadmap(
 
   const conversionPhase: RoadmapPhase = {
     id: "conversion",
-    title: "Phase 4 · Conversion Readiness",
+    phaseNumber: 0,
+    name: "Conversion Readiness",
+    title: "Conversion Readiness",
     description:
       "Make it easier for visitors to understand the offer, trust the business, and take the next step.",
     priority: "medium",
@@ -71,7 +88,9 @@ export function buildRoadmap(
 
   const experiencePhase: RoadmapPhase = {
     id: "experience",
-    title: "Phase 5 · Performance & User Experience",
+    phaseNumber: 0,
+    name: "Performance & User Experience",
+    title: "Performance & User Experience",
     description:
       "Improve accessibility, usability, performance, and the overall visitor experience.",
     priority: "low",
@@ -151,10 +170,17 @@ export function buildRoadmap(
       (phase) =>
         phase.findings.length > 0,
     )
-    .map((phase) => ({
-      ...phase,
+    .map((phase, index) => {
+      const phaseNumber = index + 1;
 
-      findings: [...phase.findings].sort(
+      return {
+        ...phase,
+        phaseNumber,
+        title: formatRoadmapPhaseTitle(
+          phaseNumber,
+          phase.name,
+        ),
+        findings: [...phase.findings].sort(
         (a, b) => {
           const priorityOrder = {
             critical: 4,
@@ -199,6 +225,7 @@ export function buildRoadmap(
             a.scoreImpact
           );
         },
-      ),
-    }));
+        ),
+      };
+    });
 }

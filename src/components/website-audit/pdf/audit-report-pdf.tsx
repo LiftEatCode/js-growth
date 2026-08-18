@@ -1,5 +1,6 @@
 import {
     Document,
+    Font,
     Page,
     StyleSheet,
     Text,
@@ -54,6 +55,28 @@ import {
     red: "#dc2626",
     redLight: "#fef2f2",
   };
+
+  const LONG_PDF_TOKEN = 24;
+
+  Font.registerHyphenationCallback((word) => {
+    if (!word || word.length <= LONG_PDF_TOKEN) {
+      return [word];
+    }
+
+    const parts: string[] = [];
+    let remaining = word;
+
+    while (remaining.length > LONG_PDF_TOKEN) {
+      parts.push(remaining.slice(0, LONG_PDF_TOKEN));
+      remaining = remaining.slice(LONG_PDF_TOKEN);
+    }
+
+    if (remaining) {
+      parts.push(remaining);
+    }
+
+    return parts;
+  });
   
   const styles = StyleSheet.create({
     page: {
@@ -135,14 +158,14 @@ import {
     },
   
     coverScorePrimary: {
-      width: "34%",
+      width: "50%",
       paddingRight: 20,
       borderRightWidth: 1,
       borderRightColor: "#334155",
     },
   
     coverScoreSecondary: {
-      width: "33%",
+      width: "50%",
       paddingLeft: 20,
     },
   
@@ -465,15 +488,18 @@ import {
       borderWidth: 1,
       borderColor: COLORS.slate200,
       borderRadius: 8,
-      overflow: "hidden",
     },
   
     roadmapHeader: {
       flexDirection: "row",
+      width: "100%",
+      alignItems: "stretch",
     },
   
     roadmapNumber: {
-      width: 62,
+      width: 54,
+      flexGrow: 0,
+      flexShrink: 0,
       padding: 11,
       backgroundColor: COLORS.brand,
       color: COLORS.white,
@@ -495,6 +521,9 @@ import {
   
     roadmapContent: {
       flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 0,
+      minWidth: 0,
       padding: 11,
       backgroundColor: COLORS.white,
     },
@@ -528,7 +557,7 @@ import {
     roadmapTaskText: {
       marginTop: 3,
       fontSize: 7.5,
-      lineHeight: 1.4,
+      lineHeight: 1.45,
       color: COLORS.slate500,
     },
   
@@ -856,16 +885,6 @@ import {
                   {audit.overallScore}/100
                 </Text>
               </View>
-  
-              <View style={styles.coverScoreSecondary}>
-                <Text style={styles.coverMetricLabel}>
-                  Opportunity
-                </Text>
-  
-                <Text style={styles.coverMetricValue}>
-                  {audit.opportunity.score}/100
-                </Text>
-              </View>
             </View>
           </View>
   
@@ -930,28 +949,53 @@ import {
                 {AI_DISCLOSURE}
               </Text>
               {interpretation.record.content.topPriorities.map((priority) => (
-                <Text
+                <View
                   key={`${priority.rank}-${priority.title}`}
-                  style={styles.sectionDescription}
+                  wrap
                 >
-                  {`Priority ${priority.rank}: ${priority.title}. ${priority.whyItMatters} Evidence: ${priority.evidence}`}
-                </Text>
+                  <Text
+                    minPresenceAhead={22}
+                    style={styles.sectionDescription}
+                  >
+                    {`Priority ${priority.rank}: ${priority.title}. ${priority.whyItMatters}`}
+                  </Text>
+                  {priority.evidence ? (
+                    <Text
+                      minPresenceAhead={36}
+                      style={styles.sectionDescription}
+                    >
+                      {`Evidence: ${priority.evidence}`}
+                    </Text>
+                  ) : null}
+                </View>
               ))}
               <Text style={styles.sectionTitle}>
                 30 / 60 / 90 day strategy
               </Text>
-              {interpretation.record.content.ninetyDayStrategy.first30Days.map((item) => (
-                <Text key={item} style={styles.sectionDescription}>
+            {interpretation.record.content.ninetyDayStrategy.first30Days.map((item) => (
+                <Text
+                  key={item}
+                  minPresenceAhead={20}
+                  style={styles.sectionDescription}
+                >
                   {`First 30 days: ${item}`}
                 </Text>
               ))}
               {interpretation.record.content.ninetyDayStrategy.days31To60.map((item) => (
-                <Text key={item} style={styles.sectionDescription}>
+                <Text
+                  key={item}
+                  minPresenceAhead={20}
+                  style={styles.sectionDescription}
+                >
                   {`Days 31-60: ${item}`}
                 </Text>
               ))}
               {interpretation.record.content.ninetyDayStrategy.days61To90.map((item) => (
-                <Text key={item} style={styles.sectionDescription}>
+                <Text
+                  key={item}
+                  minPresenceAhead={20}
+                  style={styles.sectionDescription}
+                >
                   {`Days 61-90: ${item}`}
                 </Text>
               ))}
@@ -1093,16 +1137,6 @@ import {
                   {formatOpportunityLevel(
                     audit.opportunity.level,
                   )}
-                </Text>
-              </View>
-  
-              <View style={styles.metricCard}>
-                <Text style={styles.metricLabel}>
-                  Opportunity Score
-                </Text>
-  
-                <Text style={styles.metricValue}>
-                  {audit.opportunity.score}/100
                 </Text>
               </View>
   
@@ -1257,8 +1291,10 @@ import {
                     {finding.description}
                   </Text>
   
-                  {finding.recommendation ? (
+                      {finding.recommendation ? (
                     <View
+                      wrap={false}
+                      minPresenceAhead={42}
                       style={
                         styles.findingRecommendation
                       }
@@ -1328,7 +1364,7 @@ import {
           {roadmap
             .slice(0, 5)
             .map(
-              (phase, phaseIndex) => (
+              (phase) => (
                 <View
                   key={phase.id}
                   style={styles.roadmapPhase}
@@ -1350,7 +1386,7 @@ import {
                         }
                       >
                         {String(
-                          phaseIndex + 1,
+                          phase.phaseNumber,
                         ).padStart(
                           2,
                           "0",
@@ -1404,7 +1440,10 @@ import {
               ),
             )}
   
-          <View style={styles.nextStepPanel}>
+          <View
+            wrap={false}
+            style={styles.nextStepPanel}
+          >
             <Text style={styles.nextStepEyebrow}>
               Recommended Next Step
             </Text>

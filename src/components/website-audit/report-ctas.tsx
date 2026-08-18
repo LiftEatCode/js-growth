@@ -10,6 +10,7 @@ import { COMMERCIAL_EVENTS, trackCommercialEvent } from "@/lib/analytics/commerc
 import {
   getProfessionalAuditPricePresentation,
   PROFESSIONAL_AUDIT_PRODUCT_NAME,
+  PROFESSIONAL_AUDIT_TAX_DISCLOSURE,
 } from "@/lib/payments/product";
 import { FREE_AI_CAPABILITY_COPY } from "@/lib/website-audit/ai-interpretation/copy";
 
@@ -72,6 +73,9 @@ export function ReportUpgradeCta({
         <p className="mt-4 text-lg font-semibold text-white">
           {pricePresentation}
         </p>
+        <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-400">
+          {PROFESSIONAL_AUDIT_TAX_DISCLOSURE}
+        </p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {PROFESSIONAL_BENEFITS.map((item) => (
             <li key={item} className="flex items-start gap-2 text-sm text-slate-200">
@@ -97,7 +101,6 @@ export function ReportUpgradeCta({
                 setCheckoutStarted(true);
                 trackCommercialEvent(
                   COMMERCIAL_EVENTS.professionalCheckoutStarted,
-                  { report_id: reportId },
                 );
               }}
             >

@@ -8,6 +8,7 @@ import {
   getStripeObjectId,
   inspectProfessionalAuditSession,
   isReportId,
+  resolvePurchasePaidAt,
   type InspectableCheckoutSession,
 } from "@/lib/payments/checkout-session";
 import {
@@ -221,6 +222,15 @@ export async function fulfillProfessionalAuditCheckout(
   const stripeCustomerId = getStripeObjectId(session.customer);
   const customerEmail =
     session.customer_details?.email ?? session.customer_email ?? null;
+  const existing = await prisma.reportPurchase.findUnique({
+    where: {
+      stripeCheckoutSessionId: session.id,
+    },
+    select: {
+      paidAt: true,
+    },
+  });
+  const paidAt = resolvePurchasePaidAt(existing?.paidAt, new Date());
 
   await prisma.reportPurchase.upsert({
     where: {
@@ -235,7 +245,7 @@ export async function fulfillProfessionalAuditCheckout(
       amountTotal: session.amount_total ?? null,
       currency: session.currency ?? null,
       status: PurchaseStatus.PAID,
-      paidAt: new Date(),
+      paidAt,
     },
     update: {
       reportId: inspection.reportId,
@@ -245,7 +255,7 @@ export async function fulfillProfessionalAuditCheckout(
       amountTotal: session.amount_total ?? null,
       currency: session.currency ?? null,
       status: PurchaseStatus.PAID,
-      paidAt: new Date(),
+      ...(existing?.paidAt ? {} : { paidAt }),
     },
   });
 

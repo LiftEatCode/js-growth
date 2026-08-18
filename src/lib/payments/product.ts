@@ -10,6 +10,9 @@ export const PROFESSIONAL_AUDIT_BILLING_TYPE = "one-time" as const;
 
 export const PROFESSIONAL_AUDIT_BILLING_LABEL = "one-time";
 
+export const PROFESSIONAL_AUDIT_TAX_DISCLOSURE =
+  "Applicable taxes may be added at checkout.";
+
 const DEFAULT_DISPLAY_PRICE_LABEL = "$99";
 
 export function getProfessionalAuditPriceLabel(): string {

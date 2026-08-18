@@ -17,6 +17,7 @@ import {
   FREE_AUDIT_PRODUCT_NAME,
   PROFESSIONAL_AUDIT_PRODUCT_NAME,
   getProfessionalAuditPricePresentation,
+  PROFESSIONAL_AUDIT_TAX_DISCLOSURE,
 } from "@/lib/payments/product";
 
 const title = "Free Website Audit for Small Businesses";
@@ -123,6 +124,9 @@ export default function WebsiteAuditPage() {
               priorities. The professional report adds the complete
               recommendations, action plan, evidence, and PDF —{" "}
               {pricePresentation}.
+            </p>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
+              {PROFESSIONAL_AUDIT_TAX_DISCLOSURE}
             </p>
           </div>
           <AuditTierComparison />

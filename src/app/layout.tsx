@@ -4,7 +4,7 @@ import { Inter, Sora } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 import "./globals.css";
 

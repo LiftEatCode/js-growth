@@ -12,6 +12,8 @@ This is not a subscription. Checkout uses `mode: "payment"` only.
 
 The Stripe Dashboard is the source of truth for the charged amount. The display label must be kept in sync with that Price. The checkout API never accepts a client-supplied amount or Price ID.
 
+Customer-facing upgrade copy presents the base price as **$99 one-time** and discloses: “Applicable taxes may be added at checkout.” The application does not hardcode a tax rate or predicted total, and it does not change Stripe Tax configuration.
+
 ## Required environment variables
 
 | Variable | Browser? | Purpose |
@@ -95,8 +97,11 @@ Production needs all of the following, in **Live** mode:
 - Production `STRIPE_WEBHOOK_SECRET`
 - Production `NEXT_PUBLIC_SITE_URL`
 - Production `NEXT_PUBLIC_PROFESSIONAL_AUDIT_PRICE_LABEL` matching the live Price
+- Confirm whether Stripe Automatic Tax is intentionally enabled for live Checkout
+- Confirm the live Professional Website Growth Audit Product has the appropriate Stripe tax code/tax behavior
+- Confirm business registration, nexus, and tax obligations separately from software configuration
 
-Do not mix test Price IDs with live keys. The app does not switch itself to live mode.
+Do not mix test Price IDs with live keys. The app does not switch itself to live mode. TEST tax calculations do not establish legal tax obligations.
 
 The commercial launch checklist is in `docs/commercial-launch-v1.md`.
 
@@ -116,7 +121,7 @@ For an unpaid public report, V1 reuses the latest **PENDING** Checkout Session w
 
 If that stored session is expired, complete, missing a URL, or cannot be retrieved, a new Checkout Session is created and a new PENDING row is stored. Unlock further uses a short client-side submit guard so accidental double-clicks are less likely to fire two form posts.
 
-Webhook fulfillment remains authoritative: entitlement is granted only after a paid Checkout Session inspects as valid, and `upsert` is keyed on `stripeCheckoutSessionId`. Duplicate webhook deliveries for the same session stay idempotent.
+Webhook fulfillment remains authoritative: entitlement is granted only after a paid Checkout Session inspects as valid, and `upsert` is keyed on `stripeCheckoutSessionId`. Duplicate webhook deliveries for the same session stay idempotent: status remains `PAID`, Stripe identifiers may be backfilled, and the original `paidAt` from the first successful PAID transition is preserved.
 
 Remaining limitation: two Unlock requests that race before the first PENDING row exists, or a retrieve failure that falls through to create, can still produce two open Stripe sessions. V1 does not expire leftover sessions or lock checkout at the database. If a customer somehow pays two open sessions, both webhooks would grant `PAID` rows for the same report without creating a second Professional product.
 

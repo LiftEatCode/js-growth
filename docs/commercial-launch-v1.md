@@ -17,6 +17,8 @@ Default display fallback: `$99`
 
 Presentation: **one-time** (not monthly)
 
+Upgrade surfaces also disclose: “Applicable taxes may be added at checkout.” The application does not hardcode a tax rate or predicted total.
+
 Stripe Price ID (`STRIPE_PROFESSIONAL_AUDIT_PRICE_ID`) remains the charged amount. Keep the display label in sync.
 
 ## Payment type
@@ -61,6 +63,18 @@ Do not mix test Price IDs with live keys.
 13. Verify the receipt in Stripe
 14. Verify Professional report access on refresh / later return
 
+### Tax (before Stripe LIVE)
+
+Do **not** change Stripe Tax configuration in the application. Do **not** assume a TEST tax calculation establishes legal tax obligations.
+
+Before going live, confirm in the Stripe Dashboard and with tax advice as needed:
+
+1. Whether Automatic Tax is intentionally enabled for Professional Website Growth Audit Checkout
+2. Whether the live Product has the appropriate Stripe tax code and tax behavior
+3. Business registration, nexus, and tax-collection obligations — separately from software configuration
+
+Customer-facing copy remains **$99 one-time** as the base price, with: “Applicable taxes may be added at checkout.” The application does not hardcode a tax rate or predicted total.
+
 Local Stripe testing: `docs/development/stripe-paid-audit.md`
 
 ## Policy / legal readiness
@@ -77,7 +91,7 @@ Contact path: `/contact` and published email `jssolutions.tx@gmail.com`
 
 Payments: Stripe Checkout
 
-Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set. No cookie-consent banner is implemented.
+Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set. Report UUIDs are omitted from custom events and redacted from report `page_path` values (`/report/[id]/...`). No cookie-consent banner is implemented.
 
 ## Known limitations
 
