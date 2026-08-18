@@ -79,6 +79,39 @@ Known product constraints that remain true at launch:
 
 ---
 
+## Prospecting Engine V1
+
+Status: 🟡 Sprint 1 — Data Foundation + Manual Prospect Workspace
+
+Priority: Internal acquisition workflow (does not replace Production Launch V1)
+
+This is an **internal JS Solutions** workspace. It is not a customer-facing SaaS.
+
+Product principle: produce **five credible, qualified prospects** per session, not five emails sent.
+
+**Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
+
+Sprint 1 (current):
+
+- Authenticated `/reports/prospecting` campaigns
+- Manual add / edit / skip
+- Duplicate-hostname warnings (not a global unique constraint)
+- Separate from the inbound `/reports` audit and Lead pipeline
+
+Later sprints (not started):
+
+- Legitimate business discovery provider
+- Deterministic Website Growth Audit qualification
+- Public contact discovery and AI outreach drafts
+- Human approval, then Resend send
+- Reply tracking and Prospect → Lead conversion
+
+V1 sending, when built, remains **human-approved**. No autonomous outbound.
+
+See `docs/development/prospecting-engine-v1.md`.
+
+---
+
 ## Documentation
 
 Status: 🟢 Active
@@ -261,6 +294,7 @@ Implemented for the audit product
 - Internal reports dashboard (`/reports`)
 - Lead pipeline, follow-ups, notes, and prospect conversion
 - Internal login (session-gated, no public customer accounts)
+- Prospecting Engine V1 Sprint 1 (`/reports/prospecting`) — campaigns and manual businesses, separate from inbound Leads
 
 Still planning (company-wide systems, not built as products)
 
@@ -423,6 +457,10 @@ Priority 5
 
 Build remaining internal systems (CRM, client portal) after launch
 
+Parallel internal workstream
+
+Prospecting Engine V1 Sprint 1 is in progress under `/reports/prospecting`. Do not start Sprint 2 (discovery APIs) until Sprint 1 is in use.
+
 ---
 
 # Backlog
@@ -581,4 +619,4 @@ Build technology that helps businesses grow.
 
 **Version:** 1.1
 
-**Last Updated:** August 17, 2026
+**Last Updated:** August 18, 2026

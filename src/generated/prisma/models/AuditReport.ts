@@ -51,6 +51,7 @@ export type AuditReportMinAggregateOutputType = {
   website: string | null
   hostname: string | null
   reportMode: string | null
+  source: $Enums.AuditReportSource | null
   overallScore: number | null
   grade: string | null
   criticalIssues: number | null
@@ -70,6 +71,7 @@ export type AuditReportMaxAggregateOutputType = {
   website: string | null
   hostname: string | null
   reportMode: string | null
+  source: $Enums.AuditReportSource | null
   overallScore: number | null
   grade: string | null
   criticalIssues: number | null
@@ -89,6 +91,7 @@ export type AuditReportCountAggregateOutputType = {
   website: number
   hostname: number
   reportMode: number
+  source: number
   overallScore: number
   grade: number
   criticalIssues: number
@@ -130,6 +133,7 @@ export type AuditReportMinAggregateInputType = {
   website?: true
   hostname?: true
   reportMode?: true
+  source?: true
   overallScore?: true
   grade?: true
   criticalIssues?: true
@@ -149,6 +153,7 @@ export type AuditReportMaxAggregateInputType = {
   website?: true
   hostname?: true
   reportMode?: true
+  source?: true
   overallScore?: true
   grade?: true
   criticalIssues?: true
@@ -168,6 +173,7 @@ export type AuditReportCountAggregateInputType = {
   website?: true
   hostname?: true
   reportMode?: true
+  source?: true
   overallScore?: true
   grade?: true
   criticalIssues?: true
@@ -276,6 +282,7 @@ export type AuditReportGroupByOutputType = {
   website: string
   hostname: string
   reportMode: string
+  source: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -320,6 +327,7 @@ export type AuditReportWhereInput = {
   website?: Prisma.StringFilter<"AuditReport"> | string
   hostname?: Prisma.StringFilter<"AuditReport"> | string
   reportMode?: Prisma.StringFilter<"AuditReport"> | string
+  source?: Prisma.EnumAuditReportSourceFilter<"AuditReport"> | $Enums.AuditReportSource
   overallScore?: Prisma.IntFilter<"AuditReport"> | number
   grade?: Prisma.StringFilter<"AuditReport"> | string
   criticalIssues?: Prisma.IntFilter<"AuditReport"> | number
@@ -334,6 +342,7 @@ export type AuditReportWhereInput = {
   aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   purchases?: Prisma.ReportPurchaseListRelationFilter
+  prospects?: Prisma.ProspectListRelationFilter
 }
 
 export type AuditReportOrderByWithRelationInput = {
@@ -343,6 +352,7 @@ export type AuditReportOrderByWithRelationInput = {
   website?: Prisma.SortOrder
   hostname?: Prisma.SortOrder
   reportMode?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   overallScore?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   criticalIssues?: Prisma.SortOrder
@@ -357,6 +367,7 @@ export type AuditReportOrderByWithRelationInput = {
   aiInterpretation?: Prisma.SortOrderInput | Prisma.SortOrder
   lead?: Prisma.LeadOrderByWithRelationInput
   purchases?: Prisma.ReportPurchaseOrderByRelationAggregateInput
+  prospects?: Prisma.ProspectOrderByRelationAggregateInput
 }
 
 export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
@@ -369,6 +380,7 @@ export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
   website?: Prisma.StringFilter<"AuditReport"> | string
   hostname?: Prisma.StringFilter<"AuditReport"> | string
   reportMode?: Prisma.StringFilter<"AuditReport"> | string
+  source?: Prisma.EnumAuditReportSourceFilter<"AuditReport"> | $Enums.AuditReportSource
   overallScore?: Prisma.IntFilter<"AuditReport"> | number
   grade?: Prisma.StringFilter<"AuditReport"> | string
   criticalIssues?: Prisma.IntFilter<"AuditReport"> | number
@@ -383,6 +395,7 @@ export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
   aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   purchases?: Prisma.ReportPurchaseListRelationFilter
+  prospects?: Prisma.ProspectListRelationFilter
 }, "id">
 
 export type AuditReportOrderByWithAggregationInput = {
@@ -392,6 +405,7 @@ export type AuditReportOrderByWithAggregationInput = {
   website?: Prisma.SortOrder
   hostname?: Prisma.SortOrder
   reportMode?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   overallScore?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   criticalIssues?: Prisma.SortOrder
@@ -421,6 +435,7 @@ export type AuditReportScalarWhereWithAggregatesInput = {
   website?: Prisma.StringWithAggregatesFilter<"AuditReport"> | string
   hostname?: Prisma.StringWithAggregatesFilter<"AuditReport"> | string
   reportMode?: Prisma.StringWithAggregatesFilter<"AuditReport"> | string
+  source?: Prisma.EnumAuditReportSourceWithAggregatesFilter<"AuditReport"> | $Enums.AuditReportSource
   overallScore?: Prisma.IntWithAggregatesFilter<"AuditReport"> | number
   grade?: Prisma.StringWithAggregatesFilter<"AuditReport"> | string
   criticalIssues?: Prisma.IntWithAggregatesFilter<"AuditReport"> | number
@@ -442,6 +457,7 @@ export type AuditReportCreateInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -455,6 +471,7 @@ export type AuditReportCreateInput = {
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
+  prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateInput = {
@@ -464,6 +481,7 @@ export type AuditReportUncheckedCreateInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -477,6 +495,7 @@ export type AuditReportUncheckedCreateInput = {
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
+  prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUpdateInput = {
@@ -486,6 +505,7 @@ export type AuditReportUpdateInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -499,6 +519,7 @@ export type AuditReportUpdateInput = {
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
+  prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateInput = {
@@ -508,6 +529,7 @@ export type AuditReportUncheckedUpdateInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -521,6 +543,7 @@ export type AuditReportUncheckedUpdateInput = {
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
+  prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportCreateManyInput = {
@@ -530,6 +553,7 @@ export type AuditReportCreateManyInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -551,6 +575,7 @@ export type AuditReportUpdateManyMutationInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -571,6 +596,7 @@ export type AuditReportUncheckedUpdateManyInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -592,6 +618,7 @@ export type AuditReportCountOrderByAggregateInput = {
   website?: Prisma.SortOrder
   hostname?: Prisma.SortOrder
   reportMode?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   overallScore?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   criticalIssues?: Prisma.SortOrder
@@ -622,6 +649,7 @@ export type AuditReportMaxOrderByAggregateInput = {
   website?: Prisma.SortOrder
   hostname?: Prisma.SortOrder
   reportMode?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   overallScore?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   criticalIssues?: Prisma.SortOrder
@@ -641,6 +669,7 @@ export type AuditReportMinOrderByAggregateInput = {
   website?: Prisma.SortOrder
   hostname?: Prisma.SortOrder
   reportMode?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   overallScore?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   criticalIssues?: Prisma.SortOrder
@@ -677,6 +706,11 @@ export type AuditReportScalarRelationFilter = {
   isNot?: Prisma.AuditReportWhereInput
 }
 
+export type AuditReportNullableScalarRelationFilter = {
+  is?: Prisma.AuditReportWhereInput | null
+  isNot?: Prisma.AuditReportWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -691,6 +725,10 @@ export type IntFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type EnumAuditReportSourceFieldUpdateOperationsInput = {
+  set?: $Enums.AuditReportSource
 }
 
 export type NullableEnumAiInterpretationStatusFieldUpdateOperationsInput = {
@@ -761,6 +799,22 @@ export type AuditReportUpdateOneRequiredWithoutPurchasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AuditReportUpdateToOneWithWhereWithoutPurchasesInput, Prisma.AuditReportUpdateWithoutPurchasesInput>, Prisma.AuditReportUncheckedUpdateWithoutPurchasesInput>
 }
 
+export type AuditReportCreateNestedOneWithoutProspectsInput = {
+  create?: Prisma.XOR<Prisma.AuditReportCreateWithoutProspectsInput, Prisma.AuditReportUncheckedCreateWithoutProspectsInput>
+  connectOrCreate?: Prisma.AuditReportCreateOrConnectWithoutProspectsInput
+  connect?: Prisma.AuditReportWhereUniqueInput
+}
+
+export type AuditReportUpdateOneWithoutProspectsNestedInput = {
+  create?: Prisma.XOR<Prisma.AuditReportCreateWithoutProspectsInput, Prisma.AuditReportUncheckedCreateWithoutProspectsInput>
+  connectOrCreate?: Prisma.AuditReportCreateOrConnectWithoutProspectsInput
+  upsert?: Prisma.AuditReportUpsertWithoutProspectsInput
+  disconnect?: Prisma.AuditReportWhereInput | boolean
+  delete?: Prisma.AuditReportWhereInput | boolean
+  connect?: Prisma.AuditReportWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AuditReportUpdateToOneWithWhereWithoutProspectsInput, Prisma.AuditReportUpdateWithoutProspectsInput>, Prisma.AuditReportUncheckedUpdateWithoutProspectsInput>
+}
+
 export type AuditReportCreateWithoutLeadInput = {
   id: string
   version: number
@@ -768,6 +822,7 @@ export type AuditReportCreateWithoutLeadInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -780,6 +835,7 @@ export type AuditReportCreateWithoutLeadInput = {
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
+  prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutLeadInput = {
@@ -789,6 +845,7 @@ export type AuditReportUncheckedCreateWithoutLeadInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -801,6 +858,7 @@ export type AuditReportUncheckedCreateWithoutLeadInput = {
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
+  prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutLeadInput = {
@@ -839,6 +897,7 @@ export type AuditReportScalarWhereInput = {
   website?: Prisma.StringFilter<"AuditReport"> | string
   hostname?: Prisma.StringFilter<"AuditReport"> | string
   reportMode?: Prisma.StringFilter<"AuditReport"> | string
+  source?: Prisma.EnumAuditReportSourceFilter<"AuditReport"> | $Enums.AuditReportSource
   overallScore?: Prisma.IntFilter<"AuditReport"> | number
   grade?: Prisma.StringFilter<"AuditReport"> | string
   criticalIssues?: Prisma.IntFilter<"AuditReport"> | number
@@ -860,6 +919,7 @@ export type AuditReportCreateWithoutPurchasesInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -872,6 +932,7 @@ export type AuditReportCreateWithoutPurchasesInput = {
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
+  prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutPurchasesInput = {
@@ -881,6 +942,7 @@ export type AuditReportUncheckedCreateWithoutPurchasesInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -893,6 +955,7 @@ export type AuditReportUncheckedCreateWithoutPurchasesInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutPurchasesInput = {
@@ -918,6 +981,7 @@ export type AuditReportUpdateWithoutPurchasesInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -930,6 +994,7 @@ export type AuditReportUpdateWithoutPurchasesInput = {
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
+  prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
@@ -939,6 +1004,7 @@ export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -951,6 +1017,115 @@ export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
+}
+
+export type AuditReportCreateWithoutProspectsInput = {
+  id: string
+  version: number
+  createdAt?: Date | string
+  website: string
+  hostname: string
+  reportMode: string
+  source?: $Enums.AuditReportSource
+  overallScore: number
+  grade: string
+  criticalIssues: number
+  quickWins: number
+  opportunityScore: number
+  audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
+  purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
+}
+
+export type AuditReportUncheckedCreateWithoutProspectsInput = {
+  id: string
+  version: number
+  createdAt?: Date | string
+  website: string
+  hostname: string
+  reportMode: string
+  source?: $Enums.AuditReportSource
+  overallScore: number
+  grade: string
+  criticalIssues: number
+  quickWins: number
+  opportunityScore: number
+  audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  leadId?: string | null
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
+}
+
+export type AuditReportCreateOrConnectWithoutProspectsInput = {
+  where: Prisma.AuditReportWhereUniqueInput
+  create: Prisma.XOR<Prisma.AuditReportCreateWithoutProspectsInput, Prisma.AuditReportUncheckedCreateWithoutProspectsInput>
+}
+
+export type AuditReportUpsertWithoutProspectsInput = {
+  update: Prisma.XOR<Prisma.AuditReportUpdateWithoutProspectsInput, Prisma.AuditReportUncheckedUpdateWithoutProspectsInput>
+  create: Prisma.XOR<Prisma.AuditReportCreateWithoutProspectsInput, Prisma.AuditReportUncheckedCreateWithoutProspectsInput>
+  where?: Prisma.AuditReportWhereInput
+}
+
+export type AuditReportUpdateToOneWithWhereWithoutProspectsInput = {
+  where?: Prisma.AuditReportWhereInput
+  data: Prisma.XOR<Prisma.AuditReportUpdateWithoutProspectsInput, Prisma.AuditReportUncheckedUpdateWithoutProspectsInput>
+}
+
+export type AuditReportUpdateWithoutProspectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  website?: Prisma.StringFieldUpdateOperationsInput | string
+  hostname?: Prisma.StringFieldUpdateOperationsInput | string
+  reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
+  overallScore?: Prisma.IntFieldUpdateOperationsInput | number
+  grade?: Prisma.StringFieldUpdateOperationsInput | string
+  criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
+  quickWins?: Prisma.IntFieldUpdateOperationsInput | number
+  opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
+  audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
+  purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
+}
+
+export type AuditReportUncheckedUpdateWithoutProspectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  website?: Prisma.StringFieldUpdateOperationsInput | string
+  hostname?: Prisma.StringFieldUpdateOperationsInput | string
+  reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
+  overallScore?: Prisma.IntFieldUpdateOperationsInput | number
+  grade?: Prisma.StringFieldUpdateOperationsInput | string
+  criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
+  quickWins?: Prisma.IntFieldUpdateOperationsInput | number
+  opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
+  audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
 }
 
 export type AuditReportCreateManyLeadInput = {
@@ -960,6 +1135,7 @@ export type AuditReportCreateManyLeadInput = {
   website: string
   hostname: string
   reportMode: string
+  source?: $Enums.AuditReportSource
   overallScore: number
   grade: string
   criticalIssues: number
@@ -980,6 +1156,7 @@ export type AuditReportUpdateWithoutLeadInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -992,6 +1169,7 @@ export type AuditReportUpdateWithoutLeadInput = {
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
+  prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutLeadInput = {
@@ -1001,6 +1179,7 @@ export type AuditReportUncheckedUpdateWithoutLeadInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1013,6 +1192,7 @@ export type AuditReportUncheckedUpdateWithoutLeadInput = {
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
+  prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateManyWithoutLeadInput = {
@@ -1022,6 +1202,7 @@ export type AuditReportUncheckedUpdateManyWithoutLeadInput = {
   website?: Prisma.StringFieldUpdateOperationsInput | string
   hostname?: Prisma.StringFieldUpdateOperationsInput | string
   reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
   overallScore?: Prisma.IntFieldUpdateOperationsInput | number
   grade?: Prisma.StringFieldUpdateOperationsInput | string
   criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1042,10 +1223,12 @@ export type AuditReportUncheckedUpdateManyWithoutLeadInput = {
 
 export type AuditReportCountOutputType = {
   purchases: number
+  prospects: number
 }
 
 export type AuditReportCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   purchases?: boolean | AuditReportCountOutputTypeCountPurchasesArgs
+  prospects?: boolean | AuditReportCountOutputTypeCountProspectsArgs
 }
 
 /**
@@ -1065,6 +1248,13 @@ export type AuditReportCountOutputTypeCountPurchasesArgs<ExtArgs extends runtime
   where?: Prisma.ReportPurchaseWhereInput
 }
 
+/**
+ * AuditReportCountOutputType without action
+ */
+export type AuditReportCountOutputTypeCountProspectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProspectWhereInput
+}
+
 
 export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1073,6 +1263,7 @@ export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   website?: boolean
   hostname?: boolean
   reportMode?: boolean
+  source?: boolean
   overallScore?: boolean
   grade?: boolean
   criticalIssues?: boolean
@@ -1087,6 +1278,7 @@ export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   aiInterpretation?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
   purchases?: boolean | Prisma.AuditReport$purchasesArgs<ExtArgs>
+  prospects?: boolean | Prisma.AuditReport$prospectsArgs<ExtArgs>
   _count?: boolean | Prisma.AuditReportCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["auditReport"]>
 
@@ -1097,6 +1289,7 @@ export type AuditReportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   website?: boolean
   hostname?: boolean
   reportMode?: boolean
+  source?: boolean
   overallScore?: boolean
   grade?: boolean
   criticalIssues?: boolean
@@ -1119,6 +1312,7 @@ export type AuditReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   website?: boolean
   hostname?: boolean
   reportMode?: boolean
+  source?: boolean
   overallScore?: boolean
   grade?: boolean
   criticalIssues?: boolean
@@ -1141,6 +1335,7 @@ export type AuditReportSelectScalar = {
   website?: boolean
   hostname?: boolean
   reportMode?: boolean
+  source?: boolean
   overallScore?: boolean
   grade?: boolean
   criticalIssues?: boolean
@@ -1155,10 +1350,11 @@ export type AuditReportSelectScalar = {
   aiInterpretation?: boolean
 }
 
-export type AuditReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "version" | "createdAt" | "website" | "hostname" | "reportMode" | "overallScore" | "grade" | "criticalIssues" | "quickWins" | "opportunityScore" | "audit" | "leadId" | "aiStatus" | "aiAttemptCount" | "aiStartedAt" | "aiGeneratedAt" | "aiInterpretation", ExtArgs["result"]["auditReport"]>
+export type AuditReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "version" | "createdAt" | "website" | "hostname" | "reportMode" | "source" | "overallScore" | "grade" | "criticalIssues" | "quickWins" | "opportunityScore" | "audit" | "leadId" | "aiStatus" | "aiAttemptCount" | "aiStartedAt" | "aiGeneratedAt" | "aiInterpretation", ExtArgs["result"]["auditReport"]>
 export type AuditReportInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
   purchases?: boolean | Prisma.AuditReport$purchasesArgs<ExtArgs>
+  prospects?: boolean | Prisma.AuditReport$prospectsArgs<ExtArgs>
   _count?: boolean | Prisma.AuditReportCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AuditReportIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1173,6 +1369,7 @@ export type $AuditReportPayload<ExtArgs extends runtime.Types.Extensions.Interna
   objects: {
     lead: Prisma.$LeadPayload<ExtArgs> | null
     purchases: Prisma.$ReportPurchasePayload<ExtArgs>[]
+    prospects: Prisma.$ProspectPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1181,6 +1378,11 @@ export type $AuditReportPayload<ExtArgs extends runtime.Types.Extensions.Interna
     website: string
     hostname: string
     reportMode: string
+    /**
+     * Distinguishes inbound Website Growth Audit reports from internal
+     * prospecting scans. Does not change Free/Professional reportMode.
+     */
+    source: $Enums.AuditReportSource
     overallScore: number
     grade: string
     criticalIssues: number
@@ -1589,6 +1791,7 @@ export interface Prisma__AuditReportClient<T, Null = never, ExtArgs extends runt
   readonly [Symbol.toStringTag]: "PrismaPromise"
   lead<T extends Prisma.AuditReport$leadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$leadArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   purchases<T extends Prisma.AuditReport$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  prospects<T extends Prisma.AuditReport$prospectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$prospectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1624,6 +1827,7 @@ export interface AuditReportFieldRefs {
   readonly website: Prisma.FieldRef<"AuditReport", 'String'>
   readonly hostname: Prisma.FieldRef<"AuditReport", 'String'>
   readonly reportMode: Prisma.FieldRef<"AuditReport", 'String'>
+  readonly source: Prisma.FieldRef<"AuditReport", 'AuditReportSource'>
   readonly overallScore: Prisma.FieldRef<"AuditReport", 'Int'>
   readonly grade: Prisma.FieldRef<"AuditReport", 'String'>
   readonly criticalIssues: Prisma.FieldRef<"AuditReport", 'Int'>
@@ -2077,6 +2281,30 @@ export type AuditReport$purchasesArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.ReportPurchaseScalarFieldEnum | Prisma.ReportPurchaseScalarFieldEnum[]
+}
+
+/**
+ * AuditReport.prospects
+ */
+export type AuditReport$prospectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Prospect
+   */
+  select?: Prisma.ProspectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Prospect
+   */
+  omit?: Prisma.ProspectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProspectInclude<ExtArgs> | null
+  where?: Prisma.ProspectWhereInput
+  orderBy?: Prisma.ProspectOrderByWithRelationInput | Prisma.ProspectOrderByWithRelationInput[]
+  cursor?: Prisma.ProspectWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProspectScalarFieldEnum | Prisma.ProspectScalarFieldEnum[]
 }
 
 /**

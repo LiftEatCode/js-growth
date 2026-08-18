@@ -32,6 +32,14 @@ export const LeadActivityType = {
 export type LeadActivityType = (typeof LeadActivityType)[keyof typeof LeadActivityType]
 
 
+export const AuditReportSource = {
+  PUBLIC_FUNNEL: 'PUBLIC_FUNNEL',
+  PROSPECTING: 'PROSPECTING'
+} as const
+
+export type AuditReportSource = (typeof AuditReportSource)[keyof typeof AuditReportSource]
+
+
 export const PurchaseStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',
@@ -49,3 +57,100 @@ export const AiInterpretationStatus = {
 } as const
 
 export type AiInterpretationStatus = (typeof AiInterpretationStatus)[keyof typeof AiInterpretationStatus]
+
+
+export const CampaignStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]
+
+
+export const ProspectSourceType = {
+  MANUAL: 'MANUAL',
+  PROVIDER: 'PROVIDER',
+  WEBSITE: 'WEBSITE'
+} as const
+
+export type ProspectSourceType = (typeof ProspectSourceType)[keyof typeof ProspectSourceType]
+
+
+export const ProspectQualificationStatus = {
+  DISCOVERED: 'DISCOVERED',
+  WEBSITE_INVALID: 'WEBSITE_INVALID',
+  AUDITING: 'AUDITING',
+  AUDIT_FAILED: 'AUDIT_FAILED',
+  QUALIFIED: 'QUALIFIED',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type ProspectQualificationStatus = (typeof ProspectQualificationStatus)[keyof typeof ProspectQualificationStatus]
+
+
+export const ProspectOutreachStatus = {
+  NOT_READY: 'NOT_READY',
+  CONTACT_FOUND: 'CONTACT_FOUND',
+  NO_CONTACT: 'NO_CONTACT',
+  DRAFT_READY: 'DRAFT_READY',
+  APPROVED: 'APPROVED',
+  SENT: 'SENT',
+  REPLIED: 'REPLIED',
+  INTERESTED: 'INTERESTED',
+  NOT_INTERESTED: 'NOT_INTERESTED',
+  CONVERTED: 'CONVERTED'
+} as const
+
+export type ProspectOutreachStatus = (typeof ProspectOutreachStatus)[keyof typeof ProspectOutreachStatus]
+
+
+export const ProspectContactSourceType = {
+  WEBSITE: 'WEBSITE',
+  CONTACT_PAGE: 'CONTACT_PAGE',
+  PROVIDER: 'PROVIDER',
+  MANUAL: 'MANUAL'
+} as const
+
+export type ProspectContactSourceType = (typeof ProspectContactSourceType)[keyof typeof ProspectContactSourceType]
+
+
+export const ProspectContactConfidence = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+} as const
+
+export type ProspectContactConfidence = (typeof ProspectContactConfidence)[keyof typeof ProspectContactConfidence]
+
+
+export const OutreachMessageStatus = {
+  DRAFT: 'DRAFT',
+  APPROVED: 'APPROVED',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type OutreachMessageStatus = (typeof OutreachMessageStatus)[keyof typeof OutreachMessageStatus]
+
+
+export const SuppressionType = {
+  HOSTNAME: 'HOSTNAME',
+  EMAIL: 'EMAIL'
+} as const
+
+export type SuppressionType = (typeof SuppressionType)[keyof typeof SuppressionType]
+
+
+export const SuppressionReason = {
+  SENT: 'SENT',
+  REPLIED_NOT_INTERESTED: 'REPLIED_NOT_INTERESTED',
+  CUSTOMER: 'CUSTOMER',
+  OPTED_OUT: 'OPTED_OUT',
+  BOUNCED: 'BOUNCED',
+  MANUAL: 'MANUAL'
+} as const
+
+export type SuppressionReason = (typeof SuppressionReason)[keyof typeof SuppressionReason]

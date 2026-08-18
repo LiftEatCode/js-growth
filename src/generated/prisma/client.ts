@@ -61,3 +61,33 @@ export type LeadActivity = Prisma.LeadActivityModel
  * 
  */
 export type ReportPurchase = Prisma.ReportPurchaseModel
+/**
+ * Model Campaign
+ * 
+ */
+export type Campaign = Prisma.CampaignModel
+/**
+ * Model Prospect
+ * 
+ */
+export type Prospect = Prisma.ProspectModel
+/**
+ * Model CampaignProspect
+ * 
+ */
+export type CampaignProspect = Prisma.CampaignProspectModel
+/**
+ * Model ProspectContact
+ * 
+ */
+export type ProspectContact = Prisma.ProspectContactModel
+/**
+ * Model OutreachMessage
+ * 
+ */
+export type OutreachMessage = Prisma.OutreachMessageModel
+/**
+ * Model SuppressionEntry
+ * 
+ */
+export type SuppressionEntry = Prisma.SuppressionEntryModel

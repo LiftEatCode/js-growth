@@ -24,6 +24,11 @@ enum LeadActivityType {
   MANUAL_NOTE
 }
 
+enum AuditReportSource {
+  PUBLIC_FUNNEL
+  PROSPECTING
+}
+
 model AuditReport {
   id        String   @id
   version   Int
@@ -32,6 +37,10 @@ model AuditReport {
   website    String
   hostname   String
   reportMode String
+
+  /// Distinguishes inbound Website Growth Audit reports from internal
+  /// prospecting scans. Does not change Free/Professional reportMode.
+  source AuditReportSource @default(PUBLIC_FUNNEL)
 
   overallScore Int
   grade        String
@@ -48,17 +57,20 @@ model AuditReport {
 
   purchases ReportPurchase[]
 
-  aiStatus          AiInterpretationStatus?
-  aiAttemptCount    Int                     @default(0)
-  aiStartedAt       DateTime?
-  aiGeneratedAt     DateTime?
-  aiInterpretation  Json?
+  prospects Prospect[]
+
+  aiStatus         AiInterpretationStatus?
+  aiAttemptCount   Int                     @default(0)
+  aiStartedAt      DateTime?
+  aiGeneratedAt    DateTime?
+  aiInterpretation Json?
 
   @@index([hostname])
   @@index([createdAt])
   @@index([overallScore])
   @@index([grade])
   @@index([opportunityScore])
+  @@index([source])
 }
 
 model Lead {
@@ -88,6 +100,8 @@ model Lead {
   reports AuditReport[]
 
   activities LeadActivity[]
+
+  prospects Prospect[]
 
   @@index([email])
   @@index([website])
@@ -130,8 +144,8 @@ enum AiInterpretationStatus {
 }
 
 model ReportPurchase {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
   paidAt    DateTime?
 
   reportId String
@@ -152,4 +166,236 @@ model ReportPurchase {
 
   @@index([reportId])
   @@index([status])
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum ProspectSourceType {
+  MANUAL
+  PROVIDER
+  WEBSITE
+}
+
+enum ProspectQualificationStatus {
+  DISCOVERED
+  WEBSITE_INVALID
+  AUDITING
+  AUDIT_FAILED
+  QUALIFIED
+  SKIPPED
+}
+
+enum ProspectOutreachStatus {
+  NOT_READY
+  CONTACT_FOUND
+  NO_CONTACT
+  DRAFT_READY
+  APPROVED
+  SENT
+  REPLIED
+  INTERESTED
+  NOT_INTERESTED
+  CONVERTED
+}
+
+enum ProspectContactSourceType {
+  WEBSITE
+  CONTACT_PAGE
+  PROVIDER
+  MANUAL
+}
+
+enum ProspectContactConfidence {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum OutreachMessageStatus {
+  DRAFT
+  APPROVED
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum SuppressionType {
+  HOSTNAME
+  EMAIL
+}
+
+enum SuppressionReason {
+  SENT
+  REPLIED_NOT_INTERESTED
+  CUSTOMER
+  OPTED_OUT
+  BOUNCED
+  MANUAL
+}
+
+model Campaign {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name   String
+  status CampaignStatus @default(DRAFT)
+
+  locationLabel String
+  city          String?
+  state         String?
+  radiusMiles   Int?
+
+  industries String[]
+
+  desiredQualifiedCount Int @default(5)
+
+  targeting Json?
+
+  notes String?
+
+  createdByEmail String
+
+  campaignProspects CampaignProspect[]
+
+  outreachMessages OutreachMessage[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Prospect {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  businessName String
+
+  website  String?
+  hostname String?
+
+  industry String?
+  city     String?
+  state    String?
+  address  String?
+  phone    String?
+
+  sourceType ProspectSourceType @default(MANUAL)
+  sourceRef  String?
+
+  discoveredAt DateTime @default(now())
+
+  qualificationStatus ProspectQualificationStatus @default(DISCOVERED)
+  outreachStatus      ProspectOutreachStatus      @default(NOT_READY)
+
+  skipReason String?
+  notes      String?
+
+  auditReportId String?
+  auditReport   AuditReport? @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  campaignProspects CampaignProspect[]
+  contacts          ProspectContact[]
+  outreachMessages  OutreachMessage[]
+
+  @@index([hostname])
+  @@index([qualificationStatus])
+  @@index([outreachStatus])
+  @@index([discoveredAt])
+  @@index([auditReportId])
+  @@index([leadId])
+}
+
+model CampaignProspect {
+  id      String   @id @default(cuid())
+  addedAt DateTime @default(now())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  discoveryRank     Int?
+  qualificationRank Int?
+
+  isSelectedTopN Boolean @default(false)
+
+  qualificationJson Json?
+
+  @@unique([campaignId, prospectId])
+  @@index([campaignId])
+  @@index([prospectId])
+}
+
+model ProspectContact {
+  id         String   @id @default(cuid())
+  capturedAt DateTime @default(now())
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  email String
+
+  sourceType ProspectContactSourceType
+  sourceUrl  String?
+
+  confidence ProspectContactConfidence
+
+  isPrimary Boolean @default(false)
+
+  @@index([prospectId])
+  @@index([email])
+}
+
+model OutreachMessage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  campaignId String?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  toEmail   String
+  fromEmail String
+  replyTo   String?
+
+  subject  String
+  bodyText String
+
+  findingIds String[]
+
+  status OutreachMessageStatus @default(DRAFT)
+
+  providerMessageId String?
+  sentAt            DateTime?
+  error             String?
+
+  approvedAt      DateTime?
+  approvedByEmail String?
+
+  @@index([prospectId])
+  @@index([campaignId])
+  @@index([status])
+}
+
+model SuppressionEntry {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  type   SuppressionType
+  value  String
+  reason SuppressionReason
+
+  @@index([type, value])
 }

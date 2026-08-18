@@ -54,7 +54,13 @@ export const ModelName = {
   AuditReport: 'AuditReport',
   Lead: 'Lead',
   LeadActivity: 'LeadActivity',
-  ReportPurchase: 'ReportPurchase'
+  ReportPurchase: 'ReportPurchase',
+  Campaign: 'Campaign',
+  Prospect: 'Prospect',
+  CampaignProspect: 'CampaignProspect',
+  ProspectContact: 'ProspectContact',
+  OutreachMessage: 'OutreachMessage',
+  SuppressionEntry: 'SuppressionEntry'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,6 +86,7 @@ export const AuditReportScalarFieldEnum = {
   website: 'website',
   hostname: 'hostname',
   reportMode: 'reportMode',
+  source: 'source',
   overallScore: 'overallScore',
   grade: 'grade',
   criticalIssues: 'criticalIssues',
@@ -144,6 +151,113 @@ export const ReportPurchaseScalarFieldEnum = {
 } as const
 
 export type ReportPurchaseScalarFieldEnum = (typeof ReportPurchaseScalarFieldEnum)[keyof typeof ReportPurchaseScalarFieldEnum]
+
+
+export const CampaignScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  status: 'status',
+  locationLabel: 'locationLabel',
+  city: 'city',
+  state: 'state',
+  radiusMiles: 'radiusMiles',
+  industries: 'industries',
+  desiredQualifiedCount: 'desiredQualifiedCount',
+  targeting: 'targeting',
+  notes: 'notes',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
+
+
+export const ProspectScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  businessName: 'businessName',
+  website: 'website',
+  hostname: 'hostname',
+  industry: 'industry',
+  city: 'city',
+  state: 'state',
+  address: 'address',
+  phone: 'phone',
+  sourceType: 'sourceType',
+  sourceRef: 'sourceRef',
+  discoveredAt: 'discoveredAt',
+  qualificationStatus: 'qualificationStatus',
+  outreachStatus: 'outreachStatus',
+  skipReason: 'skipReason',
+  notes: 'notes',
+  auditReportId: 'auditReportId',
+  leadId: 'leadId'
+} as const
+
+export type ProspectScalarFieldEnum = (typeof ProspectScalarFieldEnum)[keyof typeof ProspectScalarFieldEnum]
+
+
+export const CampaignProspectScalarFieldEnum = {
+  id: 'id',
+  addedAt: 'addedAt',
+  campaignId: 'campaignId',
+  prospectId: 'prospectId',
+  discoveryRank: 'discoveryRank',
+  qualificationRank: 'qualificationRank',
+  isSelectedTopN: 'isSelectedTopN',
+  qualificationJson: 'qualificationJson'
+} as const
+
+export type CampaignProspectScalarFieldEnum = (typeof CampaignProspectScalarFieldEnum)[keyof typeof CampaignProspectScalarFieldEnum]
+
+
+export const ProspectContactScalarFieldEnum = {
+  id: 'id',
+  capturedAt: 'capturedAt',
+  prospectId: 'prospectId',
+  email: 'email',
+  sourceType: 'sourceType',
+  sourceUrl: 'sourceUrl',
+  confidence: 'confidence',
+  isPrimary: 'isPrimary'
+} as const
+
+export type ProspectContactScalarFieldEnum = (typeof ProspectContactScalarFieldEnum)[keyof typeof ProspectContactScalarFieldEnum]
+
+
+export const OutreachMessageScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  toEmail: 'toEmail',
+  fromEmail: 'fromEmail',
+  replyTo: 'replyTo',
+  subject: 'subject',
+  bodyText: 'bodyText',
+  findingIds: 'findingIds',
+  status: 'status',
+  providerMessageId: 'providerMessageId',
+  sentAt: 'sentAt',
+  error: 'error',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail'
+} as const
+
+export type OutreachMessageScalarFieldEnum = (typeof OutreachMessageScalarFieldEnum)[keyof typeof OutreachMessageScalarFieldEnum]
+
+
+export const SuppressionEntryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  type: 'type',
+  value: 'value',
+  reason: 'reason'
+} as const
+
+export type SuppressionEntryScalarFieldEnum = (typeof SuppressionEntryScalarFieldEnum)[keyof typeof SuppressionEntryScalarFieldEnum]
 
 
 export const SortOrder = {
