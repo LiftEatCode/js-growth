@@ -9,6 +9,7 @@ import {
   generateProspectDraft,
   rejectOutreachDraft,
   saveOutreachDraft,
+  sendOutreachMessage,
 } from "@/app/reports/prospecting/outreach-actions";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,11 @@ interface OutreachDraftEditorProps {
     bodyText: string;
     status: string;
     model: string | null;
+    approvedAt: Date | null;
+    approvedByEmail: string | null;
+    sentAt: Date | null;
+    providerMessageId: string | null;
+    error: string | null;
   } | null;
 }
 
@@ -50,6 +56,7 @@ export function OutreachDraftEditor({
 
       if (!result.success) {
         setError(result.message ?? "The draft could not be updated.");
+        router.refresh();
         return;
       }
 
@@ -64,13 +71,24 @@ export function OutreachDraftEditor({
         Outreach draft
       </h2>
       <p className="text-sm leading-6 text-muted">
-        No email is sent from this screen in Sprint 4.
+        No email is sent automatically. Send is available only after a draft is explicitly approved.
       </p>
       {draft ? (
+        (() => {
+          const editable =
+            draft.status !== "SENT" &&
+            draft.status !== "SENDING" &&
+            draft.status !== "SUPPRESSED";
+          const canSend = draft.status === "APPROVED";
+          const canMarkApproved =
+            draft.status !== "SENT" && draft.status !== "SENDING";
+
+          return (
         <form
           className="space-y-4"
           onSubmit={(event) => {
             event.preventDefault();
+            if (!editable) return;
             run(() =>
               saveOutreachDraft({
                 campaignId,
@@ -100,6 +118,7 @@ export function OutreachDraftEditor({
               className="mt-1"
               value={subject}
               onChange={(event) => setSubject(event.target.value)}
+              disabled={!editable}
             />
           </div>
           <div>
@@ -114,14 +133,33 @@ export function OutreachDraftEditor({
               className="mt-1 min-h-48"
               value={body}
               onChange={(event) => setBody(event.target.value)}
+              disabled={!editable}
             />
           </div>
           <p className="text-xs text-muted">
             Status: {draft.status.toLowerCase().replaceAll("_", " ")}
             {draft.model ? ` · ${draft.model}` : ""}
           </p>
+
+            {draft.approvedAt ? (
+              <p className="text-xs text-muted">
+                Approved: {new Date(draft.approvedAt).toLocaleString()}{" "}
+                {draft.approvedByEmail ? `· ${draft.approvedByEmail}` : ""}
+              </p>
+            ) : null}
+
+            {draft.sentAt ? (
+              <p className="text-xs text-muted">
+                Sent: {new Date(draft.sentAt).toLocaleString()}
+              </p>
+            ) : null}
+
+            {draft.error ? (
+              <p className="text-xs text-red-700">{draft.error}</p>
+            ) : null}
+
           <div className="flex flex-wrap gap-2">
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending || !editable}>
               {isPending ? (
                 <LoaderCircle
                   aria-hidden="true"
@@ -133,7 +171,7 @@ export function OutreachDraftEditor({
             <Button
               type="button"
               variant="outline"
-              disabled={isPending}
+              disabled={isPending || !editable}
               onClick={() =>
                 run(() => generateProspectDraft(campaignId, prospectId, true))
               }
@@ -143,7 +181,7 @@ export function OutreachDraftEditor({
             <Button
               type="button"
               variant="outline"
-              disabled={isPending}
+              disabled={isPending || !editable}
               onClick={() =>
                 run(() =>
                   rejectOutreachDraft(campaignId, prospectId, draft.id),
@@ -152,20 +190,46 @@ export function OutreachDraftEditor({
             >
               Reject Draft
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={isPending}
-              onClick={() =>
-                run(() =>
-                  approveOutreachDraft(campaignId, prospectId, draft.id),
-                )
-              }
-            >
-              Mark Approved
-            </Button>
+            {canMarkApproved ? (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isPending}
+                onClick={() =>
+                  run(() =>
+                    approveOutreachDraft(campaignId, prospectId, draft.id),
+                  )
+                }
+              >
+                Mark Approved
+              </Button>
+            ) : null}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {canSend ? (
+              <Button
+                type="button"
+                disabled={isPending}
+                onClick={() => {
+                  if (
+                    !window.confirm(
+                      `Send this approved email to ${draft.toEmail}?`,
+                    )
+                  ) {
+                    return;
+                  }
+
+                  run(() => sendOutreachMessage(campaignId, prospectId, draft.id));
+                }}
+              >
+                {isPending ? "Sending..." : "Send Approved Email"}
+              </Button>
+            ) : null}
           </div>
         </form>
+          );
+        })()
       ) : (
         <div className="space-y-3">
           <p className="text-sm leading-6 text-muted">

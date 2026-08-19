@@ -7,11 +7,20 @@ import { prisma } from "@/lib/prisma";
 import {
   MAX_AI_DRAFT_CONCURRENCY,
   MAX_AI_DRAFTS_PER_RUN,
+  MAX_OUTREACH_EMAILS_PER_DAY,
   STALE_OUTREACH_DRAFT_RUN_MS,
 } from "@/lib/prospecting/outreach/constants";
 import { createOrReuseOutreachDraft } from "@/lib/prospecting/outreach/create-draft";
 import { clampOutreachDraftBatchSize } from "@/lib/prospecting/outreach/limit";
 import { runWithConcurrency } from "@/lib/website-audit/site/pool";
+import { getResendClient } from "@/lib/email/resend";
+import { loadContactSuppressionContext } from "@/lib/prospecting/suppression/load";
+import {
+  canContactProspect,
+  type ContactBlockReason,
+} from "@/lib/prospecting/suppression/can-contact";
+import { loadQualificationBlockers } from "@/lib/prospecting/qualification/audit-prospect";
+import { canSendOutreachMessage } from "@/lib/prospecting/outreach/can-send";
 
 export interface OutreachActionResult {
   success: boolean;
@@ -293,19 +302,38 @@ export async function saveOutreachDraft(input: {
     },
   });
 
-  if (!message || message.status === "SENT") {
+  if (
+    !message ||
+    message.status === "SENT" ||
+    message.status === "SENDING" ||
+    message.status === "SUPPRESSED"
+  ) {
     return {
       success: false,
       message: "The draft could not be saved.",
     };
   }
 
+  if (
+    !["DRAFT", "NEEDS_REVIEW", "APPROVED", "FAILED"].includes(message.status)
+  ) {
+    return {
+      success: false,
+      message: "This draft cannot be edited.",
+    };
+  }
+
+  const invalidated = message.status === "APPROVED" || message.status === "FAILED";
+  const nextStatus = message.status === "DRAFT" ? "DRAFT" : "NEEDS_REVIEW";
+
   await prisma.outreachMessage.update({
     where: { id: message.id },
     data: {
       subject,
       bodyText: body,
-      status: message.status === "APPROVED" ? "APPROVED" : "DRAFT",
+      status: nextStatus,
+      approvedAt: invalidated ? null : message.approvedAt,
+      approvedByEmail: invalidated ? null : message.approvedByEmail,
       error: null,
     },
   });
@@ -343,7 +371,11 @@ export async function rejectOutreachDraft(
     where: { id: messageId, prospectId, campaignId },
   });
 
-  if (!message) {
+  if (
+    !message ||
+    message.status === "SENT" ||
+    message.status === "SENDING"
+  ) {
     return {
       success: false,
       message: "The draft could not be found.",
@@ -386,12 +418,134 @@ export async function approveOutreachDraft(
 
   const message = await prisma.outreachMessage.findFirst({
     where: { id: messageId, prospectId, campaignId },
+    include: {
+      prospect: true,
+      contact: true,
+      campaign: true,
+    },
   });
 
-  if (!message || message.status === "SENT") {
+  if (!message) {
     return {
       success: false,
       message: "The draft could not be approved.",
+    };
+  }
+
+  if (message.status === "SENT" || message.status === "SENDING") {
+    return {
+      success: false,
+      message: "This draft cannot be approved.",
+    };
+  }
+
+  if (!message.prospect || !message.contact || !message.campaign) {
+    return {
+      success: false,
+      message: "This draft is missing required related data.",
+    };
+  }
+
+  // Keep this approval flow low-volume and safety-first.
+  // Approval re-checks eligibility; it does not send email.
+  const optOutSentence =
+    "If you'd rather not receive messages like this from me, just reply and let me know.";
+  const normalizedBody = message.bodyText.trim();
+  const bodyText = normalizedBody.includes(optOutSentence)
+    ? message.bodyText
+    : `${message.bodyText.trim()}\n\n${optOutSentence}\n`;
+
+  const contact = message.contact;
+  const prospect = message.prospect;
+  const campaign = message.campaign;
+
+  if (
+    prospect.qualificationStatus !== "QUALIFIED" ||
+    prospect.outreachStatus === "SUPPRESSED"
+  ) {
+    return {
+      success: false,
+      message: "Approval blocked: prospect is not eligible.",
+    };
+  }
+
+  if (!message.subject.trim() || !message.bodyText.trim()) {
+    return {
+      success: false,
+      message: "Approval blocked: subject and body are required.",
+    };
+  }
+
+  if (!contact.isPrimary) {
+    return {
+      success: false,
+      message: "Approval blocked: contact is not selected.",
+    };
+  }
+
+  if (!["SELECTED", "DISCOVERED"].includes(contact.status)) {
+    return {
+      success: false,
+      message: "Approval blocked: contact is not usable.",
+    };
+  }
+
+  if (
+    message.toEmail.trim().toLowerCase() !==
+    contact.email.trim().toLowerCase()
+  ) {
+    return {
+      success: false,
+      message: "Approval blocked: recipient email changed.",
+    };
+  }
+
+  if (campaign.status !== "ACTIVE") {
+    return {
+      success: false,
+      message: "Approval blocked: campaign is not active.",
+    };
+  }
+
+  const [suppression, blockers] = await Promise.all([
+    loadContactSuppressionContext({
+      hostname: prospect.hostname,
+      emails: [contact.normalizedEmail],
+    }),
+    loadQualificationBlockers({ hostname: prospect.hostname }),
+  ]);
+
+  const canContact = canContactProspect({
+    hostname: prospect.hostname,
+    email: contact.normalizedEmail,
+    suppressedHostnames: suppression.suppressedHostnames,
+    suppressedEmails: suppression.suppressedEmails,
+    customerHostnames: suppression.customerHostnames,
+    existingLead: blockers.existingLead,
+    contactStatus: contact.status,
+  });
+
+  if (!canContact.allowed) {
+    return {
+      success: false,
+      message: `Approval blocked: ${canContact.reasons.join(", ")}.`,
+    };
+  }
+
+  const alreadySent = await prisma.outreachMessage.findFirst({
+    where: {
+      prospectId,
+      campaignId,
+      contactId: contact.id,
+      status: "SENT",
+    },
+    select: { id: true },
+  });
+
+  if (alreadySent) {
+    return {
+      success: false,
+      message: "Approval blocked: outreach was already sent to this prospect.",
     };
   }
 
@@ -401,6 +555,8 @@ export async function approveOutreachDraft(
       status: "APPROVED",
       approvedAt: new Date(),
       approvedByEmail: session.email,
+      bodyText,
+      error: null,
     },
   });
 
@@ -415,7 +571,285 @@ export async function approveOutreachDraft(
     success: true,
     campaignId,
     prospectId,
-    message:
-      "Draft marked approved. No email is sent from this screen in Sprint 4.",
+    message: "Draft approved. It is ready to send.",
   };
+}
+
+function getUtcDayBounds(now = new Date()): { start: Date; end: Date } {
+  const start = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0),
+  );
+  const end = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0),
+  );
+
+  return { start, end };
+}
+
+export async function sendOutreachMessage(
+  campaignId: string,
+  prospectId: string,
+  messageId: string,
+): Promise<OutreachActionResult> {
+  const session = await getInternalSession();
+
+  if (!session) {
+    return {
+      success: false,
+      message: "You are not authorized to send emails.",
+    };
+  }
+
+  const message = await prisma.outreachMessage.findFirst({
+    where: { id: messageId, prospectId, campaignId },
+    include: {
+      prospect: true,
+      contact: true,
+      campaign: true,
+    },
+  });
+
+  if (!message || message.status !== "APPROVED") {
+    return {
+      success: false,
+      message: "This draft is not ready for sending.",
+    };
+  }
+
+  if (!message.approvedAt || !message.approvedByEmail) {
+    return {
+      success: false,
+      message: "This draft is missing approval metadata.",
+    };
+  }
+
+  if (!message.prospect || !message.contact || !message.campaign) {
+    return {
+      success: false,
+      message: "This draft is missing required related data.",
+    };
+  }
+
+  const prospect = message.prospect;
+  const contact = message.contact;
+  const campaign = message.campaign;
+
+  if (!message.subject.trim() || !message.bodyText.trim()) {
+    return {
+      success: false,
+      message: "This draft is missing required subject/body content.",
+    };
+  }
+
+  const { start, end } = getUtcDayBounds(new Date());
+
+  const [suppression, blockers] = await Promise.all([
+    loadContactSuppressionContext({
+      hostname: prospect.hostname,
+      emails: [contact.normalizedEmail],
+    }),
+    loadQualificationBlockers({ hostname: prospect.hostname }),
+  ]);
+
+  const priorSentExists = Boolean(
+    await prisma.outreachMessage.findFirst({
+      where: {
+        prospectId,
+        campaignId,
+        contactId: contact.id,
+        status: "SENT",
+      },
+      select: { id: true },
+    }),
+  );
+
+  const sentTodayCount = await prisma.outreachMessage.count({
+    where: {
+      status: "SENT",
+      sentAt: {
+        gte: start,
+        lt: end,
+      },
+    },
+  });
+
+  const eligibility = canSendOutreachMessage({
+    message: {
+      status: message.status,
+      approvedAt: message.approvedAt,
+      approvedByEmail: message.approvedByEmail,
+      toEmail: message.toEmail,
+      subject: message.subject,
+      bodyText: message.bodyText,
+      contactId: message.contactId ?? null,
+      prospectId: message.prospectId,
+      campaignId: message.campaignId ?? null,
+    },
+    prospect: {
+      qualificationStatus: prospect.qualificationStatus,
+      outreachStatus: prospect.outreachStatus,
+      hostname: prospect.hostname,
+    },
+    contact: {
+      id: contact.id,
+      isPrimary: contact.isPrimary,
+      status: contact.status,
+      email: contact.email,
+      normalizedEmail: contact.normalizedEmail,
+      prospectId: contact.prospectId,
+    },
+    campaign: {
+      status: campaign.status,
+    },
+    suppressedHostnames: suppression.suppressedHostnames,
+    suppressedEmails: suppression.suppressedEmails,
+    customerHostnames: suppression.customerHostnames,
+    existingLead: blockers.existingLead,
+    priorSentExists,
+    sentTodayCount,
+    maxEmailsPerDay: MAX_OUTREACH_EMAILS_PER_DAY,
+  });
+
+  if (!eligibility.allowed) {
+    const contactBlockReasonSet = new Set<ContactBlockReason>([
+      "NO_EMAIL",
+      "HOSTNAME_SUPPRESSED",
+      "EMAIL_SUPPRESSED",
+      "EXISTING_LEAD",
+      "CUSTOMER",
+      "CONTACT_REJECTED",
+      "CONTACT_SUPPRESSED",
+      "CONTACT_STALE",
+    ]);
+
+    const hasSuppressionBlock = eligibility.reasons.some((reason) =>
+      contactBlockReasonSet.has(reason as ContactBlockReason),
+    );
+
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: {
+        status: hasSuppressionBlock ? "SUPPRESSED" : "FAILED",
+        error: `Send blocked: ${eligibility.reasons.join(", ")}`,
+        sentAt: null,
+        providerMessageId: null,
+      },
+    });
+
+    return {
+      success: false,
+      message: "Send blocked by final eligibility checks.",
+      campaignId,
+      prospectId,
+    };
+  }
+
+  // Atomically transition APPROVED -> SENDING.
+  const locked = await prisma.outreachMessage.updateMany({
+    where: {
+      id: message.id,
+      status: "APPROVED",
+    },
+    data: {
+      status: "SENDING",
+      error: null,
+    },
+  });
+
+  if (locked.count !== 1) {
+    return {
+      success: false,
+      message: "This email is already being processed.",
+      campaignId,
+      prospectId,
+    };
+  }
+
+  const fromEmail = process.env.CONTACT_FROM_EMAIL;
+  const replyTo = process.env.CONTACT_TO_EMAIL;
+
+  if (!fromEmail) {
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: { status: "FAILED", error: "Missing sender configuration." },
+    });
+
+    return {
+      success: false,
+      message: "Email delivery is temporarily unavailable.",
+    };
+  }
+
+  try {
+    const resend = getResendClient();
+    const { error: sendError, data } = await resend.emails.send({
+      from: fromEmail,
+      to: message.toEmail,
+      replyTo: replyTo ?? undefined,
+      subject: message.subject,
+      text: message.bodyText,
+    });
+
+    if (sendError) {
+      await prisma.outreachMessage.update({
+        where: { id: message.id },
+        data: {
+          status: "FAILED",
+          error: sendError.message ?? "Resend send failed.",
+          sentAt: null,
+          providerMessageId: null,
+        },
+      });
+
+      return {
+        success: false,
+        message: "Email delivery failed. Re-approve and retry.",
+        campaignId,
+        prospectId,
+      };
+    }
+
+    const providerMessageId = data?.id ? String(data.id) : null;
+
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: {
+        status: "SENT",
+        sentAt: new Date(),
+        providerMessageId,
+        error: null,
+      },
+    });
+
+    await prisma.prospect.update({
+      where: { id: prospectId },
+      data: { outreachStatus: "SENT" },
+    });
+
+    revalidateCampaign(campaignId, prospectId);
+
+    return {
+      success: true,
+      campaignId,
+      prospectId,
+      message: "Email sent. No further sending is available for this draft.",
+    };
+  } catch {
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: {
+        status: "FAILED",
+        error: "Resend send threw an unexpected error.",
+        sentAt: null,
+        providerMessageId: null,
+      },
+    });
+
+    return {
+      success: false,
+      message: "Email delivery failed. Re-approve and retry.",
+      campaignId,
+      prospectId,
+    };
+  }
 }

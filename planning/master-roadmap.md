@@ -240,7 +240,7 @@ Projects:
 - Client Portal
 - Knowledge Base
 - Reporting System
-- Prospecting Engine (internal; V1 Sprint 4 — contacts + drafts, no sending)
+- Prospecting Engine (internal; V1 Sprint 5 — approval + low-volume sending)
 
 ---
 

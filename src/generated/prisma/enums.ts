@@ -149,10 +149,12 @@ export const OutreachMessageStatus = {
   DRAFT: 'DRAFT',
   NEEDS_REVIEW: 'NEEDS_REVIEW',
   APPROVED: 'APPROVED',
+  SENDING: 'SENDING',
   REJECTED: 'REJECTED',
   SENT: 'SENT',
   FAILED: 'FAILED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  SUPPRESSED: 'SUPPRESSED'
 } as const
 
 export type OutreachMessageStatus = (typeof OutreachMessageStatus)[keyof typeof OutreachMessageStatus]

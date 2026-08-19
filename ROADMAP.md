@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟡 Sprint 4 — Public Contact Discovery + AI Outreach Drafting
+Status: 🟡 Sprint 5 — Human Approval + Low-Volume Sending
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,14 +91,16 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 4 (current):
+Sprint 5 (current):
 
 - Authenticated `/reports/prospecting` campaigns (Sprint 1)
 - Google Places discovery + human import (Sprint 2)
 - Deterministic Website Growth Audit + qualification + recommended top N
 - Prospecting AuditReports are not public customer reports
 - First-party public contact discovery with provenance
-- Grounded AI outreach drafts for human review (no sending)
+- Grounded AI outreach drafts for human review
+- Explicit draft approval and per-message Resend sending with final eligibility re-checks
+- Daily send cap and duplicate-send protection
 
 Later sprints (not started):
 

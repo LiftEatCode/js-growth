@@ -200,10 +200,18 @@ export function draftStatusLabel(status: string | null): string {
       return "Needs review";
     case "APPROVED":
       return "Approved";
+    case "SENDING":
+      return "Sending";
     case "REJECTED":
       return "Rejected";
     case "FAILED":
       return "Failed";
+    case "SENT":
+      return "Sent";
+    case "CANCELLED":
+      return "Cancelled";
+    case "SUPPRESSED":
+      return "Suppressed";
     default:
       return "Missing";
   }

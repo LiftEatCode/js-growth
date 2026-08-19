@@ -159,8 +159,15 @@ assert(
 );
 
 assert(actions.includes("getInternalSession"), "draft actions require session");
-assert(!actions.includes("resend"), "draft actions do not send email");
-assert(!actions.includes("sendEmail"), "no send helper in Sprint 4");
+assert(
+  actions.includes("sendOutreachMessage"),
+  "Sprint 5 adds a send action",
+);
+assert(
+  actions.includes("resend.emails.send"),
+  "sending uses Resend",
+);
+assert(!createDraft.includes("resend.emails.send"), "draft generation does not send email");
 assert(createDraft.includes("isSelectedTopN"), "only selected prospects get drafts");
 assert(createDraft.includes("canContactProspect"), "suppression blocks generation");
 assert(createDraft.includes("primaryFindingId"), "credible finding required");

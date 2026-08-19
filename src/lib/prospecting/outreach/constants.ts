@@ -16,5 +16,9 @@ export const MIN_OUTREACH_BODY_CHARS = 180;
 
 export const MAX_OUTREACH_EVIDENCE_CHARS = 280;
 
+// Sprint 5 sending is intentionally low-volume and operator-controlled.
+// This cap is enforced server-side before each delivery attempt.
+export const MAX_OUTREACH_EMAILS_PER_DAY = 10;
+
 export const JS_SOLUTIONS_OUTREACH_CONTEXT =
   "JS Solutions (js-growth.com) offers a Website Growth Audit that reviews search, content, conversion, local visibility, technical health, and performance. The operator signing the email is Josh. Offer to share the existing analysis. Do not mention pricing.";

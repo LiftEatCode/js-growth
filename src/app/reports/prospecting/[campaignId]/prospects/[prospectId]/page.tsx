@@ -73,7 +73,7 @@ export default async function CampaignProspectDetailPage({
           outreachMessages: {
             where: { campaignId },
             orderBy: { createdAt: "desc" },
-            take: 5,
+            take: 20,
           },
         },
       },
@@ -105,7 +105,11 @@ export default async function CampaignProspectDetailPage({
     (message) =>
       message.status === "DRAFT" ||
       message.status === "NEEDS_REVIEW" ||
-      message.status === "APPROVED",
+      message.status === "APPROVED" ||
+      message.status === "FAILED" ||
+      message.status === "SUPPRESSED" ||
+      message.status === "SENDING" ||
+      message.status === "SENT",
   );
 
   return (
@@ -325,6 +329,11 @@ export default async function CampaignProspectDetailPage({
                     bodyText: currentDraft.bodyText,
                     status: currentDraft.status,
                     model: currentDraft.generationModel,
+                    approvedAt: currentDraft.approvedAt,
+                    approvedByEmail: currentDraft.approvedByEmail,
+                    sentAt: currentDraft.sentAt,
+                    providerMessageId: currentDraft.providerMessageId,
+                    error: currentDraft.error,
                   }
                 : null
             }
@@ -333,10 +342,47 @@ export default async function CampaignProspectDetailPage({
 
         <Card variant="elevated" padding="lg">
           <h2 className="font-heading text-xl font-semibold text-brand">
+            Outreach history
+          </h2>
+          {prospect.outreachMessages.length === 0 ? (
+            <p className="mt-3 text-sm leading-6 text-muted">
+              No outreach draft has been generated for this prospect yet.
+            </p>
+          ) : (
+            <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
+              {prospect.outreachMessages.map((message) => (
+                <li key={message.id} className="space-y-2 px-4 py-3">
+                  <p className="text-sm font-semibold text-brand">
+                    {message.status.toLowerCase().replaceAll("_", " ")} ·{" "}
+                    {message.toEmail}
+                  </p>
+                  <p className="text-sm text-muted">{message.subject}</p>
+                  <p className="text-xs text-muted">
+                    Created {formatDate(message.createdAt)}
+                    {message.approvedAt
+                      ? ` · Approved ${formatDate(message.approvedAt)}`
+                      : ""}
+                    {message.sentAt ? ` · Sent ${formatDate(message.sentAt)}` : ""}
+                    {message.providerMessageId
+                      ? ` · Provider ID ${message.providerMessageId}`
+                      : ""}
+                  </p>
+                  {message.error ? (
+                    <p className="text-xs text-red-700">{message.error}</p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
             Actions
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Sending is not available in Sprint 4. Approval does not send email.
+            Sending requires explicit operator action after you mark the draft
+            as APPROVED. Approval does not send email.
           </p>
           <div className="mt-4">
             <ProspectAuditActions

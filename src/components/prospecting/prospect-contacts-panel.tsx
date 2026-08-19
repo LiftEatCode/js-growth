@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   recheckProspectContacts,
   rejectProspectContact,
+  suppressProspectContact,
   setPrimaryProspectContact,
 } from "@/app/reports/prospecting/contact-actions";
 import { Button } from "@/components/ui";
@@ -178,6 +179,27 @@ export function ProspectContactsPanel({
                   }
                 >
                   Reject Contact
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  disabled={isPending || contact.status === "SUPPRESSED"}
+                  onClick={() => {
+                    if (
+                      !window.confirm(
+                        `Suppress ${contact.email}? This blocks future outreach.`,
+                      )
+                    ) {
+                      return;
+                    }
+
+                    run(() =>
+                      suppressProspectContact(campaignId, prospectId, contact.id),
+                    );
+                  }}
+                >
+                  Suppress Contact
                 </Button>
               </div>
             </li>

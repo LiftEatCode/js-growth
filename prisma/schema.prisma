@@ -239,10 +239,12 @@ enum OutreachMessageStatus {
   DRAFT
   NEEDS_REVIEW
   APPROVED
+  SENDING
   REJECTED
   SENT
   FAILED
   CANCELLED
+  SUPPRESSED
 }
 
 enum SuppressionType {

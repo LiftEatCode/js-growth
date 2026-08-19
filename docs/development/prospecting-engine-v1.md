@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 4 — Public Contact Discovery + AI Outreach Drafting**
+Current status: **Sprint 5 — Human Approval + Low-Volume Sending**
 
 ## Product principle
 
@@ -48,7 +48,7 @@ V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second 
 | 2 | Legitimate business discovery provider | Complete |
 | 3 | Deterministic Website Growth Audit qualification | Complete |
 | 4 | Public contact discovery + outreach drafts | Complete |
-| 5 | Approval + Resend sending | Not started |
+| 5 | Approval + Resend sending | Complete |
 | 6 | Tracking, Lead conversion, hardening | Not started |
 
 ## Routes
@@ -366,5 +366,32 @@ Existing `DRAFT` / `NEEDS_REVIEW` / `APPROVED` messages are reused. Regeneration
 Operators can edit recipient (primary contact), subject, and body, then save. **Mark Approved** only changes status. The UI states that no email is sent in Sprint 4.
 
 Public `/report` pages, PDFs, Professional APIs, and analytics must not receive `ProspectContact` or `OutreachMessage` data.
+
+## Sprint 5 — Human approval + sending
+
+Sprint 5 keeps outbound email fully human-controlled:
+
+- No automatic sending
+- No bulk "send all" action
+- One approved message can be sent only by explicit operator action
+
+Approval and send are separate:
+
+1. Draft is reviewed and approved by an authenticated operator
+2. Final eligibility is re-checked at send time (suppression, contact state, prospect state, duplicate prevention, campaign status)
+3. Server enforces a low-volume daily cap: `MAX_OUTREACH_EMAILS_PER_DAY = 10` (UTC day boundary)
+4. Sending uses Resend and stores provider acceptance metadata (`providerMessageId`, `sentAt`)
+
+Duplicate-send safety:
+
+- Server atomically transitions `APPROVED` → `SENDING`
+- Only the lock winner can call the provider
+- Concurrent/double-click attempts are blocked
+
+Important:
+
+- `SENT` means accepted by Resend, not guaranteed inbox placement
+- Editing approved content invalidates approval (`NEEDS_REVIEW`)
+- Suppression is re-checked immediately before provider delivery
 
 

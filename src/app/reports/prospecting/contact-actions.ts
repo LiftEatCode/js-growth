@@ -381,3 +381,109 @@ export async function rejectProspectContact(
     message: "Contact rejected. No email was sent.",
   };
 }
+
+export async function suppressProspectContact(
+  campaignId: string,
+  prospectId: string,
+  contactId: string,
+): Promise<ContactActionResult> {
+  const session = await getInternalSession();
+
+  if (!session) {
+    return {
+      success: false,
+      message: "You are not authorized to update contacts.",
+    };
+  }
+
+  const membership = await prisma.campaignProspect.findUnique({
+    where: {
+      campaignId_prospectId: { campaignId, prospectId },
+    },
+    include: {
+      prospect: {
+        select: {
+          id: true,
+          hostname: true,
+        },
+      },
+    },
+  });
+
+  if (!membership?.prospect) {
+    return {
+      success: false,
+      message: "The prospect could not be found in this campaign.",
+    };
+  }
+
+  const contact = await prisma.prospectContact.findFirst({
+    where: { id: contactId, prospectId },
+  });
+
+  if (!contact) {
+    return {
+      success: false,
+      message: "The contact could not be found.",
+    };
+  }
+
+  const normalizedEmail = contact.normalizedEmail.trim().toLowerCase();
+
+  await prisma.$transaction(async (transaction) => {
+    const existing = await transaction.suppressionEntry.findFirst({
+      where: {
+        type: "EMAIL",
+        value: normalizedEmail,
+      },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      await transaction.suppressionEntry.create({
+        data: {
+          type: "EMAIL",
+          value: normalizedEmail,
+          reason: "MANUAL",
+        },
+      });
+    }
+
+    await transaction.prospectContact.update({
+      where: { id: contact.id },
+      data: {
+        status: "SUPPRESSED",
+        isPrimary: false,
+      },
+    });
+
+    await transaction.outreachMessage.updateMany({
+      where: {
+        prospectId,
+        campaignId,
+        contactId: contact.id,
+        status: {
+          in: ["APPROVED", "NEEDS_REVIEW", "DRAFT", "FAILED"],
+        },
+      },
+      data: {
+        status: "SUPPRESSED",
+        error: "Suppressed by operator.",
+      },
+    });
+
+    await transaction.prospect.update({
+      where: { id: prospectId },
+      data: { outreachStatus: "SUPPRESSED" },
+    });
+  });
+
+  revalidateCampaign(campaignId, prospectId);
+
+  return {
+    success: true,
+    campaignId,
+    prospectId,
+    message: "Contact suppressed. Future outreach is blocked.",
+  };
+}
