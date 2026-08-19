@@ -78,6 +78,8 @@ assert(isForbiddenAnalyticsParamKey("report_id"), "report_id key is forbidden");
 assert(isForbiddenAnalyticsParamKey("reportId"), "reportId key is forbidden");
 assert(isForbiddenAnalyticsParamKey("contact_email"), "contact_email is forbidden");
 assert(isForbiddenAnalyticsParamKey("prospect_email"), "prospect_email is forbidden");
+assert(isForbiddenAnalyticsParamKey("outreach_status"), "outreach_status is forbidden");
+assert(isForbiddenAnalyticsParamKey("outcome_notes"), "outcome_notes is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
 assert(isForbiddenAnalyticsParamValue(REPORT_ID), "UUID values are forbidden");
 assert(

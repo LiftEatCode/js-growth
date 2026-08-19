@@ -9,6 +9,7 @@ export type SendBlockReason =
   | "CAMPAIGN_NOT_ACTIVE"
   | "PROSPECT_NOT_QUALIFIED"
   | "PROSPECT_SUPPRESSED"
+  | "PROSPECT_NOT_ELIGIBLE"
   | "CONTACT_NOT_SELECTED"
   | "CONTACT_EMAIL_MISMATCH"
   | "DUPLICATE_SENT"
@@ -28,7 +29,10 @@ export interface CanSendOutreachMessageInput {
     | "prospectId"
     | "campaignId"
   >;
-  prospect: Pick<Prospect, "qualificationStatus" | "outreachStatus" | "hostname">;
+  prospect: Pick<
+    Prospect,
+    "qualificationStatus" | "outreachStatus" | "hostname" | "leadId"
+  >;
   contact: Pick<ProspectContact, "id" | "isPrimary" | "status" | "email" | "normalizedEmail" | "prospectId">;
   campaign: Pick<Campaign, "status">;
 
@@ -68,6 +72,14 @@ export function canSendOutreachMessage(
     reasons.push("PROSPECT_SUPPRESSED");
   }
 
+  if (
+    input.prospect.outreachStatus === "NOT_INTERESTED" ||
+    input.prospect.outreachStatus === "CONVERTED" ||
+    input.prospect.leadId
+  ) {
+    reasons.push("PROSPECT_NOT_ELIGIBLE");
+  }
+
   if (!input.contact.isPrimary) {
     reasons.push("CONTACT_NOT_SELECTED");
   }
@@ -87,6 +99,7 @@ export function canSendOutreachMessage(
     suppressedEmails: input.suppressedEmails,
     customerHostnames: input.customerHostnames,
     existingLead: input.existingLead,
+    convertedProspect: Boolean(input.prospect.leadId),
     contactStatus,
   });
 

@@ -65,7 +65,8 @@ export const ModelName = {
   ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
   ProspectQualificationRun: 'ProspectQualificationRun',
   ProspectContactDiscoveryRun: 'ProspectContactDiscoveryRun',
-  ProspectOutreachDraftRun: 'ProspectOutreachDraftRun'
+  ProspectOutreachDraftRun: 'ProspectOutreachDraftRun',
+  OutreachOutcome: 'OutreachOutcome'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -398,6 +399,21 @@ export const ProspectOutreachDraftRunScalarFieldEnum = {
 } as const
 
 export type ProspectOutreachDraftRunScalarFieldEnum = (typeof ProspectOutreachDraftRunScalarFieldEnum)[keyof typeof ProspectOutreachDraftRunScalarFieldEnum]
+
+
+export const OutreachOutcomeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  outreachMessageId: 'outreachMessageId',
+  prospectId: 'prospectId',
+  outcome: 'outcome',
+  occurredAt: 'occurredAt',
+  notes: 'notes',
+  recordedByEmail: 'recordedByEmail'
+} as const
+
+export type OutreachOutcomeScalarFieldEnum = (typeof OutreachOutcomeScalarFieldEnum)[keyof typeof OutreachOutcomeScalarFieldEnum]
 
 
 export const SortOrder = {

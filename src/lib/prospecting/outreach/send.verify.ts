@@ -30,6 +30,7 @@ const baseInput: CanSendOutreachMessageInput = {
     qualificationStatus: "QUALIFIED" as const,
     outreachStatus: "APPROVED" as const,
     hostname: "business.com",
+    leadId: null,
   },
   contact: {
     id: "contact-1",
@@ -153,6 +154,30 @@ assert(
 assert(
   editorSource.includes("window.confirm"),
   "UI has per-message send confirmation",
+);
+
+assert(
+  !canSendOutreachMessage({
+    ...baseInput,
+    prospect: {
+      ...baseInput.prospect,
+      outreachStatus: "CONVERTED",
+      leadId: "lead-1",
+    },
+  }).allowed,
+  "converted prospect cannot send again",
+);
+
+assert(
+  !canSendOutreachMessage({
+    ...baseInput,
+    prospect: {
+      ...baseInput.prospect,
+      outreachStatus: "NOT_INTERESTED",
+      leadId: null,
+    },
+  }).allowed,
+  "not interested prospect cannot send again",
 );
 
 console.log("send.verify.ts passed");

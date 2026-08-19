@@ -521,7 +521,8 @@ export async function approveOutreachDraft(
     suppressedHostnames: suppression.suppressedHostnames,
     suppressedEmails: suppression.suppressedEmails,
     customerHostnames: suppression.customerHostnames,
-    existingLead: blockers.existingLead,
+    existingLead: blockers.existingLead || Boolean(prospect.leadId),
+    convertedProspect: Boolean(prospect.leadId),
     contactStatus: contact.status,
   });
 
@@ -689,6 +690,7 @@ export async function sendOutreachMessage(
       qualificationStatus: prospect.qualificationStatus,
       outreachStatus: prospect.outreachStatus,
       hostname: prospect.hostname,
+      leadId: prospect.leadId,
     },
     contact: {
       id: contact.id,
@@ -704,7 +706,7 @@ export async function sendOutreachMessage(
     suppressedHostnames: suppression.suppressedHostnames,
     suppressedEmails: suppression.suppressedEmails,
     customerHostnames: suppression.customerHostnames,
-    existingLead: blockers.existingLead,
+    existingLead: blockers.existingLead || Boolean(prospect.leadId),
     priorSentExists,
     sentTodayCount,
     maxEmailsPerDay: MAX_OUTREACH_EMAILS_PER_DAY,

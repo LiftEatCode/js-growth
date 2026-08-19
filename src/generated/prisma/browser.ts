@@ -92,3 +92,8 @@ export type ProspectContactDiscoveryRun = Prisma.ProspectContactDiscoveryRunMode
  * 
  */
 export type ProspectOutreachDraftRun = Prisma.ProspectOutreachDraftRunModel
+/**
+ * Model OutreachOutcome
+ * 
+ */
+export type OutreachOutcome = Prisma.OutreachOutcomeModel

@@ -411,7 +411,8 @@ export const ModelName = {
   ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
   ProspectQualificationRun: 'ProspectQualificationRun',
   ProspectContactDiscoveryRun: 'ProspectContactDiscoveryRun',
-  ProspectOutreachDraftRun: 'ProspectOutreachDraftRun'
+  ProspectOutreachDraftRun: 'ProspectOutreachDraftRun',
+  OutreachOutcome: 'OutreachOutcome'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -427,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1541,6 +1542,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OutreachOutcome: {
+      payload: Prisma.$OutreachOutcomePayload<ExtArgs>
+      fields: Prisma.OutreachOutcomeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OutreachOutcomeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OutreachOutcomeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>
+        }
+        findFirst: {
+          args: Prisma.OutreachOutcomeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OutreachOutcomeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>
+        }
+        findMany: {
+          args: Prisma.OutreachOutcomeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>[]
+        }
+        create: {
+          args: Prisma.OutreachOutcomeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>
+        }
+        createMany: {
+          args: Prisma.OutreachOutcomeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OutreachOutcomeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>[]
+        }
+        delete: {
+          args: Prisma.OutreachOutcomeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>
+        }
+        update: {
+          args: Prisma.OutreachOutcomeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>
+        }
+        deleteMany: {
+          args: Prisma.OutreachOutcomeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OutreachOutcomeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OutreachOutcomeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>[]
+        }
+        upsert: {
+          args: Prisma.OutreachOutcomeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachOutcomePayload>
+        }
+        aggregate: {
+          args: Prisma.OutreachOutcomeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOutreachOutcome>
+        }
+        groupBy: {
+          args: Prisma.OutreachOutcomeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OutreachOutcomeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OutreachOutcomeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OutreachOutcomeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1894,6 +1969,21 @@ export const ProspectOutreachDraftRunScalarFieldEnum = {
 } as const
 
 export type ProspectOutreachDraftRunScalarFieldEnum = (typeof ProspectOutreachDraftRunScalarFieldEnum)[keyof typeof ProspectOutreachDraftRunScalarFieldEnum]
+
+
+export const OutreachOutcomeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  outreachMessageId: 'outreachMessageId',
+  prospectId: 'prospectId',
+  outcome: 'outcome',
+  occurredAt: 'occurredAt',
+  notes: 'notes',
+  recordedByEmail: 'recordedByEmail'
+} as const
+
+export type OutreachOutcomeScalarFieldEnum = (typeof OutreachOutcomeScalarFieldEnum)[keyof typeof OutreachOutcomeScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2278,6 +2368,20 @@ export type EnumQualificationRunStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 export type ListEnumQualificationRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationRunStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'OutreachOutcomeType'
+ */
+export type EnumOutreachOutcomeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachOutcomeType'>
+    
+
+
+/**
+ * Reference to a field of type 'OutreachOutcomeType[]'
+ */
+export type ListEnumOutreachOutcomeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachOutcomeType[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2444,6 +2548,7 @@ export type GlobalOmitConfig = {
   prospectQualificationRun?: Prisma.ProspectQualificationRunOmit
   prospectContactDiscoveryRun?: Prisma.ProspectContactDiscoveryRunOmit
   prospectOutreachDraftRun?: Prisma.ProspectOutreachDraftRunOmit
+  outreachOutcome?: Prisma.OutreachOutcomeOmit
 }
 
 /* Types for Logging */

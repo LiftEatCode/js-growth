@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 5 — Human Approval + Low-Volume Sending**
+Current status: **Sprint 6 — Outcomes, Lead Conversion & Campaign Metrics**
 
 ## Product principle
 
@@ -49,7 +49,7 @@ V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second 
 | 3 | Deterministic Website Growth Audit qualification | Complete |
 | 4 | Public contact discovery + outreach drafts | Complete |
 | 5 | Approval + Resend sending | Complete |
-| 6 | Tracking, Lead conversion, hardening | Not started |
+| 6 | Outcomes, Lead conversion, campaign metrics | Complete |
 
 ## Routes
 
@@ -393,5 +393,119 @@ Important:
 - `SENT` means accepted by Resend, not guaranteed inbox placement
 - Editing approved content invalidates approval (`NEEDS_REVIEW`)
 - Suppression is re-checked immediately before provider delivery
+
+## Sprint 6 — Outcomes, Lead conversion, campaign metrics
+
+After a message is `SENT`, an operator can manually record what happened. This sprint does **not** add inbox monitoring, webhooks, AI reply classification, follow-up sequences, or autonomous sending.
+
+Operator workflow extension:
+
+1. Send approved outreach (Sprint 5)
+2. **Record Outcome** on the prospect detail page
+3. Optionally suppress future outreach
+4. **Convert to Lead** when there is a legitimate opportunity
+5. Review campaign funnel metrics
+
+### Outreach outcomes
+
+Outcomes are stored as immutable events on `OutreachOutcome`, linked to the original `OutreachMessage` and `Prospect`.
+
+Supported values:
+
+- `REPLIED`
+- `INTERESTED`
+- `NOT_INTERESTED`
+- `NO_RESPONSE`
+- `BOUNCED`
+
+Each event stores:
+
+- `outreachMessageId`
+- `prospectId`
+- `outcome`
+- `occurredAt`
+- optional operator `notes` (max 2,000 chars)
+- `recordedByEmail`
+
+Delivery state (`OutreachMessage.status = SENT`) and sales outcome are separate concepts. Recording an outcome must **not** mutate sent subject/body/content.
+
+### Prospect lifecycle
+
+`qualificationStatus` and `outreachStatus` remain separate:
+
+- Qualification = is this a worthwhile outreach target?
+- Outreach = what happened with outreach?
+
+`outreachStatus` is updated conservatively from outcomes (`REPLIED`, `INTERESTED`, `NOT_INTERESTED`) using merge rules so stronger terminal states are not accidentally downgraded.
+
+`CONVERTED` is set only by explicit lead conversion.
+
+### Suppression behavior
+
+Reuse `SuppressionEntry` and `canContactProspect()` / `canSendOutreachMessage()`.
+
+- **NOT_INTERESTED + suppress:** hostname suppression (`REPLIED_NOT_INTERESTED`)
+- **Explicit opt-out:** mandatory hostname + email suppression (`OPTED_OUT`)
+- **BOUNCED:** email-only suppression (`BOUNCED`) and contact status `SUPPRESSED`
+- **Converted lead:** hostname suppression (`CONVERTED`) plus `Prospect.leadId`
+- **Existing customer / inbound lead:** unchanged hard blocks from Sprint 1–5
+
+Bounce does **not** suppress the entire hostname when only one address failed.
+
+### Lead conversion
+
+Explicit operator action on the prospect detail page. Uses the existing `Lead` model and `/reports/[auditReportId]` workspace — no second CRM.
+
+Conversion:
+
+- Creates a new `Lead` or links an existing hostname match
+- Sets `Prospect.leadId`
+- Links `AuditReport.leadId` when present
+- Preserves campaign membership, contacts, outreach messages, and outcome history
+- Creates `LeadActivity` describing the originating campaign
+- Blocks future prospecting outreach for that prospect/hostname
+
+Duplicate prevention uses normalized hostname matching before create.
+
+### Campaign funnel metrics
+
+Deterministic counts from the database on the campaign page:
+
+| Metric | Definition |
+|---|---|
+| Discovered | discovery candidates returned across runs |
+| Imported | campaign prospects |
+| Audited | prospects with linked audit |
+| Qualified | `qualificationStatus = QUALIFIED` |
+| Selected Top N | `isSelectedTopN = true` |
+| Contacts Found | selected prospects with usable primary contact |
+| Drafts Generated | prospects with any outreach message |
+| Approved | prospects with approved/sent draft |
+| Sent | unique prospects with a `SENT` message |
+| Replied | unique prospects with `REPLIED` or `INTERESTED` outcome |
+| Interested | unique prospects with `INTERESTED` outcome |
+| Not Interested | unique prospects with `NOT_INTERESTED` outcome |
+| Converted to Lead | unique prospects with `leadId` or `CONVERTED` status |
+
+Rates:
+
+- Contact rate = contacts found / selected top N
+- Send rate = sent / contacts found
+- Reply rate = replied / sent
+- Interest rate = interested / sent
+- Lead conversion rate = converted / sent
+
+Prospect-level rates dedupe by prospect ID even when multiple messages/outcomes exist.
+
+### Privacy
+
+Outcome notes, contact emails, outreach drafts/history, and prospect identifiers remain internal-only. Public `/report` routes, PDFs, Professional APIs, Stripe checkout, and analytics sanitizers must not expose prospecting contact/outcome data.
+
+### Deferred
+
+- Gmail / Resend inbound parsing
+- Automated reply detection or AI classification
+- Follow-up sequences / scheduled sending
+- Autonomous conversion or CRM replacement
 
 

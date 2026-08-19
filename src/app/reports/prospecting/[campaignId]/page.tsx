@@ -5,10 +5,12 @@ import { ArrowLeft, Plus } from "lucide-react";
 
 import { Button, Card, Container } from "@/components/ui";
 import { AuditQualifyButton } from "@/components/prospecting/audit-qualify-button";
+import { CampaignFunnelPanel } from "@/components/prospecting/campaign-funnel-panel";
 import { DiscoverBusinessesButton } from "@/components/prospecting/discover-businesses-button";
 import { FindContactsButton } from "@/components/prospecting/find-contacts-button";
 import { GenerateDraftsButton } from "@/components/prospecting/generate-drafts-button";
 import { prisma } from "@/lib/prisma";
+import { loadCampaignFunnelMetrics } from "@/lib/prospecting/metrics/load-campaign-funnel";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import {
   campaignStatusLabel,
@@ -18,6 +20,7 @@ import {
   formatProspectLocation,
   qualificationLabelText,
   qualificationStatusLabel,
+  outreachStatusLabel,
 } from "@/lib/prospecting/labels";
 
 export const maxDuration = 300;
@@ -135,6 +138,7 @@ export default async function ProspectingCampaignPage({
   const latestQualification = campaign.qualificationRuns[0] ?? null;
   const latestContactRun = campaign.contactDiscoveryRuns[0] ?? null;
   const latestDraftRun = campaign.outreachDraftRuns[0] ?? null;
+  const funnelMetrics = await loadCampaignFunnelMetrics(campaignId);
 
   const selectedRows = prospects.filter((row) => row.isSelectedTopN);
   const contactsFound = selectedRows.filter((row) =>
@@ -202,7 +206,8 @@ export default async function ProspectingCampaignPage({
               Target {campaign.desiredQualifiedCount} credible qualified
               prospects in {campaign.locationLabel}
               {campaign.radiusMiles ? ` (${campaign.radiusMiles} miles)` : ""}.
-              Audits stay internal. No emails are sent from this screen.
+              Audits stay internal. Sending and outcome tracking require explicit
+              operator action on each prospect.
             </p>
           </div>
 
@@ -277,13 +282,24 @@ export default async function ProspectingCampaignPage({
             <li aria-hidden="true" className="self-center text-muted">
               →
             </li>
-            <li className="rounded-full border border-dashed border-border px-3 py-1 text-muted">
-              Sending (Coming in Sprint 5)
+            <li className="rounded-full border border-border bg-white px-3 py-1">
+              Sending
+            </li>
+            <li aria-hidden="true" className="self-center text-muted">
+              →
+            </li>
+            <li className="rounded-full border border-border bg-white px-3 py-1">
+              Outcomes & conversion
             </li>
           </ol>
           <p className="mt-3 text-sm text-muted">
-            Human review is required. No email leaves the system in Sprint 4.
+            Human review is required at every step. No automatic sending or reply
+            detection.
           </p>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <CampaignFunnelPanel metrics={funnelMetrics} />
         </Card>
 
         <Card variant="elevated" padding="lg">
@@ -470,6 +486,7 @@ export default async function ProspectingCampaignPage({
                   <th className="px-4 py-3 font-semibold">Contact confidence</th>
                   <th className="px-4 py-3 font-semibold">Contact source</th>
                   <th className="px-4 py-3 font-semibold">Draft status</th>
+                  <th className="px-4 py-3 font-semibold">Outreach</th>
                 </tr>
               </thead>
               <tbody>
@@ -533,6 +550,9 @@ export default async function ProspectingCampaignPage({
                       </td>
                       <td className="px-4 py-3">
                         {draftStatusLabel(draftStatus)}
+                      </td>
+                      <td className="px-4 py-3">
+                        {outreachStatusLabel(prospect.outreachStatus)}
                       </td>
                     </tr>
                   );

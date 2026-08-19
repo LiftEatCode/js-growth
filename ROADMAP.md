@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟡 Sprint 5 — Human Approval + Low-Volume Sending
+Status: 🟢 Sprint 6 — Outcomes, Lead Conversion & Campaign Metrics
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,7 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 5 (current):
+Sprint 6 (current):
 
 - Authenticated `/reports/prospecting` campaigns (Sprint 1)
 - Google Places discovery + human import (Sprint 2)
@@ -101,11 +101,15 @@ Sprint 5 (current):
 - Grounded AI outreach drafts for human review
 - Explicit draft approval and per-message Resend sending with final eligibility re-checks
 - Daily send cap and duplicate-send protection
+- Manual outreach outcome recording with history trail
+- NOT_INTERESTED / opt-out / bounce / converted-lead suppression
+- Explicit Prospect → Lead conversion into the existing inbound pipeline
+- Campaign funnel metrics with deterministic rate definitions
 
-Later sprints (not started):
+Later milestones (not started):
 
-- Human approval, then Resend send
-- Reply tracking and Prospect → Lead conversion
+- Gmail / Resend inbound reply detection
+- Automated follow-ups or sequences
 
 V1 sending, when built, remains **human-approved**. No autonomous outbound.
 

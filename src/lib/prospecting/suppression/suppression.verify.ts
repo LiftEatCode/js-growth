@@ -71,4 +71,18 @@ assert(
   "missing email is not guessed",
 );
 
+assert(
+  !canContactProspect({
+    hostname: "business.com",
+    email: "office@business.com",
+    suppressedHostnames: new Set(),
+    suppressedEmails: new Set(),
+    customerHostnames: new Set(),
+    existingLead: false,
+    convertedProspect: true,
+    contactStatus: "SELECTED",
+  }).allowed,
+  "converted prospect blocks outreach",
+);
+
 console.log("suppression.verify.ts passed");

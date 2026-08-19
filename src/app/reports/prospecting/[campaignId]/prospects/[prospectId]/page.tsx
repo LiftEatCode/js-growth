@@ -6,9 +6,15 @@ import { ArrowLeft } from "lucide-react";
 import { ProspectAuditActions } from "@/components/prospecting/prospect-audit-actions";
 import { ProspectContactsPanel } from "@/components/prospecting/prospect-contacts-panel";
 import { OutreachDraftEditor } from "@/components/prospecting/outreach-draft-editor";
+import { OutreachOutcomePanel } from "@/components/prospecting/outreach-outcome-panel";
+import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-lead-conversion-panel";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
+import { findExistingLeadByHostname } from "@/lib/prospecting/leads/find-existing";
+import { loadProspectSuppressionState } from "@/lib/prospecting/metrics/load-campaign-funnel";
+import { canConvertProspect } from "@/lib/prospecting/outreach/lifecycle";
+import { outreachOutcomeLabel } from "@/lib/prospecting/outreach/outcome-types";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import {
   outreachStatusLabel,
@@ -75,6 +81,20 @@ export default async function CampaignProspectDetailPage({
             orderBy: { createdAt: "desc" },
             take: 20,
           },
+          outreachOutcomes: {
+            where: {
+              outreachMessage: { campaignId },
+            },
+            orderBy: { occurredAt: "desc" },
+            include: {
+              outreachMessage: {
+                select: {
+                  toEmail: true,
+                  subject: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -111,6 +131,31 @@ export default async function CampaignProspectDetailPage({
       message.status === "SENDING" ||
       message.status === "SENT",
   );
+  const sentMessages = prospect.outreachMessages.filter(
+    (message) => message.status === "SENT" && message.sentAt,
+  );
+  const primaryContact =
+    prospect.contacts.find((contact) => contact.isPrimary) ??
+    prospect.contacts[0] ??
+    null;
+  const latestOutcome = prospect.outreachOutcomes[0]?.outcome ?? null;
+  const [existingLead, suppression] = await Promise.all([
+    findExistingLeadByHostname(prospect.hostname),
+    loadProspectSuppressionState({
+      hostname: prospect.hostname,
+      emails: prospect.contacts.map((contact) => contact.normalizedEmail),
+    }),
+  ]);
+  const canConvert = canConvertProspect({
+    outreachStatus: prospect.outreachStatus,
+    leadId: prospect.leadId,
+    hasSentMessage: sentMessages.length > 0,
+    latestOutcome,
+  });
+  const contactName = primaryContact?.name?.trim() ?? "";
+  const defaultFirstName = contactName.split(/\s+/)[0] ?? "";
+  const defaultLastName =
+    contactName.split(/\s+/).slice(1).join(" ") || "Contact";
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -313,6 +358,9 @@ export default async function CampaignProspectDetailPage({
             canGenerate={
               membership.isSelectedTopN &&
               prospect.qualificationStatus === "QUALIFIED" &&
+              !prospect.leadId &&
+              prospect.outreachStatus !== "CONVERTED" &&
+              prospect.outreachStatus !== "NOT_INTERESTED" &&
               prospect.contacts.some(
                 (contact) =>
                   contact.isPrimary &&
@@ -338,6 +386,51 @@ export default async function CampaignProspectDetailPage({
                 : null
             }
           />
+        </Card>
+
+        {sentMessages.length > 0 ? (
+          <Card variant="elevated" padding="lg">
+            <OutreachOutcomePanel
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              sentMessages={sentMessages.map((message) => ({
+                id: message.id,
+                toEmail: message.toEmail,
+                subject: message.subject,
+                sentAt: formatDate(message.sentAt!),
+              }))}
+            />
+          </Card>
+        ) : null}
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Outcome history
+          </h2>
+          {prospect.outreachOutcomes.length === 0 ? (
+            <p className="mt-3 text-sm leading-6 text-muted">
+              No outreach outcomes recorded yet.
+            </p>
+          ) : (
+            <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
+              {prospect.outreachOutcomes.map((row) => (
+                <li key={row.id} className="space-y-2 px-4 py-3">
+                  <p className="text-sm font-semibold text-brand">
+                    {outreachOutcomeLabel(row.outcome)}
+                  </p>
+                  <p className="text-xs text-muted">
+                    {formatDate(row.occurredAt)}
+                    {row.outreachMessage
+                      ? ` · ${row.outreachMessage.toEmail}`
+                      : ""}
+                  </p>
+                  {row.notes ? (
+                    <p className="text-sm text-muted">{row.notes}</p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
 
         <Card variant="elevated" padding="lg">
@@ -374,6 +467,52 @@ export default async function CampaignProspectDetailPage({
               ))}
             </ul>
           )}
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <ProspectLeadConversionPanel
+            campaignId={membership.campaign.id}
+            prospectId={prospect.id}
+            businessName={prospect.businessName}
+            canConvert={canConvert}
+            convertedLeadId={prospect.leadId}
+            leadReportId={prospect.auditReportId}
+            defaultFirstName={defaultFirstName}
+            defaultLastName={defaultLastName}
+            defaultEmail={primaryContact?.email ?? ""}
+            defaultPhone={prospect.phone ?? ""}
+            existingLead={
+              existingLead && !prospect.leadId ? existingLead : null
+            }
+          />
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Suppression / do not contact
+          </h2>
+          <ul className="mt-3 space-y-2 text-sm text-muted">
+            {prospect.leadId || prospect.outreachStatus === "CONVERTED" ? (
+              <li>Converted to lead — future prospecting outreach is blocked.</li>
+            ) : null}
+            {suppression.customerHostname ? (
+              <li>This hostname is marked as a customer.</li>
+            ) : null}
+            {suppression.hostnameSuppressed ? (
+              <li>This hostname is on the suppression list.</li>
+            ) : null}
+            {suppression.emailSuppressed.length > 0 ? (
+              <li>
+                Suppressed email addresses: {suppression.emailSuppressed.join(", ")}
+              </li>
+            ) : null}
+            {!prospect.leadId &&
+            !suppression.hostnameSuppressed &&
+            suppression.emailSuppressed.length === 0 &&
+            !suppression.customerHostname ? (
+              <li>No active suppression entries for this prospect.</li>
+            ) : null}
+          </ul>
         </Card>
 
         <Card variant="elevated" padding="lg">

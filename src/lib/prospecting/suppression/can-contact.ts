@@ -4,6 +4,7 @@ export type ContactBlockReason =
   | "EMAIL_SUPPRESSED"
   | "EXISTING_LEAD"
   | "CUSTOMER"
+  | "PROSPECT_CONVERTED"
   | "CONTACT_REJECTED"
   | "CONTACT_SUPPRESSED"
   | "CONTACT_STALE";
@@ -15,6 +16,7 @@ export interface CanContactProspectInput {
   suppressedEmails: Set<string>;
   customerHostnames: Set<string>;
   existingLead: boolean;
+  convertedProspect?: boolean;
   contactStatus?: string | null;
 }
 
@@ -50,6 +52,10 @@ export function canContactProspect(
     reasons.push("EXISTING_LEAD");
   }
 
+  if (input.convertedProspect) {
+    reasons.push("PROSPECT_CONVERTED");
+  }
+
   if (hostname && input.customerHostnames.has(hostname)) {
     reasons.push("CUSTOMER");
   }
@@ -82,6 +88,8 @@ export function contactBlockLabel(reason: ContactBlockReason): string {
       return "This email address is suppressed.";
     case "EXISTING_LEAD":
       return "An inbound lead already uses this website.";
+    case "PROSPECT_CONVERTED":
+      return "This prospect was converted to a lead.";
     case "CUSTOMER":
       return "This business is marked as a customer.";
     case "CONTACT_REJECTED":

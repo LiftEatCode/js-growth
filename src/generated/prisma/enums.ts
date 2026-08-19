@@ -174,10 +174,22 @@ export const SuppressionReason = {
   CUSTOMER: 'CUSTOMER',
   OPTED_OUT: 'OPTED_OUT',
   BOUNCED: 'BOUNCED',
-  MANUAL: 'MANUAL'
+  MANUAL: 'MANUAL',
+  CONVERTED: 'CONVERTED'
 } as const
 
 export type SuppressionReason = (typeof SuppressionReason)[keyof typeof SuppressionReason]
+
+
+export const OutreachOutcomeType = {
+  REPLIED: 'REPLIED',
+  INTERESTED: 'INTERESTED',
+  NOT_INTERESTED: 'NOT_INTERESTED',
+  NO_RESPONSE: 'NO_RESPONSE',
+  BOUNCED: 'BOUNCED'
+} as const
+
+export type OutreachOutcomeType = (typeof OutreachOutcomeType)[keyof typeof OutreachOutcomeType]
 
 
 export const DiscoveryRunStatus = {
