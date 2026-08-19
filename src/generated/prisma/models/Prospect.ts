@@ -43,6 +43,7 @@ export type ProspectMinAggregateOutputType = {
   outreachStatus: $Enums.ProspectOutreachStatus | null
   skipReason: string | null
   notes: string | null
+  lastContactDiscoveryAt: Date | null
   auditReportId: string | null
   leadId: string | null
 }
@@ -66,6 +67,7 @@ export type ProspectMaxAggregateOutputType = {
   outreachStatus: $Enums.ProspectOutreachStatus | null
   skipReason: string | null
   notes: string | null
+  lastContactDiscoveryAt: Date | null
   auditReportId: string | null
   leadId: string | null
 }
@@ -89,6 +91,7 @@ export type ProspectCountAggregateOutputType = {
   outreachStatus: number
   skipReason: number
   notes: number
+  lastContactDiscoveryAt: number
   auditReportId: number
   leadId: number
   _all: number
@@ -114,6 +117,7 @@ export type ProspectMinAggregateInputType = {
   outreachStatus?: true
   skipReason?: true
   notes?: true
+  lastContactDiscoveryAt?: true
   auditReportId?: true
   leadId?: true
 }
@@ -137,6 +141,7 @@ export type ProspectMaxAggregateInputType = {
   outreachStatus?: true
   skipReason?: true
   notes?: true
+  lastContactDiscoveryAt?: true
   auditReportId?: true
   leadId?: true
 }
@@ -160,6 +165,7 @@ export type ProspectCountAggregateInputType = {
   outreachStatus?: true
   skipReason?: true
   notes?: true
+  lastContactDiscoveryAt?: true
   auditReportId?: true
   leadId?: true
   _all?: true
@@ -256,6 +262,7 @@ export type ProspectGroupByOutputType = {
   outreachStatus: $Enums.ProspectOutreachStatus
   skipReason: string | null
   notes: string | null
+  lastContactDiscoveryAt: Date | null
   auditReportId: string | null
   leadId: string | null
   _count: ProspectCountAggregateOutputType | null
@@ -300,6 +307,7 @@ export type ProspectWhereInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFilter<"Prospect"> | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.StringNullableFilter<"Prospect"> | string | null
   notes?: Prisma.StringNullableFilter<"Prospect"> | string | null
+  lastContactDiscoveryAt?: Prisma.DateTimeNullableFilter<"Prospect"> | Date | string | null
   auditReportId?: Prisma.StringNullableFilter<"Prospect"> | string | null
   leadId?: Prisma.StringNullableFilter<"Prospect"> | string | null
   auditReport?: Prisma.XOR<Prisma.AuditReportNullableScalarRelationFilter, Prisma.AuditReportWhereInput> | null
@@ -329,6 +337,7 @@ export type ProspectOrderByWithRelationInput = {
   outreachStatus?: Prisma.SortOrder
   skipReason?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastContactDiscoveryAt?: Prisma.SortOrderInput | Prisma.SortOrder
   auditReportId?: Prisma.SortOrderInput | Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
   auditReport?: Prisma.AuditReportOrderByWithRelationInput
@@ -361,6 +370,7 @@ export type ProspectWhereUniqueInput = Prisma.AtLeast<{
   outreachStatus?: Prisma.EnumProspectOutreachStatusFilter<"Prospect"> | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.StringNullableFilter<"Prospect"> | string | null
   notes?: Prisma.StringNullableFilter<"Prospect"> | string | null
+  lastContactDiscoveryAt?: Prisma.DateTimeNullableFilter<"Prospect"> | Date | string | null
   auditReportId?: Prisma.StringNullableFilter<"Prospect"> | string | null
   leadId?: Prisma.StringNullableFilter<"Prospect"> | string | null
   auditReport?: Prisma.XOR<Prisma.AuditReportNullableScalarRelationFilter, Prisma.AuditReportWhereInput> | null
@@ -390,6 +400,7 @@ export type ProspectOrderByWithAggregationInput = {
   outreachStatus?: Prisma.SortOrder
   skipReason?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastContactDiscoveryAt?: Prisma.SortOrderInput | Prisma.SortOrder
   auditReportId?: Prisma.SortOrderInput | Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProspectCountOrderByAggregateInput
@@ -419,6 +430,7 @@ export type ProspectScalarWhereWithAggregatesInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusWithAggregatesFilter<"Prospect"> | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
+  lastContactDiscoveryAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Prospect"> | Date | string | null
   auditReportId?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
   leadId?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
 }
@@ -442,6 +454,7 @@ export type ProspectCreateInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
@@ -469,6 +482,7 @@ export type ProspectUncheckedCreateInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
@@ -496,6 +510,7 @@ export type ProspectUpdateInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
@@ -523,6 +538,7 @@ export type ProspectUncheckedUpdateInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
@@ -550,6 +566,7 @@ export type ProspectCreateManyInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   leadId?: string | null
 }
@@ -573,6 +590,7 @@ export type ProspectUpdateManyMutationInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ProspectUncheckedUpdateManyInput = {
@@ -594,6 +612,7 @@ export type ProspectUncheckedUpdateManyInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -627,6 +646,7 @@ export type ProspectCountOrderByAggregateInput = {
   outreachStatus?: Prisma.SortOrder
   skipReason?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  lastContactDiscoveryAt?: Prisma.SortOrder
   auditReportId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
 }
@@ -650,6 +670,7 @@ export type ProspectMaxOrderByAggregateInput = {
   outreachStatus?: Prisma.SortOrder
   skipReason?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  lastContactDiscoveryAt?: Prisma.SortOrder
   auditReportId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
 }
@@ -673,6 +694,7 @@ export type ProspectMinOrderByAggregateInput = {
   outreachStatus?: Prisma.SortOrder
   skipReason?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  lastContactDiscoveryAt?: Prisma.SortOrder
   auditReportId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
 }
@@ -860,6 +882,7 @@ export type ProspectCreateWithoutAuditReportInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
@@ -886,6 +909,7 @@ export type ProspectUncheckedCreateWithoutAuditReportInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
@@ -941,6 +965,7 @@ export type ProspectScalarWhereInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFilter<"Prospect"> | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.StringNullableFilter<"Prospect"> | string | null
   notes?: Prisma.StringNullableFilter<"Prospect"> | string | null
+  lastContactDiscoveryAt?: Prisma.DateTimeNullableFilter<"Prospect"> | Date | string | null
   auditReportId?: Prisma.StringNullableFilter<"Prospect"> | string | null
   leadId?: Prisma.StringNullableFilter<"Prospect"> | string | null
 }
@@ -964,6 +989,7 @@ export type ProspectCreateWithoutLeadInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
@@ -990,6 +1016,7 @@ export type ProspectUncheckedCreateWithoutLeadInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
@@ -1042,6 +1069,7 @@ export type ProspectCreateWithoutCampaignProspectsInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
@@ -1068,6 +1096,7 @@ export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   leadId?: string | null
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
@@ -1110,6 +1139,7 @@ export type ProspectUpdateWithoutCampaignProspectsInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
@@ -1136,6 +1166,7 @@ export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
@@ -1162,6 +1193,7 @@ export type ProspectCreateWithoutContactsInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
@@ -1188,6 +1220,7 @@ export type ProspectUncheckedCreateWithoutContactsInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
@@ -1230,6 +1263,7 @@ export type ProspectUpdateWithoutContactsInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
@@ -1256,6 +1290,7 @@ export type ProspectUncheckedUpdateWithoutContactsInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
@@ -1282,6 +1317,7 @@ export type ProspectCreateWithoutOutreachMessagesInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
@@ -1308,6 +1344,7 @@ export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
@@ -1350,6 +1387,7 @@ export type ProspectUpdateWithoutOutreachMessagesInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
@@ -1376,6 +1414,7 @@ export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
@@ -1402,6 +1441,7 @@ export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
@@ -1428,6 +1468,7 @@ export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
@@ -1470,6 +1511,7 @@ export type ProspectUpdateWithoutImportedDiscoveryCandidatesInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
@@ -1496,6 +1538,7 @@ export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
@@ -1522,6 +1565,7 @@ export type ProspectCreateManyAuditReportInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   leadId?: string | null
 }
 
@@ -1544,6 +1588,7 @@ export type ProspectUpdateWithoutAuditReportInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
@@ -1570,6 +1615,7 @@ export type ProspectUncheckedUpdateWithoutAuditReportInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
@@ -1596,6 +1642,7 @@ export type ProspectUncheckedUpdateManyWithoutAuditReportInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -1618,6 +1665,7 @@ export type ProspectCreateManyLeadInput = {
   outreachStatus?: $Enums.ProspectOutreachStatus
   skipReason?: string | null
   notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
   auditReportId?: string | null
 }
 
@@ -1640,6 +1688,7 @@ export type ProspectUpdateWithoutLeadInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
@@ -1666,6 +1715,7 @@ export type ProspectUncheckedUpdateWithoutLeadInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
@@ -1692,6 +1742,7 @@ export type ProspectUncheckedUpdateManyWithoutLeadInput = {
   outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
   skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -1772,6 +1823,7 @@ export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   outreachStatus?: boolean
   skipReason?: boolean
   notes?: boolean
+  lastContactDiscoveryAt?: boolean
   auditReportId?: boolean
   leadId?: boolean
   auditReport?: boolean | Prisma.Prospect$auditReportArgs<ExtArgs>
@@ -1802,6 +1854,7 @@ export type ProspectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   outreachStatus?: boolean
   skipReason?: boolean
   notes?: boolean
+  lastContactDiscoveryAt?: boolean
   auditReportId?: boolean
   leadId?: boolean
   auditReport?: boolean | Prisma.Prospect$auditReportArgs<ExtArgs>
@@ -1827,6 +1880,7 @@ export type ProspectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   outreachStatus?: boolean
   skipReason?: boolean
   notes?: boolean
+  lastContactDiscoveryAt?: boolean
   auditReportId?: boolean
   leadId?: boolean
   auditReport?: boolean | Prisma.Prospect$auditReportArgs<ExtArgs>
@@ -1852,11 +1906,12 @@ export type ProspectSelectScalar = {
   outreachStatus?: boolean
   skipReason?: boolean
   notes?: boolean
+  lastContactDiscoveryAt?: boolean
   auditReportId?: boolean
   leadId?: boolean
 }
 
-export type ProspectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "businessName" | "website" | "hostname" | "industry" | "city" | "state" | "address" | "phone" | "sourceType" | "sourceRef" | "discoveredAt" | "qualificationStatus" | "outreachStatus" | "skipReason" | "notes" | "auditReportId" | "leadId", ExtArgs["result"]["prospect"]>
+export type ProspectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "businessName" | "website" | "hostname" | "industry" | "city" | "state" | "address" | "phone" | "sourceType" | "sourceRef" | "discoveredAt" | "qualificationStatus" | "outreachStatus" | "skipReason" | "notes" | "lastContactDiscoveryAt" | "auditReportId" | "leadId", ExtArgs["result"]["prospect"]>
 export type ProspectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditReport?: boolean | Prisma.Prospect$auditReportArgs<ExtArgs>
   lead?: boolean | Prisma.Prospect$leadArgs<ExtArgs>
@@ -1904,6 +1959,7 @@ export type $ProspectPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     outreachStatus: $Enums.ProspectOutreachStatus
     skipReason: string | null
     notes: string | null
+    lastContactDiscoveryAt: Date | null
     auditReportId: string | null
     leadId: string | null
   }, ExtArgs["result"]["prospect"]>
@@ -2353,6 +2409,7 @@ export interface ProspectFieldRefs {
   readonly outreachStatus: Prisma.FieldRef<"Prospect", 'ProspectOutreachStatus'>
   readonly skipReason: Prisma.FieldRef<"Prospect", 'String'>
   readonly notes: Prisma.FieldRef<"Prospect", 'String'>
+  readonly lastContactDiscoveryAt: Prisma.FieldRef<"Prospect", 'DateTime'>
   readonly auditReportId: Prisma.FieldRef<"Prospect", 'String'>
   readonly leadId: Prisma.FieldRef<"Prospect", 'String'>
 }

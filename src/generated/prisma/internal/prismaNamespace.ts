@@ -409,7 +409,9 @@ export const ModelName = {
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
   ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
-  ProspectQualificationRun: 'ProspectQualificationRun'
+  ProspectQualificationRun: 'ProspectQualificationRun',
+  ProspectContactDiscoveryRun: 'ProspectContactDiscoveryRun',
+  ProspectOutreachDraftRun: 'ProspectOutreachDraftRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1391,6 +1393,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProspectContactDiscoveryRun: {
+      payload: Prisma.$ProspectContactDiscoveryRunPayload<ExtArgs>
+      fields: Prisma.ProspectContactDiscoveryRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProspectContactDiscoveryRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProspectContactDiscoveryRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>
+        }
+        findFirst: {
+          args: Prisma.ProspectContactDiscoveryRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProspectContactDiscoveryRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>
+        }
+        findMany: {
+          args: Prisma.ProspectContactDiscoveryRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>[]
+        }
+        create: {
+          args: Prisma.ProspectContactDiscoveryRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>
+        }
+        createMany: {
+          args: Prisma.ProspectContactDiscoveryRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProspectContactDiscoveryRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>[]
+        }
+        delete: {
+          args: Prisma.ProspectContactDiscoveryRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>
+        }
+        update: {
+          args: Prisma.ProspectContactDiscoveryRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProspectContactDiscoveryRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProspectContactDiscoveryRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProspectContactDiscoveryRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProspectContactDiscoveryRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectContactDiscoveryRunPayload>
+        }
+        aggregate: {
+          args: Prisma.ProspectContactDiscoveryRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProspectContactDiscoveryRun>
+        }
+        groupBy: {
+          args: Prisma.ProspectContactDiscoveryRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectContactDiscoveryRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProspectContactDiscoveryRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectContactDiscoveryRunCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProspectOutreachDraftRun: {
+      payload: Prisma.$ProspectOutreachDraftRunPayload<ExtArgs>
+      fields: Prisma.ProspectOutreachDraftRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProspectOutreachDraftRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProspectOutreachDraftRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>
+        }
+        findFirst: {
+          args: Prisma.ProspectOutreachDraftRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProspectOutreachDraftRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>
+        }
+        findMany: {
+          args: Prisma.ProspectOutreachDraftRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>[]
+        }
+        create: {
+          args: Prisma.ProspectOutreachDraftRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>
+        }
+        createMany: {
+          args: Prisma.ProspectOutreachDraftRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProspectOutreachDraftRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>[]
+        }
+        delete: {
+          args: Prisma.ProspectOutreachDraftRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>
+        }
+        update: {
+          args: Prisma.ProspectOutreachDraftRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProspectOutreachDraftRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProspectOutreachDraftRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProspectOutreachDraftRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProspectOutreachDraftRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectOutreachDraftRunPayload>
+        }
+        aggregate: {
+          args: Prisma.ProspectOutreachDraftRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProspectOutreachDraftRun>
+        }
+        groupBy: {
+          args: Prisma.ProspectOutreachDraftRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectOutreachDraftRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProspectOutreachDraftRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectOutreachDraftRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1543,6 +1693,7 @@ export const ProspectScalarFieldEnum = {
   outreachStatus: 'outreachStatus',
   skipReason: 'skipReason',
   notes: 'notes',
+  lastContactDiscoveryAt: 'lastContactDiscoveryAt',
   auditReportId: 'auditReportId',
   leadId: 'leadId'
 } as const
@@ -1566,12 +1717,19 @@ export type CampaignProspectScalarFieldEnum = (typeof CampaignProspectScalarFiel
 
 export const ProspectContactScalarFieldEnum = {
   id: 'id',
-  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  discoveredAt: 'discoveredAt',
+  lastVerifiedAt: 'lastVerifiedAt',
   prospectId: 'prospectId',
   email: 'email',
+  normalizedEmail: 'normalizedEmail',
+  name: 'name',
+  role: 'role',
   sourceType: 'sourceType',
   sourceUrl: 'sourceUrl',
   confidence: 'confidence',
+  status: 'status',
   isPrimary: 'isPrimary'
 } as const
 
@@ -1581,15 +1739,25 @@ export type ProspectContactScalarFieldEnum = (typeof ProspectContactScalarFieldE
 export const OutreachMessageScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   prospectId: 'prospectId',
   campaignId: 'campaignId',
+  contactId: 'contactId',
+  auditReportId: 'auditReportId',
   toEmail: 'toEmail',
   fromEmail: 'fromEmail',
   replyTo: 'replyTo',
   subject: 'subject',
   bodyText: 'bodyText',
   findingIds: 'findingIds',
+  primaryFindingId: 'primaryFindingId',
+  secondaryFindingId: 'secondaryFindingId',
   status: 'status',
+  generationModel: 'generationModel',
+  generationAttemptCount: 'generationAttemptCount',
+  promptTokens: 'promptTokens',
+  completionTokens: 'completionTokens',
+  generationJson: 'generationJson',
   providerMessageId: 'providerMessageId',
   sentAt: 'sentAt',
   error: 'error',
@@ -1683,6 +1851,49 @@ export const ProspectQualificationRunScalarFieldEnum = {
 } as const
 
 export type ProspectQualificationRunScalarFieldEnum = (typeof ProspectQualificationRunScalarFieldEnum)[keyof typeof ProspectQualificationRunScalarFieldEnum]
+
+
+export const ProspectContactDiscoveryRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  status: 'status',
+  requested: 'requested',
+  processed: 'processed',
+  found: 'found',
+  noContact: 'noContact',
+  failed: 'failed',
+  reused: 'reused',
+  suppressed: 'suppressed',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectContactDiscoveryRunScalarFieldEnum = (typeof ProspectContactDiscoveryRunScalarFieldEnum)[keyof typeof ProspectContactDiscoveryRunScalarFieldEnum]
+
+
+export const ProspectOutreachDraftRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  status: 'status',
+  requested: 'requested',
+  processed: 'processed',
+  generated: 'generated',
+  reused: 'reused',
+  failed: 'failed',
+  skipped: 'skipped',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectOutreachDraftRunScalarFieldEnum = (typeof ProspectOutreachDraftRunScalarFieldEnum)[keyof typeof ProspectOutreachDraftRunScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1957,6 +2168,20 @@ export type ListEnumProspectContactConfidenceFieldRefInput<$PrismaModel> = Field
 
 
 /**
+ * Reference to a field of type 'ProspectContactStatus'
+ */
+export type EnumProspectContactStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectContactStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProspectContactStatus[]'
+ */
+export type ListEnumProspectContactStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectContactStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'OutreachMessageStatus'
  */
 export type EnumOutreachMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachMessageStatus'>
@@ -2217,6 +2442,8 @@ export type GlobalOmitConfig = {
   prospectDiscoveryRun?: Prisma.ProspectDiscoveryRunOmit
   prospectDiscoveryCandidate?: Prisma.ProspectDiscoveryCandidateOmit
   prospectQualificationRun?: Prisma.ProspectQualificationRunOmit
+  prospectContactDiscoveryRun?: Prisma.ProspectContactDiscoveryRunOmit
+  prospectOutreachDraftRun?: Prisma.ProspectOutreachDraftRunOmit
 }
 
 /* Types for Logging */

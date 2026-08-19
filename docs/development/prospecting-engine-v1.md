@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 3 — Automated Website Audit + Prospect Qualification**
+Current status: **Sprint 4 — Public Contact Discovery + AI Outreach Drafting**
 
 ## Product principle
 
@@ -38,7 +38,7 @@ Sending remains:
 
 **Find → Audit → Qualify → Draft → HUMAN APPROVAL → Send**
 
-V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second human gate: **Import Selected Prospects**. Sprint 3 adds Audit → Qualify with a human **Audit & Qualify** trigger. Contact discovery and sending are not built yet.
+V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second human gate: **Import Selected Prospects**. Sprint 3 adds Audit → Qualify with a human **Audit & Qualify** trigger. Sprint 4 adds **Find Contacts** and **Generate Missing Drafts**. Sending is not built yet.
 
 ## Planned stages
 
@@ -47,7 +47,7 @@ V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second 
 | 1 | Data foundation + manual prospect UI | Complete |
 | 2 | Legitimate business discovery provider | Complete |
 | 3 | Deterministic Website Growth Audit qualification | Complete |
-| 4 | Public contact discovery + outreach drafts | Not started |
+| 4 | Public contact discovery + outreach drafts | Complete |
 | 5 | Approval + Resend sending | Not started |
 | 6 | Tracking, Lead conversion, hardening | Not started |
 
@@ -276,4 +276,95 @@ If none are credible: `qualificationStatus = SKIPPED`, skip reason `NO_CREDIBLE_
 - One `RUNNING` `ProspectQualificationRun` per campaign
 - No Google Places calls during qualification
 - Manual operator trigger only
+
+## Sprint 4 — Public contact discovery + AI drafts
+
+Selected Top N qualified prospects can be processed for first-party public emails, then a grounded outreach draft.
+
+Operator workflow:
+
+1. Discover businesses
+2. Import selected businesses
+3. Audit & Qualify
+4. System selects Top N
+5. Find Contacts
+6. Generate Missing Drafts
+7. Review contact provenance and edit the draft
+8. **Stop.** No email is sent.
+
+### No guessed emails
+
+An email must appear in publicly accessible first-party business content. The system does not generate `info@`, `contact@`, `owner@`, or similar addresses.
+
+`NO_PUBLIC_EMAIL_FOUND` is a valid non-error outcome. Qualification remains intact.
+
+### First-party discovery
+
+`ProspectContactDiscoveryService` uses the Prospect website only. No Hunter/Apollo/Clearbit provider is wired.
+
+Behavior:
+
+- Fetch the homepage with existing SSRF protections
+- Extract mailto links and visible emails
+- Follow a small set of same-host contact/about/team links actually found on the page
+- Cap: **5 pages per prospect, including the homepage**
+- Do not crawl the whole site or follow external links
+- Simple deterministic obfuscations such as `name [at] domain [dot] com` are allowed
+- No CAPTCHA bypass, browser automation, social scraping, WHOIS, or data-broker collection
+
+Provenance stored on `ProspectContact`:
+
+- email / normalizedEmail
+- source URL
+- source type (`WEBSITE_HOMEPAGE`, `WEBSITE_CONTACT_PAGE`, `WEBSITE_ABOUT_PAGE`, `WEBSITE_TEAM_PAGE`, `WEBSITE_OTHER`)
+- confidence (`HIGH` matching website domain, `MEDIUM` first-party consumer mailbox such as Gmail, `LOW` otherwise)
+- discovered / last verified timestamps
+
+Generic published role accounts (`info@`, `office@`, `hello@`, and similar) are acceptable when they actually appear. Published Gmail/Outlook addresses on the business site are kept and marked first-party, not rejected.
+
+### Contact selection and suppression
+
+A primary contact is chosen deterministically (contact page, then homepage, then about/team, then other). The operator can change primary or reject a contact.
+
+Before a contact is treated as usable for drafting, `canContactProspect()` checks:
+
+- hostname suppression
+- email suppression
+- existing inbound Lead
+- customer suppression
+- rejected / stale contact status
+
+This helper must be called again in Sprint 5 before send. Sprint 4 approval does not authorize sending.
+
+### Batch safeguards
+
+- `MAX_CONTACT_PAGES_PER_PROSPECT = 5`
+- `MAX_CONTACT_DISCOVERY_PER_RUN = 10`
+- `MAX_CONTACT_DISCOVERY_CONCURRENCY = 2`
+- `CONTACT_TTL = 30 days` (reuse recent contacts; Recheck Contacts can force a crawl)
+- One `RUNNING` `ProspectContactDiscoveryRun` per campaign
+- `MAX_AI_DRAFTS_PER_RUN = 5`
+- `MAX_AI_DRAFT_CONCURRENCY = 1`
+- One `RUNNING` `ProspectOutreachDraftRun` per campaign
+- No Google Places calls
+- No new Website Growth Audits during contact discovery
+- No Resend / outbound email
+- OpenAI model: existing `OPENAI_AUDIT_MODEL` (default `gpt-4.1-mini`)
+
+### AI grounding
+
+Drafts are generated only for selected Top N qualified prospects that have a primary public contact, a usable prospecting audit, and a credible allowlisted finding.
+
+The model receives a compact JSON context (business, location, one primary finding, optional secondary, score band). It does not receive raw HTML, the full audit JSON, Stripe data, report UUIDs, or Google Place IDs.
+
+Output is schema-validated. Drafts that mention internal prospecting, leak scores/IDs, use placeholders, or make unsupported numeric/aggressive claims are not stored.
+
+Existing `DRAFT` / `NEEDS_REVIEW` / `APPROVED` messages are reused. Regeneration is an explicit operator action.
+
+### Human review
+
+Operators can edit recipient (primary contact), subject, and body, then save. **Mark Approved** only changes status. The UI states that no email is sent in Sprint 4.
+
+Public `/report` pages, PDFs, Professional APIs, and analytics must not receive `ProspectContact` or `OutreachMessage` data.
+
 

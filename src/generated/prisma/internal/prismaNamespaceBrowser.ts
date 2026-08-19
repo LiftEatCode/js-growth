@@ -63,7 +63,9 @@ export const ModelName = {
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
   ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
-  ProspectQualificationRun: 'ProspectQualificationRun'
+  ProspectQualificationRun: 'ProspectQualificationRun',
+  ProspectContactDiscoveryRun: 'ProspectContactDiscoveryRun',
+  ProspectOutreachDraftRun: 'ProspectOutreachDraftRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -195,6 +197,7 @@ export const ProspectScalarFieldEnum = {
   outreachStatus: 'outreachStatus',
   skipReason: 'skipReason',
   notes: 'notes',
+  lastContactDiscoveryAt: 'lastContactDiscoveryAt',
   auditReportId: 'auditReportId',
   leadId: 'leadId'
 } as const
@@ -218,12 +221,19 @@ export type CampaignProspectScalarFieldEnum = (typeof CampaignProspectScalarFiel
 
 export const ProspectContactScalarFieldEnum = {
   id: 'id',
-  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  discoveredAt: 'discoveredAt',
+  lastVerifiedAt: 'lastVerifiedAt',
   prospectId: 'prospectId',
   email: 'email',
+  normalizedEmail: 'normalizedEmail',
+  name: 'name',
+  role: 'role',
   sourceType: 'sourceType',
   sourceUrl: 'sourceUrl',
   confidence: 'confidence',
+  status: 'status',
   isPrimary: 'isPrimary'
 } as const
 
@@ -233,15 +243,25 @@ export type ProspectContactScalarFieldEnum = (typeof ProspectContactScalarFieldE
 export const OutreachMessageScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   prospectId: 'prospectId',
   campaignId: 'campaignId',
+  contactId: 'contactId',
+  auditReportId: 'auditReportId',
   toEmail: 'toEmail',
   fromEmail: 'fromEmail',
   replyTo: 'replyTo',
   subject: 'subject',
   bodyText: 'bodyText',
   findingIds: 'findingIds',
+  primaryFindingId: 'primaryFindingId',
+  secondaryFindingId: 'secondaryFindingId',
   status: 'status',
+  generationModel: 'generationModel',
+  generationAttemptCount: 'generationAttemptCount',
+  promptTokens: 'promptTokens',
+  completionTokens: 'completionTokens',
+  generationJson: 'generationJson',
   providerMessageId: 'providerMessageId',
   sentAt: 'sentAt',
   error: 'error',
@@ -335,6 +355,49 @@ export const ProspectQualificationRunScalarFieldEnum = {
 } as const
 
 export type ProspectQualificationRunScalarFieldEnum = (typeof ProspectQualificationRunScalarFieldEnum)[keyof typeof ProspectQualificationRunScalarFieldEnum]
+
+
+export const ProspectContactDiscoveryRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  status: 'status',
+  requested: 'requested',
+  processed: 'processed',
+  found: 'found',
+  noContact: 'noContact',
+  failed: 'failed',
+  reused: 'reused',
+  suppressed: 'suppressed',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectContactDiscoveryRunScalarFieldEnum = (typeof ProspectContactDiscoveryRunScalarFieldEnum)[keyof typeof ProspectContactDiscoveryRunScalarFieldEnum]
+
+
+export const ProspectOutreachDraftRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  status: 'status',
+  requested: 'requested',
+  processed: 'processed',
+  generated: 'generated',
+  reused: 'reused',
+  failed: 'failed',
+  skipped: 'skipped',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectOutreachDraftRunScalarFieldEnum = (typeof ProspectOutreachDraftRunScalarFieldEnum)[keyof typeof ProspectOutreachDraftRunScalarFieldEnum]
 
 
 export const SortOrder = {

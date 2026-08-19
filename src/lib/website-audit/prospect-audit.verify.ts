@@ -191,4 +191,27 @@ assert(
   "concurrent qualification runs are blocked",
 );
 
+const publicReportDir = join(here, "../../app/report");
+const reportPage = files.reportPage;
+const pdf = files.pdf;
+const professional = files.professional;
+assert(
+  !reportPage.includes("ProspectContact") && !reportPage.includes("OutreachMessage"),
+  "public report page cannot expose prospect contacts or drafts",
+);
+assert(
+  !pdf.includes("ProspectContact") && !pdf.includes("OutreachMessage"),
+  "PDF cannot expose prospect contacts or drafts",
+);
+assert(
+  !professional.includes("ProspectContact") && !professional.includes("OutreachMessage"),
+  "Professional API cannot expose prospect contacts or drafts",
+);
+assert(
+  !readFileSync(join(publicReportDir, "[id]/page.tsx"), "utf8").includes(
+    "NEXT_PUBLIC_OPENAI",
+  ),
+  "no public OpenAI key",
+);
+
 console.log("prospect-audit.verify.ts passed");

@@ -95,7 +95,10 @@ export const ProspectOutreachStatus = {
   NOT_READY: 'NOT_READY',
   CONTACT_FOUND: 'CONTACT_FOUND',
   NO_CONTACT: 'NO_CONTACT',
+  CONTACT_DISCOVERY_FAILED: 'CONTACT_DISCOVERY_FAILED',
   DRAFT_READY: 'DRAFT_READY',
+  DRAFT_GENERATION_FAILED: 'DRAFT_GENERATION_FAILED',
+  SUPPRESSED: 'SUPPRESSED',
   APPROVED: 'APPROVED',
   SENT: 'SENT',
   REPLIED: 'REPLIED',
@@ -111,10 +114,26 @@ export const ProspectContactSourceType = {
   WEBSITE: 'WEBSITE',
   CONTACT_PAGE: 'CONTACT_PAGE',
   PROVIDER: 'PROVIDER',
-  MANUAL: 'MANUAL'
+  MANUAL: 'MANUAL',
+  WEBSITE_HOMEPAGE: 'WEBSITE_HOMEPAGE',
+  WEBSITE_CONTACT_PAGE: 'WEBSITE_CONTACT_PAGE',
+  WEBSITE_ABOUT_PAGE: 'WEBSITE_ABOUT_PAGE',
+  WEBSITE_TEAM_PAGE: 'WEBSITE_TEAM_PAGE',
+  WEBSITE_OTHER: 'WEBSITE_OTHER'
 } as const
 
 export type ProspectContactSourceType = (typeof ProspectContactSourceType)[keyof typeof ProspectContactSourceType]
+
+
+export const ProspectContactStatus = {
+  DISCOVERED: 'DISCOVERED',
+  SELECTED: 'SELECTED',
+  REJECTED: 'REJECTED',
+  SUPPRESSED: 'SUPPRESSED',
+  STALE: 'STALE'
+} as const
+
+export type ProspectContactStatus = (typeof ProspectContactStatus)[keyof typeof ProspectContactStatus]
 
 
 export const ProspectContactConfidence = {
@@ -128,7 +147,9 @@ export type ProspectContactConfidence = (typeof ProspectContactConfidence)[keyof
 
 export const OutreachMessageStatus = {
   DRAFT: 'DRAFT',
+  NEEDS_REVIEW: 'NEEDS_REVIEW',
   APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
   SENT: 'SENT',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED'

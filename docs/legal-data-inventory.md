@@ -4,7 +4,7 @@ These policies are operational drafts based on the application's current functio
 
 This document is for internal legal and engineering review. It does not include customer data, secrets, or API keys.
 
-Last reviewed against the codebase: August 16, 2026.
+Last reviewed against the codebase: August 18, 2026.
 
 ## Public policy pages
 
@@ -33,6 +33,15 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 - **Purpose:** associate contact details with an audit report; deliver requested report materials when professionally entitled; follow up about the audit and related services.
 - **Storage:** PostgreSQL via Prisma (`Lead`, `LeadActivity`, optional `AuditReport.leadId`). Database hosted with Neon.
 - **Third parties:** Neon (database); Resend (internal notification and, when applicable, customer report email with PDF).
+
+### Internal prospecting (not customer-facing)
+
+- **Fields stored:** discovered business details already described for Prospect records; publicly published business emails found on the prospect’s own website; optional name/role only when explicitly published next to that email; source URL, source type, confidence, discovery timestamps; outreach draft subject/body and generation metadata (model, token counts, status). Phone numbers from Google Places may already exist on the Prospect; Sprint 4 does not collect personal home addresses or personal phone numbers for outreach.
+- **Purpose:** legitimate B2B outreach research for JS Solutions. Contact discovery does not guess email addresses. Drafts are internal until a later sprint that may send mail after human approval.
+- **How collected:** bounded fetch of the business homepage plus up to four additional same-host contact/about/team pages that are actually linked. Maximum five pages per prospect. No social-profile scraping, no third-party enrichment provider, no WHOIS harvesting.
+- **Storage:** PostgreSQL via Prisma (`ProspectContact`, `OutreachMessage`, `ProspectContactDiscoveryRun`, `ProspectOutreachDraftRun`). These records are available only in the authenticated `/reports/prospecting` workspace. They are not exposed on public report pages, PDFs, Professional APIs, or analytics events.
+- **Third parties:** Neon (database). OpenAI receives a compact structured audit context (business name, website, location, one or two findings) to draft the email; it does not receive raw HTML, Stripe data, report UUIDs, or a dump of the full audit. Resend is **not** used for prospecting in Sprint 4. No email is sent from this workflow yet.
+- **Retention / minimization:** only published business contact data needed for outreach. Duplicate emails per prospect are stored once. Contacts older than 30 days can be rechecked. Suppression entries continue to block drafting.
 
 ### Website audit / report
 
@@ -80,11 +89,12 @@ Named because they appear in application code or confirmed configuration:
 - Resend
 - Google Analytics (`@next/third-parties/google`)
 - Neon / PostgreSQL (`@neondatabase/serverless`, `@prisma/adapter-neon`)
-- OpenAI (`openai` SDK) — Professional AI Interpretation only; structured website-audit findings, not PII/payment records
+- OpenAI (`openai` SDK) — Professional AI Interpretation and internal prospecting outreach drafts; compact structured website-audit findings, not payment records or public-report PII
+- Google Places API (New) — internal prospecting business discovery only; server-side key
 
 Not currently used as product integrations (do not disclose as active vendors in customer policies unless that changes):
 - Meta / Facebook Pixel
-- Google Business Profile APIs
+- Hunter / Apollo / other email enrichment providers
 - Rank-tracking providers
 
 Hosting is implied by the deployed Next.js application. Do not invent additional vendor relationships.

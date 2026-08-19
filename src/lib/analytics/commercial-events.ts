@@ -5,7 +5,7 @@ const STRIPE_ID_VALUE_PATTERN =
   /^(cs|pi|evt)_(test|live)_/i;
 
 const FORBIDDEN_ANALYTICS_PARAM_KEY_PATTERN =
-  /report[_-]?id|session[_-]?id|payment[_-]?intent|customer[_-]?email|^email$|^url$|website_url|competitor[_-]?url|lead[_-]?id/i;
+  /report[_-]?id|session[_-]?id|payment[_-]?intent|customer[_-]?email|^email$|^url$|website_url|competitor[_-]?url|lead[_-]?id|contact[_-]?email|prospect[_-]?email|^to_email$/i;
 
 export type CommercialEventParams = {
   pages_scanned?: number;

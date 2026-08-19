@@ -26,34 +26,55 @@ export type AggregateProspectContact = {
 
 export type ProspectContactMinAggregateOutputType = {
   id: string | null
-  capturedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
+  discoveredAt: Date | null
+  lastVerifiedAt: Date | null
   prospectId: string | null
   email: string | null
+  normalizedEmail: string | null
+  name: string | null
+  role: string | null
   sourceType: $Enums.ProspectContactSourceType | null
   sourceUrl: string | null
   confidence: $Enums.ProspectContactConfidence | null
+  status: $Enums.ProspectContactStatus | null
   isPrimary: boolean | null
 }
 
 export type ProspectContactMaxAggregateOutputType = {
   id: string | null
-  capturedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
+  discoveredAt: Date | null
+  lastVerifiedAt: Date | null
   prospectId: string | null
   email: string | null
+  normalizedEmail: string | null
+  name: string | null
+  role: string | null
   sourceType: $Enums.ProspectContactSourceType | null
   sourceUrl: string | null
   confidence: $Enums.ProspectContactConfidence | null
+  status: $Enums.ProspectContactStatus | null
   isPrimary: boolean | null
 }
 
 export type ProspectContactCountAggregateOutputType = {
   id: number
-  capturedAt: number
+  createdAt: number
+  updatedAt: number
+  discoveredAt: number
+  lastVerifiedAt: number
   prospectId: number
   email: number
+  normalizedEmail: number
+  name: number
+  role: number
   sourceType: number
   sourceUrl: number
   confidence: number
+  status: number
   isPrimary: number
   _all: number
 }
@@ -61,34 +82,55 @@ export type ProspectContactCountAggregateOutputType = {
 
 export type ProspectContactMinAggregateInputType = {
   id?: true
-  capturedAt?: true
+  createdAt?: true
+  updatedAt?: true
+  discoveredAt?: true
+  lastVerifiedAt?: true
   prospectId?: true
   email?: true
+  normalizedEmail?: true
+  name?: true
+  role?: true
   sourceType?: true
   sourceUrl?: true
   confidence?: true
+  status?: true
   isPrimary?: true
 }
 
 export type ProspectContactMaxAggregateInputType = {
   id?: true
-  capturedAt?: true
+  createdAt?: true
+  updatedAt?: true
+  discoveredAt?: true
+  lastVerifiedAt?: true
   prospectId?: true
   email?: true
+  normalizedEmail?: true
+  name?: true
+  role?: true
   sourceType?: true
   sourceUrl?: true
   confidence?: true
+  status?: true
   isPrimary?: true
 }
 
 export type ProspectContactCountAggregateInputType = {
   id?: true
-  capturedAt?: true
+  createdAt?: true
+  updatedAt?: true
+  discoveredAt?: true
+  lastVerifiedAt?: true
   prospectId?: true
   email?: true
+  normalizedEmail?: true
+  name?: true
+  role?: true
   sourceType?: true
   sourceUrl?: true
   confidence?: true
+  status?: true
   isPrimary?: true
   _all?: true
 }
@@ -167,12 +209,19 @@ export type ProspectContactGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type ProspectContactGroupByOutputType = {
   id: string
-  capturedAt: Date
+  createdAt: Date
+  updatedAt: Date
+  discoveredAt: Date
+  lastVerifiedAt: Date | null
   prospectId: string
   email: string
+  normalizedEmail: string
+  name: string | null
+  role: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl: string | null
   confidence: $Enums.ProspectContactConfidence
+  status: $Enums.ProspectContactStatus
   isPrimary: boolean
   _count: ProspectContactCountAggregateOutputType | null
   _min: ProspectContactMinAggregateOutputType | null
@@ -199,51 +248,83 @@ export type ProspectContactWhereInput = {
   OR?: Prisma.ProspectContactWhereInput[]
   NOT?: Prisma.ProspectContactWhereInput | Prisma.ProspectContactWhereInput[]
   id?: Prisma.StringFilter<"ProspectContact"> | string
-  capturedAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  discoveredAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  lastVerifiedAt?: Prisma.DateTimeNullableFilter<"ProspectContact"> | Date | string | null
   prospectId?: Prisma.StringFilter<"ProspectContact"> | string
   email?: Prisma.StringFilter<"ProspectContact"> | string
+  normalizedEmail?: Prisma.StringFilter<"ProspectContact"> | string
+  name?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
+  role?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFilter<"ProspectContact"> | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFilter<"ProspectContact"> | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFilter<"ProspectContact"> | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFilter<"ProspectContact"> | boolean
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
+  outreachMessages?: Prisma.OutreachMessageListRelationFilter
 }
 
 export type ProspectContactOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  capturedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  discoveredAt?: Prisma.SortOrder
+  lastVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
+  role?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   prospect?: Prisma.ProspectOrderByWithRelationInput
+  outreachMessages?: Prisma.OutreachMessageOrderByRelationAggregateInput
 }
 
 export type ProspectContactWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  prospectId_normalizedEmail?: Prisma.ProspectContactProspectIdNormalizedEmailCompoundUniqueInput
   AND?: Prisma.ProspectContactWhereInput | Prisma.ProspectContactWhereInput[]
   OR?: Prisma.ProspectContactWhereInput[]
   NOT?: Prisma.ProspectContactWhereInput | Prisma.ProspectContactWhereInput[]
-  capturedAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  discoveredAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  lastVerifiedAt?: Prisma.DateTimeNullableFilter<"ProspectContact"> | Date | string | null
   prospectId?: Prisma.StringFilter<"ProspectContact"> | string
   email?: Prisma.StringFilter<"ProspectContact"> | string
+  normalizedEmail?: Prisma.StringFilter<"ProspectContact"> | string
+  name?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
+  role?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFilter<"ProspectContact"> | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFilter<"ProspectContact"> | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFilter<"ProspectContact"> | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFilter<"ProspectContact"> | boolean
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
-}, "id">
+  outreachMessages?: Prisma.OutreachMessageListRelationFilter
+}, "id" | "prospectId_normalizedEmail">
 
 export type ProspectContactOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  capturedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  discoveredAt?: Prisma.SortOrder
+  lastVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
+  role?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   _count?: Prisma.ProspectContactCountOrderByAggregateInput
   _max?: Prisma.ProspectContactMaxOrderByAggregateInput
@@ -255,88 +336,148 @@ export type ProspectContactScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProspectContactScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProspectContactScalarWhereWithAggregatesInput | Prisma.ProspectContactScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ProspectContact"> | string
-  capturedAt?: Prisma.DateTimeWithAggregatesFilter<"ProspectContact"> | Date | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ProspectContact"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ProspectContact"> | Date | string
+  discoveredAt?: Prisma.DateTimeWithAggregatesFilter<"ProspectContact"> | Date | string
+  lastVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ProspectContact"> | Date | string | null
   prospectId?: Prisma.StringWithAggregatesFilter<"ProspectContact"> | string
   email?: Prisma.StringWithAggregatesFilter<"ProspectContact"> | string
+  normalizedEmail?: Prisma.StringWithAggregatesFilter<"ProspectContact"> | string
+  name?: Prisma.StringNullableWithAggregatesFilter<"ProspectContact"> | string | null
+  role?: Prisma.StringNullableWithAggregatesFilter<"ProspectContact"> | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeWithAggregatesFilter<"ProspectContact"> | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.StringNullableWithAggregatesFilter<"ProspectContact"> | string | null
   confidence?: Prisma.EnumProspectContactConfidenceWithAggregatesFilter<"ProspectContact"> | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusWithAggregatesFilter<"ProspectContact"> | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolWithAggregatesFilter<"ProspectContact"> | boolean
 }
 
 export type ProspectContactCreateInput = {
   id?: string
-  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
   email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl?: string | null
   confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
   isPrimary?: boolean
   prospect: Prisma.ProspectCreateNestedOneWithoutContactsInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutContactInput
 }
 
 export type ProspectContactUncheckedCreateInput = {
   id?: string
-  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
   prospectId: string
   email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl?: string | null
   confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
   isPrimary?: boolean
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutContactInput
 }
 
 export type ProspectContactUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutContactsNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutContactNestedInput
 }
 
 export type ProspectContactUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   prospectId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutContactNestedInput
 }
 
 export type ProspectContactCreateManyInput = {
   id?: string
-  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
   prospectId: string
   email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl?: string | null
   confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
   isPrimary?: boolean
 }
 
 export type ProspectContactUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ProspectContactUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   prospectId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -350,37 +491,68 @@ export type ProspectContactOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ProspectContactProspectIdNormalizedEmailCompoundUniqueInput = {
+  prospectId: string
+  normalizedEmail: string
+}
+
 export type ProspectContactCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  capturedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  discoveredAt?: Prisma.SortOrder
+  lastVerifiedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
 }
 
 export type ProspectContactMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  capturedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  discoveredAt?: Prisma.SortOrder
+  lastVerifiedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
 }
 
 export type ProspectContactMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  capturedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  discoveredAt?: Prisma.SortOrder
+  lastVerifiedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
+}
+
+export type ProspectContactNullableScalarRelationFilter = {
+  is?: Prisma.ProspectContactWhereInput | null
+  isNot?: Prisma.ProspectContactWhereInput | null
 }
 
 export type ProspectContactCreateNestedManyWithoutProspectInput = {
@@ -433,24 +605,60 @@ export type EnumProspectContactConfidenceFieldUpdateOperationsInput = {
   set?: $Enums.ProspectContactConfidence
 }
 
+export type EnumProspectContactStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ProspectContactStatus
+}
+
+export type ProspectContactCreateNestedOneWithoutOutreachMessagesInput = {
+  create?: Prisma.XOR<Prisma.ProspectContactCreateWithoutOutreachMessagesInput, Prisma.ProspectContactUncheckedCreateWithoutOutreachMessagesInput>
+  connectOrCreate?: Prisma.ProspectContactCreateOrConnectWithoutOutreachMessagesInput
+  connect?: Prisma.ProspectContactWhereUniqueInput
+}
+
+export type ProspectContactUpdateOneWithoutOutreachMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProspectContactCreateWithoutOutreachMessagesInput, Prisma.ProspectContactUncheckedCreateWithoutOutreachMessagesInput>
+  connectOrCreate?: Prisma.ProspectContactCreateOrConnectWithoutOutreachMessagesInput
+  upsert?: Prisma.ProspectContactUpsertWithoutOutreachMessagesInput
+  disconnect?: Prisma.ProspectContactWhereInput | boolean
+  delete?: Prisma.ProspectContactWhereInput | boolean
+  connect?: Prisma.ProspectContactWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectContactUpdateToOneWithWhereWithoutOutreachMessagesInput, Prisma.ProspectContactUpdateWithoutOutreachMessagesInput>, Prisma.ProspectContactUncheckedUpdateWithoutOutreachMessagesInput>
+}
+
 export type ProspectContactCreateWithoutProspectInput = {
   id?: string
-  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
   email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl?: string | null
   confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
   isPrimary?: boolean
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutContactInput
 }
 
 export type ProspectContactUncheckedCreateWithoutProspectInput = {
   id?: string
-  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
   email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl?: string | null
   confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
   isPrimary?: boolean
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutContactInput
 }
 
 export type ProspectContactCreateOrConnectWithoutProspectInput = {
@@ -484,107 +692,293 @@ export type ProspectContactScalarWhereInput = {
   OR?: Prisma.ProspectContactScalarWhereInput[]
   NOT?: Prisma.ProspectContactScalarWhereInput | Prisma.ProspectContactScalarWhereInput[]
   id?: Prisma.StringFilter<"ProspectContact"> | string
-  capturedAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  discoveredAt?: Prisma.DateTimeFilter<"ProspectContact"> | Date | string
+  lastVerifiedAt?: Prisma.DateTimeNullableFilter<"ProspectContact"> | Date | string | null
   prospectId?: Prisma.StringFilter<"ProspectContact"> | string
   email?: Prisma.StringFilter<"ProspectContact"> | string
+  normalizedEmail?: Prisma.StringFilter<"ProspectContact"> | string
+  name?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
+  role?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFilter<"ProspectContact"> | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.StringNullableFilter<"ProspectContact"> | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFilter<"ProspectContact"> | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFilter<"ProspectContact"> | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFilter<"ProspectContact"> | boolean
+}
+
+export type ProspectContactCreateWithoutOutreachMessagesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
+  email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
+  sourceType: $Enums.ProspectContactSourceType
+  sourceUrl?: string | null
+  confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
+  isPrimary?: boolean
+  prospect: Prisma.ProspectCreateNestedOneWithoutContactsInput
+}
+
+export type ProspectContactUncheckedCreateWithoutOutreachMessagesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
+  prospectId: string
+  email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
+  sourceType: $Enums.ProspectContactSourceType
+  sourceUrl?: string | null
+  confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
+  isPrimary?: boolean
+}
+
+export type ProspectContactCreateOrConnectWithoutOutreachMessagesInput = {
+  where: Prisma.ProspectContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProspectContactCreateWithoutOutreachMessagesInput, Prisma.ProspectContactUncheckedCreateWithoutOutreachMessagesInput>
+}
+
+export type ProspectContactUpsertWithoutOutreachMessagesInput = {
+  update: Prisma.XOR<Prisma.ProspectContactUpdateWithoutOutreachMessagesInput, Prisma.ProspectContactUncheckedUpdateWithoutOutreachMessagesInput>
+  create: Prisma.XOR<Prisma.ProspectContactCreateWithoutOutreachMessagesInput, Prisma.ProspectContactUncheckedCreateWithoutOutreachMessagesInput>
+  where?: Prisma.ProspectContactWhereInput
+}
+
+export type ProspectContactUpdateToOneWithWhereWithoutOutreachMessagesInput = {
+  where?: Prisma.ProspectContactWhereInput
+  data: Prisma.XOR<Prisma.ProspectContactUpdateWithoutOutreachMessagesInput, Prisma.ProspectContactUncheckedUpdateWithoutOutreachMessagesInput>
+}
+
+export type ProspectContactUpdateWithoutOutreachMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutContactsNestedInput
+}
+
+export type ProspectContactUncheckedUpdateWithoutOutreachMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ProspectContactCreateManyProspectInput = {
   id?: string
-  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  discoveredAt?: Date | string
+  lastVerifiedAt?: Date | string | null
   email: string
+  normalizedEmail: string
+  name?: string | null
+  role?: string | null
   sourceType: $Enums.ProspectContactSourceType
   sourceUrl?: string | null
   confidence: $Enums.ProspectContactConfidence
+  status?: $Enums.ProspectContactStatus
   isPrimary?: boolean
 }
 
 export type ProspectContactUpdateWithoutProspectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutContactNestedInput
 }
 
 export type ProspectContactUncheckedUpdateWithoutProspectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutContactNestedInput
 }
 
 export type ProspectContactUncheckedUpdateManyWithoutProspectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceType?: Prisma.EnumProspectContactSourceTypeFieldUpdateOperationsInput | $Enums.ProspectContactSourceType
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidence?: Prisma.EnumProspectContactConfidenceFieldUpdateOperationsInput | $Enums.ProspectContactConfidence
+  status?: Prisma.EnumProspectContactStatusFieldUpdateOperationsInput | $Enums.ProspectContactStatus
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
+/**
+ * Count Type ProspectContactCountOutputType
+ */
+
+export type ProspectContactCountOutputType = {
+  outreachMessages: number
+}
+
+export type ProspectContactCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  outreachMessages?: boolean | ProspectContactCountOutputTypeCountOutreachMessagesArgs
+}
+
+/**
+ * ProspectContactCountOutputType without action
+ */
+export type ProspectContactCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProspectContactCountOutputType
+   */
+  select?: Prisma.ProspectContactCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProspectContactCountOutputType without action
+ */
+export type ProspectContactCountOutputTypeCountOutreachMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OutreachMessageWhereInput
+}
+
 
 export type ProspectContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  capturedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  discoveredAt?: boolean
+  lastVerifiedAt?: boolean
   prospectId?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  name?: boolean
+  role?: boolean
   sourceType?: boolean
   sourceUrl?: boolean
   confidence?: boolean
+  status?: boolean
   isPrimary?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
+  outreachMessages?: boolean | Prisma.ProspectContact$outreachMessagesArgs<ExtArgs>
+  _count?: boolean | Prisma.ProspectContactCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prospectContact"]>
 
 export type ProspectContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  capturedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  discoveredAt?: boolean
+  lastVerifiedAt?: boolean
   prospectId?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  name?: boolean
+  role?: boolean
   sourceType?: boolean
   sourceUrl?: boolean
   confidence?: boolean
+  status?: boolean
   isPrimary?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prospectContact"]>
 
 export type ProspectContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  capturedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  discoveredAt?: boolean
+  lastVerifiedAt?: boolean
   prospectId?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  name?: boolean
+  role?: boolean
   sourceType?: boolean
   sourceUrl?: boolean
   confidence?: boolean
+  status?: boolean
   isPrimary?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prospectContact"]>
 
 export type ProspectContactSelectScalar = {
   id?: boolean
-  capturedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  discoveredAt?: boolean
+  lastVerifiedAt?: boolean
   prospectId?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  name?: boolean
+  role?: boolean
   sourceType?: boolean
   sourceUrl?: boolean
   confidence?: boolean
+  status?: boolean
   isPrimary?: boolean
 }
 
-export type ProspectContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capturedAt" | "prospectId" | "email" | "sourceType" | "sourceUrl" | "confidence" | "isPrimary", ExtArgs["result"]["prospectContact"]>
+export type ProspectContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "discoveredAt" | "lastVerifiedAt" | "prospectId" | "email" | "normalizedEmail" | "name" | "role" | "sourceType" | "sourceUrl" | "confidence" | "status" | "isPrimary", ExtArgs["result"]["prospectContact"]>
 export type ProspectContactInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
+  outreachMessages?: boolean | Prisma.ProspectContact$outreachMessagesArgs<ExtArgs>
+  _count?: boolean | Prisma.ProspectContactCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProspectContactIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
@@ -597,15 +991,23 @@ export type $ProspectContactPayload<ExtArgs extends runtime.Types.Extensions.Int
   name: "ProspectContact"
   objects: {
     prospect: Prisma.$ProspectPayload<ExtArgs>
+    outreachMessages: Prisma.$OutreachMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    capturedAt: Date
+    createdAt: Date
+    updatedAt: Date
+    discoveredAt: Date
+    lastVerifiedAt: Date | null
     prospectId: string
     email: string
+    normalizedEmail: string
+    name: string | null
+    role: string | null
     sourceType: $Enums.ProspectContactSourceType
     sourceUrl: string | null
     confidence: $Enums.ProspectContactConfidence
+    status: $Enums.ProspectContactStatus
     isPrimary: boolean
   }, ExtArgs["result"]["prospectContact"]>
   composites: {}
@@ -1002,6 +1404,7 @@ readonly fields: ProspectContactFieldRefs;
 export interface Prisma__ProspectContactClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   prospect<T extends Prisma.ProspectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProspectClient<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  outreachMessages<T extends Prisma.ProspectContact$outreachMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectContact$outreachMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutreachMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1032,12 +1435,19 @@ export interface Prisma__ProspectContactClient<T, Null = never, ExtArgs extends 
  */
 export interface ProspectContactFieldRefs {
   readonly id: Prisma.FieldRef<"ProspectContact", 'String'>
-  readonly capturedAt: Prisma.FieldRef<"ProspectContact", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"ProspectContact", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ProspectContact", 'DateTime'>
+  readonly discoveredAt: Prisma.FieldRef<"ProspectContact", 'DateTime'>
+  readonly lastVerifiedAt: Prisma.FieldRef<"ProspectContact", 'DateTime'>
   readonly prospectId: Prisma.FieldRef<"ProspectContact", 'String'>
   readonly email: Prisma.FieldRef<"ProspectContact", 'String'>
+  readonly normalizedEmail: Prisma.FieldRef<"ProspectContact", 'String'>
+  readonly name: Prisma.FieldRef<"ProspectContact", 'String'>
+  readonly role: Prisma.FieldRef<"ProspectContact", 'String'>
   readonly sourceType: Prisma.FieldRef<"ProspectContact", 'ProspectContactSourceType'>
   readonly sourceUrl: Prisma.FieldRef<"ProspectContact", 'String'>
   readonly confidence: Prisma.FieldRef<"ProspectContact", 'ProspectContactConfidence'>
+  readonly status: Prisma.FieldRef<"ProspectContact", 'ProspectContactStatus'>
   readonly isPrimary: Prisma.FieldRef<"ProspectContact", 'Boolean'>
 }
     
@@ -1437,6 +1847,30 @@ export type ProspectContactDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many ProspectContacts to delete.
    */
   limit?: number
+}
+
+/**
+ * ProspectContact.outreachMessages
+ */
+export type ProspectContact$outreachMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OutreachMessage
+   */
+  select?: Prisma.OutreachMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OutreachMessage
+   */
+  omit?: Prisma.OutreachMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OutreachMessageInclude<ExtArgs> | null
+  where?: Prisma.OutreachMessageWhereInput
+  orderBy?: Prisma.OutreachMessageOrderByWithRelationInput | Prisma.OutreachMessageOrderByWithRelationInput[]
+  cursor?: Prisma.OutreachMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OutreachMessageScalarFieldEnum | Prisma.OutreachMessageScalarFieldEnum[]
 }
 
 /**

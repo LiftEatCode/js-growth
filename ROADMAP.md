@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟡 Sprint 3 — Automated Website Audit + Prospect Qualification
+Status: 🟡 Sprint 4 — Public Contact Discovery + AI Outreach Drafting
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,16 +91,17 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 3 (current):
+Sprint 4 (current):
 
 - Authenticated `/reports/prospecting` campaigns (Sprint 1)
 - Google Places discovery + human import (Sprint 2)
 - Deterministic Website Growth Audit + qualification + recommended top N
 - Prospecting AuditReports are not public customer reports
+- First-party public contact discovery with provenance
+- Grounded AI outreach drafts for human review (no sending)
 
 Later sprints (not started):
 
-- Public contact discovery and AI outreach drafts
 - Human approval, then Resend send
 - Reply tracking and Prospect → Lead conversion
 
@@ -292,7 +293,7 @@ Implemented for the audit product
 - Internal reports dashboard (`/reports`)
 - Lead pipeline, follow-ups, notes, and prospect conversion
 - Internal login (session-gated, no public customer accounts)
-- Prospecting Engine V1 Sprint 3 (`/reports/prospecting`) — discovery, internal audits, and qualification, separate from inbound Leads
+- Prospecting Engine V1 Sprint 4 (`/reports/prospecting`) — discovery, internal audits, qualification, first-party contacts, and outreach drafts (no sending)
 
 Still planning (company-wide systems, not built as products)
 
@@ -457,7 +458,7 @@ Build remaining internal systems (CRM, client portal) after launch
 
 Parallel internal workstream
 
-Prospecting Engine V1 Sprint 3 is in use under `/reports/prospecting` (audit + qualification). Do not start Sprint 4 (contact discovery / outreach drafts) until Sprint 3 is in use.
+Prospecting Engine V1 Sprint 4 is in use under `/reports/prospecting` (contacts + drafts). Do not start Sprint 5 (Resend sending) until Sprint 4 drafts have been reviewed in production.
 
 ---
 

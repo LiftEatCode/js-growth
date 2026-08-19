@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { ProspectAuditActions } from "@/components/prospecting/prospect-audit-actions";
+import { ProspectContactsPanel } from "@/components/prospecting/prospect-contacts-panel";
+import { OutreachDraftEditor } from "@/components/prospecting/outreach-draft-editor";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
@@ -65,6 +67,14 @@ export default async function CampaignProspectDetailPage({
       prospect: {
         include: {
           auditReport: true,
+          contacts: {
+            orderBy: [{ isPrimary: "desc" }, { discoveredAt: "asc" }],
+          },
+          outreachMessages: {
+            where: { campaignId },
+            orderBy: { createdAt: "desc" },
+            take: 5,
+          },
         },
       },
     },
@@ -91,6 +101,12 @@ export default async function CampaignProspectDetailPage({
     audit?.findings.filter(
       (finding) => finding.status !== "pass" && finding.priority === "low",
     ).length ?? 0;
+  const currentDraft = prospect.outreachMessages.find(
+    (message) =>
+      message.status === "DRAFT" ||
+      message.status === "NEEDS_REVIEW" ||
+      message.status === "APPROVED",
+  );
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -267,12 +283,60 @@ export default async function CampaignProspectDetailPage({
         </Card>
 
         <Card variant="elevated" padding="lg">
+          <ProspectContactsPanel
+            campaignId={membership.campaign.id}
+            prospectId={prospect.id}
+            contacts={prospect.contacts.map((contact) => ({
+              id: contact.id,
+              email: contact.email,
+              name: contact.name,
+              role: contact.role,
+              confidence: contact.confidence,
+              sourceType: contact.sourceType,
+              sourceUrl: contact.sourceUrl,
+              status: contact.status,
+              isPrimary: contact.isPrimary,
+              discoveredAt: formatDate(contact.discoveredAt),
+            }))}
+          />
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <OutreachDraftEditor
+            key={currentDraft?.id ?? "no-draft"}
+            campaignId={membership.campaign.id}
+            prospectId={prospect.id}
+            canGenerate={
+              membership.isSelectedTopN &&
+              prospect.qualificationStatus === "QUALIFIED" &&
+              prospect.contacts.some(
+                (contact) =>
+                  contact.isPrimary &&
+                  (contact.status === "SELECTED" ||
+                    contact.status === "DISCOVERED"),
+              )
+            }
+            draft={
+              currentDraft
+                ? {
+                    id: currentDraft.id,
+                    toEmail: currentDraft.toEmail,
+                    subject: currentDraft.subject,
+                    bodyText: currentDraft.bodyText,
+                    status: currentDraft.status,
+                    model: currentDraft.generationModel,
+                  }
+                : null
+            }
+          />
+        </Card>
+
+        <Card variant="elevated" padding="lg">
           <h2 className="font-heading text-xl font-semibold text-brand">
             Actions
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Contact discovery, AI drafts, and sending are not available in this
-            sprint.
+            Sending is not available in Sprint 4. Approval does not send email.
           </p>
           <div className="mt-4">
             <ProspectAuditActions

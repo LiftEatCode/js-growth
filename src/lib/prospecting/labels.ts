@@ -16,7 +16,10 @@ export type ProspectOutreachStatusValue =
   | "NOT_READY"
   | "CONTACT_FOUND"
   | "NO_CONTACT"
+  | "CONTACT_DISCOVERY_FAILED"
   | "DRAFT_READY"
+  | "DRAFT_GENERATION_FAILED"
+  | "SUPPRESSED"
   | "APPROVED"
   | "SENT"
   | "REPLIED"
@@ -52,8 +55,11 @@ const QUALIFICATION_STATUS_LABELS: Record<
 const OUTREACH_STATUS_LABELS: Record<ProspectOutreachStatusValue, string> = {
   NOT_READY: "Not ready",
   CONTACT_FOUND: "Contact found",
-  NO_CONTACT: "No contact",
+  NO_CONTACT: "No public email",
+  CONTACT_DISCOVERY_FAILED: "Contact discovery failed",
   DRAFT_READY: "Draft ready",
+  DRAFT_GENERATION_FAILED: "Draft generation failed",
+  SUPPRESSED: "Suppressed",
   APPROVED: "Approved",
   SENT: "Sent",
   REPLIED: "Replied",
@@ -146,4 +152,59 @@ const QUALIFICATION_LABELS: Record<QualificationLabelValue, string> = {
 
 export function qualificationLabelText(label: QualificationLabelValue): string {
   return QUALIFICATION_LABELS[label];
+}
+
+export type ContactSourceTypeValue =
+  | "WEBSITE"
+  | "CONTACT_PAGE"
+  | "PROVIDER"
+  | "MANUAL"
+  | "WEBSITE_HOMEPAGE"
+  | "WEBSITE_CONTACT_PAGE"
+  | "WEBSITE_ABOUT_PAGE"
+  | "WEBSITE_TEAM_PAGE"
+  | "WEBSITE_OTHER";
+
+const CONTACT_SOURCE_LABELS: Record<ContactSourceTypeValue, string> = {
+  WEBSITE: "Website",
+  CONTACT_PAGE: "Contact page",
+  PROVIDER: "Provider",
+  MANUAL: "Manual",
+  WEBSITE_HOMEPAGE: "Homepage",
+  WEBSITE_CONTACT_PAGE: "Contact page",
+  WEBSITE_ABOUT_PAGE: "About page",
+  WEBSITE_TEAM_PAGE: "Team page",
+  WEBSITE_OTHER: "Website",
+};
+
+export function contactSourceLabel(type: ContactSourceTypeValue): string {
+  return CONTACT_SOURCE_LABELS[type];
+}
+
+export function contactConfidenceLabel(value: "HIGH" | "MEDIUM" | "LOW"): string {
+  switch (value) {
+    case "HIGH":
+      return "High";
+    case "MEDIUM":
+      return "Medium";
+    case "LOW":
+      return "Low";
+  }
+}
+
+export function draftStatusLabel(status: string | null): string {
+  switch (status) {
+    case "DRAFT":
+      return "Draft";
+    case "NEEDS_REVIEW":
+      return "Needs review";
+    case "APPROVED":
+      return "Approved";
+    case "REJECTED":
+      return "Rejected";
+    case "FAILED":
+      return "Failed";
+    default:
+      return "Missing";
+  }
 }

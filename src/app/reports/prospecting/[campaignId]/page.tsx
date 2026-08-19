@@ -6,12 +6,15 @@ import { ArrowLeft, Plus } from "lucide-react";
 import { Button, Card, Container } from "@/components/ui";
 import { AuditQualifyButton } from "@/components/prospecting/audit-qualify-button";
 import { DiscoverBusinessesButton } from "@/components/prospecting/discover-businesses-button";
+import { FindContactsButton } from "@/components/prospecting/find-contacts-button";
+import { GenerateDraftsButton } from "@/components/prospecting/generate-drafts-button";
 import { prisma } from "@/lib/prisma";
-import { getScoreBand } from "@/lib/website-audit/score-bands";
-import { getReportCategoryLabel } from "@/lib/website-audit/report-categories";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import {
   campaignStatusLabel,
+  contactConfidenceLabel,
+  contactSourceLabel,
+  draftStatusLabel,
   formatProspectLocation,
   qualificationLabelText,
   qualificationStatusLabel,
@@ -33,16 +36,6 @@ export const metadata: Metadata = {
     follow: false,
   },
 };
-
-function formatAuditAge(value: Date | null): string {
-  if (!value) {
-    return "—";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-  }).format(value);
-}
 
 export default async function ProspectingCampaignPage({
   params,
@@ -69,6 +62,23 @@ export default async function ProspectingCampaignPage({
                   createdAt: true,
                 },
               },
+              contacts: {
+                select: {
+                  email: true,
+                  isPrimary: true,
+                  confidence: true,
+                  sourceType: true,
+                  status: true,
+                },
+              },
+              outreachMessages: {
+                where: { campaignId },
+                orderBy: { createdAt: "desc" },
+                take: 1,
+                select: {
+                  status: true,
+                },
+              },
             },
           },
         },
@@ -89,6 +99,14 @@ export default async function ProspectingCampaignPage({
       qualificationRuns: {
         orderBy: { createdAt: "desc" },
         take: 5,
+      },
+      contactDiscoveryRuns: {
+        orderBy: { createdAt: "desc" },
+        take: 3,
+      },
+      outreachDraftRuns: {
+        orderBy: { createdAt: "desc" },
+        take: 3,
       },
     },
   });
@@ -115,6 +133,49 @@ export default async function ProspectingCampaignPage({
     ),
   ).length;
   const latestQualification = campaign.qualificationRuns[0] ?? null;
+  const latestContactRun = campaign.contactDiscoveryRuns[0] ?? null;
+  const latestDraftRun = campaign.outreachDraftRuns[0] ?? null;
+
+  const selectedRows = prospects.filter((row) => row.isSelectedTopN);
+  const contactsFound = selectedRows.filter((row) =>
+    row.prospect.contacts.some(
+      (contact) =>
+        contact.isPrimary &&
+        (contact.status === "DISCOVERED" || contact.status === "SELECTED"),
+    ),
+  ).length;
+  const noPublicEmail = selectedRows.filter(
+    (row) => row.prospect.outreachStatus === "NO_CONTACT",
+  ).length;
+  const suppressed = selectedRows.filter(
+    (row) => row.prospect.outreachStatus === "SUPPRESSED",
+  ).length;
+  const contactPending = selectedRows.filter(
+    (row) =>
+      row.prospect.qualificationStatus === "QUALIFIED" &&
+      !row.prospect.lastContactDiscoveryAt &&
+      row.prospect.outreachStatus === "NOT_READY",
+  ).length;
+  const contactFailed = selectedRows.filter(
+    (row) => row.prospect.outreachStatus === "CONTACT_DISCOVERY_FAILED",
+  ).length;
+  const draftReady = selectedRows.filter((row) => {
+    const status = row.prospect.outreachMessages[0]?.status;
+    return (
+      status === "DRAFT" || status === "NEEDS_REVIEW" || status === "APPROVED"
+    );
+  }).length;
+  const draftMissing = selectedRows.filter((row) => {
+    const hasContact = row.prospect.contacts.some(
+      (contact) =>
+        contact.isPrimary &&
+        (contact.status === "DISCOVERED" || contact.status === "SELECTED"),
+    );
+    const status = row.prospect.outreachMessages[0]?.status;
+    const hasDraft =
+      status === "DRAFT" || status === "NEEDS_REVIEW" || status === "APPROVED";
+    return hasContact && !hasDraft;
+  }).length;
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -164,6 +225,14 @@ export default async function ProspectingCampaignPage({
               campaignId={campaign.id}
               remainingUnaudited={remainingUnaudited}
             />
+            <FindContactsButton
+              campaignId={campaign.id}
+              pendingCount={contactPending + contactFailed}
+            />
+            <GenerateDraftsButton
+              campaignId={campaign.id}
+              missingCount={draftMissing}
+            />
             <Button
               variant="outline"
               nativeButton={false}
@@ -178,6 +247,44 @@ export default async function ProspectingCampaignPage({
             </Button>
           </div>
         </div>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Workflow
+          </h2>
+          <ol className="mt-4 flex flex-wrap gap-2 text-sm text-brand">
+            <li className="rounded-full border border-border bg-white px-3 py-1">
+              Discovery
+            </li>
+            <li aria-hidden="true" className="self-center text-muted">
+              →
+            </li>
+            <li className="rounded-full border border-border bg-white px-3 py-1">
+              Qualification
+            </li>
+            <li aria-hidden="true" className="self-center text-muted">
+              →
+            </li>
+            <li className="rounded-full border border-border bg-white px-3 py-1">
+              Contacts
+            </li>
+            <li aria-hidden="true" className="self-center text-muted">
+              →
+            </li>
+            <li className="rounded-full border border-border bg-white px-3 py-1">
+              Drafts
+            </li>
+            <li aria-hidden="true" className="self-center text-muted">
+              →
+            </li>
+            <li className="rounded-full border border-dashed border-border px-3 py-1 text-muted">
+              Sending (Coming in Sprint 5)
+            </li>
+          </ol>
+          <p className="mt-3 text-sm text-muted">
+            Human review is required. No email leaves the system in Sprint 4.
+          </p>
+        </Card>
 
         <Card variant="elevated" padding="lg">
           <h2 className="font-heading text-xl font-semibold text-brand">
@@ -222,6 +329,48 @@ export default async function ProspectingCampaignPage({
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Contacts found
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{contactsFound}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                No public email
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{noPublicEmail}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Suppressed
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{suppressed}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Contact discovery pending
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{contactPending}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Contact discovery failed
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{contactFailed}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Draft ready
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{draftReady}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Draft missing
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{draftMissing}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
                 Remaining unaudited
               </dt>
               <dd className="mt-1 text-sm text-brand">{remainingUnaudited}</dd>
@@ -244,6 +393,27 @@ export default async function ProspectingCampaignPage({
               {Math.round(latestQualification.durationMs / 1000)}s
               {latestQualification.errorMessage
                 ? ` · ${latestQualification.errorMessage}`
+                : ""}
+            </p>
+          ) : null}
+          {latestContactRun ? (
+            <p className="mt-2 text-xs text-muted">
+              Last contact run: {latestContactRun.status.toLowerCase()} ·{" "}
+              {latestContactRun.found} found · {latestContactRun.noContact} none
+              · {latestContactRun.failed} failed · {latestContactRun.reused}{" "}
+              reused
+              {latestContactRun.errorMessage
+                ? ` · ${latestContactRun.errorMessage}`
+                : ""}
+            </p>
+          ) : null}
+          {latestDraftRun ? (
+            <p className="mt-2 text-xs text-muted">
+              Last draft run: {latestDraftRun.status.toLowerCase()} ·{" "}
+              {latestDraftRun.generated} generated · {latestDraftRun.reused}{" "}
+              reused · {latestDraftRun.failed} failed
+              {latestDraftRun.errorMessage
+                ? ` · ${latestDraftRun.errorMessage}`
                 : ""}
             </p>
           ) : null}
@@ -284,25 +454,22 @@ export default async function ProspectingCampaignPage({
               No prospects yet
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-              Discover or add businesses first, then audit and qualify. Contact
-              finding and outreach drafts are not part of this sprint.
+              Discover or add businesses first, then audit, find contacts, and
+              draft outreach. No emails are sent from this screen.
             </p>
           </Card>
         ) : (
           <div className="overflow-hidden rounded-2xl border border-border bg-white">
-            <table className="w-full min-w-[72rem] text-left text-sm">
+            <table className="w-full min-w-[64rem] text-left text-sm">
               <thead className="border-b border-border bg-slate-50 text-xs uppercase tracking-[0.08em] text-muted">
                 <tr>
                   <th className="px-4 py-3 font-semibold">Business</th>
-                  <th className="px-4 py-3 font-semibold">Website</th>
-                  <th className="px-4 py-3 font-semibold">Industry</th>
-                  <th className="px-4 py-3 font-semibold">Audit</th>
-                  <th className="px-4 py-3 font-semibold">Weakest category</th>
-                  <th className="px-4 py-3 font-semibold">Qual score</th>
-                  <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 font-semibold">Top N</th>
+                  <th className="px-4 py-3 font-semibold">Qualification</th>
                   <th className="px-4 py-3 font-semibold">Primary finding</th>
-                  <th className="px-4 py-3 font-semibold">Audit age</th>
+                  <th className="px-4 py-3 font-semibold">Contact</th>
+                  <th className="px-4 py-3 font-semibold">Contact confidence</th>
+                  <th className="px-4 py-3 font-semibold">Contact source</th>
+                  <th className="px-4 py-3 font-semibold">Draft status</th>
                 </tr>
               </thead>
               <tbody>
@@ -311,7 +478,11 @@ export default async function ProspectingCampaignPage({
                   const qualification = parseStoredQualification(
                     row.qualificationJson,
                   );
-                  const audit = prospect.auditReport;
+                  const primaryContact =
+                    prospect.contacts.find((contact) => contact.isPrimary) ??
+                    prospect.contacts[0] ??
+                    null;
+                  const draftStatus = prospect.outreachMessages[0]?.status ?? null;
 
                   return (
                     <tr
@@ -327,55 +498,41 @@ export default async function ProspectingCampaignPage({
                         </Link>
                         <p className="mt-1 text-xs text-muted">
                           {formatProspectLocation(prospect)}
+                          {row.isSelectedTopN ? " · Top N" : ""}
                         </p>
                       </td>
                       <td className="px-4 py-3">
-                        {prospect.website ? (
-                          <a
-                            href={prospect.website}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-brand-blue hover:underline"
-                          >
-                            {prospect.hostname ?? prospect.website}
-                          </a>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        {prospect.industry || "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        {audit
-                          ? `${audit.overallScore} · ${getScoreBand(audit.overallScore).label}`
-                          : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        {qualification?.weakestRelevantCategory
-                          ? getReportCategoryLabel(
-                              qualification.weakestRelevantCategory,
-                            )
-                          : "—"}
-                      </td>
-                      <td className="px-4 py-3">
+                        {qualificationStatusLabel(prospect.qualificationStatus)}
                         {qualification
-                          ? `${qualification.score} · ${qualificationLabelText(qualification.label)}`
-                          : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        {qualificationStatusLabel(
-                          prospect.qualificationStatus,
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        {row.isSelectedTopN ? "Selected" : "—"}
+                          ? ` · ${qualification.score} ${qualificationLabelText(qualification.label)}`
+                          : ""}
                       </td>
                       <td className="px-4 py-3">
                         {qualification?.primaryFindingTitle || "—"}
                       </td>
                       <td className="px-4 py-3">
-                        {formatAuditAge(audit?.createdAt ?? null)}
+                        {primaryContact &&
+                        (primaryContact.status === "DISCOVERED" ||
+                          primaryContact.status === "SELECTED")
+                          ? primaryContact.email
+                          : prospect.outreachStatus === "NO_CONTACT"
+                            ? "None"
+                            : prospect.outreachStatus === "SUPPRESSED"
+                              ? "Suppressed"
+                              : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {primaryContact
+                          ? contactConfidenceLabel(primaryContact.confidence)
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {primaryContact
+                          ? contactSourceLabel(primaryContact.sourceType)
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {draftStatusLabel(draftStatus)}
                       </td>
                     </tr>
                   );

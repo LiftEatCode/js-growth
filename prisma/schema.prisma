@@ -59,6 +59,8 @@ model AuditReport {
 
   prospects Prospect[]
 
+  outreachMessages OutreachMessage[]
+
   aiStatus         AiInterpretationStatus?
   aiAttemptCount   Int                     @default(0)
   aiStartedAt      DateTime?
@@ -195,7 +197,10 @@ enum ProspectOutreachStatus {
   NOT_READY
   CONTACT_FOUND
   NO_CONTACT
+  CONTACT_DISCOVERY_FAILED
   DRAFT_READY
+  DRAFT_GENERATION_FAILED
+  SUPPRESSED
   APPROVED
   SENT
   REPLIED
@@ -209,6 +214,19 @@ enum ProspectContactSourceType {
   CONTACT_PAGE
   PROVIDER
   MANUAL
+  WEBSITE_HOMEPAGE
+  WEBSITE_CONTACT_PAGE
+  WEBSITE_ABOUT_PAGE
+  WEBSITE_TEAM_PAGE
+  WEBSITE_OTHER
+}
+
+enum ProspectContactStatus {
+  DISCOVERED
+  SELECTED
+  REJECTED
+  SUPPRESSED
+  STALE
 }
 
 enum ProspectContactConfidence {
@@ -219,7 +237,9 @@ enum ProspectContactConfidence {
 
 enum OutreachMessageStatus {
   DRAFT
+  NEEDS_REVIEW
   APPROVED
+  REJECTED
   SENT
   FAILED
   CANCELLED
@@ -266,8 +286,10 @@ model Campaign {
 
   outreachMessages OutreachMessage[]
 
-  discoveryRuns     ProspectDiscoveryRun[]
-  qualificationRuns ProspectQualificationRun[]
+  discoveryRuns          ProspectDiscoveryRun[]
+  qualificationRuns      ProspectQualificationRun[]
+  contactDiscoveryRuns   ProspectContactDiscoveryRun[]
+  outreachDraftRuns      ProspectOutreachDraftRun[]
 
   @@index([status])
   @@index([createdAt])
@@ -299,6 +321,8 @@ model Prospect {
 
   skipReason String?
   notes      String?
+
+  lastContactDiscoveryAt DateTime?
 
   auditReportId String?
   auditReport   AuditReport? @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
@@ -343,34 +367,53 @@ model CampaignProspect {
 }
 
 model ProspectContact {
-  id         String   @id @default(cuid())
-  capturedAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  discoveredAt   DateTime  @default(now()) @map("capturedAt")
+  lastVerifiedAt DateTime?
 
   prospectId String
   prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
 
-  email String
+  email           String
+  normalizedEmail String
+  name            String?
+  role            String?
 
   sourceType ProspectContactSourceType
   sourceUrl  String?
 
   confidence ProspectContactConfidence
+  status     ProspectContactStatus     @default(DISCOVERED)
 
   isPrimary Boolean @default(false)
 
+  outreachMessages OutreachMessage[]
+
+  @@unique([prospectId, normalizedEmail])
   @@index([prospectId])
+  @@index([normalizedEmail])
   @@index([email])
 }
 
 model OutreachMessage {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   prospectId String
   prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
 
   campaignId String?
   campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  contactId String?
+  contact   ProspectContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  auditReportId String?
+  auditReport   AuditReport? @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
 
   toEmail   String
   fromEmail String
@@ -379,9 +422,17 @@ model OutreachMessage {
   subject  String
   bodyText String
 
-  findingIds String[]
+  findingIds         String[]
+  primaryFindingId   String?
+  secondaryFindingId String?
 
   status OutreachMessageStatus @default(DRAFT)
+
+  generationModel        String?
+  generationAttemptCount Int     @default(1)
+  promptTokens           Int?
+  completionTokens       Int?
+  generationJson         Json?
 
   providerMessageId String?
   sentAt            DateTime?
@@ -392,6 +443,8 @@ model OutreachMessage {
 
   @@index([prospectId])
   @@index([campaignId])
+  @@index([contactId])
+  @@index([auditReportId])
   @@index([status])
 }
 
@@ -519,6 +572,63 @@ model ProspectQualificationRun {
 
   remainingUnaudited Int @default(0)
   durationMs         Int @default(0)
+
+  errorMessage String?
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdByEmail String
+
+  @@index([campaignId, status])
+  @@index([campaignId, createdAt])
+}
+
+model ProspectContactDiscoveryRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  status DiscoveryRunStatus @default(RUNNING)
+
+  requested  Int
+  processed  Int @default(0)
+  found      Int @default(0)
+  noContact  Int @default(0)
+  failed     Int @default(0)
+  reused     Int @default(0)
+  suppressed Int @default(0)
+
+  durationMs Int @default(0)
+
+  errorMessage String?
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdByEmail String
+
+  @@index([campaignId, status])
+  @@index([campaignId, createdAt])
+}
+
+model ProspectOutreachDraftRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  status DiscoveryRunStatus @default(RUNNING)
+
+  requested Int
+  processed Int @default(0)
+  generated Int @default(0)
+  reused    Int @default(0)
+  failed    Int @default(0)
+  skipped   Int @default(0)
+
+  durationMs Int @default(0)
 
   errorMessage String?
 

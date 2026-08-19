@@ -20,21 +20,44 @@ export type OutreachMessageModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateOutreachMessage = {
   _count: OutreachMessageCountAggregateOutputType | null
+  _avg: OutreachMessageAvgAggregateOutputType | null
+  _sum: OutreachMessageSumAggregateOutputType | null
   _min: OutreachMessageMinAggregateOutputType | null
   _max: OutreachMessageMaxAggregateOutputType | null
+}
+
+export type OutreachMessageAvgAggregateOutputType = {
+  generationAttemptCount: number | null
+  promptTokens: number | null
+  completionTokens: number | null
+}
+
+export type OutreachMessageSumAggregateOutputType = {
+  generationAttemptCount: number | null
+  promptTokens: number | null
+  completionTokens: number | null
 }
 
 export type OutreachMessageMinAggregateOutputType = {
   id: string | null
   createdAt: Date | null
+  updatedAt: Date | null
   prospectId: string | null
   campaignId: string | null
+  contactId: string | null
+  auditReportId: string | null
   toEmail: string | null
   fromEmail: string | null
   replyTo: string | null
   subject: string | null
   bodyText: string | null
+  primaryFindingId: string | null
+  secondaryFindingId: string | null
   status: $Enums.OutreachMessageStatus | null
+  generationModel: string | null
+  generationAttemptCount: number | null
+  promptTokens: number | null
+  completionTokens: number | null
   providerMessageId: string | null
   sentAt: Date | null
   error: string | null
@@ -45,14 +68,23 @@ export type OutreachMessageMinAggregateOutputType = {
 export type OutreachMessageMaxAggregateOutputType = {
   id: string | null
   createdAt: Date | null
+  updatedAt: Date | null
   prospectId: string | null
   campaignId: string | null
+  contactId: string | null
+  auditReportId: string | null
   toEmail: string | null
   fromEmail: string | null
   replyTo: string | null
   subject: string | null
   bodyText: string | null
+  primaryFindingId: string | null
+  secondaryFindingId: string | null
   status: $Enums.OutreachMessageStatus | null
+  generationModel: string | null
+  generationAttemptCount: number | null
+  promptTokens: number | null
+  completionTokens: number | null
   providerMessageId: string | null
   sentAt: Date | null
   error: string | null
@@ -63,15 +95,25 @@ export type OutreachMessageMaxAggregateOutputType = {
 export type OutreachMessageCountAggregateOutputType = {
   id: number
   createdAt: number
+  updatedAt: number
   prospectId: number
   campaignId: number
+  contactId: number
+  auditReportId: number
   toEmail: number
   fromEmail: number
   replyTo: number
   subject: number
   bodyText: number
   findingIds: number
+  primaryFindingId: number
+  secondaryFindingId: number
   status: number
+  generationModel: number
+  generationAttemptCount: number
+  promptTokens: number
+  completionTokens: number
+  generationJson: number
   providerMessageId: number
   sentAt: number
   error: number
@@ -81,17 +123,38 @@ export type OutreachMessageCountAggregateOutputType = {
 }
 
 
+export type OutreachMessageAvgAggregateInputType = {
+  generationAttemptCount?: true
+  promptTokens?: true
+  completionTokens?: true
+}
+
+export type OutreachMessageSumAggregateInputType = {
+  generationAttemptCount?: true
+  promptTokens?: true
+  completionTokens?: true
+}
+
 export type OutreachMessageMinAggregateInputType = {
   id?: true
   createdAt?: true
+  updatedAt?: true
   prospectId?: true
   campaignId?: true
+  contactId?: true
+  auditReportId?: true
   toEmail?: true
   fromEmail?: true
   replyTo?: true
   subject?: true
   bodyText?: true
+  primaryFindingId?: true
+  secondaryFindingId?: true
   status?: true
+  generationModel?: true
+  generationAttemptCount?: true
+  promptTokens?: true
+  completionTokens?: true
   providerMessageId?: true
   sentAt?: true
   error?: true
@@ -102,14 +165,23 @@ export type OutreachMessageMinAggregateInputType = {
 export type OutreachMessageMaxAggregateInputType = {
   id?: true
   createdAt?: true
+  updatedAt?: true
   prospectId?: true
   campaignId?: true
+  contactId?: true
+  auditReportId?: true
   toEmail?: true
   fromEmail?: true
   replyTo?: true
   subject?: true
   bodyText?: true
+  primaryFindingId?: true
+  secondaryFindingId?: true
   status?: true
+  generationModel?: true
+  generationAttemptCount?: true
+  promptTokens?: true
+  completionTokens?: true
   providerMessageId?: true
   sentAt?: true
   error?: true
@@ -120,15 +192,25 @@ export type OutreachMessageMaxAggregateInputType = {
 export type OutreachMessageCountAggregateInputType = {
   id?: true
   createdAt?: true
+  updatedAt?: true
   prospectId?: true
   campaignId?: true
+  contactId?: true
+  auditReportId?: true
   toEmail?: true
   fromEmail?: true
   replyTo?: true
   subject?: true
   bodyText?: true
   findingIds?: true
+  primaryFindingId?: true
+  secondaryFindingId?: true
   status?: true
+  generationModel?: true
+  generationAttemptCount?: true
+  promptTokens?: true
+  completionTokens?: true
+  generationJson?: true
   providerMessageId?: true
   sentAt?: true
   error?: true
@@ -175,6 +257,18 @@ export type OutreachMessageAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: OutreachMessageAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: OutreachMessageSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: OutreachMessageMinAggregateInputType
@@ -205,6 +299,8 @@ export type OutreachMessageGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: OutreachMessageCountAggregateInputType | true
+  _avg?: OutreachMessageAvgAggregateInputType
+  _sum?: OutreachMessageSumAggregateInputType
   _min?: OutreachMessageMinAggregateInputType
   _max?: OutreachMessageMaxAggregateInputType
 }
@@ -212,21 +308,33 @@ export type OutreachMessageGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type OutreachMessageGroupByOutputType = {
   id: string
   createdAt: Date
+  updatedAt: Date
   prospectId: string
   campaignId: string | null
+  contactId: string | null
+  auditReportId: string | null
   toEmail: string
   fromEmail: string
   replyTo: string | null
   subject: string
   bodyText: string
   findingIds: string[]
+  primaryFindingId: string | null
+  secondaryFindingId: string | null
   status: $Enums.OutreachMessageStatus
+  generationModel: string | null
+  generationAttemptCount: number
+  promptTokens: number | null
+  completionTokens: number | null
+  generationJson: runtime.JsonValue | null
   providerMessageId: string | null
   sentAt: Date | null
   error: string | null
   approvedAt: Date | null
   approvedByEmail: string | null
   _count: OutreachMessageCountAggregateOutputType | null
+  _avg: OutreachMessageAvgAggregateOutputType | null
+  _sum: OutreachMessageSumAggregateOutputType | null
   _min: OutreachMessageMinAggregateOutputType | null
   _max: OutreachMessageMaxAggregateOutputType | null
 }
@@ -252,15 +360,25 @@ export type OutreachMessageWhereInput = {
   NOT?: Prisma.OutreachMessageWhereInput | Prisma.OutreachMessageWhereInput[]
   id?: Prisma.StringFilter<"OutreachMessage"> | string
   createdAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
   prospectId?: Prisma.StringFilter<"OutreachMessage"> | string
   campaignId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  contactId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  auditReportId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   toEmail?: Prisma.StringFilter<"OutreachMessage"> | string
   fromEmail?: Prisma.StringFilter<"OutreachMessage"> | string
   replyTo?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   subject?: Prisma.StringFilter<"OutreachMessage"> | string
   bodyText?: Prisma.StringFilter<"OutreachMessage"> | string
   findingIds?: Prisma.StringNullableListFilter<"OutreachMessage">
+  primaryFindingId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  secondaryFindingId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   status?: Prisma.EnumOutreachMessageStatusFilter<"OutreachMessage"> | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  generationAttemptCount?: Prisma.IntFilter<"OutreachMessage"> | number
+  promptTokens?: Prisma.IntNullableFilter<"OutreachMessage"> | number | null
+  completionTokens?: Prisma.IntNullableFilter<"OutreachMessage"> | number | null
+  generationJson?: Prisma.JsonNullableFilter<"OutreachMessage">
   providerMessageId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"OutreachMessage"> | Date | string | null
   error?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
@@ -268,20 +386,32 @@ export type OutreachMessageWhereInput = {
   approvedByEmail?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
   campaign?: Prisma.XOR<Prisma.CampaignNullableScalarRelationFilter, Prisma.CampaignWhereInput> | null
+  contact?: Prisma.XOR<Prisma.ProspectContactNullableScalarRelationFilter, Prisma.ProspectContactWhereInput> | null
+  auditReport?: Prisma.XOR<Prisma.AuditReportNullableScalarRelationFilter, Prisma.AuditReportWhereInput> | null
 }
 
 export type OutreachMessageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   campaignId?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactId?: Prisma.SortOrderInput | Prisma.SortOrder
+  auditReportId?: Prisma.SortOrderInput | Prisma.SortOrder
   toEmail?: Prisma.SortOrder
   fromEmail?: Prisma.SortOrder
   replyTo?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrder
   bodyText?: Prisma.SortOrder
   findingIds?: Prisma.SortOrder
+  primaryFindingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  secondaryFindingId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  generationModel?: Prisma.SortOrderInput | Prisma.SortOrder
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrderInput | Prisma.SortOrder
+  completionTokens?: Prisma.SortOrderInput | Prisma.SortOrder
+  generationJson?: Prisma.SortOrderInput | Prisma.SortOrder
   providerMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -289,6 +419,8 @@ export type OutreachMessageOrderByWithRelationInput = {
   approvedByEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   prospect?: Prisma.ProspectOrderByWithRelationInput
   campaign?: Prisma.CampaignOrderByWithRelationInput
+  contact?: Prisma.ProspectContactOrderByWithRelationInput
+  auditReport?: Prisma.AuditReportOrderByWithRelationInput
 }
 
 export type OutreachMessageWhereUniqueInput = Prisma.AtLeast<{
@@ -297,15 +429,25 @@ export type OutreachMessageWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.OutreachMessageWhereInput[]
   NOT?: Prisma.OutreachMessageWhereInput | Prisma.OutreachMessageWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
   prospectId?: Prisma.StringFilter<"OutreachMessage"> | string
   campaignId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  contactId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  auditReportId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   toEmail?: Prisma.StringFilter<"OutreachMessage"> | string
   fromEmail?: Prisma.StringFilter<"OutreachMessage"> | string
   replyTo?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   subject?: Prisma.StringFilter<"OutreachMessage"> | string
   bodyText?: Prisma.StringFilter<"OutreachMessage"> | string
   findingIds?: Prisma.StringNullableListFilter<"OutreachMessage">
+  primaryFindingId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  secondaryFindingId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   status?: Prisma.EnumOutreachMessageStatusFilter<"OutreachMessage"> | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  generationAttemptCount?: Prisma.IntFilter<"OutreachMessage"> | number
+  promptTokens?: Prisma.IntNullableFilter<"OutreachMessage"> | number | null
+  completionTokens?: Prisma.IntNullableFilter<"OutreachMessage"> | number | null
+  generationJson?: Prisma.JsonNullableFilter<"OutreachMessage">
   providerMessageId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"OutreachMessage"> | Date | string | null
   error?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
@@ -313,28 +455,42 @@ export type OutreachMessageWhereUniqueInput = Prisma.AtLeast<{
   approvedByEmail?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
   campaign?: Prisma.XOR<Prisma.CampaignNullableScalarRelationFilter, Prisma.CampaignWhereInput> | null
+  contact?: Prisma.XOR<Prisma.ProspectContactNullableScalarRelationFilter, Prisma.ProspectContactWhereInput> | null
+  auditReport?: Prisma.XOR<Prisma.AuditReportNullableScalarRelationFilter, Prisma.AuditReportWhereInput> | null
 }, "id">
 
 export type OutreachMessageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   campaignId?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactId?: Prisma.SortOrderInput | Prisma.SortOrder
+  auditReportId?: Prisma.SortOrderInput | Prisma.SortOrder
   toEmail?: Prisma.SortOrder
   fromEmail?: Prisma.SortOrder
   replyTo?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrder
   bodyText?: Prisma.SortOrder
   findingIds?: Prisma.SortOrder
+  primaryFindingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  secondaryFindingId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  generationModel?: Prisma.SortOrderInput | Prisma.SortOrder
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrderInput | Prisma.SortOrder
+  completionTokens?: Prisma.SortOrderInput | Prisma.SortOrder
+  generationJson?: Prisma.SortOrderInput | Prisma.SortOrder
   providerMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedByEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OutreachMessageCountOrderByAggregateInput
+  _avg?: Prisma.OutreachMessageAvgOrderByAggregateInput
   _max?: Prisma.OutreachMessageMaxOrderByAggregateInput
   _min?: Prisma.OutreachMessageMinOrderByAggregateInput
+  _sum?: Prisma.OutreachMessageSumOrderByAggregateInput
 }
 
 export type OutreachMessageScalarWhereWithAggregatesInput = {
@@ -343,15 +499,25 @@ export type OutreachMessageScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OutreachMessageScalarWhereWithAggregatesInput | Prisma.OutreachMessageScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"OutreachMessage"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OutreachMessage"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OutreachMessage"> | Date | string
   prospectId?: Prisma.StringWithAggregatesFilter<"OutreachMessage"> | string
   campaignId?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
+  contactId?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
+  auditReportId?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
   toEmail?: Prisma.StringWithAggregatesFilter<"OutreachMessage"> | string
   fromEmail?: Prisma.StringWithAggregatesFilter<"OutreachMessage"> | string
   replyTo?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
   subject?: Prisma.StringWithAggregatesFilter<"OutreachMessage"> | string
   bodyText?: Prisma.StringWithAggregatesFilter<"OutreachMessage"> | string
   findingIds?: Prisma.StringNullableListFilter<"OutreachMessage">
+  primaryFindingId?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
+  secondaryFindingId?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
   status?: Prisma.EnumOutreachMessageStatusWithAggregatesFilter<"OutreachMessage"> | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
+  generationAttemptCount?: Prisma.IntWithAggregatesFilter<"OutreachMessage"> | number
+  promptTokens?: Prisma.IntNullableWithAggregatesFilter<"OutreachMessage"> | number | null
+  completionTokens?: Prisma.IntNullableWithAggregatesFilter<"OutreachMessage"> | number | null
+  generationJson?: Prisma.JsonNullableWithAggregatesFilter<"OutreachMessage">
   providerMessageId?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
   sentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OutreachMessage"> | Date | string | null
   error?: Prisma.StringNullableWithAggregatesFilter<"OutreachMessage"> | string | null
@@ -362,13 +528,21 @@ export type OutreachMessageScalarWhereWithAggregatesInput = {
 export type OutreachMessageCreateInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -376,20 +550,32 @@ export type OutreachMessageCreateInput = {
   approvedByEmail?: string | null
   prospect: Prisma.ProspectCreateNestedOneWithoutOutreachMessagesInput
   campaign?: Prisma.CampaignCreateNestedOneWithoutOutreachMessagesInput
+  contact?: Prisma.ProspectContactCreateNestedOneWithoutOutreachMessagesInput
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutOutreachMessagesInput
 }
 
 export type OutreachMessageUncheckedCreateInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   prospectId: string
   campaignId?: string | null
+  contactId?: string | null
+  auditReportId?: string | null
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -400,13 +586,21 @@ export type OutreachMessageUncheckedCreateInput = {
 export type OutreachMessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -414,20 +608,32 @@ export type OutreachMessageUpdateInput = {
   approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutOutreachMessagesNestedInput
   campaign?: Prisma.CampaignUpdateOneWithoutOutreachMessagesNestedInput
+  contact?: Prisma.ProspectContactUpdateOneWithoutOutreachMessagesNestedInput
+  auditReport?: Prisma.AuditReportUpdateOneWithoutOutreachMessagesNestedInput
 }
 
 export type OutreachMessageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prospectId?: Prisma.StringFieldUpdateOperationsInput | string
   campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -438,15 +644,25 @@ export type OutreachMessageUncheckedUpdateInput = {
 export type OutreachMessageCreateManyInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   prospectId: string
   campaignId?: string | null
+  contactId?: string | null
+  auditReportId?: string | null
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -457,13 +673,21 @@ export type OutreachMessageCreateManyInput = {
 export type OutreachMessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -474,15 +698,25 @@ export type OutreachMessageUpdateManyMutationInput = {
 export type OutreachMessageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prospectId?: Prisma.StringFieldUpdateOperationsInput | string
   campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -503,15 +737,25 @@ export type OutreachMessageOrderByRelationAggregateInput = {
 export type OutreachMessageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   campaignId?: Prisma.SortOrder
+  contactId?: Prisma.SortOrder
+  auditReportId?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
   fromEmail?: Prisma.SortOrder
   replyTo?: Prisma.SortOrder
   subject?: Prisma.SortOrder
   bodyText?: Prisma.SortOrder
   findingIds?: Prisma.SortOrder
+  primaryFindingId?: Prisma.SortOrder
+  secondaryFindingId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  generationModel?: Prisma.SortOrder
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrder
+  completionTokens?: Prisma.SortOrder
+  generationJson?: Prisma.SortOrder
   providerMessageId?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   error?: Prisma.SortOrder
@@ -519,17 +763,32 @@ export type OutreachMessageCountOrderByAggregateInput = {
   approvedByEmail?: Prisma.SortOrder
 }
 
+export type OutreachMessageAvgOrderByAggregateInput = {
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrder
+  completionTokens?: Prisma.SortOrder
+}
+
 export type OutreachMessageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   campaignId?: Prisma.SortOrder
+  contactId?: Prisma.SortOrder
+  auditReportId?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
   fromEmail?: Prisma.SortOrder
   replyTo?: Prisma.SortOrder
   subject?: Prisma.SortOrder
   bodyText?: Prisma.SortOrder
+  primaryFindingId?: Prisma.SortOrder
+  secondaryFindingId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  generationModel?: Prisma.SortOrder
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrder
+  completionTokens?: Prisma.SortOrder
   providerMessageId?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   error?: Prisma.SortOrder
@@ -540,19 +799,76 @@ export type OutreachMessageMaxOrderByAggregateInput = {
 export type OutreachMessageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   prospectId?: Prisma.SortOrder
   campaignId?: Prisma.SortOrder
+  contactId?: Prisma.SortOrder
+  auditReportId?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
   fromEmail?: Prisma.SortOrder
   replyTo?: Prisma.SortOrder
   subject?: Prisma.SortOrder
   bodyText?: Prisma.SortOrder
+  primaryFindingId?: Prisma.SortOrder
+  secondaryFindingId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  generationModel?: Prisma.SortOrder
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrder
+  completionTokens?: Prisma.SortOrder
   providerMessageId?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   error?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
   approvedByEmail?: Prisma.SortOrder
+}
+
+export type OutreachMessageSumOrderByAggregateInput = {
+  generationAttemptCount?: Prisma.SortOrder
+  promptTokens?: Prisma.SortOrder
+  completionTokens?: Prisma.SortOrder
+}
+
+export type OutreachMessageCreateNestedManyWithoutAuditReportInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput> | Prisma.OutreachMessageCreateWithoutAuditReportInput[] | Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput | Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput[]
+  createMany?: Prisma.OutreachMessageCreateManyAuditReportInputEnvelope
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+}
+
+export type OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput> | Prisma.OutreachMessageCreateWithoutAuditReportInput[] | Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput | Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput[]
+  createMany?: Prisma.OutreachMessageCreateManyAuditReportInputEnvelope
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+}
+
+export type OutreachMessageUpdateManyWithoutAuditReportNestedInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput> | Prisma.OutreachMessageCreateWithoutAuditReportInput[] | Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput | Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput[]
+  upsert?: Prisma.OutreachMessageUpsertWithWhereUniqueWithoutAuditReportInput | Prisma.OutreachMessageUpsertWithWhereUniqueWithoutAuditReportInput[]
+  createMany?: Prisma.OutreachMessageCreateManyAuditReportInputEnvelope
+  set?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  disconnect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  delete?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  update?: Prisma.OutreachMessageUpdateWithWhereUniqueWithoutAuditReportInput | Prisma.OutreachMessageUpdateWithWhereUniqueWithoutAuditReportInput[]
+  updateMany?: Prisma.OutreachMessageUpdateManyWithWhereWithoutAuditReportInput | Prisma.OutreachMessageUpdateManyWithWhereWithoutAuditReportInput[]
+  deleteMany?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
+}
+
+export type OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput> | Prisma.OutreachMessageCreateWithoutAuditReportInput[] | Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput | Prisma.OutreachMessageCreateOrConnectWithoutAuditReportInput[]
+  upsert?: Prisma.OutreachMessageUpsertWithWhereUniqueWithoutAuditReportInput | Prisma.OutreachMessageUpsertWithWhereUniqueWithoutAuditReportInput[]
+  createMany?: Prisma.OutreachMessageCreateManyAuditReportInputEnvelope
+  set?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  disconnect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  delete?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  update?: Prisma.OutreachMessageUpdateWithWhereUniqueWithoutAuditReportInput | Prisma.OutreachMessageUpdateWithWhereUniqueWithoutAuditReportInput[]
+  updateMany?: Prisma.OutreachMessageUpdateManyWithWhereWithoutAuditReportInput | Prisma.OutreachMessageUpdateManyWithWhereWithoutAuditReportInput[]
+  deleteMany?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
 }
 
 export type OutreachMessageCreateNestedManyWithoutCampaignInput = {
@@ -639,6 +955,48 @@ export type OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput = {
   deleteMany?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
 }
 
+export type OutreachMessageCreateNestedManyWithoutContactInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutContactInput, Prisma.OutreachMessageUncheckedCreateWithoutContactInput> | Prisma.OutreachMessageCreateWithoutContactInput[] | Prisma.OutreachMessageUncheckedCreateWithoutContactInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutContactInput | Prisma.OutreachMessageCreateOrConnectWithoutContactInput[]
+  createMany?: Prisma.OutreachMessageCreateManyContactInputEnvelope
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+}
+
+export type OutreachMessageUncheckedCreateNestedManyWithoutContactInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutContactInput, Prisma.OutreachMessageUncheckedCreateWithoutContactInput> | Prisma.OutreachMessageCreateWithoutContactInput[] | Prisma.OutreachMessageUncheckedCreateWithoutContactInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutContactInput | Prisma.OutreachMessageCreateOrConnectWithoutContactInput[]
+  createMany?: Prisma.OutreachMessageCreateManyContactInputEnvelope
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+}
+
+export type OutreachMessageUpdateManyWithoutContactNestedInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutContactInput, Prisma.OutreachMessageUncheckedCreateWithoutContactInput> | Prisma.OutreachMessageCreateWithoutContactInput[] | Prisma.OutreachMessageUncheckedCreateWithoutContactInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutContactInput | Prisma.OutreachMessageCreateOrConnectWithoutContactInput[]
+  upsert?: Prisma.OutreachMessageUpsertWithWhereUniqueWithoutContactInput | Prisma.OutreachMessageUpsertWithWhereUniqueWithoutContactInput[]
+  createMany?: Prisma.OutreachMessageCreateManyContactInputEnvelope
+  set?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  disconnect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  delete?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  update?: Prisma.OutreachMessageUpdateWithWhereUniqueWithoutContactInput | Prisma.OutreachMessageUpdateWithWhereUniqueWithoutContactInput[]
+  updateMany?: Prisma.OutreachMessageUpdateManyWithWhereWithoutContactInput | Prisma.OutreachMessageUpdateManyWithWhereWithoutContactInput[]
+  deleteMany?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
+}
+
+export type OutreachMessageUncheckedUpdateManyWithoutContactNestedInput = {
+  create?: Prisma.XOR<Prisma.OutreachMessageCreateWithoutContactInput, Prisma.OutreachMessageUncheckedCreateWithoutContactInput> | Prisma.OutreachMessageCreateWithoutContactInput[] | Prisma.OutreachMessageUncheckedCreateWithoutContactInput[]
+  connectOrCreate?: Prisma.OutreachMessageCreateOrConnectWithoutContactInput | Prisma.OutreachMessageCreateOrConnectWithoutContactInput[]
+  upsert?: Prisma.OutreachMessageUpsertWithWhereUniqueWithoutContactInput | Prisma.OutreachMessageUpsertWithWhereUniqueWithoutContactInput[]
+  createMany?: Prisma.OutreachMessageCreateManyContactInputEnvelope
+  set?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  disconnect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  delete?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  connect?: Prisma.OutreachMessageWhereUniqueInput | Prisma.OutreachMessageWhereUniqueInput[]
+  update?: Prisma.OutreachMessageUpdateWithWhereUniqueWithoutContactInput | Prisma.OutreachMessageUpdateWithWhereUniqueWithoutContactInput[]
+  updateMany?: Prisma.OutreachMessageUpdateManyWithWhereWithoutContactInput | Prisma.OutreachMessageUpdateManyWithWhereWithoutContactInput[]
+  deleteMany?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
+}
+
 export type OutreachMessageCreatefindingIdsInput = {
   set: string[]
 }
@@ -652,35 +1010,169 @@ export type EnumOutreachMessageStatusFieldUpdateOperationsInput = {
   set?: $Enums.OutreachMessageStatus
 }
 
-export type OutreachMessageCreateWithoutCampaignInput = {
+export type OutreachMessageCreateWithoutAuditReportInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
   approvedAt?: Date | string | null
   approvedByEmail?: string | null
   prospect: Prisma.ProspectCreateNestedOneWithoutOutreachMessagesInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutOutreachMessagesInput
+  contact?: Prisma.ProspectContactCreateNestedOneWithoutOutreachMessagesInput
 }
 
-export type OutreachMessageUncheckedCreateWithoutCampaignInput = {
+export type OutreachMessageUncheckedCreateWithoutAuditReportInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   prospectId: string
+  campaignId?: string | null
+  contactId?: string | null
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: string | null
+  sentAt?: Date | string | null
+  error?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+}
+
+export type OutreachMessageCreateOrConnectWithoutAuditReportInput = {
+  where: Prisma.OutreachMessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.OutreachMessageCreateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput>
+}
+
+export type OutreachMessageCreateManyAuditReportInputEnvelope = {
+  data: Prisma.OutreachMessageCreateManyAuditReportInput | Prisma.OutreachMessageCreateManyAuditReportInput[]
+  skipDuplicates?: boolean
+}
+
+export type OutreachMessageUpsertWithWhereUniqueWithoutAuditReportInput = {
+  where: Prisma.OutreachMessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.OutreachMessageUpdateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedUpdateWithoutAuditReportInput>
+  create: Prisma.XOR<Prisma.OutreachMessageCreateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedCreateWithoutAuditReportInput>
+}
+
+export type OutreachMessageUpdateWithWhereUniqueWithoutAuditReportInput = {
+  where: Prisma.OutreachMessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.OutreachMessageUpdateWithoutAuditReportInput, Prisma.OutreachMessageUncheckedUpdateWithoutAuditReportInput>
+}
+
+export type OutreachMessageUpdateManyWithWhereWithoutAuditReportInput = {
+  where: Prisma.OutreachMessageScalarWhereInput
+  data: Prisma.XOR<Prisma.OutreachMessageUpdateManyMutationInput, Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportInput>
+}
+
+export type OutreachMessageScalarWhereInput = {
+  AND?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
+  OR?: Prisma.OutreachMessageScalarWhereInput[]
+  NOT?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
+  id?: Prisma.StringFilter<"OutreachMessage"> | string
+  createdAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
+  prospectId?: Prisma.StringFilter<"OutreachMessage"> | string
+  campaignId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  contactId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  auditReportId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  toEmail?: Prisma.StringFilter<"OutreachMessage"> | string
+  fromEmail?: Prisma.StringFilter<"OutreachMessage"> | string
+  replyTo?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  subject?: Prisma.StringFilter<"OutreachMessage"> | string
+  bodyText?: Prisma.StringFilter<"OutreachMessage"> | string
+  findingIds?: Prisma.StringNullableListFilter<"OutreachMessage">
+  primaryFindingId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  secondaryFindingId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  status?: Prisma.EnumOutreachMessageStatusFilter<"OutreachMessage"> | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  generationAttemptCount?: Prisma.IntFilter<"OutreachMessage"> | number
+  promptTokens?: Prisma.IntNullableFilter<"OutreachMessage"> | number | null
+  completionTokens?: Prisma.IntNullableFilter<"OutreachMessage"> | number | null
+  generationJson?: Prisma.JsonNullableFilter<"OutreachMessage">
+  providerMessageId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  sentAt?: Prisma.DateTimeNullableFilter<"OutreachMessage"> | Date | string | null
+  error?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+  approvedAt?: Prisma.DateTimeNullableFilter<"OutreachMessage"> | Date | string | null
+  approvedByEmail?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
+}
+
+export type OutreachMessageCreateWithoutCampaignInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  toEmail: string
+  fromEmail: string
+  replyTo?: string | null
+  subject: string
+  bodyText: string
+  findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
+  status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: string | null
+  sentAt?: Date | string | null
+  error?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  prospect: Prisma.ProspectCreateNestedOneWithoutOutreachMessagesInput
+  contact?: Prisma.ProspectContactCreateNestedOneWithoutOutreachMessagesInput
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutOutreachMessagesInput
+}
+
+export type OutreachMessageUncheckedCreateWithoutCampaignInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  contactId?: string | null
+  auditReportId?: string | null
+  toEmail: string
+  fromEmail: string
+  replyTo?: string | null
+  subject: string
+  bodyText: string
+  findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
+  status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -714,57 +1206,55 @@ export type OutreachMessageUpdateManyWithWhereWithoutCampaignInput = {
   data: Prisma.XOR<Prisma.OutreachMessageUpdateManyMutationInput, Prisma.OutreachMessageUncheckedUpdateManyWithoutCampaignInput>
 }
 
-export type OutreachMessageScalarWhereInput = {
-  AND?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
-  OR?: Prisma.OutreachMessageScalarWhereInput[]
-  NOT?: Prisma.OutreachMessageScalarWhereInput | Prisma.OutreachMessageScalarWhereInput[]
-  id?: Prisma.StringFilter<"OutreachMessage"> | string
-  createdAt?: Prisma.DateTimeFilter<"OutreachMessage"> | Date | string
-  prospectId?: Prisma.StringFilter<"OutreachMessage"> | string
-  campaignId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
-  toEmail?: Prisma.StringFilter<"OutreachMessage"> | string
-  fromEmail?: Prisma.StringFilter<"OutreachMessage"> | string
-  replyTo?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
-  subject?: Prisma.StringFilter<"OutreachMessage"> | string
-  bodyText?: Prisma.StringFilter<"OutreachMessage"> | string
-  findingIds?: Prisma.StringNullableListFilter<"OutreachMessage">
-  status?: Prisma.EnumOutreachMessageStatusFilter<"OutreachMessage"> | $Enums.OutreachMessageStatus
-  providerMessageId?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
-  sentAt?: Prisma.DateTimeNullableFilter<"OutreachMessage"> | Date | string | null
-  error?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
-  approvedAt?: Prisma.DateTimeNullableFilter<"OutreachMessage"> | Date | string | null
-  approvedByEmail?: Prisma.StringNullableFilter<"OutreachMessage"> | string | null
-}
-
 export type OutreachMessageCreateWithoutProspectInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
   approvedAt?: Date | string | null
   approvedByEmail?: string | null
   campaign?: Prisma.CampaignCreateNestedOneWithoutOutreachMessagesInput
+  contact?: Prisma.ProspectContactCreateNestedOneWithoutOutreachMessagesInput
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutOutreachMessagesInput
 }
 
 export type OutreachMessageUncheckedCreateWithoutProspectInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   campaignId?: string | null
+  contactId?: string | null
+  auditReportId?: string | null
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -798,17 +1288,221 @@ export type OutreachMessageUpdateManyWithWhereWithoutProspectInput = {
   data: Prisma.XOR<Prisma.OutreachMessageUpdateManyMutationInput, Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectInput>
 }
 
-export type OutreachMessageCreateManyCampaignInput = {
+export type OutreachMessageCreateWithoutContactInput = {
   id?: string
   createdAt?: Date | string
-  prospectId: string
+  updatedAt?: Date | string
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: string | null
+  sentAt?: Date | string | null
+  error?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  prospect: Prisma.ProspectCreateNestedOneWithoutOutreachMessagesInput
+  campaign?: Prisma.CampaignCreateNestedOneWithoutOutreachMessagesInput
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutOutreachMessagesInput
+}
+
+export type OutreachMessageUncheckedCreateWithoutContactInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  campaignId?: string | null
+  auditReportId?: string | null
+  toEmail: string
+  fromEmail: string
+  replyTo?: string | null
+  subject: string
+  bodyText: string
+  findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
+  status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: string | null
+  sentAt?: Date | string | null
+  error?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+}
+
+export type OutreachMessageCreateOrConnectWithoutContactInput = {
+  where: Prisma.OutreachMessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.OutreachMessageCreateWithoutContactInput, Prisma.OutreachMessageUncheckedCreateWithoutContactInput>
+}
+
+export type OutreachMessageCreateManyContactInputEnvelope = {
+  data: Prisma.OutreachMessageCreateManyContactInput | Prisma.OutreachMessageCreateManyContactInput[]
+  skipDuplicates?: boolean
+}
+
+export type OutreachMessageUpsertWithWhereUniqueWithoutContactInput = {
+  where: Prisma.OutreachMessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.OutreachMessageUpdateWithoutContactInput, Prisma.OutreachMessageUncheckedUpdateWithoutContactInput>
+  create: Prisma.XOR<Prisma.OutreachMessageCreateWithoutContactInput, Prisma.OutreachMessageUncheckedCreateWithoutContactInput>
+}
+
+export type OutreachMessageUpdateWithWhereUniqueWithoutContactInput = {
+  where: Prisma.OutreachMessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.OutreachMessageUpdateWithoutContactInput, Prisma.OutreachMessageUncheckedUpdateWithoutContactInput>
+}
+
+export type OutreachMessageUpdateManyWithWhereWithoutContactInput = {
+  where: Prisma.OutreachMessageScalarWhereInput
+  data: Prisma.XOR<Prisma.OutreachMessageUpdateManyMutationInput, Prisma.OutreachMessageUncheckedUpdateManyWithoutContactInput>
+}
+
+export type OutreachMessageCreateManyAuditReportInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  campaignId?: string | null
+  contactId?: string | null
+  toEmail: string
+  fromEmail: string
+  replyTo?: string | null
+  subject: string
+  bodyText: string
+  findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
+  status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: string | null
+  sentAt?: Date | string | null
+  error?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+}
+
+export type OutreachMessageUpdateWithoutAuditReportInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  bodyText?: Prisma.StringFieldUpdateOperationsInput | string
+  findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutOutreachMessagesNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutOutreachMessagesNestedInput
+  contact?: Prisma.ProspectContactUpdateOneWithoutOutreachMessagesNestedInput
+}
+
+export type OutreachMessageUncheckedUpdateWithoutAuditReportInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  bodyText?: Prisma.StringFieldUpdateOperationsInput | string
+  findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type OutreachMessageUncheckedUpdateManyWithoutAuditReportInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  bodyText?: Prisma.StringFieldUpdateOperationsInput | string
+  findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type OutreachMessageCreateManyCampaignInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  contactId?: string | null
+  auditReportId?: string | null
+  toEmail: string
+  fromEmail: string
+  replyTo?: string | null
+  subject: string
+  bodyText: string
+  findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
+  status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -819,32 +1513,52 @@ export type OutreachMessageCreateManyCampaignInput = {
 export type OutreachMessageUpdateWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutOutreachMessagesNestedInput
+  contact?: Prisma.ProspectContactUpdateOneWithoutOutreachMessagesNestedInput
+  auditReport?: Prisma.AuditReportUpdateOneWithoutOutreachMessagesNestedInput
 }
 
 export type OutreachMessageUncheckedUpdateWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -855,14 +1569,24 @@ export type OutreachMessageUncheckedUpdateWithoutCampaignInput = {
 export type OutreachMessageUncheckedUpdateManyWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -873,14 +1597,24 @@ export type OutreachMessageUncheckedUpdateManyWithoutCampaignInput = {
 export type OutreachMessageCreateManyProspectInput = {
   id?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   campaignId?: string | null
+  contactId?: string | null
+  auditReportId?: string | null
   toEmail: string
   fromEmail: string
   replyTo?: string | null
   subject: string
   bodyText: string
   findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
   status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: string | null
   sentAt?: Date | string | null
   error?: string | null
@@ -891,32 +1625,52 @@ export type OutreachMessageCreateManyProspectInput = {
 export type OutreachMessageUpdateWithoutProspectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaign?: Prisma.CampaignUpdateOneWithoutOutreachMessagesNestedInput
+  contact?: Prisma.ProspectContactUpdateOneWithoutOutreachMessagesNestedInput
+  auditReport?: Prisma.AuditReportUpdateOneWithoutOutreachMessagesNestedInput
 }
 
 export type OutreachMessageUncheckedUpdateWithoutProspectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -927,14 +1681,136 @@ export type OutreachMessageUncheckedUpdateWithoutProspectInput = {
 export type OutreachMessageUncheckedUpdateManyWithoutProspectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
   fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
   replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   bodyText?: Prisma.StringFieldUpdateOperationsInput | string
   findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type OutreachMessageCreateManyContactInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  campaignId?: string | null
+  auditReportId?: string | null
+  toEmail: string
+  fromEmail: string
+  replyTo?: string | null
+  subject: string
+  bodyText: string
+  findingIds?: Prisma.OutreachMessageCreatefindingIdsInput | string[]
+  primaryFindingId?: string | null
+  secondaryFindingId?: string | null
+  status?: $Enums.OutreachMessageStatus
+  generationModel?: string | null
+  generationAttemptCount?: number
+  promptTokens?: number | null
+  completionTokens?: number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: string | null
+  sentAt?: Date | string | null
+  error?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+}
+
+export type OutreachMessageUpdateWithoutContactInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  bodyText?: Prisma.StringFieldUpdateOperationsInput | string
+  findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutOutreachMessagesNestedInput
+  campaign?: Prisma.CampaignUpdateOneWithoutOutreachMessagesNestedInput
+  auditReport?: Prisma.AuditReportUpdateOneWithoutOutreachMessagesNestedInput
+}
+
+export type OutreachMessageUncheckedUpdateWithoutContactInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  bodyText?: Prisma.StringFieldUpdateOperationsInput | string
+  findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type OutreachMessageUncheckedUpdateManyWithoutContactInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  fromEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  replyTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  bodyText?: Prisma.StringFieldUpdateOperationsInput | string
+  findingIds?: Prisma.OutreachMessageUpdatefindingIdsInput | string[]
+  primaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryFindingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOutreachMessageStatusFieldUpdateOperationsInput | $Enums.OutreachMessageStatus
+  generationModel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generationAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -947,15 +1823,25 @@ export type OutreachMessageUncheckedUpdateManyWithoutProspectInput = {
 export type OutreachMessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   prospectId?: boolean
   campaignId?: boolean
+  contactId?: boolean
+  auditReportId?: boolean
   toEmail?: boolean
   fromEmail?: boolean
   replyTo?: boolean
   subject?: boolean
   bodyText?: boolean
   findingIds?: boolean
+  primaryFindingId?: boolean
+  secondaryFindingId?: boolean
   status?: boolean
+  generationModel?: boolean
+  generationAttemptCount?: boolean
+  promptTokens?: boolean
+  completionTokens?: boolean
+  generationJson?: boolean
   providerMessageId?: boolean
   sentAt?: boolean
   error?: boolean
@@ -963,20 +1849,32 @@ export type OutreachMessageSelect<ExtArgs extends runtime.Types.Extensions.Inter
   approvedByEmail?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.OutreachMessage$campaignArgs<ExtArgs>
+  contact?: boolean | Prisma.OutreachMessage$contactArgs<ExtArgs>
+  auditReport?: boolean | Prisma.OutreachMessage$auditReportArgs<ExtArgs>
 }, ExtArgs["result"]["outreachMessage"]>
 
 export type OutreachMessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   prospectId?: boolean
   campaignId?: boolean
+  contactId?: boolean
+  auditReportId?: boolean
   toEmail?: boolean
   fromEmail?: boolean
   replyTo?: boolean
   subject?: boolean
   bodyText?: boolean
   findingIds?: boolean
+  primaryFindingId?: boolean
+  secondaryFindingId?: boolean
   status?: boolean
+  generationModel?: boolean
+  generationAttemptCount?: boolean
+  promptTokens?: boolean
+  completionTokens?: boolean
+  generationJson?: boolean
   providerMessageId?: boolean
   sentAt?: boolean
   error?: boolean
@@ -984,20 +1882,32 @@ export type OutreachMessageSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   approvedByEmail?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.OutreachMessage$campaignArgs<ExtArgs>
+  contact?: boolean | Prisma.OutreachMessage$contactArgs<ExtArgs>
+  auditReport?: boolean | Prisma.OutreachMessage$auditReportArgs<ExtArgs>
 }, ExtArgs["result"]["outreachMessage"]>
 
 export type OutreachMessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   prospectId?: boolean
   campaignId?: boolean
+  contactId?: boolean
+  auditReportId?: boolean
   toEmail?: boolean
   fromEmail?: boolean
   replyTo?: boolean
   subject?: boolean
   bodyText?: boolean
   findingIds?: boolean
+  primaryFindingId?: boolean
+  secondaryFindingId?: boolean
   status?: boolean
+  generationModel?: boolean
+  generationAttemptCount?: boolean
+  promptTokens?: boolean
+  completionTokens?: boolean
+  generationJson?: boolean
   providerMessageId?: boolean
   sentAt?: boolean
   error?: boolean
@@ -1005,20 +1915,32 @@ export type OutreachMessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   approvedByEmail?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.OutreachMessage$campaignArgs<ExtArgs>
+  contact?: boolean | Prisma.OutreachMessage$contactArgs<ExtArgs>
+  auditReport?: boolean | Prisma.OutreachMessage$auditReportArgs<ExtArgs>
 }, ExtArgs["result"]["outreachMessage"]>
 
 export type OutreachMessageSelectScalar = {
   id?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   prospectId?: boolean
   campaignId?: boolean
+  contactId?: boolean
+  auditReportId?: boolean
   toEmail?: boolean
   fromEmail?: boolean
   replyTo?: boolean
   subject?: boolean
   bodyText?: boolean
   findingIds?: boolean
+  primaryFindingId?: boolean
+  secondaryFindingId?: boolean
   status?: boolean
+  generationModel?: boolean
+  generationAttemptCount?: boolean
+  promptTokens?: boolean
+  completionTokens?: boolean
+  generationJson?: boolean
   providerMessageId?: boolean
   sentAt?: boolean
   error?: boolean
@@ -1026,18 +1948,24 @@ export type OutreachMessageSelectScalar = {
   approvedByEmail?: boolean
 }
 
-export type OutreachMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "prospectId" | "campaignId" | "toEmail" | "fromEmail" | "replyTo" | "subject" | "bodyText" | "findingIds" | "status" | "providerMessageId" | "sentAt" | "error" | "approvedAt" | "approvedByEmail", ExtArgs["result"]["outreachMessage"]>
+export type OutreachMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "prospectId" | "campaignId" | "contactId" | "auditReportId" | "toEmail" | "fromEmail" | "replyTo" | "subject" | "bodyText" | "findingIds" | "primaryFindingId" | "secondaryFindingId" | "status" | "generationModel" | "generationAttemptCount" | "promptTokens" | "completionTokens" | "generationJson" | "providerMessageId" | "sentAt" | "error" | "approvedAt" | "approvedByEmail", ExtArgs["result"]["outreachMessage"]>
 export type OutreachMessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.OutreachMessage$campaignArgs<ExtArgs>
+  contact?: boolean | Prisma.OutreachMessage$contactArgs<ExtArgs>
+  auditReport?: boolean | Prisma.OutreachMessage$auditReportArgs<ExtArgs>
 }
 export type OutreachMessageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.OutreachMessage$campaignArgs<ExtArgs>
+  contact?: boolean | Prisma.OutreachMessage$contactArgs<ExtArgs>
+  auditReport?: boolean | Prisma.OutreachMessage$auditReportArgs<ExtArgs>
 }
 export type OutreachMessageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.OutreachMessage$campaignArgs<ExtArgs>
+  contact?: boolean | Prisma.OutreachMessage$contactArgs<ExtArgs>
+  auditReport?: boolean | Prisma.OutreachMessage$auditReportArgs<ExtArgs>
 }
 
 export type $OutreachMessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1045,19 +1973,31 @@ export type $OutreachMessagePayload<ExtArgs extends runtime.Types.Extensions.Int
   objects: {
     prospect: Prisma.$ProspectPayload<ExtArgs>
     campaign: Prisma.$CampaignPayload<ExtArgs> | null
+    contact: Prisma.$ProspectContactPayload<ExtArgs> | null
+    auditReport: Prisma.$AuditReportPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     createdAt: Date
+    updatedAt: Date
     prospectId: string
     campaignId: string | null
+    contactId: string | null
+    auditReportId: string | null
     toEmail: string
     fromEmail: string
     replyTo: string | null
     subject: string
     bodyText: string
     findingIds: string[]
+    primaryFindingId: string | null
+    secondaryFindingId: string | null
     status: $Enums.OutreachMessageStatus
+    generationModel: string | null
+    generationAttemptCount: number
+    promptTokens: number | null
+    completionTokens: number | null
+    generationJson: runtime.JsonValue | null
     providerMessageId: string | null
     sentAt: Date | null
     error: string | null
@@ -1459,6 +2399,8 @@ export interface Prisma__OutreachMessageClient<T, Null = never, ExtArgs extends 
   readonly [Symbol.toStringTag]: "PrismaPromise"
   prospect<T extends Prisma.ProspectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProspectClient<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   campaign<T extends Prisma.OutreachMessage$campaignArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OutreachMessage$campaignArgs<ExtArgs>>): Prisma.Prisma__CampaignClient<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  contact<T extends Prisma.OutreachMessage$contactArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OutreachMessage$contactArgs<ExtArgs>>): Prisma.Prisma__ProspectContactClient<runtime.Types.Result.GetResult<Prisma.$ProspectContactPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  auditReport<T extends Prisma.OutreachMessage$auditReportArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OutreachMessage$auditReportArgs<ExtArgs>>): Prisma.Prisma__AuditReportClient<runtime.Types.Result.GetResult<Prisma.$AuditReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1490,15 +2432,25 @@ export interface Prisma__OutreachMessageClient<T, Null = never, ExtArgs extends 
 export interface OutreachMessageFieldRefs {
   readonly id: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly createdAt: Prisma.FieldRef<"OutreachMessage", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"OutreachMessage", 'DateTime'>
   readonly prospectId: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly campaignId: Prisma.FieldRef<"OutreachMessage", 'String'>
+  readonly contactId: Prisma.FieldRef<"OutreachMessage", 'String'>
+  readonly auditReportId: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly toEmail: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly fromEmail: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly replyTo: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly subject: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly bodyText: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly findingIds: Prisma.FieldRef<"OutreachMessage", 'String[]'>
+  readonly primaryFindingId: Prisma.FieldRef<"OutreachMessage", 'String'>
+  readonly secondaryFindingId: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly status: Prisma.FieldRef<"OutreachMessage", 'OutreachMessageStatus'>
+  readonly generationModel: Prisma.FieldRef<"OutreachMessage", 'String'>
+  readonly generationAttemptCount: Prisma.FieldRef<"OutreachMessage", 'Int'>
+  readonly promptTokens: Prisma.FieldRef<"OutreachMessage", 'Int'>
+  readonly completionTokens: Prisma.FieldRef<"OutreachMessage", 'Int'>
+  readonly generationJson: Prisma.FieldRef<"OutreachMessage", 'Json'>
   readonly providerMessageId: Prisma.FieldRef<"OutreachMessage", 'String'>
   readonly sentAt: Prisma.FieldRef<"OutreachMessage", 'DateTime'>
   readonly error: Prisma.FieldRef<"OutreachMessage", 'String'>
@@ -1921,6 +2873,44 @@ export type OutreachMessage$campaignArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.CampaignInclude<ExtArgs> | null
   where?: Prisma.CampaignWhereInput
+}
+
+/**
+ * OutreachMessage.contact
+ */
+export type OutreachMessage$contactArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProspectContact
+   */
+  select?: Prisma.ProspectContactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProspectContact
+   */
+  omit?: Prisma.ProspectContactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProspectContactInclude<ExtArgs> | null
+  where?: Prisma.ProspectContactWhereInput
+}
+
+/**
+ * OutreachMessage.auditReport
+ */
+export type OutreachMessage$auditReportArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditReport
+   */
+  select?: Prisma.AuditReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditReport
+   */
+  omit?: Prisma.AuditReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditReportInclude<ExtArgs> | null
+  where?: Prisma.AuditReportWhereInput
 }
 
 /**

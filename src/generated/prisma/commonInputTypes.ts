@@ -471,6 +471,13 @@ export type EnumProspectContactConfidenceFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumProspectContactConfidenceFilter<$PrismaModel> | $Enums.ProspectContactConfidence
 }
 
+export type EnumProspectContactStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectContactStatus | Prisma.EnumProspectContactStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel> | $Enums.ProspectContactStatus
+}
+
 export type EnumProspectContactSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.ProspectContactSourceType | Prisma.EnumProspectContactSourceTypeFieldRefInput<$PrismaModel>
   in?: $Enums.ProspectContactSourceType[] | Prisma.ListEnumProspectContactSourceTypeFieldRefInput<$PrismaModel>
@@ -489,6 +496,16 @@ export type EnumProspectContactConfidenceWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumProspectContactConfidenceFilter<$PrismaModel>
   _max?: Prisma.NestedEnumProspectContactConfidenceFilter<$PrismaModel>
+}
+
+export type EnumProspectContactStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectContactStatus | Prisma.EnumProspectContactStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectContactStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProspectContactStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel>
 }
 
 export type EnumOutreachMessageStatusFilter<$PrismaModel = never> = {
@@ -1036,6 +1053,13 @@ export type NestedEnumProspectContactConfidenceFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumProspectContactConfidenceFilter<$PrismaModel> | $Enums.ProspectContactConfidence
 }
 
+export type NestedEnumProspectContactStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectContactStatus | Prisma.EnumProspectContactStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel> | $Enums.ProspectContactStatus
+}
+
 export type NestedEnumProspectContactSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.ProspectContactSourceType | Prisma.EnumProspectContactSourceTypeFieldRefInput<$PrismaModel>
   in?: $Enums.ProspectContactSourceType[] | Prisma.ListEnumProspectContactSourceTypeFieldRefInput<$PrismaModel>
@@ -1054,6 +1078,16 @@ export type NestedEnumProspectContactConfidenceWithAggregatesFilter<$PrismaModel
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumProspectContactConfidenceFilter<$PrismaModel>
   _max?: Prisma.NestedEnumProspectContactConfidenceFilter<$PrismaModel>
+}
+
+export type NestedEnumProspectContactStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectContactStatus | Prisma.EnumProspectContactStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectContactStatus[] | Prisma.ListEnumProspectContactStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectContactStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProspectContactStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumOutreachMessageStatusFilter<$PrismaModel = never> = {
