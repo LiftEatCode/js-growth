@@ -46,21 +46,32 @@ export function mergeProspectOutreachStatus(
     : current;
 }
 
-export function canRecordOutcomeForMessageStatus(status: string): boolean {
+export function canRecordOutcomeForMessageStatus(
+  status: string,
+  channel: string,
+): boolean {
+  if (channel === "CONTACT_FORM") {
+    return status === "SUBMITTED";
+  }
+
   return status === "SENT";
+}
+
+export function isBounceOutcomeAllowed(channel: string): boolean {
+  return channel === "EMAIL";
 }
 
 export function canConvertProspect(input: {
   outreachStatus: ProspectOutreachStatusValue;
   leadId: string | null;
-  hasSentMessage: boolean;
+  hasCompletedOutreach: boolean;
   latestOutcome: OutreachOutcomeValue | null;
 }): boolean {
   if (input.leadId || input.outreachStatus === "CONVERTED") {
     return false;
   }
 
-  if (!input.hasSentMessage) {
+  if (!input.hasCompletedOutreach) {
     return false;
   }
 

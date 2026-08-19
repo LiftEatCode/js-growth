@@ -12,7 +12,10 @@ import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { findExistingLeadByHostname } from "@/lib/prospecting/leads/find-existing";
+import { selectProspectOutreachChannel } from "@/lib/prospecting/contacts/select-channel";
+import type { DetectedContactFormFields } from "@/lib/prospecting/contacts/form-types";
 import { loadProspectSuppressionState } from "@/lib/prospecting/metrics/load-campaign-funnel";
+import { loadContactSuppressionContext } from "@/lib/prospecting/suppression/load";
 import { canConvertProspect } from "@/lib/prospecting/outreach/lifecycle";
 import { outreachOutcomeLabel } from "@/lib/prospecting/outreach/outcome-types";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
@@ -76,10 +79,18 @@ export default async function CampaignProspectDetailPage({
           contacts: {
             orderBy: [{ isPrimary: "desc" }, { discoveredAt: "asc" }],
           },
+          contactForms: {
+            orderBy: [{ isPrimary: "desc" }, { discoveredAt: "asc" }],
+          },
           outreachMessages: {
             where: { campaignId },
             orderBy: { createdAt: "desc" },
             take: 20,
+            include: {
+              contactForm: {
+                select: { url: true },
+              },
+            },
           },
           outreachOutcomes: {
             where: {
@@ -129,27 +140,47 @@ export default async function CampaignProspectDetailPage({
       message.status === "FAILED" ||
       message.status === "SUPPRESSED" ||
       message.status === "SENDING" ||
-      message.status === "SENT",
+      message.status === "SENT" ||
+      message.status === "SUBMITTED",
   );
-  const sentMessages = prospect.outreachMessages.filter(
-    (message) => message.status === "SENT" && message.sentAt,
-  );
+  const completedMessages = prospect.outreachMessages.filter((message) => {
+    if (message.channel === "EMAIL") {
+      return message.status === "SENT" && message.sentAt;
+    }
+
+    return message.status === "SUBMITTED" && message.submittedAt;
+  });
   const primaryContact =
     prospect.contacts.find((contact) => contact.isPrimary) ??
     prospect.contacts[0] ??
     null;
   const latestOutcome = prospect.outreachOutcomes[0]?.outcome ?? null;
-  const [existingLead, suppression] = await Promise.all([
+  const [existingLead, suppression, contactSuppression] = await Promise.all([
     findExistingLeadByHostname(prospect.hostname),
     loadProspectSuppressionState({
       hostname: prospect.hostname,
       emails: prospect.contacts.map((contact) => contact.normalizedEmail),
     }),
+    loadContactSuppressionContext({
+      hostname: prospect.hostname,
+      emails: prospect.contacts.map((contact) => contact.normalizedEmail),
+    }),
   ]);
+  const outreachChannel = selectProspectOutreachChannel({
+    hostname: prospect.hostname,
+    leadId: prospect.leadId,
+    outreachStatus: prospect.outreachStatus,
+    contacts: prospect.contacts,
+    contactForms: prospect.contactForms,
+    suppressedHostnames: contactSuppression.suppressedHostnames,
+    suppressedEmails: contactSuppression.suppressedEmails,
+    customerHostnames: contactSuppression.customerHostnames,
+    existingLead: Boolean(existingLead),
+  });
   const canConvert = canConvertProspect({
     outreachStatus: prospect.outreachStatus,
     leadId: prospect.leadId,
-    hasSentMessage: sentMessages.length > 0,
+    hasCompletedOutreach: completedMessages.length > 0,
     latestOutcome,
   });
   const contactName = primaryContact?.name?.trim() ?? "";
@@ -347,6 +378,16 @@ export default async function CampaignProspectDetailPage({
               isPrimary: contact.isPrimary,
               discoveredAt: formatDate(contact.discoveredAt),
             }))}
+            contactForms={prospect.contactForms.map((form) => ({
+              id: form.id,
+              url: form.url,
+              sourcePageUrl: form.sourcePageUrl,
+              confidence: form.confidence,
+              detectedFields: form.detectedFieldsJson as unknown as DetectedContactFormFields,
+              status: form.status,
+              isPrimary: form.isPrimary,
+              discoveredAt: formatDate(form.discoveredAt),
+            }))}
           />
         </Card>
 
@@ -355,24 +396,22 @@ export default async function CampaignProspectDetailPage({
             key={currentDraft?.id ?? "no-draft"}
             campaignId={membership.campaign.id}
             prospectId={prospect.id}
+            businessName={prospect.businessName}
             canGenerate={
               membership.isSelectedTopN &&
               prospect.qualificationStatus === "QUALIFIED" &&
               !prospect.leadId &&
               prospect.outreachStatus !== "CONVERTED" &&
               prospect.outreachStatus !== "NOT_INTERESTED" &&
-              prospect.contacts.some(
-                (contact) =>
-                  contact.isPrimary &&
-                  (contact.status === "SELECTED" ||
-                    contact.status === "DISCOVERED"),
-              )
+              outreachChannel.type !== "NONE"
             }
             draft={
               currentDraft
                 ? {
                     id: currentDraft.id,
+                    channel: currentDraft.channel,
                     toEmail: currentDraft.toEmail,
+                    contactFormUrl: currentDraft.contactForm?.url ?? null,
                     subject: currentDraft.subject,
                     bodyText: currentDraft.bodyText,
                     status: currentDraft.status,
@@ -380,6 +419,8 @@ export default async function CampaignProspectDetailPage({
                     approvedAt: currentDraft.approvedAt,
                     approvedByEmail: currentDraft.approvedByEmail,
                     sentAt: currentDraft.sentAt,
+                    submittedAt: currentDraft.submittedAt,
+                    submittedByEmail: currentDraft.submittedByEmail,
                     providerMessageId: currentDraft.providerMessageId,
                     error: currentDraft.error,
                   }
@@ -388,16 +429,23 @@ export default async function CampaignProspectDetailPage({
           />
         </Card>
 
-        {sentMessages.length > 0 ? (
+        {completedMessages.length > 0 ? (
           <Card variant="elevated" padding="lg">
             <OutreachOutcomePanel
               campaignId={membership.campaign.id}
               prospectId={prospect.id}
-              sentMessages={sentMessages.map((message) => ({
+              completedMessages={completedMessages.map((message) => ({
                 id: message.id,
-                toEmail: message.toEmail,
-                subject: message.subject,
-                sentAt: formatDate(message.sentAt!),
+                channel: message.channel,
+                label:
+                  message.channel === "CONTACT_FORM"
+                    ? `Contact form · ${message.contactForm?.url ?? "form"}`
+                    : `${message.toEmail ?? "email"} · ${message.subject}`,
+                completedAt: formatDate(
+                  message.channel === "CONTACT_FORM"
+                    ? message.submittedAt!
+                    : message.sentAt!,
+                ),
               }))}
             />
           </Card>
@@ -447,15 +495,24 @@ export default async function CampaignProspectDetailPage({
                 <li key={message.id} className="space-y-2 px-4 py-3">
                   <p className="text-sm font-semibold text-brand">
                     {message.status.toLowerCase().replaceAll("_", " ")} ·{" "}
-                    {message.toEmail}
+                    {message.channel === "CONTACT_FORM"
+                      ? "Contact form"
+                      : message.toEmail ?? "Email"}
                   </p>
-                  <p className="text-sm text-muted">{message.subject}</p>
+                  <p className="text-sm text-muted">
+                    {message.channel === "CONTACT_FORM"
+                      ? message.contactForm?.url ?? "Contact form outreach"
+                      : message.subject}
+                  </p>
                   <p className="text-xs text-muted">
                     Created {formatDate(message.createdAt)}
                     {message.approvedAt
                       ? ` · Approved ${formatDate(message.approvedAt)}`
                       : ""}
                     {message.sentAt ? ` · Sent ${formatDate(message.sentAt)}` : ""}
+                    {message.submittedAt
+                      ? ` · Submitted ${formatDate(message.submittedAt)}`
+                      : ""}
                     {message.providerMessageId
                       ? ` · Provider ID ${message.providerMessageId}`
                       : ""}

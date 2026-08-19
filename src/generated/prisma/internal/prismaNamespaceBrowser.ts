@@ -59,6 +59,7 @@ export const ModelName = {
   Prospect: 'Prospect',
   CampaignProspect: 'CampaignProspect',
   ProspectContact: 'ProspectContact',
+  ProspectContactForm: 'ProspectContactForm',
   OutreachMessage: 'OutreachMessage',
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
@@ -241,6 +242,27 @@ export const ProspectContactScalarFieldEnum = {
 export type ProspectContactScalarFieldEnum = (typeof ProspectContactScalarFieldEnum)[keyof typeof ProspectContactScalarFieldEnum]
 
 
+export const ProspectContactFormScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  discoveredAt: 'discoveredAt',
+  lastVerifiedAt: 'lastVerifiedAt',
+  prospectId: 'prospectId',
+  url: 'url',
+  normalizedUrl: 'normalizedUrl',
+  sourcePageUrl: 'sourcePageUrl',
+  formMethod: 'formMethod',
+  formAction: 'formAction',
+  detectedFieldsJson: 'detectedFieldsJson',
+  confidence: 'confidence',
+  status: 'status',
+  isPrimary: 'isPrimary'
+} as const
+
+export type ProspectContactFormScalarFieldEnum = (typeof ProspectContactFormScalarFieldEnum)[keyof typeof ProspectContactFormScalarFieldEnum]
+
+
 export const OutreachMessageScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -248,6 +270,8 @@ export const OutreachMessageScalarFieldEnum = {
   prospectId: 'prospectId',
   campaignId: 'campaignId',
   contactId: 'contactId',
+  contactFormId: 'contactFormId',
+  channel: 'channel',
   auditReportId: 'auditReportId',
   toEmail: 'toEmail',
   fromEmail: 'fromEmail',
@@ -265,6 +289,8 @@ export const OutreachMessageScalarFieldEnum = {
   generationJson: 'generationJson',
   providerMessageId: 'providerMessageId',
   sentAt: 'sentAt',
+  submittedAt: 'submittedAt',
+  submittedByEmail: 'submittedByEmail',
   error: 'error',
   approvedAt: 'approvedAt',
   approvedByEmail: 'approvedByEmail'

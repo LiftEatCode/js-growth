@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 6 — Outcomes, Lead Conversion & Campaign Metrics
+Status: 🟢 Sprint 7 — Contact Form Discovery + Contact-Form Outreach
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,18 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 6 (current):
+Sprint 7 (current):
+
+- Everything in Sprint 6, plus:
+- Deterministic public contact-form discovery during bounded website contact discovery
+- Separate `ProspectContactForm` model (not fake email contacts)
+- Channel-aware outreach selection: email preferred, then contact form
+- Contact-form AI drafts via the existing bounded draft pipeline
+- Manual contact-form workflow: copy message, open form, operator submits externally, mark as submitted
+- `SUBMITTED` lifecycle for contact-form outreach (distinct from email `SENT`)
+- Channel-aware campaign funnel metrics and outcome recording (`BOUNCED` hidden for forms)
+
+Sprint 6:
 
 - Authenticated `/reports/prospecting` campaigns (Sprint 1)
 - Google Places discovery + human import (Sprint 2)

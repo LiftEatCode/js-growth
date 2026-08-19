@@ -1,3 +1,4 @@
+import type { OutreachChannelValue } from "@/lib/prospecting/outreach/types";
 import type { OutreachOutcomeValue } from "@/lib/prospecting/outreach/outcome-types";
 
 export interface CampaignFunnelProspectRow {
@@ -7,10 +8,12 @@ export interface CampaignFunnelProspectRow {
   isSelectedTopN: boolean;
   auditReportId: string | null;
   leadId: string | null;
-  hasPrimaryContact: boolean;
+  hasPrimaryEmail: boolean;
+  hasPrimaryContactForm: boolean;
   hasDraft: boolean;
   hasApprovedDraft: boolean;
-  hasSentMessage: boolean;
+  hasEmailSent: boolean;
+  hasFormSubmitted: boolean;
   outcomes: OutreachOutcomeValue[];
 }
 
@@ -20,10 +23,14 @@ export interface CampaignFunnelCounts {
   audited: number;
   qualified: number;
   selectedTopN: number;
-  contactsFound: number;
+  contactable: number;
+  emailContacts: number;
+  contactForms: number;
   draftsGenerated: number;
   approved: number;
-  sent: number;
+  emailSent: number;
+  formsSubmitted: number;
+  outreachCompleted: number;
   replied: number;
   interested: number;
   notInterested: number;
@@ -32,7 +39,7 @@ export interface CampaignFunnelCounts {
 
 export interface CampaignFunnelRates {
   contactRate: number | null;
-  sendRate: number | null;
+  outreachRate: number | null;
   replyRate: number | null;
   interestRate: number | null;
   leadConversionRate: number | null;
@@ -74,11 +81,31 @@ export function computeCampaignFunnelMetrics(input: {
   rows: CampaignFunnelProspectRow[];
 }): CampaignFunnelMetrics {
   const rows = input.rows;
-
   const selectedRows = rows.filter((row) => row.isSelectedTopN);
-  const sentProspects = uniqueProspectsMatching(
+
+  const emailContacts = uniqueProspectsMatching(
+    selectedRows,
+    (row) => row.hasPrimaryEmail,
+  );
+  const contactForms = uniqueProspectsMatching(
+    selectedRows,
+    (row) => row.hasPrimaryContactForm,
+  );
+  const contactable = uniqueProspectsMatching(
+    selectedRows,
+    (row) => row.hasPrimaryEmail || row.hasPrimaryContactForm,
+  );
+  const emailSentProspects = uniqueProspectsMatching(
     rows,
-    (row) => row.hasSentMessage,
+    (row) => row.hasEmailSent,
+  );
+  const formsSubmittedProspects = uniqueProspectsMatching(
+    rows,
+    (row) => row.hasFormSubmitted,
+  );
+  const outreachCompletedProspects = uniqueProspectsMatching(
+    rows,
+    (row) => row.hasEmailSent || row.hasFormSubmitted,
   );
   const repliedProspects = uniqueProspectsWithOutcome(rows, [
     "REPLIED",
@@ -92,10 +119,6 @@ export function computeCampaignFunnelMetrics(input: {
     rows,
     (row) => Boolean(row.leadId) || row.outreachStatus === "CONVERTED",
   );
-  const contactsFound = uniqueProspectsMatching(
-    selectedRows,
-    (row) => row.hasPrimaryContact,
-  );
 
   const counts: CampaignFunnelCounts = {
     discovered: input.discovered,
@@ -106,10 +129,14 @@ export function computeCampaignFunnelMetrics(input: {
       (row) => row.qualificationStatus === "QUALIFIED",
     ),
     selectedTopN: selectedRows.length,
-    contactsFound,
+    contactable,
+    emailContacts,
+    contactForms,
     draftsGenerated: uniqueProspectsMatching(rows, (row) => row.hasDraft),
     approved: uniqueProspectsMatching(rows, (row) => row.hasApprovedDraft),
-    sent: sentProspects,
+    emailSent: emailSentProspects,
+    formsSubmitted: formsSubmittedProspects,
+    outreachCompleted: outreachCompletedProspects,
     replied: repliedProspects,
     interested: interestedProspects,
     notInterested: notInterestedProspects,
@@ -117,11 +144,11 @@ export function computeCampaignFunnelMetrics(input: {
   };
 
   const rates: CampaignFunnelRates = {
-    contactRate: rate(contactsFound, counts.selectedTopN),
-    sendRate: rate(sentProspects, contactsFound),
-    replyRate: rate(repliedProspects, sentProspects),
-    interestRate: rate(interestedProspects, sentProspects),
-    leadConversionRate: rate(convertedProspects, sentProspects),
+    contactRate: rate(contactable, counts.selectedTopN),
+    outreachRate: rate(outreachCompletedProspects, contactable),
+    replyRate: rate(repliedProspects, outreachCompletedProspects),
+    interestRate: rate(interestedProspects, outreachCompletedProspects),
+    leadConversionRate: rate(convertedProspects, outreachCompletedProspects),
   };
 
   return { counts, rates };
@@ -133,4 +160,8 @@ export function formatFunnelRate(value: number | null): string {
   }
 
   return `${Math.round(value * 100)}%`;
+}
+
+export function outreachChannelLabel(channel: OutreachChannelValue): string {
+  return channel === "CONTACT_FORM" ? "Contact form" : "Email";
 }

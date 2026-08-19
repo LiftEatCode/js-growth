@@ -21,6 +21,7 @@ import {
 } from "@/lib/prospecting/suppression/can-contact";
 import { loadQualificationBlockers } from "@/lib/prospecting/qualification/audit-prospect";
 import { canSendOutreachMessage } from "@/lib/prospecting/outreach/can-send";
+import { canSubmitContactFormMessage } from "@/lib/prospecting/outreach/can-submit";
 
 export interface OutreachActionResult {
   success: boolean;
@@ -287,13 +288,6 @@ export async function saveOutreachDraft(input: {
   const subject = input.subject.trim();
   const body = input.body.trim();
 
-  if (!subject || !body) {
-    return {
-      success: false,
-      message: "Subject and body are required.",
-    };
-  }
-
   const message = await prisma.outreachMessage.findFirst({
     where: {
       id: input.messageId,
@@ -306,11 +300,26 @@ export async function saveOutreachDraft(input: {
     !message ||
     message.status === "SENT" ||
     message.status === "SENDING" ||
+    message.status === "SUBMITTED" ||
     message.status === "SUPPRESSED"
   ) {
     return {
       success: false,
-      message: "The draft could not be saved.",
+      message: "This draft can no longer be edited.",
+    };
+  }
+
+  if (!subject && message.channel === "EMAIL") {
+    return {
+      success: false,
+      message: "Subject and body are required.",
+    };
+  }
+
+  if (!body) {
+    return {
+      success: false,
+      message: "Body is required.",
     };
   }
 
@@ -374,7 +383,8 @@ export async function rejectOutreachDraft(
   if (
     !message ||
     message.status === "SENT" ||
-    message.status === "SENDING"
+    message.status === "SENDING" ||
+    message.status === "SUBMITTED"
   ) {
     return {
       success: false,
@@ -421,6 +431,7 @@ export async function approveOutreachDraft(
     include: {
       prospect: true,
       contact: true,
+      contactForm: true,
       campaign: true,
     },
   });
@@ -432,30 +443,24 @@ export async function approveOutreachDraft(
     };
   }
 
-  if (message.status === "SENT" || message.status === "SENDING") {
+  if (
+    message.status === "SENT" ||
+    message.status === "SENDING" ||
+    message.status === "SUBMITTED"
+  ) {
     return {
       success: false,
       message: "This draft cannot be approved.",
     };
   }
 
-  if (!message.prospect || !message.contact || !message.campaign) {
+  if (!message.prospect || !message.campaign) {
     return {
       success: false,
       message: "This draft is missing required related data.",
     };
   }
 
-  // Keep this approval flow low-volume and safety-first.
-  // Approval re-checks eligibility; it does not send email.
-  const optOutSentence =
-    "If you'd rather not receive messages like this from me, just reply and let me know.";
-  const normalizedBody = message.bodyText.trim();
-  const bodyText = normalizedBody.includes(optOutSentence)
-    ? message.bodyText
-    : `${message.bodyText.trim()}\n\n${optOutSentence}\n`;
-
-  const contact = message.contact;
   const prospect = message.prospect;
   const campaign = message.campaign;
 
@@ -469,34 +474,10 @@ export async function approveOutreachDraft(
     };
   }
 
-  if (!message.subject.trim() || !message.bodyText.trim()) {
+  if (!message.bodyText.trim()) {
     return {
       success: false,
-      message: "Approval blocked: subject and body are required.",
-    };
-  }
-
-  if (!contact.isPrimary) {
-    return {
-      success: false,
-      message: "Approval blocked: contact is not selected.",
-    };
-  }
-
-  if (!["SELECTED", "DISCOVERED"].includes(contact.status)) {
-    return {
-      success: false,
-      message: "Approval blocked: contact is not usable.",
-    };
-  }
-
-  if (
-    message.toEmail.trim().toLowerCase() !==
-    contact.email.trim().toLowerCase()
-  ) {
-    return {
-      success: false,
-      message: "Approval blocked: recipient email changed.",
+      message: "Approval blocked: body is required.",
     };
   }
 
@@ -510,56 +491,156 @@ export async function approveOutreachDraft(
   const [suppression, blockers] = await Promise.all([
     loadContactSuppressionContext({
       hostname: prospect.hostname,
-      emails: [contact.normalizedEmail],
+      emails: message.contact?.normalizedEmail
+        ? [message.contact.normalizedEmail]
+        : [],
     }),
     loadQualificationBlockers({ hostname: prospect.hostname }),
   ]);
 
-  const canContact = canContactProspect({
-    hostname: prospect.hostname,
-    email: contact.normalizedEmail,
-    suppressedHostnames: suppression.suppressedHostnames,
-    suppressedEmails: suppression.suppressedEmails,
-    customerHostnames: suppression.customerHostnames,
-    existingLead: blockers.existingLead || Boolean(prospect.leadId),
-    convertedProspect: Boolean(prospect.leadId),
-    contactStatus: contact.status,
-  });
+  if (message.channel === "CONTACT_FORM") {
+    if (!message.contactForm) {
+      return {
+        success: false,
+        message: "Approval blocked: contact form is missing.",
+      };
+    }
 
-  if (!canContact.allowed) {
-    return {
-      success: false,
-      message: `Approval blocked: ${canContact.reasons.join(", ")}.`,
-    };
+    const eligibility = canSubmitContactFormMessage({
+      message: {
+        status: "APPROVED",
+        channel: message.channel,
+        approvedAt: new Date(),
+        approvedByEmail: session.email,
+        bodyText: message.bodyText,
+        contactFormId: message.contactFormId,
+        prospectId: message.prospectId,
+        campaignId: message.campaignId,
+      },
+      prospect: {
+        qualificationStatus: prospect.qualificationStatus,
+        outreachStatus: prospect.outreachStatus,
+        hostname: prospect.hostname,
+        leadId: prospect.leadId,
+      },
+      contactForm: message.contactForm,
+      campaign: { status: campaign.status },
+      suppressedHostnames: suppression.suppressedHostnames,
+      customerHostnames: suppression.customerHostnames,
+      existingLead: blockers.existingLead || Boolean(prospect.leadId),
+      priorSubmittedExists: false,
+    });
+
+    if (!eligibility.allowed) {
+      return {
+        success: false,
+        message: `Approval blocked: ${eligibility.reasons.join(", ")}.`,
+      };
+    }
+
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: {
+        status: "APPROVED",
+        approvedAt: new Date(),
+        approvedByEmail: session.email,
+        error: null,
+      },
+    });
+  } else {
+    if (!message.contact) {
+      return {
+        success: false,
+        message: "Approval blocked: email contact is missing.",
+      };
+    }
+
+    const optOutSentence =
+      "If you'd rather not receive messages like this from me, just reply and let me know.";
+    const normalizedBody = message.bodyText.trim();
+    const bodyText = normalizedBody.includes(optOutSentence)
+      ? message.bodyText
+      : `${message.bodyText.trim()}\n\n${optOutSentence}\n`;
+
+    const contact = message.contact;
+
+    if (!message.subject.trim()) {
+      return {
+        success: false,
+        message: "Approval blocked: subject and body are required.",
+      };
+    }
+
+    if (!contact.isPrimary) {
+      return {
+        success: false,
+        message: "Approval blocked: contact is not selected.",
+      };
+    }
+
+    if (!["SELECTED", "DISCOVERED"].includes(contact.status)) {
+      return {
+        success: false,
+        message: "Approval blocked: contact is not usable.",
+      };
+    }
+
+    if (
+      message.toEmail?.trim().toLowerCase() !==
+      contact.email.trim().toLowerCase()
+    ) {
+      return {
+        success: false,
+        message: "Approval blocked: recipient email changed.",
+      };
+    }
+
+    const canContact = canContactProspect({
+      hostname: prospect.hostname,
+      email: contact.normalizedEmail,
+      suppressedHostnames: suppression.suppressedHostnames,
+      suppressedEmails: suppression.suppressedEmails,
+      customerHostnames: suppression.customerHostnames,
+      existingLead: blockers.existingLead || Boolean(prospect.leadId),
+      convertedProspect: Boolean(prospect.leadId),
+      contactStatus: contact.status,
+    });
+
+    if (!canContact.allowed) {
+      return {
+        success: false,
+        message: `Approval blocked: ${canContact.reasons.join(", ")}.`,
+      };
+    }
+
+    const alreadySent = await prisma.outreachMessage.findFirst({
+      where: {
+        prospectId,
+        campaignId,
+        contactId: contact.id,
+        status: "SENT",
+      },
+      select: { id: true },
+    });
+
+    if (alreadySent) {
+      return {
+        success: false,
+        message: "Approval blocked: outreach was already sent to this prospect.",
+      };
+    }
+
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: {
+        status: "APPROVED",
+        approvedAt: new Date(),
+        approvedByEmail: session.email,
+        bodyText,
+        error: null,
+      },
+    });
   }
-
-  const alreadySent = await prisma.outreachMessage.findFirst({
-    where: {
-      prospectId,
-      campaignId,
-      contactId: contact.id,
-      status: "SENT",
-    },
-    select: { id: true },
-  });
-
-  if (alreadySent) {
-    return {
-      success: false,
-      message: "Approval blocked: outreach was already sent to this prospect.",
-    };
-  }
-
-  await prisma.outreachMessage.update({
-    where: { id: message.id },
-    data: {
-      status: "APPROVED",
-      approvedAt: new Date(),
-      approvedByEmail: session.email,
-      bodyText,
-      error: null,
-    },
-  });
 
   await prisma.prospect.update({
     where: { id: prospectId },
@@ -572,7 +653,10 @@ export async function approveOutreachDraft(
     success: true,
     campaignId,
     prospectId,
-    message: "Draft approved. It is ready to send.",
+    message:
+      message.channel === "CONTACT_FORM"
+        ? "Draft approved. Copy the message and submit it manually through the contact form."
+        : "Draft approved. It is ready to send.",
   };
 }
 
@@ -610,7 +694,7 @@ export async function sendOutreachMessage(
     },
   });
 
-  if (!message || message.status !== "APPROVED") {
+  if (!message || message.status !== "APPROVED" || message.channel !== "EMAIL") {
     return {
       success: false,
       message: "This draft is not ready for sending.",
@@ -677,6 +761,7 @@ export async function sendOutreachMessage(
   const eligibility = canSendOutreachMessage({
     message: {
       status: message.status,
+      channel: message.channel,
       approvedAt: message.approvedAt,
       approvedByEmail: message.approvedByEmail,
       toEmail: message.toEmail,
@@ -786,7 +871,7 @@ export async function sendOutreachMessage(
     const resend = getResendClient();
     const { error: sendError, data } = await resend.emails.send({
       from: fromEmail,
-      to: message.toEmail,
+      to: message.toEmail ?? "",
       replyTo: replyTo ?? undefined,
       subject: message.subject,
       text: message.bodyText,
@@ -854,4 +939,156 @@ export async function sendOutreachMessage(
       prospectId,
     };
   }
+}
+
+export async function markContactFormSubmitted(
+  campaignId: string,
+  prospectId: string,
+  messageId: string,
+): Promise<OutreachActionResult> {
+  const session = await getInternalSession();
+
+  if (!session) {
+    return {
+      success: false,
+      message: "You are not authorized to record form submissions.",
+    };
+  }
+
+  const message = await prisma.outreachMessage.findFirst({
+    where: { id: messageId, prospectId, campaignId },
+    include: {
+      prospect: true,
+      contactForm: true,
+      campaign: true,
+    },
+  });
+
+  if (
+    !message ||
+    message.status !== "APPROVED" ||
+    message.channel !== "CONTACT_FORM"
+  ) {
+    return {
+      success: false,
+      message: "This contact-form draft is not ready to mark as submitted.",
+    };
+  }
+
+  if (!message.prospect || !message.contactForm || !message.campaign) {
+    return {
+      success: false,
+      message: "This draft is missing required related data.",
+    };
+  }
+
+  const prospect = message.prospect;
+  const contactForm = message.contactForm;
+  const campaign = message.campaign;
+
+  const [suppression, blockers] = await Promise.all([
+    loadContactSuppressionContext({
+      hostname: prospect.hostname,
+      emails: [],
+    }),
+    loadQualificationBlockers({ hostname: prospect.hostname }),
+  ]);
+
+  const priorSubmittedExists = Boolean(
+    await prisma.outreachMessage.findFirst({
+      where: {
+        prospectId,
+        campaignId,
+        contactFormId: contactForm.id,
+        status: "SUBMITTED",
+      },
+      select: { id: true },
+    }),
+  );
+
+  const eligibility = canSubmitContactFormMessage({
+    message: {
+      status: message.status,
+      channel: message.channel,
+      approvedAt: message.approvedAt,
+      approvedByEmail: message.approvedByEmail,
+      bodyText: message.bodyText,
+      contactFormId: message.contactFormId,
+      prospectId: message.prospectId,
+      campaignId: message.campaignId,
+    },
+    prospect: {
+      qualificationStatus: prospect.qualificationStatus,
+      outreachStatus: prospect.outreachStatus,
+      hostname: prospect.hostname,
+      leadId: prospect.leadId,
+    },
+    contactForm,
+    campaign: { status: campaign.status },
+    suppressedHostnames: suppression.suppressedHostnames,
+    customerHostnames: suppression.customerHostnames,
+    existingLead: blockers.existingLead || Boolean(prospect.leadId),
+    priorSubmittedExists,
+  });
+
+  if (!eligibility.allowed) {
+    await prisma.outreachMessage.update({
+      where: { id: message.id },
+      data: {
+        status: eligibility.reasons.some((reason) =>
+          ["HOSTNAME_SUPPRESSED", "EXISTING_LEAD", "CUSTOMER", "PROSPECT_CONVERTED"].includes(
+            reason,
+          ),
+        )
+          ? "SUPPRESSED"
+          : "FAILED",
+        error: `Submit blocked: ${eligibility.reasons.join(", ")}`,
+      },
+    });
+
+    return {
+      success: false,
+      message: "Submission blocked by final eligibility checks.",
+      campaignId,
+      prospectId,
+    };
+  }
+
+  const locked = await prisma.outreachMessage.updateMany({
+    where: {
+      id: message.id,
+      status: "APPROVED",
+      channel: "CONTACT_FORM",
+    },
+    data: {
+      status: "SUBMITTED",
+      submittedAt: new Date(),
+      submittedByEmail: session.email,
+      error: null,
+    },
+  });
+
+  if (locked.count !== 1) {
+    return {
+      success: false,
+      message: "This contact form outreach is already marked as submitted.",
+      campaignId,
+      prospectId,
+    };
+  }
+
+  await prisma.prospect.update({
+    where: { id: prospectId },
+    data: { outreachStatus: "SENT" },
+  });
+
+  revalidateCampaign(campaignId, prospectId);
+
+  return {
+    success: true,
+    campaignId,
+    prospectId,
+    message:
+      "Contact form submission recorded. No automated submission occurred from this application.",
+  };
 }

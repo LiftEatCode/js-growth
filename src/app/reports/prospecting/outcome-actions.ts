@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { MAX_OUTREACH_OUTCOME_NOTES_CHARS } from "@/lib/prospecting/outreach/constants";
 import {
   canRecordOutcomeForMessageStatus,
+  isBounceOutcomeAllowed,
   mergeProspectOutreachStatus,
   outreachStatusForOutcome,
 } from "@/lib/prospecting/outreach/lifecycle";
@@ -99,10 +100,17 @@ export async function recordOutreachOutcome(input: {
     };
   }
 
-  if (!canRecordOutcomeForMessageStatus(message.status)) {
+  if (!canRecordOutcomeForMessageStatus(message.status, message.channel)) {
     return {
       success: false,
-      message: "Outcomes can only be recorded for sent messages.",
+      message: "Outcomes can only be recorded for completed outreach messages.",
+    };
+  }
+
+  if (input.outcome === "BOUNCED" && !isBounceOutcomeAllowed(message.channel)) {
+    return {
+      success: false,
+      message: "Bounced is only available for email outreach.",
     };
   }
 
@@ -235,7 +243,8 @@ export async function recordOutreachOutcome(input: {
     !unchanged ||
     unchanged.subject !== snapshotSubject ||
     unchanged.bodyText !== snapshotBody ||
-    unchanged.status !== "SENT"
+    (message.channel === "EMAIL" && unchanged.status !== "SENT") ||
+    (message.channel === "CONTACT_FORM" && unchanged.status !== "SUBMITTED")
   ) {
     throw new Error("Recording an outcome must not mutate sent message content.");
   }

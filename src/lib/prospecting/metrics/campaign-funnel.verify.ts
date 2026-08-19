@@ -16,10 +16,12 @@ const rows: CampaignFunnelProspectRow[] = [
     isSelectedTopN: true,
     auditReportId: "audit-1",
     leadId: null,
-    hasPrimaryContact: true,
+    hasPrimaryEmail: true,
+    hasPrimaryContactForm: false,
     hasDraft: true,
     hasApprovedDraft: true,
-    hasSentMessage: true,
+    hasEmailSent: true,
+    hasFormSubmitted: false,
     outcomes: ["REPLIED", "INTERESTED"] satisfies OutreachOutcomeValue[],
   },
   {
@@ -29,10 +31,12 @@ const rows: CampaignFunnelProspectRow[] = [
     isSelectedTopN: true,
     auditReportId: "audit-2",
     leadId: null,
-    hasPrimaryContact: true,
+    hasPrimaryEmail: false,
+    hasPrimaryContactForm: true,
     hasDraft: true,
     hasApprovedDraft: true,
-    hasSentMessage: true,
+    hasEmailSent: false,
+    hasFormSubmitted: true,
     outcomes: [] satisfies OutreachOutcomeValue[],
   },
   {
@@ -42,10 +46,12 @@ const rows: CampaignFunnelProspectRow[] = [
     isSelectedTopN: true,
     auditReportId: "audit-3",
     leadId: "lead-3",
-    hasPrimaryContact: true,
+    hasPrimaryEmail: true,
+    hasPrimaryContactForm: false,
     hasDraft: true,
     hasApprovedDraft: true,
-    hasSentMessage: true,
+    hasEmailSent: true,
+    hasFormSubmitted: false,
     outcomes: ["INTERESTED"] satisfies OutreachOutcomeValue[],
   },
 ];
@@ -55,18 +61,26 @@ const metrics = computeCampaignFunnelMetrics({
   rows,
 });
 
-assert(metrics.counts.sent === 3, "sent prospects counted uniquely");
+assert(metrics.counts.emailSent === 2, "email sent counts correctly");
+assert(metrics.counts.formsSubmitted === 1, "form submitted counts correctly");
+assert(
+  metrics.counts.outreachCompleted === 3,
+  "outreach completed dedupes by prospect",
+);
 assert(metrics.counts.replied === 2, "replied prospects counted uniquely");
 assert(metrics.counts.interested === 2, "interested prospects counted uniquely");
 assert(metrics.counts.convertedToLead === 1, "converted prospects counted uniquely");
-assert(metrics.rates.replyRate === 2 / 3, "reply rate uses sent denominator");
+assert(
+  metrics.rates.replyRate === 2 / 3,
+  "reply rate uses outreach completed denominator",
+);
 assert(
   metrics.rates.interestRate === 2 / 3,
-  "interest rate uses sent denominator",
+  "interest rate uses outreach completed denominator",
 );
 assert(
   metrics.rates.leadConversionRate === 1 / 3,
-  "conversion rate uses sent denominator",
+  "conversion rate uses outreach completed denominator",
 );
 
 console.log("campaign-funnel.verify.ts passed");

@@ -93,7 +93,7 @@ export async function convertProspectingProspectToLead(input: {
       outreachMessages: {
         where: {
           campaignId: input.campaignId,
-          status: "SENT",
+          status: { in: ["SENT", "SUBMITTED"] },
         },
         select: { id: true },
         take: 1,
@@ -119,7 +119,7 @@ export async function convertProspectingProspectToLead(input: {
     !canConvertProspect({
       outreachStatus: prospect.outreachStatus,
       leadId: prospect.leadId,
-      hasSentMessage: prospect.outreachMessages.length > 0,
+      hasCompletedOutreach: prospect.outreachMessages.length > 0,
       latestOutcome,
     })
   ) {

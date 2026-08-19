@@ -20,6 +20,7 @@ export interface CanSendOutreachMessageInput {
   message: Pick<
     OutreachMessage,
     | "status"
+    | "channel"
     | "approvedAt"
     | "approvedByEmail"
     | "toEmail"
@@ -85,8 +86,10 @@ export function canSendOutreachMessage(
   }
 
   if (
+    input.message.channel === "EMAIL" &&
+    input.message.toEmail &&
     input.message.toEmail.trim().toLowerCase() !==
-    input.contact.email.trim().toLowerCase()
+      input.contact.email.trim().toLowerCase()
   ) {
     reasons.push("CONTACT_EMAIL_MISMATCH");
   }

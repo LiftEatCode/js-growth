@@ -487,3 +487,104 @@ export async function suppressProspectContact(
     message: "Contact suppressed. Future outreach is blocked.",
   };
 }
+
+export async function setPrimaryProspectContactForm(
+  campaignId: string,
+  prospectId: string,
+  contactFormId: string,
+): Promise<ContactActionResult> {
+  const session = await getInternalSession();
+
+  if (!session) {
+    return {
+      success: false,
+      message: "You are not authorized to update contact forms.",
+    };
+  }
+
+  const form = await prisma.prospectContactForm.findFirst({
+    where: { id: contactFormId, prospectId },
+  });
+
+  if (!form || form.status === "REJECTED" || form.status === "SUPPRESSED") {
+    return {
+      success: false,
+      message: "That contact form cannot be selected.",
+    };
+  }
+
+  await prisma.$transaction([
+    prisma.prospectContactForm.updateMany({
+      where: { prospectId, isPrimary: true },
+      data: { isPrimary: false },
+    }),
+    prisma.prospectContactForm.update({
+      where: { id: form.id },
+      data: { isPrimary: true, status: "SELECTED" },
+    }),
+  ]);
+
+  revalidateCampaign(campaignId, prospectId);
+
+  return {
+    success: true,
+    campaignId,
+    prospectId,
+    message: "Primary contact form updated. No form was submitted.",
+  };
+}
+
+export async function rejectProspectContactForm(
+  campaignId: string,
+  prospectId: string,
+  contactFormId: string,
+): Promise<ContactActionResult> {
+  const session = await getInternalSession();
+
+  if (!session) {
+    return {
+      success: false,
+      message: "You are not authorized to update contact forms.",
+    };
+  }
+
+  const form = await prisma.prospectContactForm.findFirst({
+    where: { id: contactFormId, prospectId },
+  });
+
+  if (!form) {
+    return {
+      success: false,
+      message: "The contact form could not be found.",
+    };
+  }
+
+  await prisma.prospectContactForm.update({
+    where: { id: form.id },
+    data: { status: "REJECTED", isPrimary: false },
+  });
+
+  const next = await prisma.prospectContactForm.findFirst({
+    where: {
+      prospectId,
+      status: { in: ["DISCOVERED", "SELECTED"] },
+    },
+    orderBy: { discoveredAt: "asc" },
+  });
+
+  if (next) {
+    await prisma.prospectContactForm.update({
+      where: { id: next.id },
+      data: { isPrimary: true, status: "SELECTED" },
+    });
+  }
+
+  revalidateCampaign(campaignId, prospectId);
+
+  return {
+    success: true,
+    campaignId,
+    prospectId,
+    message: "Contact form rejected. No form was submitted.",
+  };
+}

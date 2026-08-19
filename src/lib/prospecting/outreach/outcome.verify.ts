@@ -6,6 +6,7 @@ import { MAX_OUTREACH_OUTCOME_NOTES_CHARS } from "./constants";
 import {
   canConvertProspect,
   canRecordOutcomeForMessageStatus,
+  isBounceOutcomeAllowed,
   mergeProspectOutreachStatus,
   outreachStatusForOutcome,
 } from "./lifecycle";
@@ -28,13 +29,22 @@ assert(isOutreachOutcomeValue("INTERESTED"), "interested is valid");
 assert(!isOutreachOutcomeValue("SENT"), "message status is not an outcome");
 
 assert(
-  canRecordOutcomeForMessageStatus("SENT"),
-  "sent message can receive an outcome",
+  canRecordOutcomeForMessageStatus("SENT", "EMAIL"),
+  "sent email message can receive an outcome",
 );
 assert(
-  !canRecordOutcomeForMessageStatus("APPROVED"),
+  canRecordOutcomeForMessageStatus("SUBMITTED", "CONTACT_FORM"),
+  "submitted contact-form message can receive an outcome",
+);
+assert(
+  !canRecordOutcomeForMessageStatus("APPROVED", "EMAIL"),
   "approved message cannot receive an outcome directly",
 );
+assert(
+  !isBounceOutcomeAllowed("CONTACT_FORM"),
+  "bounced is not offered for contact forms",
+);
+assert(isBounceOutcomeAllowed("EMAIL"), "bounced remains available for email");
 
 assert(
   outreachStatusForOutcome("INTERESTED") === "INTERESTED",
@@ -62,16 +72,16 @@ assert(
   canConvertProspect({
     outreachStatus: "INTERESTED",
     leadId: null,
-    hasSentMessage: true,
+    hasCompletedOutreach: true,
     latestOutcome: "INTERESTED",
   }),
-  "interested sent prospect can convert",
+  "interested completed outreach prospect can convert",
 );
 assert(
   !canConvertProspect({
     outreachStatus: "SENT",
     leadId: null,
-    hasSentMessage: true,
+    hasCompletedOutreach: true,
     latestOutcome: null,
   }),
   "sent without reply cannot convert yet",
@@ -80,7 +90,7 @@ assert(
   !canConvertProspect({
     outreachStatus: "CONVERTED",
     leadId: "lead-1",
-    hasSentMessage: true,
+    hasCompletedOutreach: true,
     latestOutcome: "INTERESTED",
   }),
   "converted prospect cannot convert again",
@@ -96,6 +106,10 @@ const outcomeActions = readFileSync(
 );
 const conversionActions = readFileSync(
   join(here, "../../../app/reports/prospecting/conversion-actions.ts"),
+  "utf8",
+);
+const outreachActions = readFileSync(
+  join(here, "../../../app/reports/prospecting/outreach-actions.ts"),
   "utf8",
 );
 const prospectPage = readFileSync(
@@ -115,8 +129,12 @@ assert(
   "outcome history is preserved as events",
 );
 assert(
-  outcomeActions.includes('status !== "SENT"'),
-  "outcome recording verifies sent message remains sent",
+  outcomeActions.includes('message.channel === "EMAIL"'),
+  "outcome recording verifies email sent status",
+);
+assert(
+  outcomeActions.includes('message.channel === "CONTACT_FORM"'),
+  "outcome recording verifies contact-form submitted status",
 );
 assert(
   outcomeActions.includes("getInternalSession"),
@@ -137,6 +155,10 @@ assert(
 assert(
   conversionActions.includes('outreachStatus: "CONVERTED"'),
   "conversion marks prospect converted",
+);
+assert(
+  outreachActions.includes("markContactFormSubmitted"),
+  "mark submitted action exists",
 );
 assert(
   prospectPage.includes("OutreachOutcomePanel"),

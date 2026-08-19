@@ -14,8 +14,9 @@ export function CampaignFunnelPanel({ metrics }: CampaignFunnelPanelProps) {
         Campaign funnel
       </h2>
       <p className="text-sm text-muted">
-        Deterministic database counts. Reply and conversion rates use unique
-        prospects with sent outreach as the denominator.
+        Deterministic database counts. Outreach completed counts unique prospects
+        with either an email sent or a contact form marked submitted. Reply and
+        conversion rates use outreach completed as the denominator.
       </p>
 
       <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -24,10 +25,14 @@ export function CampaignFunnelPanel({ metrics }: CampaignFunnelPanelProps) {
         <Metric label="Audited" value={counts.audited} />
         <Metric label="Qualified" value={counts.qualified} />
         <Metric label="Selected top N" value={counts.selectedTopN} />
-        <Metric label="Contacts found" value={counts.contactsFound} />
+        <Metric label="Contactable" value={counts.contactable} />
+        <Metric label="Email contacts" value={counts.emailContacts} />
+        <Metric label="Contact forms" value={counts.contactForms} />
         <Metric label="Drafts generated" value={counts.draftsGenerated} />
         <Metric label="Approved" value={counts.approved} />
-        <Metric label="Sent" value={counts.sent} />
+        <Metric label="Email sent" value={counts.emailSent} />
+        <Metric label="Forms submitted" value={counts.formsSubmitted} />
+        <Metric label="Outreach completed" value={counts.outreachCompleted} />
         <Metric label="Replied" value={counts.replied} />
         <Metric label="Interested" value={counts.interested} />
         <Metric label="Not interested" value={counts.notInterested} />
@@ -38,27 +43,27 @@ export function CampaignFunnelPanel({ metrics }: CampaignFunnelPanelProps) {
         <Metric
           label="Contact rate"
           value={formatFunnelRate(rates.contactRate)}
-          detail="contacts found / selected top N"
+          detail="contactable / selected top N"
         />
         <Metric
-          label="Send rate"
-          value={formatFunnelRate(rates.sendRate)}
-          detail="sent / contacts found"
+          label="Outreach rate"
+          value={formatFunnelRate(rates.outreachRate)}
+          detail="outreach completed / contactable"
         />
         <Metric
           label="Reply rate"
           value={formatFunnelRate(rates.replyRate)}
-          detail="replied or interested / sent"
+          detail="replied or interested / outreach completed"
         />
         <Metric
           label="Interest rate"
           value={formatFunnelRate(rates.interestRate)}
-          detail="interested / sent"
+          detail="interested / outreach completed"
         />
         <Metric
           label="Lead conversion rate"
           value={formatFunnelRate(rates.leadConversionRate)}
-          detail="converted / sent"
+          detail="converted / outreach completed"
         />
       </dl>
     </div>

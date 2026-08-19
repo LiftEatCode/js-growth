@@ -314,6 +314,7 @@ export type ProspectWhereInput = {
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   campaignProspects?: Prisma.CampaignProspectListRelationFilter
   contacts?: Prisma.ProspectContactListRelationFilter
+  contactForms?: Prisma.ProspectContactFormListRelationFilter
   outreachMessages?: Prisma.OutreachMessageListRelationFilter
   outreachOutcomes?: Prisma.OutreachOutcomeListRelationFilter
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateListRelationFilter
@@ -345,6 +346,7 @@ export type ProspectOrderByWithRelationInput = {
   lead?: Prisma.LeadOrderByWithRelationInput
   campaignProspects?: Prisma.CampaignProspectOrderByRelationAggregateInput
   contacts?: Prisma.ProspectContactOrderByRelationAggregateInput
+  contactForms?: Prisma.ProspectContactFormOrderByRelationAggregateInput
   outreachMessages?: Prisma.OutreachMessageOrderByRelationAggregateInput
   outreachOutcomes?: Prisma.OutreachOutcomeOrderByRelationAggregateInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateOrderByRelationAggregateInput
@@ -379,6 +381,7 @@ export type ProspectWhereUniqueInput = Prisma.AtLeast<{
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   campaignProspects?: Prisma.CampaignProspectListRelationFilter
   contacts?: Prisma.ProspectContactListRelationFilter
+  contactForms?: Prisma.ProspectContactFormListRelationFilter
   outreachMessages?: Prisma.OutreachMessageListRelationFilter
   outreachOutcomes?: Prisma.OutreachOutcomeListRelationFilter
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateListRelationFilter
@@ -462,6 +465,7 @@ export type ProspectCreateInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
@@ -491,6 +495,7 @@ export type ProspectUncheckedCreateInput = {
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
@@ -520,6 +525,7 @@ export type ProspectUpdateInput = {
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
@@ -549,6 +555,7 @@ export type ProspectUncheckedUpdateInput = {
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
@@ -840,6 +847,20 @@ export type ProspectUpdateOneRequiredWithoutContactsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutContactsInput, Prisma.ProspectUpdateWithoutContactsInput>, Prisma.ProspectUncheckedUpdateWithoutContactsInput>
 }
 
+export type ProspectCreateNestedOneWithoutContactFormsInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutContactFormsInput, Prisma.ProspectUncheckedCreateWithoutContactFormsInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutContactFormsInput
+  connect?: Prisma.ProspectWhereUniqueInput
+}
+
+export type ProspectUpdateOneRequiredWithoutContactFormsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutContactFormsInput, Prisma.ProspectUncheckedCreateWithoutContactFormsInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutContactFormsInput
+  upsert?: Prisma.ProspectUpsertWithoutContactFormsInput
+  connect?: Prisma.ProspectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutContactFormsInput, Prisma.ProspectUpdateWithoutContactFormsInput>, Prisma.ProspectUncheckedUpdateWithoutContactFormsInput>
+}
+
 export type ProspectCreateNestedOneWithoutOutreachMessagesInput = {
   create?: Prisma.XOR<Prisma.ProspectCreateWithoutOutreachMessagesInput, Prisma.ProspectUncheckedCreateWithoutOutreachMessagesInput>
   connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutOutreachMessagesInput
@@ -907,6 +928,7 @@ export type ProspectCreateWithoutAuditReportInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
@@ -935,6 +957,7 @@ export type ProspectUncheckedCreateWithoutAuditReportInput = {
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
@@ -1016,6 +1039,7 @@ export type ProspectCreateWithoutLeadInput = {
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
@@ -1044,6 +1068,7 @@ export type ProspectUncheckedCreateWithoutLeadInput = {
   auditReportId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
@@ -1098,6 +1123,7 @@ export type ProspectCreateWithoutCampaignProspectsInput = {
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
@@ -1126,6 +1152,7 @@ export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
   auditReportId?: string | null
   leadId?: string | null
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
@@ -1170,6 +1197,7 @@ export type ProspectUpdateWithoutCampaignProspectsInput = {
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
@@ -1198,6 +1226,7 @@ export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
@@ -1226,6 +1255,7 @@ export type ProspectCreateWithoutContactsInput = {
   auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
@@ -1254,6 +1284,7 @@ export type ProspectUncheckedCreateWithoutContactsInput = {
   auditReportId?: string | null
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
@@ -1298,6 +1329,7 @@ export type ProspectUpdateWithoutContactsInput = {
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
@@ -1326,6 +1358,139 @@ export type ProspectUncheckedUpdateWithoutContactsInput = {
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
+}
+
+export type ProspectCreateWithoutContactFormsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
+  lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
+  campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
+}
+
+export type ProspectUncheckedCreateWithoutContactFormsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  auditReportId?: string | null
+  leadId?: string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
+}
+
+export type ProspectCreateOrConnectWithoutContactFormsInput = {
+  where: Prisma.ProspectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutContactFormsInput, Prisma.ProspectUncheckedCreateWithoutContactFormsInput>
+}
+
+export type ProspectUpsertWithoutContactFormsInput = {
+  update: Prisma.XOR<Prisma.ProspectUpdateWithoutContactFormsInput, Prisma.ProspectUncheckedUpdateWithoutContactFormsInput>
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutContactFormsInput, Prisma.ProspectUncheckedCreateWithoutContactFormsInput>
+  where?: Prisma.ProspectWhereInput
+}
+
+export type ProspectUpdateToOneWithWhereWithoutContactFormsInput = {
+  where?: Prisma.ProspectWhereInput
+  data: Prisma.XOR<Prisma.ProspectUpdateWithoutContactFormsInput, Prisma.ProspectUncheckedUpdateWithoutContactFormsInput>
+}
+
+export type ProspectUpdateWithoutContactFormsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
+  campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
+}
+
+export type ProspectUncheckedUpdateWithoutContactFormsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
@@ -1355,6 +1520,7 @@ export type ProspectCreateWithoutOutreachMessagesInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
 }
@@ -1383,6 +1549,7 @@ export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
 }
@@ -1427,6 +1594,7 @@ export type ProspectUpdateWithoutOutreachMessagesInput = {
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
 }
@@ -1455,6 +1623,7 @@ export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
 }
@@ -1483,6 +1652,7 @@ export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
 }
@@ -1511,6 +1681,7 @@ export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
 }
@@ -1555,6 +1726,7 @@ export type ProspectUpdateWithoutImportedDiscoveryCandidatesInput = {
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
 }
@@ -1583,6 +1755,7 @@ export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
 }
@@ -1611,6 +1784,7 @@ export type ProspectCreateWithoutOutreachOutcomesInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
   campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
 }
@@ -1639,6 +1813,7 @@ export type ProspectUncheckedCreateWithoutOutreachOutcomesInput = {
   leadId?: string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
   contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
 }
@@ -1683,6 +1858,7 @@ export type ProspectUpdateWithoutOutreachOutcomesInput = {
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
 }
@@ -1711,6 +1887,7 @@ export type ProspectUncheckedUpdateWithoutOutreachOutcomesInput = {
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
 }
@@ -1761,6 +1938,7 @@ export type ProspectUpdateWithoutAuditReportInput = {
   lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
@@ -1789,6 +1967,7 @@ export type ProspectUncheckedUpdateWithoutAuditReportInput = {
   leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
@@ -1863,6 +2042,7 @@ export type ProspectUpdateWithoutLeadInput = {
   auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
   campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
@@ -1891,6 +2071,7 @@ export type ProspectUncheckedUpdateWithoutLeadInput = {
   auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
   contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
   outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
@@ -1927,6 +2108,7 @@ export type ProspectUncheckedUpdateManyWithoutLeadInput = {
 export type ProspectCountOutputType = {
   campaignProspects: number
   contacts: number
+  contactForms: number
   outreachMessages: number
   outreachOutcomes: number
   importedDiscoveryCandidates: number
@@ -1935,6 +2117,7 @@ export type ProspectCountOutputType = {
 export type ProspectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   campaignProspects?: boolean | ProspectCountOutputTypeCountCampaignProspectsArgs
   contacts?: boolean | ProspectCountOutputTypeCountContactsArgs
+  contactForms?: boolean | ProspectCountOutputTypeCountContactFormsArgs
   outreachMessages?: boolean | ProspectCountOutputTypeCountOutreachMessagesArgs
   outreachOutcomes?: boolean | ProspectCountOutputTypeCountOutreachOutcomesArgs
   importedDiscoveryCandidates?: boolean | ProspectCountOutputTypeCountImportedDiscoveryCandidatesArgs
@@ -1962,6 +2145,13 @@ export type ProspectCountOutputTypeCountCampaignProspectsArgs<ExtArgs extends ru
  */
 export type ProspectCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProspectContactWhereInput
+}
+
+/**
+ * ProspectCountOutputType without action
+ */
+export type ProspectCountOutputTypeCountContactFormsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProspectContactFormWhereInput
 }
 
 /**
@@ -2012,6 +2202,7 @@ export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   lead?: boolean | Prisma.Prospect$leadArgs<ExtArgs>
   campaignProspects?: boolean | Prisma.Prospect$campaignProspectsArgs<ExtArgs>
   contacts?: boolean | Prisma.Prospect$contactsArgs<ExtArgs>
+  contactForms?: boolean | Prisma.Prospect$contactFormsArgs<ExtArgs>
   outreachMessages?: boolean | Prisma.Prospect$outreachMessagesArgs<ExtArgs>
   outreachOutcomes?: boolean | Prisma.Prospect$outreachOutcomesArgs<ExtArgs>
   importedDiscoveryCandidates?: boolean | Prisma.Prospect$importedDiscoveryCandidatesArgs<ExtArgs>
@@ -2100,6 +2291,7 @@ export type ProspectInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   lead?: boolean | Prisma.Prospect$leadArgs<ExtArgs>
   campaignProspects?: boolean | Prisma.Prospect$campaignProspectsArgs<ExtArgs>
   contacts?: boolean | Prisma.Prospect$contactsArgs<ExtArgs>
+  contactForms?: boolean | Prisma.Prospect$contactFormsArgs<ExtArgs>
   outreachMessages?: boolean | Prisma.Prospect$outreachMessagesArgs<ExtArgs>
   outreachOutcomes?: boolean | Prisma.Prospect$outreachOutcomesArgs<ExtArgs>
   importedDiscoveryCandidates?: boolean | Prisma.Prospect$importedDiscoveryCandidatesArgs<ExtArgs>
@@ -2121,6 +2313,7 @@ export type $ProspectPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     lead: Prisma.$LeadPayload<ExtArgs> | null
     campaignProspects: Prisma.$CampaignProspectPayload<ExtArgs>[]
     contacts: Prisma.$ProspectContactPayload<ExtArgs>[]
+    contactForms: Prisma.$ProspectContactFormPayload<ExtArgs>[]
     outreachMessages: Prisma.$OutreachMessagePayload<ExtArgs>[]
     outreachOutcomes: Prisma.$OutreachOutcomePayload<ExtArgs>[]
     importedDiscoveryCandidates: Prisma.$ProspectDiscoveryCandidatePayload<ExtArgs>[]
@@ -2545,6 +2738,7 @@ export interface Prisma__ProspectClient<T, Null = never, ExtArgs extends runtime
   lead<T extends Prisma.Prospect$leadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$leadArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   campaignProspects<T extends Prisma.Prospect$campaignProspectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$campaignProspectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignProspectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contacts<T extends Prisma.Prospect$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contactForms<T extends Prisma.Prospect$contactFormsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$contactFormsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectContactFormPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   outreachMessages<T extends Prisma.Prospect$outreachMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$outreachMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutreachMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   outreachOutcomes<T extends Prisma.Prospect$outreachOutcomesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$outreachOutcomesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutreachOutcomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   importedDiscoveryCandidates<T extends Prisma.Prospect$importedDiscoveryCandidatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$importedDiscoveryCandidatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectDiscoveryCandidatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3082,6 +3276,30 @@ export type Prospect$contactsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.ProspectContactScalarFieldEnum | Prisma.ProspectContactScalarFieldEnum[]
+}
+
+/**
+ * Prospect.contactForms
+ */
+export type Prospect$contactFormsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProspectContactForm
+   */
+  select?: Prisma.ProspectContactFormSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProspectContactForm
+   */
+  omit?: Prisma.ProspectContactFormOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProspectContactFormInclude<ExtArgs> | null
+  where?: Prisma.ProspectContactFormWhereInput
+  orderBy?: Prisma.ProspectContactFormOrderByWithRelationInput | Prisma.ProspectContactFormOrderByWithRelationInput[]
+  cursor?: Prisma.ProspectContactFormWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProspectContactFormScalarFieldEnum | Prisma.ProspectContactFormScalarFieldEnum[]
 }
 
 /**

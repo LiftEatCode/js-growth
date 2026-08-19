@@ -17,6 +17,7 @@ function assert(condition: unknown, message: string): asserts condition {
 const baseInput: CanSendOutreachMessageInput = {
   message: {
     status: "APPROVED" as const,
+    channel: "EMAIL" as const,
     approvedAt: new Date("2026-08-19T10:00:00.000Z"),
     approvedByEmail: "ops@js-growth.com",
     toEmail: "owner@business.com",

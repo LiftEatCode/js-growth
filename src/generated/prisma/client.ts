@@ -82,6 +82,11 @@ export type CampaignProspect = Prisma.CampaignProspectModel
  */
 export type ProspectContact = Prisma.ProspectContactModel
 /**
+ * Model ProspectContactForm
+ * 
+ */
+export type ProspectContactForm = Prisma.ProspectContactFormModel
+/**
  * Model OutreachMessage
  * 
  */

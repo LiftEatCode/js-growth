@@ -7,7 +7,7 @@ import {
   JS_SOLUTIONS_OUTREACH_CONTEXT,
   MAX_OUTREACH_EVIDENCE_CHARS,
 } from "./constants";
-import type { OutreachDraftContext, OutreachFindingContext } from "./types";
+import type { OutreachChannelValue, OutreachDraftContext, OutreachFindingContext } from "./types";
 
 function clip(value: string, max: number): string {
   const trimmed = value.replace(/\s+/g, " ").trim();
@@ -51,6 +51,7 @@ export function buildOutreachDraftContext(options: {
   industry: string | null;
   audit: WebsiteAuditResult;
   qualification: StoredQualification;
+  channel?: OutreachChannelValue;
 }): OutreachDraftContext | { error: string } {
   const primary = options.audit.findings.find(
     (finding) => finding.id === options.qualification.primaryFindingId,
@@ -94,6 +95,7 @@ export function buildOutreachDraftContext(options: {
     strongestArea: strongest?.label ?? null,
     weakestRelevantArea: weakest?.label ?? null,
     jsSolutionsContext: JS_SOLUTIONS_OUTREACH_CONTEXT,
+    channel: options.channel ?? "EMAIL",
   };
 }
 

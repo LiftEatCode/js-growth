@@ -7,6 +7,7 @@ import type { Prisma } from "@/generated/prisma/client";
 
 import { CONTACT_TTL_MS } from "./constants";
 import { isReusableContactDiscovery } from "./limit";
+import { selectPrimaryContactForm } from "./select-form";
 import { selectPrimaryContact } from "./select";
 import { createWebsiteContactDiscoveryProvider } from "./website-provider";
 import type {
@@ -14,6 +15,7 @@ import type {
   NormalizedContactCandidate,
   ProspectContactDiscoveryProvider,
 } from "./types";
+import type { NormalizedContactFormCandidate } from "./form-types";
 import {
   canContactProspect,
 } from "@/lib/prospecting/suppression/can-contact";
@@ -31,6 +33,33 @@ function isUsableContactStatus(status: string): boolean {
   return status === "DISCOVERED" || status === "SELECTED";
 }
 
+function isUsableFormStatus(status: string): boolean {
+  return status === "DISCOVERED" || status === "SELECTED";
+}
+
+function hasFreshUsableChannel(input: {
+  contacts: Array<{ status: string; isPrimary: boolean; lastVerifiedAt: Date | null; discoveredAt: Date }>;
+  forms: Array<{ status: string; isPrimary: boolean; lastVerifiedAt: Date | null; discoveredAt: Date }>;
+}): boolean {
+  const usableContacts = input.contacts.filter((contact) =>
+    isUsableContactStatus(contact.status),
+  );
+  const usableForms = input.forms.filter((form) =>
+    isUsableFormStatus(form.status),
+  );
+
+  return (
+    usableContacts.some((contact) => {
+      const verifiedAt = contact.lastVerifiedAt ?? contact.discoveredAt;
+      return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
+    }) ||
+    usableForms.some((form) => {
+      const verifiedAt = form.lastVerifiedAt ?? form.discoveredAt;
+      return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
+    })
+  );
+}
+
 export async function discoverProspectContacts(options: {
   prospectId: string;
   websiteUrl: string;
@@ -41,6 +70,7 @@ export async function discoverProspectContacts(options: {
     where: { id: options.prospectId },
     include: {
       contacts: true,
+      contactForms: true,
     },
   });
 
@@ -57,9 +87,12 @@ export async function discoverProspectContacts(options: {
   const usableContacts = prospect.contacts.filter((contact) =>
     isUsableContactStatus(contact.status),
   );
-  const hasUsableContact = usableContacts.some((contact) => {
-    const verifiedAt = contact.lastVerifiedAt ?? contact.discoveredAt;
-    return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
+  const usableForms = prospect.contactForms.filter((form) =>
+    isUsableFormStatus(form.status),
+  );
+  const hasUsableChannel = hasFreshUsableChannel({
+    contacts: prospect.contacts,
+    forms: prospect.contactForms,
   });
 
   if (
@@ -67,24 +100,26 @@ export async function discoverProspectContacts(options: {
     isReusableContactDiscovery({
       lastContactDiscoveryAt: prospect.lastContactDiscoveryAt,
       outreachStatus: prospect.outreachStatus,
-      hasUsableContact,
+      hasUsableContact: hasUsableChannel,
     })
   ) {
     const primary =
       usableContacts.find((contact) => contact.isPrimary) ?? usableContacts[0] ?? null;
 
     return {
-      outcome: hasUsableContact
+      outcome: hasUsableChannel
         ? "REUSED"
         : prospect.outreachStatus === "SUPPRESSED"
           ? "SUPPRESSED"
           : "NO_PUBLIC_EMAIL_FOUND",
       reused: true,
-      contactCount: usableContacts.length,
+      contactCount: usableContacts.length + usableForms.length,
       primaryEmail: primary?.email ?? null,
-      message: hasUsableContact
-        ? "Recently discovered contacts were reused."
-        : "A recent search already found no public email.",
+      message: hasUsableChannel
+        ? primary
+          ? "Recently discovered contacts were reused."
+          : "Recently discovered contact form was reused."
+        : "A recent search already found no public outreach channel.",
     };
   }
 
@@ -123,7 +158,16 @@ export async function discoverProspectContacts(options: {
     now,
   });
 
+  await persistDiscoveredContactForms({
+    prospectId: prospect.id,
+    forms: discovered.forms,
+    now,
+  });
+
   const stored = await prisma.prospectContact.findMany({
+    where: { prospectId: prospect.id },
+  });
+  const storedForms = await prisma.prospectContactForm.findMany({
     where: { prospectId: prospect.id },
   });
 
@@ -132,6 +176,11 @@ export async function discoverProspectContacts(options: {
     emails: stored.map((contact) => contact.normalizedEmail),
   });
   const blockers = await loadQualificationBlockers({ hostname });
+
+  const hostnameBlocked =
+    blockers.suppressed ||
+    blockers.customerSuppressed ||
+    blockers.existingLead;
 
   const selectable = stored.filter((contact) => contact.status !== "REJECTED");
 
@@ -162,8 +211,24 @@ export async function discoverProspectContacts(options: {
     }
   }
 
+  if (hostnameBlocked) {
+    await prisma.prospectContactForm.updateMany({
+      where: {
+        prospectId: prospect.id,
+        status: { in: ["DISCOVERED", "SELECTED"] },
+      },
+      data: {
+        status: "SUPPRESSED",
+        isPrimary: false,
+      },
+    });
+  }
+
   const refreshed = await prisma.prospectContact.findMany({
     where: { id: { in: stored.map((contact) => contact.id) } },
+  });
+  const refreshedForms = await prisma.prospectContactForm.findMany({
+    where: { id: { in: storedForms.map((form) => form.id) } },
   });
 
   const live = refreshed.filter(
@@ -171,7 +236,11 @@ export async function discoverProspectContacts(options: {
       contact.status === "DISCOVERED" || contact.status === "SELECTED",
   );
 
-  const primary = selectPrimaryContact(
+  const liveForms = refreshedForms.filter(
+    (form) => form.status === "DISCOVERED" || form.status === "SELECTED",
+  );
+
+  const primaryEmail = selectPrimaryContact(
     live.map((contact) => ({
       email: contact.email,
       normalizedEmail: contact.normalizedEmail,
@@ -184,8 +253,31 @@ export async function discoverProspectContacts(options: {
     })),
   );
 
-  if (live.length === 0) {
-    const suppressed = refreshed.some((contact) => contact.status === "SUPPRESSED");
+  const primaryForm = selectPrimaryContactForm(
+    liveForms.map((form) => ({
+      url: form.url,
+      normalizedUrl: form.normalizedUrl,
+      sourcePageUrl: form.sourcePageUrl,
+      formMethod: form.formMethod,
+      formAction: form.formAction,
+      detectedFields:
+        (form.detectedFieldsJson as unknown as NormalizedContactFormCandidate["detectedFields"]) ??
+        {
+          hasName: false,
+          hasEmail: false,
+          hasPhone: false,
+          hasSubject: false,
+          hasMessage: false,
+        },
+      confidence: form.confidence,
+      confidenceReason: "",
+    })),
+  );
+
+  if (live.length === 0 && liveForms.length === 0) {
+    const suppressed =
+      refreshed.some((contact) => contact.status === "SUPPRESSED") ||
+      refreshedForms.some((form) => form.status === "SUPPRESSED");
     const status = suppressed ? "SUPPRESSED" : "NO_CONTACT";
 
     await prisma.prospect.update({
@@ -208,7 +300,7 @@ export async function discoverProspectContacts(options: {
       contactCount: 0,
       primaryEmail: null,
       message: suppressed
-        ? "A published email was found but it is suppressed."
+        ? "Published contact options were found but are suppressed."
         : "NO_PUBLIC_EMAIL_FOUND",
     };
   }
@@ -218,13 +310,37 @@ export async function discoverProspectContacts(options: {
       where: { prospectId: prospect.id, isPrimary: true },
       data: { isPrimary: false },
     }),
+    prisma.prospectContactForm.updateMany({
+      where: { prospectId: prospect.id, isPrimary: true },
+      data: { isPrimary: false },
+    }),
     ...live.map((contact) =>
       prisma.prospectContact.update({
         where: { id: contact.id },
         data: {
-          isPrimary: contact.normalizedEmail === primary?.normalizedEmail,
+          isPrimary:
+            primaryEmail !== null &&
+            contact.normalizedEmail === primaryEmail.normalizedEmail,
           status:
-            contact.normalizedEmail === primary?.normalizedEmail
+            primaryEmail &&
+            contact.normalizedEmail === primaryEmail.normalizedEmail
+              ? "SELECTED"
+              : "DISCOVERED",
+        },
+      }),
+    ),
+    ...liveForms.map((form) =>
+      prisma.prospectContactForm.update({
+        where: { id: form.id },
+        data: {
+          isPrimary:
+            primaryEmail === null &&
+            primaryForm !== null &&
+            form.normalizedUrl === primaryForm.normalizedUrl,
+          status:
+            !primaryEmail &&
+            primaryForm &&
+            form.normalizedUrl === primaryForm.normalizedUrl
               ? "SELECTED"
               : "DISCOVERED",
         },
@@ -243,12 +359,20 @@ export async function discoverProspectContacts(options: {
     }),
   ]);
 
+  const channelCount = live.length + liveForms.length;
+  const message =
+    live.length > 0 && liveForms.length > 0
+      ? `Found ${live.length} public email${live.length === 1 ? "" : "s"} and ${liveForms.length} contact form${liveForms.length === 1 ? "" : "s"}.`
+      : live.length > 0
+        ? `Found ${live.length} public contact${live.length === 1 ? "" : "s"}.`
+        : `Found ${liveForms.length} public contact form${liveForms.length === 1 ? "" : "s"}.`;
+
   return {
     outcome: "CONTACTS_FOUND",
     reused: false,
-    contactCount: live.length,
-    primaryEmail: primary?.email ?? null,
-    message: `Found ${live.length} public contact${live.length === 1 ? "" : "s"}.`,
+    contactCount: channelCount,
+    primaryEmail: primaryEmail?.email ?? null,
+    message,
   };
 }
 
@@ -314,6 +438,72 @@ async function persistDiscoveredContacts(options: {
     await prisma.prospectContact.updateMany({
       where: {
         id: { in: stale.map((contact) => contact.id) },
+      },
+      data: {
+        status: "STALE",
+        isPrimary: false,
+      },
+    });
+  }
+}
+
+async function persistDiscoveredContactForms(options: {
+  prospectId: string;
+  forms: import("./form-types").NormalizedContactFormCandidate[];
+  now: Date;
+}): Promise<void> {
+  const operations: Prisma.PrismaPromise<unknown>[] = options.forms.map(
+    (form) =>
+      prisma.prospectContactForm.upsert({
+        where: {
+          prospectId_normalizedUrl: {
+            prospectId: options.prospectId,
+            normalizedUrl: form.normalizedUrl,
+          },
+        },
+        create: {
+          prospectId: options.prospectId,
+          url: form.url,
+          normalizedUrl: form.normalizedUrl,
+          sourcePageUrl: form.sourcePageUrl,
+          formMethod: form.formMethod,
+          formAction: form.formAction,
+          detectedFieldsJson: form.detectedFields as unknown as Prisma.InputJsonValue,
+          confidence: form.confidence,
+          status: "DISCOVERED",
+          discoveredAt: options.now,
+          lastVerifiedAt: options.now,
+        },
+        update: {
+          url: form.url,
+          sourcePageUrl: form.sourcePageUrl,
+          formMethod: form.formMethod,
+          formAction: form.formAction,
+          detectedFieldsJson: form.detectedFields as unknown as Prisma.InputJsonValue,
+          confidence: form.confidence,
+          lastVerifiedAt: options.now,
+        },
+      }),
+  );
+
+  if (operations.length > 0) {
+    await prisma.$transaction(operations);
+  }
+
+  const existing = await prisma.prospectContactForm.findMany({
+    where: { prospectId: options.prospectId },
+  });
+
+  const discovered = new Set(options.forms.map((form) => form.normalizedUrl));
+
+  const stale = existing.filter(
+    (form) => !discovered.has(form.normalizedUrl) && form.status !== "REJECTED",
+  );
+
+  if (stale.length > 0) {
+    await prisma.prospectContactForm.updateMany({
+      where: {
+        id: { in: stale.map((form) => form.id) },
       },
       data: {
         status: "STALE",

@@ -169,11 +169,57 @@ assert(
 );
 assert(!createDraft.includes("resend.emails.send"), "draft generation does not send email");
 assert(createDraft.includes("isSelectedTopN"), "only selected prospects get drafts");
-assert(createDraft.includes("canContactProspect"), "suppression blocks generation");
+assert(createDraft.includes("selectProspectOutreachChannel"), "channel selection blocks generation when needed");
+assert(createDraft.includes("loadContactSuppressionContext"), "suppression context loads before drafting");
 assert(createDraft.includes("primaryFindingId"), "credible finding required");
+assert(createDraft.includes("selectProspectOutreachChannel"), "draft generation selects outreach channel");
+assert(createDraft.includes("CONTACT_FORM"), "contact-form drafts are supported");
 assert(prompt.includes("Never mention that you are an AI"), "prompt forbids AI language");
 assert(prompt.includes("losing customers"), "prompt forbids unsupported claims");
 assert(!createDraft.includes("runDeterministicWebsiteAudit"), "drafts do not recrawl audits");
 assert(!createDraft.includes("google-places"), "drafts do not call Google Places");
+
+const contactFormContext = buildOutreachDraftContext({
+  businessName: "High Point A/C & Heating",
+  website: "https://highpoint.example",
+  city: "Magnolia",
+  state: "TX",
+  industry: "HVAC",
+  audit,
+  qualification,
+  channel: "CONTACT_FORM",
+});
+
+assert(!("error" in contactFormContext), "contact-form context builds");
+if ("error" in contactFormContext) {
+  throw new Error("contact-form context builds");
+}
+
+const contactFormDraft = validateOutreachDraftOutput(
+  {
+    body: `Hi High Point A/C & Heating team,\n\nI was looking over your website and noticed duplicate page titles on more than one page.\n\nIt's a small change, but it can make pages easier for visitors and search engines to understand.\n\nI run JS Solutions and have already put together a website growth analysis for your site. I'd be happy to share what I found if you're interested.\n\nJosh\nJS Solutions\njs-growth.com`,
+  },
+  contactFormContext,
+);
+
+assert(contactFormDraft.ok, "contact-form channel produces suitable body");
+assert(
+  !validateOutreachDraftOutput(
+    {
+      body: "I found you on Google Places and your qualification score is 76.",
+    },
+    contactFormContext,
+  ).ok,
+  "contact-form draft rejects internal campaign data",
+);
+
+assert(
+  actions.includes("markContactFormSubmitted"),
+  "contact-form submission is recorded manually",
+);
+assert(
+  !actions.includes("playwright") && !actions.includes("puppeteer"),
+  "no browser automation in outreach actions",
+);
 
 console.log("outreach.verify.ts passed");

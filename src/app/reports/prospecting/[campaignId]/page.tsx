@@ -14,8 +14,6 @@ import { loadCampaignFunnelMetrics } from "@/lib/prospecting/metrics/load-campai
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import {
   campaignStatusLabel,
-  contactConfidenceLabel,
-  contactSourceLabel,
   draftStatusLabel,
   formatProspectLocation,
   qualificationLabelText,
@@ -74,12 +72,21 @@ export default async function ProspectingCampaignPage({
                   status: true,
                 },
               },
+              contactForms: {
+                select: {
+                  url: true,
+                  isPrimary: true,
+                  status: true,
+                  confidence: true,
+                },
+              },
               outreachMessages: {
                 where: { campaignId },
                 orderBy: { createdAt: "desc" },
                 take: 1,
                 select: {
                   status: true,
+                  channel: true,
                 },
               },
             },
@@ -141,13 +148,34 @@ export default async function ProspectingCampaignPage({
   const funnelMetrics = await loadCampaignFunnelMetrics(campaignId);
 
   const selectedRows = prospects.filter((row) => row.isSelectedTopN);
-  const contactsFound = selectedRows.filter((row) =>
+  const emailContacts = selectedRows.filter((row) =>
     row.prospect.contacts.some(
       (contact) =>
         contact.isPrimary &&
         (contact.status === "DISCOVERED" || contact.status === "SELECTED"),
     ),
   ).length;
+  const contactFormsFound = selectedRows.filter((row) =>
+    row.prospect.contactForms.some(
+      (form) =>
+        form.isPrimary &&
+        (form.status === "DISCOVERED" || form.status === "SELECTED"),
+    ),
+  ).length;
+  const contactable = selectedRows.filter((row) => {
+    const hasEmail = row.prospect.contacts.some(
+      (contact) =>
+        contact.isPrimary &&
+        (contact.status === "DISCOVERED" || contact.status === "SELECTED"),
+    );
+    const hasForm = row.prospect.contactForms.some(
+      (form) =>
+        form.isPrimary &&
+        (form.status === "DISCOVERED" || form.status === "SELECTED"),
+    );
+
+    return hasEmail || hasForm;
+  }).length;
   const noPublicEmail = selectedRows.filter(
     (row) => row.prospect.outreachStatus === "NO_CONTACT",
   ).length;
@@ -170,16 +198,59 @@ export default async function ProspectingCampaignPage({
     );
   }).length;
   const draftMissing = selectedRows.filter((row) => {
-    const hasContact = row.prospect.contacts.some(
+    const hasEmail = row.prospect.contacts.some(
       (contact) =>
         contact.isPrimary &&
         (contact.status === "DISCOVERED" || contact.status === "SELECTED"),
     );
+    const hasForm = row.prospect.contactForms.some(
+      (form) =>
+        form.isPrimary &&
+        (form.status === "DISCOVERED" || form.status === "SELECTED"),
+    );
+    const hasChannel = hasEmail || hasForm;
     const status = row.prospect.outreachMessages[0]?.status;
     const hasDraft =
       status === "DRAFT" || status === "NEEDS_REVIEW" || status === "APPROVED";
-    return hasContact && !hasDraft;
+    return hasChannel && !hasDraft;
   }).length;
+
+  function prospectContactChannelLabel(prospect: (typeof prospects)[0]["prospect"]) {
+    const hasEmail = prospect.contacts.some(
+      (contact) =>
+        contact.isPrimary &&
+        (contact.status === "DISCOVERED" || contact.status === "SELECTED"),
+    );
+    const hasForm = prospect.contactForms.some(
+      (form) =>
+        form.isPrimary &&
+        (form.status === "DISCOVERED" || form.status === "SELECTED"),
+    );
+
+    if (hasEmail) return "Email";
+    if (hasForm) return "Form";
+    if (prospect.outreachStatus === "NO_CONTACT") return "None";
+    if (prospect.outreachStatus === "SUPPRESSED") return "Suppressed";
+    return "—";
+  }
+
+  function prospectOutreachProgressLabel(prospect: (typeof prospects)[0]["prospect"]) {
+    const message = prospect.outreachMessages[0];
+
+    if (!message) {
+      return outreachStatusLabel(prospect.outreachStatus);
+    }
+
+    if (message.channel === "CONTACT_FORM" && message.status === "SUBMITTED") {
+      return "Submitted";
+    }
+
+    if (message.channel === "EMAIL" && message.status === "SENT") {
+      return "Sent";
+    }
+
+    return draftStatusLabel(message.status);
+  }
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -345,9 +416,21 @@ export default async function ProspectingCampaignPage({
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Contacts found
+                Contactable
               </dt>
-              <dd className="mt-1 text-sm text-brand">{contactsFound}</dd>
+              <dd className="mt-1 text-sm text-brand">{contactable}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Email contacts
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{emailContacts}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Contact forms
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{contactFormsFound}</dd>
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
@@ -483,8 +566,6 @@ export default async function ProspectingCampaignPage({
                   <th className="px-4 py-3 font-semibold">Qualification</th>
                   <th className="px-4 py-3 font-semibold">Primary finding</th>
                   <th className="px-4 py-3 font-semibold">Contact</th>
-                  <th className="px-4 py-3 font-semibold">Contact confidence</th>
-                  <th className="px-4 py-3 font-semibold">Contact source</th>
                   <th className="px-4 py-3 font-semibold">Draft status</th>
                   <th className="px-4 py-3 font-semibold">Outreach</th>
                 </tr>
@@ -528,31 +609,20 @@ export default async function ProspectingCampaignPage({
                         {qualification?.primaryFindingTitle || "—"}
                       </td>
                       <td className="px-4 py-3">
+                        {prospectContactChannelLabel(prospect)}
                         {primaryContact &&
                         (primaryContact.status === "DISCOVERED" ||
-                          primaryContact.status === "SELECTED")
-                          ? primaryContact.email
-                          : prospect.outreachStatus === "NO_CONTACT"
-                            ? "None"
-                            : prospect.outreachStatus === "SUPPRESSED"
-                              ? "Suppressed"
-                              : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        {primaryContact
-                          ? contactConfidenceLabel(primaryContact.confidence)
-                          : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        {primaryContact
-                          ? contactSourceLabel(primaryContact.sourceType)
-                          : "—"}
+                          primaryContact.status === "SELECTED") ? (
+                          <p className="mt-1 text-xs text-muted">
+                            {primaryContact.email}
+                          </p>
+                        ) : null}
                       </td>
                       <td className="px-4 py-3">
                         {draftStatusLabel(draftStatus)}
                       </td>
                       <td className="px-4 py-3">
-                        {outreachStatusLabel(prospect.outreachStatus)}
+                        {prospectOutreachProgressLabel(prospect)}
                       </td>
                     </tr>
                   );

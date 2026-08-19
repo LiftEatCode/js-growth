@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 6 — Outcomes, Lead Conversion & Campaign Metrics**
+Current status: **Sprint 7 — Contact Form Discovery + Contact-Form Outreach**
 
 ## Product principle
 
@@ -507,5 +507,66 @@ Outcome notes, contact emails, outreach drafts/history, and prospect identifiers
 - Automated reply detection or AI classification
 - Follow-up sequences / scheduled sending
 - Autonomous conversion or CRM replacement
+
+## Sprint 7 — Contact form discovery + manual contact-form outreach
+
+### Goal
+
+When a qualified prospect has no usable public email but does have a legitimate website contact form, operators can still run the existing human-reviewed outreach workflow without automatic form submission.
+
+### Architecture
+
+- `ProspectContactForm` stores discovered public form metadata separately from `ProspectContact` (email).
+- `OutreachMessage.channel` distinguishes `EMAIL` vs `CONTACT_FORM`.
+- Contact-form completion uses `OutreachMessage.status = SUBMITTED` (distinct from email `SENT`).
+- Existing Sprint 1–6 email records remain on `EMAIL` channel.
+
+### Discovery
+
+- Reuses the Sprint 4 bounded public-page fetcher (`MAX_CONTACT_PAGES_PER_PROSPECT = 5`, `MAX_CONTACT_DISCOVERIES_PER_RUN = 10`, `MAX_CONTACT_DISCOVERY_CONCURRENCY = 2`).
+- Deterministic cheerio form classification; **0 OpenAI calls** for detection.
+- Stores URL, source page, method/action metadata, confidence, and coarse field flags (`hasName`, `hasEmail`, etc.).
+- Does **not** store submitted values, cookies, CAPTCHA tokens, hidden CSRF values, or raw HTML.
+
+### Channel selection
+
+Preferred order:
+
+1. Usable selected public email
+2. Selected legitimate public contact form
+3. No available outreach channel
+
+Hostname-level suppression blocks both channels. Email-only bounce suppression does not block a valid contact form unless another hostname-level reason applies.
+
+### Drafting
+
+- Reuses the Sprint 4 OpenAI draft pipeline with `channel: CONTACT_FORM`.
+- Contact-form drafts are shorter and paste naturally into a website message field.
+- Optional subject only when useful.
+- Same safety rules: no internal campaign data, scores, Google Places references, AI/automation language, or unsupported claims.
+
+### Human workflow
+
+1. Find contacts (email and/or form)
+2. Generate draft for selected channel
+3. Review and approve
+4. For contact form: **Copy Message** → **Open Contact Form** (`target="_blank"`, `rel="noopener noreferrer"`) → operator submits manually on the prospect site
+5. **Mark as Submitted** (explicit confirmation; records `submittedAt` / operator email only)
+
+**The application does not submit contact forms automatically.** No Playwright, Puppeteer, headless browsers, CAPTCHA bypass, or automatic POST requests to third-party forms.
+
+### Outcomes & metrics
+
+- Sprint 6 outcomes apply to submitted contact-form messages (`REPLIED`, `INTERESTED`, `NOT_INTERESTED`, `NO_RESPONSE`).
+- `BOUNCED` is not offered for contact-form outreach.
+- Campaign funnel metrics are channel-aware:
+  - **Contactable** = unique selected prospects with email and/or form
+  - **Email sent** / **Forms submitted** tracked separately
+  - **Outreach completed** = unique prospects with email `SENT` **or** contact form `SUBMITTED`
+  - Reply / interest / conversion rates use **outreach completed** as the denominator
+
+### Privacy
+
+Contact-form URLs/IDs, outreach channel, submitted-by metadata, drafts, and submission history remain internal-only. Analytics sanitizers block keys such as `contact_form_url`, `contact_form_id`, `outreach_channel`, and `submitted_by_email`.
 
 

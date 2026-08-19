@@ -6,6 +6,8 @@ export interface OutreachFindingContext {
   effort: string;
 }
 
+export type OutreachChannelValue = "EMAIL" | "CONTACT_FORM";
+
 export interface OutreachDraftContext {
   businessName: string;
   website: string;
@@ -18,9 +20,15 @@ export interface OutreachDraftContext {
   strongestArea: string | null;
   weakestRelevantArea: string | null;
   jsSolutionsContext: string;
+  channel: OutreachChannelValue;
 }
 
 export interface OutreachDraftOutput {
   subject: string;
+  body: string;
+}
+
+export interface ContactFormDraftOutput {
+  subject?: string;
   body: string;
 }

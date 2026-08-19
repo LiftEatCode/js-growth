@@ -508,11 +508,28 @@ export type EnumProspectContactStatusWithAggregatesFilter<$PrismaModel = never> 
   _max?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel>
 }
 
+export type EnumOutreachChannelFilter<$PrismaModel = never> = {
+  equals?: $Enums.OutreachChannel | Prisma.EnumOutreachChannelFieldRefInput<$PrismaModel>
+  in?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOutreachChannelFilter<$PrismaModel> | $Enums.OutreachChannel
+}
+
 export type EnumOutreachMessageStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.OutreachMessageStatus | Prisma.EnumOutreachMessageStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OutreachMessageStatus[] | Prisma.ListEnumOutreachMessageStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.OutreachMessageStatus[] | Prisma.ListEnumOutreachMessageStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumOutreachMessageStatusFilter<$PrismaModel> | $Enums.OutreachMessageStatus
+}
+
+export type EnumOutreachChannelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OutreachChannel | Prisma.EnumOutreachChannelFieldRefInput<$PrismaModel>
+  in?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOutreachChannelWithAggregatesFilter<$PrismaModel> | $Enums.OutreachChannel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOutreachChannelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOutreachChannelFilter<$PrismaModel>
 }
 
 export type EnumOutreachMessageStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -1107,11 +1124,28 @@ export type NestedEnumProspectContactStatusWithAggregatesFilter<$PrismaModel = n
   _max?: Prisma.NestedEnumProspectContactStatusFilter<$PrismaModel>
 }
 
+export type NestedEnumOutreachChannelFilter<$PrismaModel = never> = {
+  equals?: $Enums.OutreachChannel | Prisma.EnumOutreachChannelFieldRefInput<$PrismaModel>
+  in?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOutreachChannelFilter<$PrismaModel> | $Enums.OutreachChannel
+}
+
 export type NestedEnumOutreachMessageStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.OutreachMessageStatus | Prisma.EnumOutreachMessageStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OutreachMessageStatus[] | Prisma.ListEnumOutreachMessageStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.OutreachMessageStatus[] | Prisma.ListEnumOutreachMessageStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumOutreachMessageStatusFilter<$PrismaModel> | $Enums.OutreachMessageStatus
+}
+
+export type NestedEnumOutreachChannelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OutreachChannel | Prisma.EnumOutreachChannelFieldRefInput<$PrismaModel>
+  in?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OutreachChannel[] | Prisma.ListEnumOutreachChannelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOutreachChannelWithAggregatesFilter<$PrismaModel> | $Enums.OutreachChannel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOutreachChannelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOutreachChannelFilter<$PrismaModel>
 }
 
 export type NestedEnumOutreachMessageStatusWithAggregatesFilter<$PrismaModel = never> = {

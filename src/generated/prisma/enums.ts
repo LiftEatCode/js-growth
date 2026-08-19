@@ -152,12 +152,21 @@ export const OutreachMessageStatus = {
   SENDING: 'SENDING',
   REJECTED: 'REJECTED',
   SENT: 'SENT',
+  SUBMITTED: 'SUBMITTED',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED',
   SUPPRESSED: 'SUPPRESSED'
 } as const
 
 export type OutreachMessageStatus = (typeof OutreachMessageStatus)[keyof typeof OutreachMessageStatus]
+
+
+export const OutreachChannel = {
+  EMAIL: 'EMAIL',
+  CONTACT_FORM: 'CONTACT_FORM'
+} as const
+
+export type OutreachChannel = (typeof OutreachChannel)[keyof typeof OutreachChannel]
 
 
 export const SuppressionType = {

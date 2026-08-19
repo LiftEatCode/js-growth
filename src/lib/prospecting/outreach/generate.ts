@@ -18,7 +18,12 @@ import {
 import { compactOutreachContextJson } from "./context";
 import { OUTREACH_GENERATION_TIMEOUT_MS } from "./constants";
 import { createOpenAiOutreachProvider } from "./openai-provider";
-import { buildOutreachUserPrompt, OUTREACH_SYSTEM_PROMPT } from "./prompt";
+import {
+  buildContactFormOutreachUserPrompt,
+  buildOutreachUserPrompt,
+  CONTACT_FORM_OUTREACH_SYSTEM_PROMPT,
+  OUTREACH_SYSTEM_PROMPT,
+} from "./prompt";
 import type { OutreachDraftContext, OutreachDraftOutput } from "./types";
 import { validateOutreachDraftOutput } from "./validate";
 
@@ -46,11 +51,22 @@ export async function generateOutreachDraft(options: {
   );
 
   try {
+    const system =
+      options.context.channel === "CONTACT_FORM"
+        ? CONTACT_FORM_OUTREACH_SYSTEM_PROMPT
+        : OUTREACH_SYSTEM_PROMPT;
+    const user =
+      options.context.channel === "CONTACT_FORM"
+        ? buildContactFormOutreachUserPrompt(
+            compactOutreachContextJson(options.context),
+          )
+        : buildOutreachUserPrompt(compactOutreachContextJson(options.context));
+
     const result = await withTimeout(
       provider.generate({
         model: getOutreachDraftModel(),
-        system: OUTREACH_SYSTEM_PROMPT,
-        user: buildOutreachUserPrompt(compactOutreachContextJson(options.context)),
+        system,
+        user,
         timeoutMs,
       }),
       timeoutMs,

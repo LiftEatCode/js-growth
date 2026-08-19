@@ -22,5 +22,11 @@ export const MAX_OUTREACH_EMAILS_PER_DAY = 10;
 
 export const MAX_OUTREACH_OUTCOME_NOTES_CHARS = 2_000;
 
+export const MAX_CONTACT_FORM_BODY_CHARS = 1_200;
+
+export const MIN_CONTACT_FORM_BODY_CHARS = 120;
+
+export const MAX_CONTACT_FORM_SUBJECT_CHARS = 90;
+
 export const JS_SOLUTIONS_OUTREACH_CONTEXT =
   "JS Solutions (js-growth.com) offers a Website Growth Audit that reviews search, content, conversion, local visibility, technical health, and performance. The operator signing the email is Josh. Offer to share the existing analysis. Do not mention pricing.";

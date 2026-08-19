@@ -3,7 +3,7 @@ import "server-only";
 import { prisma } from "@/lib/prisma";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import { loadQualificationBlockers } from "@/lib/prospecting/qualification/audit-prospect";
-import { canContactProspect } from "@/lib/prospecting/suppression/can-contact";
+import { selectProspectOutreachChannel } from "@/lib/prospecting/contacts/select-channel";
 import { loadContactSuppressionContext } from "@/lib/prospecting/suppression/load";
 import type { WebsiteAuditResult } from "@/lib/website-audit/types";
 import {
@@ -52,6 +52,7 @@ export async function createOrReuseOutreachDraft(options: {
         include: {
           auditReport: true,
           contacts: true,
+          contactForms: true,
           outreachMessages: {
             where: {
               campaignId: options.campaignId,
@@ -95,50 +96,41 @@ export async function createOrReuseOutreachDraft(options: {
     };
   }
 
-  const primary =
-    prospect.contacts.find(
-      (contact) =>
-        contact.isPrimary &&
-        (contact.status === "SELECTED" || contact.status === "DISCOVERED"),
-    ) ??
-    prospect.contacts.find(
-      (contact) =>
-        contact.status === "SELECTED" || contact.status === "DISCOVERED",
-    );
-
-  if (!primary) {
-    return {
-      outcome: "SKIPPED",
-      message: "A primary public contact is required before drafting.",
-    };
-  }
-
   const suppression = await loadContactSuppressionContext({
     hostname: prospect.hostname,
-    emails: [primary.normalizedEmail],
+    emails: prospect.contacts.map((contact) => contact.normalizedEmail),
   });
   const blockers = await loadQualificationBlockers({
     hostname: prospect.hostname,
   });
-  const allowed = canContactProspect({
+
+  const channel = selectProspectOutreachChannel({
     hostname: prospect.hostname,
-    email: primary.normalizedEmail,
+    leadId: prospect.leadId,
+    outreachStatus: prospect.outreachStatus,
+    contacts: prospect.contacts,
+    contactForms: prospect.contactForms,
     suppressedHostnames: suppression.suppressedHostnames,
     suppressedEmails: suppression.suppressedEmails,
     customerHostnames: suppression.customerHostnames,
-    existingLead: blockers.existingLead,
-    contactStatus: primary.status,
+    existingLead: blockers.existingLead || Boolean(prospect.leadId),
   });
 
-  if (!allowed.allowed) {
+  if (channel.type === "NONE") {
     await prisma.prospect.update({
       where: { id: prospect.id },
-      data: { outreachStatus: "SUPPRESSED" },
+      data: {
+        outreachStatus:
+          channel.reason.includes("SUPPRESSED") ||
+          channel.reason === "PROSPECT_SUPPRESSED"
+            ? "SUPPRESSED"
+            : prospect.outreachStatus,
+      },
     });
 
     return {
       outcome: "SKIPPED",
-      message: "Outreach is blocked by suppression or an existing lead.",
+      message: "Outreach is blocked or no contact channel is available.",
     };
   }
 
@@ -160,6 +152,7 @@ export async function createOrReuseOutreachDraft(options: {
     industry: prospect.industry,
     audit,
     qualification,
+    channel: channel.type,
   });
 
   if ("error" in context) {
@@ -182,34 +175,69 @@ export async function createOrReuseOutreachDraft(options: {
       });
     }
 
-    await prisma.outreachMessage.create({
-      data: {
-        prospectId: prospect.id,
-        campaignId: options.campaignId,
-        contactId: primary.id,
-        auditReportId: prospect.auditReport.id,
-        toEmail: primary.email,
-        fromEmail: senderFromEmail(),
-        replyTo: process.env.CONTACT_FROM_EMAIL?.trim() || null,
-        subject: generated.subject,
-        bodyText: generated.body,
-        findingIds: [
-          qualification.primaryFindingId,
-          qualification.secondaryFindingId,
-        ].filter((id): id is string => Boolean(id)),
-        primaryFindingId: qualification.primaryFindingId,
-        secondaryFindingId: qualification.secondaryFindingId,
-        status: "NEEDS_REVIEW",
-        generationModel: generated.model,
-        generationAttemptCount: attemptCount,
-        promptTokens: generated.promptTokens,
-        completionTokens: generated.completionTokens,
-        generationJson: {
-          version: 1,
-          status: "generated",
-        } as Prisma.InputJsonValue,
-      },
-    });
+    if (channel.type === "EMAIL") {
+      await prisma.outreachMessage.create({
+        data: {
+          prospectId: prospect.id,
+          campaignId: options.campaignId,
+          channel: "EMAIL",
+          contactId: channel.contactId,
+          auditReportId: prospect.auditReport.id,
+          toEmail: channel.email,
+          fromEmail: senderFromEmail(),
+          replyTo: process.env.CONTACT_FROM_EMAIL?.trim() || null,
+          subject: generated.subject,
+          bodyText: generated.body,
+          findingIds: [
+            qualification.primaryFindingId,
+            qualification.secondaryFindingId,
+          ].filter((id): id is string => Boolean(id)),
+          primaryFindingId: qualification.primaryFindingId,
+          secondaryFindingId: qualification.secondaryFindingId,
+          status: "NEEDS_REVIEW",
+          generationModel: generated.model,
+          generationAttemptCount: attemptCount,
+          promptTokens: generated.promptTokens,
+          completionTokens: generated.completionTokens,
+          generationJson: {
+            version: 1,
+            status: "generated",
+            channel: "EMAIL",
+          } as Prisma.InputJsonValue,
+        },
+      });
+    } else {
+      await prisma.outreachMessage.create({
+        data: {
+          prospectId: prospect.id,
+          campaignId: options.campaignId,
+          channel: "CONTACT_FORM",
+          contactFormId: channel.contactFormId,
+          auditReportId: prospect.auditReport.id,
+          toEmail: null,
+          fromEmail: null,
+          replyTo: null,
+          subject: generated.subject || "",
+          bodyText: generated.body,
+          findingIds: [
+            qualification.primaryFindingId,
+            qualification.secondaryFindingId,
+          ].filter((id): id is string => Boolean(id)),
+          primaryFindingId: qualification.primaryFindingId,
+          secondaryFindingId: qualification.secondaryFindingId,
+          status: "NEEDS_REVIEW",
+          generationModel: generated.model,
+          generationAttemptCount: attemptCount,
+          promptTokens: generated.promptTokens,
+          completionTokens: generated.completionTokens,
+          generationJson: {
+            version: 1,
+            status: "generated",
+            channel: "CONTACT_FORM",
+          } as Prisma.InputJsonValue,
+        },
+      });
+    }
 
     await prisma.prospect.update({
       where: { id: prospect.id },
@@ -218,7 +246,10 @@ export async function createOrReuseOutreachDraft(options: {
 
     return {
       outcome: "GENERATED",
-      message: "Draft generated for review.",
+      message:
+        channel.type === "CONTACT_FORM"
+          ? "Contact-form draft generated for review."
+          : "Draft generated for review.",
       subject: generated.subject,
     };
   } catch (error) {

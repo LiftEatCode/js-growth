@@ -55,6 +55,7 @@ export interface WebsiteContactDiscoveryResult {
   pagesFetched: number;
   pageUrls: string[];
   candidates: NormalizedContactCandidate[];
+  forms: import("./form-types").NormalizedContactFormCandidate[];
   failed: boolean;
   failureMessage: string | null;
 }

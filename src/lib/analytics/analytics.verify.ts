@@ -80,6 +80,10 @@ assert(isForbiddenAnalyticsParamKey("contact_email"), "contact_email is forbidde
 assert(isForbiddenAnalyticsParamKey("prospect_email"), "prospect_email is forbidden");
 assert(isForbiddenAnalyticsParamKey("outreach_status"), "outreach_status is forbidden");
 assert(isForbiddenAnalyticsParamKey("outcome_notes"), "outcome_notes is forbidden");
+assert(isForbiddenAnalyticsParamKey("contact_form_url"), "contact_form_url is forbidden");
+assert(isForbiddenAnalyticsParamKey("contact_form_id"), "contact_form_id is forbidden");
+assert(isForbiddenAnalyticsParamKey("outreach_channel"), "outreach_channel is forbidden");
+assert(isForbiddenAnalyticsParamKey("submitted_by_email"), "submitted_by_email is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
 assert(isForbiddenAnalyticsParamValue(REPORT_ID), "UUID values are forbidden");
 assert(

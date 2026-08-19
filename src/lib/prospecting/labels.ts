@@ -208,6 +208,8 @@ export function draftStatusLabel(status: string | null): string {
       return "Failed";
     case "SENT":
       return "Sent";
+    case "SUBMITTED":
+      return "Submitted";
     case "CANCELLED":
       return "Cancelled";
     case "SUPPRESSED":

@@ -240,7 +240,7 @@ Projects:
 - Client Portal
 - Knowledge Base
 - Reporting System
-- Prospecting Engine (internal; V1 Sprint 6 — outcomes, lead conversion, campaign metrics)
+- Prospecting Engine (internal; V1 Sprint 7 — contact form discovery + manual contact-form outreach)
 
 ---
 

@@ -10,9 +10,14 @@ import {
   MAX_CONTACT_PAGES_PER_PROSPECT,
 } from "./constants";
 import {
+  dedupeExtractedContactForms,
+  extractContactFormsFromHtml,
+} from "./extract-forms";
+import {
   dedupeExtractedEmails,
   extractEmailsFromHtml,
 } from "./extract";
+import type { NormalizedContactFormCandidate } from "./form-types";
 import { normalizeContactCandidates } from "./normalize";
 import { classifyContactPage, isSameHostUrl, selectContactPagesToFetch } from "./pages";
 import type {
@@ -25,6 +30,7 @@ function failedResult(message: string): WebsiteContactDiscoveryResult {
     pagesFetched: 0,
     pageUrls: [],
     candidates: [],
+    forms: [],
     failed: true,
     failureMessage: message,
   };
@@ -101,7 +107,28 @@ export function createWebsiteContactDiscoveryProvider(): ProspectContactDiscover
         ),
       );
 
+      const extractedForms = fetchedPages.flatMap((page) =>
+        extractContactFormsFromHtml(
+          page.html,
+          page.finalUrl,
+          classifyContactPage(page.finalUrl, homepageUrl),
+        ),
+      );
+
       const hostname = new URL(homepageUrl).hostname;
+
+      const forms: NormalizedContactFormCandidate[] = dedupeExtractedContactForms(
+        extractedForms,
+      ).map((form) => ({
+        url: form.url,
+        normalizedUrl: form.normalizedUrl,
+        sourcePageUrl: form.sourcePageUrl,
+        formMethod: form.formMethod,
+        formAction: form.formAction,
+        detectedFields: form.detectedFields,
+        confidence: form.confidence,
+        confidenceReason: form.confidenceReason,
+      }));
 
       return {
         pagesFetched: fetchedPages.length,
@@ -110,6 +137,7 @@ export function createWebsiteContactDiscoveryProvider(): ProspectContactDiscover
           dedupeExtractedEmails(extracted),
           hostname,
         ),
+        forms,
         failed: false,
         failureMessage: null,
       };

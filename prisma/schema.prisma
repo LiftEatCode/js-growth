@@ -242,9 +242,15 @@ enum OutreachMessageStatus {
   SENDING
   REJECTED
   SENT
+  SUBMITTED
   FAILED
   CANCELLED
   SUPPRESSED
+}
+
+enum OutreachChannel {
+  EMAIL
+  CONTACT_FORM
 }
 
 enum SuppressionType {
@@ -343,6 +349,7 @@ model Prospect {
 
   campaignProspects           CampaignProspect[]
   contacts                    ProspectContact[]
+  contactForms                ProspectContactForm[]
   outreachMessages            OutreachMessage[]
   outreachOutcomes            OutreachOutcome[]
   importedDiscoveryCandidates ProspectDiscoveryCandidate[]
@@ -410,6 +417,38 @@ model ProspectContact {
   @@index([email])
 }
 
+model ProspectContactForm {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  discoveredAt   DateTime  @default(now())
+  lastVerifiedAt DateTime?
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  url          String
+  normalizedUrl String
+  sourcePageUrl String
+
+  formMethod String?
+  formAction String?
+
+  detectedFieldsJson Json?
+
+  confidence ProspectContactConfidence
+  status     ProspectContactStatus     @default(DISCOVERED)
+
+  isPrimary Boolean @default(false)
+
+  outreachMessages OutreachMessage[]
+
+  @@unique([prospectId, normalizedUrl])
+  @@index([prospectId])
+  @@index([normalizedUrl])
+}
+
 model OutreachMessage {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -424,14 +463,19 @@ model OutreachMessage {
   contactId String?
   contact   ProspectContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
 
+  contactFormId String?
+  contactForm   ProspectContactForm? @relation(fields: [contactFormId], references: [id], onDelete: SetNull)
+
+  channel OutreachChannel @default(EMAIL)
+
   auditReportId String?
   auditReport   AuditReport? @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
 
-  toEmail   String
-  fromEmail String
+  toEmail   String?
+  fromEmail String?
   replyTo   String?
 
-  subject  String
+  subject  String @default("")
   bodyText String
 
   findingIds         String[]
@@ -448,6 +492,8 @@ model OutreachMessage {
 
   providerMessageId String?
   sentAt            DateTime?
+  submittedAt       DateTime?
+  submittedByEmail  String?
   error             String?
 
   approvedAt      DateTime?
@@ -458,8 +504,10 @@ model OutreachMessage {
   @@index([prospectId])
   @@index([campaignId])
   @@index([contactId])
+  @@index([contactFormId])
   @@index([auditReportId])
   @@index([status])
+  @@index([channel])
 }
 
 model SuppressionEntry {

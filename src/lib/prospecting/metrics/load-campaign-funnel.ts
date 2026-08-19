@@ -26,9 +26,13 @@ export async function loadCampaignFunnelMetrics(
               where: { isPrimary: true },
               select: { status: true },
             },
+            contactForms: {
+              where: { isPrimary: true },
+              select: { status: true },
+            },
             outreachMessages: {
               where: { campaignId },
-              select: { status: true },
+              select: { status: true, channel: true },
             },
             outreachOutcomes: {
               select: { outcome: true },
@@ -42,10 +46,6 @@ export async function loadCampaignFunnelMetrics(
   const rows: CampaignFunnelProspectRow[] = memberships.map((membership) => {
     const prospect = membership.prospect;
     const messages = prospect.outreachMessages;
-    const hasPrimaryContact = prospect.contacts.some(
-      (contact) =>
-        contact.status === "DISCOVERED" || contact.status === "SELECTED",
-    );
 
     return {
       prospectId: prospect.id,
@@ -54,15 +54,28 @@ export async function loadCampaignFunnelMetrics(
       isSelectedTopN: membership.isSelectedTopN,
       auditReportId: prospect.auditReportId,
       leadId: prospect.leadId,
-      hasPrimaryContact,
+      hasPrimaryEmail: prospect.contacts.some(
+        (contact) =>
+          contact.status === "DISCOVERED" || contact.status === "SELECTED",
+      ),
+      hasPrimaryContactForm: prospect.contactForms.some(
+        (form) => form.status === "DISCOVERED" || form.status === "SELECTED",
+      ),
       hasDraft: messages.length > 0,
       hasApprovedDraft: messages.some(
         (message) =>
           message.status === "APPROVED" ||
           message.status === "SENT" ||
+          message.status === "SUBMITTED" ||
           message.status === "SENDING",
       ),
-      hasSentMessage: messages.some((message) => message.status === "SENT"),
+      hasEmailSent: messages.some(
+        (message) => message.channel === "EMAIL" && message.status === "SENT",
+      ),
+      hasFormSubmitted: messages.some(
+        (message) =>
+          message.channel === "CONTACT_FORM" && message.status === "SUBMITTED",
+      ),
       outcomes: prospect.outreachOutcomes.map(
         (row) => row.outcome as OutreachOutcomeValue,
       ),

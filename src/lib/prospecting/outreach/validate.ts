@@ -1,4 +1,4 @@
-import { outreachDraftOutputSchema } from "./schema";
+import { contactFormDraftOutputSchema, outreachDraftOutputSchema } from "./schema";
 import type { OutreachDraftContext, OutreachDraftOutput } from "./types";
 
 const UUID_PATTERN =
@@ -21,17 +21,25 @@ export function validateOutreachDraftOutput(
   value: unknown,
   context: OutreachDraftContext,
 ): { ok: true; content: OutreachDraftOutput } | { ok: false; reason: string } {
-  const parsed = outreachDraftOutputSchema.safeParse(value);
+  const schema =
+    context.channel === "CONTACT_FORM"
+      ? contactFormDraftOutputSchema
+      : outreachDraftOutputSchema;
+  const parsed = schema.safeParse(value);
 
   if (!parsed.success) {
     return { ok: false, reason: "schema" };
   }
 
-  const subject = parsed.data.subject.trim();
+  const subject = (parsed.data.subject ?? "").trim();
   const body = parsed.data.body.trim().replace(/\r\n/g, "\n");
   const combined = `${subject}\n${body}`;
 
-  if (!subject || !body) {
+  if (!body) {
+    return { ok: false, reason: "empty" };
+  }
+
+  if (context.channel === "EMAIL" && !subject) {
     return { ok: false, reason: "empty" };
   }
 

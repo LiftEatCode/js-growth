@@ -12,34 +12,51 @@ import {
   outreachOutcomeLabel,
   type OutreachOutcomeValue,
 } from "@/lib/prospecting/outreach/outcome-types";
+import { isBounceOutcomeAllowed } from "@/lib/prospecting/outreach/lifecycle";
+import type { OutreachChannelValue } from "@/lib/prospecting/outreach/types";
+
+interface CompletedOutreachMessage {
+  id: string;
+  channel: OutreachChannelValue;
+  label: string;
+  completedAt: string;
+}
 
 interface OutreachOutcomePanelProps {
   campaignId: string;
   prospectId: string;
-  sentMessages: Array<{
-    id: string;
-    toEmail: string;
-    subject: string;
-    sentAt: string;
-  }>;
+  completedMessages: CompletedOutreachMessage[];
 }
 
 export function OutreachOutcomePanel({
   campaignId,
   prospectId,
-  sentMessages,
+  completedMessages,
 }: OutreachOutcomePanelProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [messageId, setMessageId] = useState(sentMessages[0]?.id ?? "");
-  const [outcome, setOutcome] = useState<OutreachOutcomeValue>("REPLIED");
+  const [messageId, setMessageId] = useState(completedMessages[0]?.id ?? "");
+  const selectedMessage =
+    completedMessages.find((row) => row.id === messageId) ??
+    completedMessages[0] ??
+    null;
+  const allowedOutcomes = OUTREACH_OUTCOME_VALUES.filter(
+    (value) =>
+      value !== "BOUNCED" ||
+      (selectedMessage
+        ? isBounceOutcomeAllowed(selectedMessage.channel)
+        : true),
+  );
+  const [outcome, setOutcome] = useState<OutreachOutcomeValue>(
+    allowedOutcomes[0] ?? "REPLIED",
+  );
   const [notes, setNotes] = useState("");
   const [suppressFutureOutreach, setSuppressFutureOutreach] = useState(false);
   const [explicitOptOut, setExplicitOptOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  if (sentMessages.length === 0) {
+  if (completedMessages.length === 0) {
     return null;
   }
 
@@ -49,7 +66,8 @@ export function OutreachOutcomePanel({
         Record outcome
       </h2>
       <p className="text-sm leading-6 text-muted">
-        Record what happened after a sent email. Nothing is inferred automatically.
+        Record what happened after outreach was sent or a contact form was
+        submitted. Nothing is inferred automatically.
       </p>
 
       <form
@@ -89,17 +107,31 @@ export function OutreachOutcomePanel({
             htmlFor="outcome-message"
             className="text-xs font-semibold uppercase tracking-[0.08em] text-muted"
           >
-            Sent message
+            Completed outreach
           </label>
           <select
             id="outcome-message"
             className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-brand"
             value={messageId}
-            onChange={(event) => setMessageId(event.target.value)}
+            onChange={(event) => {
+              const nextId = event.target.value;
+              setMessageId(nextId);
+              const nextMessage = completedMessages.find(
+                (row) => row.id === nextId,
+              );
+
+              if (
+                nextMessage &&
+                outcome === "BOUNCED" &&
+                !isBounceOutcomeAllowed(nextMessage.channel)
+              ) {
+                setOutcome("REPLIED");
+              }
+            }}
           >
-            {sentMessages.map((sent) => (
-              <option key={sent.id} value={sent.id}>
-                {sent.toEmail} · {sent.subject} · {sent.sentAt}
+            {completedMessages.map((completed) => (
+              <option key={completed.id} value={completed.id}>
+                {completed.label} · {completed.completedAt}
               </option>
             ))}
           </select>
@@ -120,7 +152,7 @@ export function OutreachOutcomePanel({
               setOutcome(event.target.value as OutreachOutcomeValue)
             }
           >
-            {OUTREACH_OUTCOME_VALUES.map((value) => (
+            {allowedOutcomes.map((value) => (
               <option key={value} value={value}>
                 {outreachOutcomeLabel(value)}
               </option>
