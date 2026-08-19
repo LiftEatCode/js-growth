@@ -179,3 +179,12 @@ export const DiscoveryCandidateStatus = {
 } as const
 
 export type DiscoveryCandidateStatus = (typeof DiscoveryCandidateStatus)[keyof typeof DiscoveryCandidateStatus]
+
+
+export const QualificationRunStatus = {
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type QualificationRunStatus = (typeof QualificationRunStatus)[keyof typeof QualificationRunStatus]

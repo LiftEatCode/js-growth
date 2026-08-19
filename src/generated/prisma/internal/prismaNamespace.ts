@@ -408,7 +408,8 @@ export const ModelName = {
   OutreachMessage: 'OutreachMessage',
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
-  ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate'
+  ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
+  ProspectQualificationRun: 'ProspectQualificationRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1316,6 +1317,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProspectQualificationRun: {
+      payload: Prisma.$ProspectQualificationRunPayload<ExtArgs>
+      fields: Prisma.ProspectQualificationRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProspectQualificationRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProspectQualificationRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>
+        }
+        findFirst: {
+          args: Prisma.ProspectQualificationRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProspectQualificationRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>
+        }
+        findMany: {
+          args: Prisma.ProspectQualificationRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>[]
+        }
+        create: {
+          args: Prisma.ProspectQualificationRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>
+        }
+        createMany: {
+          args: Prisma.ProspectQualificationRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProspectQualificationRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>[]
+        }
+        delete: {
+          args: Prisma.ProspectQualificationRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>
+        }
+        update: {
+          args: Prisma.ProspectQualificationRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProspectQualificationRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProspectQualificationRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProspectQualificationRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProspectQualificationRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectQualificationRunPayload>
+        }
+        aggregate: {
+          args: Prisma.ProspectQualificationRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProspectQualificationRun>
+        }
+        groupBy: {
+          args: Prisma.ProspectQualificationRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectQualificationRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProspectQualificationRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectQualificationRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1583,6 +1658,31 @@ export const ProspectDiscoveryCandidateScalarFieldEnum = {
 } as const
 
 export type ProspectDiscoveryCandidateScalarFieldEnum = (typeof ProspectDiscoveryCandidateScalarFieldEnum)[keyof typeof ProspectDiscoveryCandidateScalarFieldEnum]
+
+
+export const ProspectQualificationRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  status: 'status',
+  requestedCount: 'requestedCount',
+  processedCount: 'processedCount',
+  qualifiedCount: 'qualifiedCount',
+  skippedCount: 'skippedCount',
+  failedCount: 'failedCount',
+  auditsAttempted: 'auditsAttempted',
+  auditsReused: 'auditsReused',
+  auditsCompleted: 'auditsCompleted',
+  auditsFailed: 'auditsFailed',
+  remainingUnaudited: 'remainingUnaudited',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectQualificationRunScalarFieldEnum = (typeof ProspectQualificationRunScalarFieldEnum)[keyof typeof ProspectQualificationRunScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1939,6 +2039,20 @@ export type EnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel> = FieldRefIn
 export type ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscoveryCandidateStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'QualificationRunStatus'
+ */
+export type EnumQualificationRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationRunStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'QualificationRunStatus[]'
+ */
+export type ListEnumQualificationRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationRunStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2102,6 +2216,7 @@ export type GlobalOmitConfig = {
   suppressionEntry?: Prisma.SuppressionEntryOmit
   prospectDiscoveryRun?: Prisma.ProspectDiscoveryRunOmit
   prospectDiscoveryCandidate?: Prisma.ProspectDiscoveryCandidateOmit
+  prospectQualificationRun?: Prisma.ProspectQualificationRunOmit
 }
 
 /* Types for Logging */

@@ -77,3 +77,8 @@ export type ProspectDiscoveryRun = Prisma.ProspectDiscoveryRunModel
  * 
  */
 export type ProspectDiscoveryCandidate = Prisma.ProspectDiscoveryCandidateModel
+/**
+ * Model ProspectQualificationRun
+ * 
+ */
+export type ProspectQualificationRun = Prisma.ProspectQualificationRunModel

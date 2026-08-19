@@ -5,10 +5,10 @@ import type {
   ReportMode,
   WebsiteAuditResult,
 } from "../types";
-
 import {
   AUDIT_REPORT_VERSION,
   type AuditReport,
+  type AuditReportSourceValue,
   type AuditReportSummary,
 } from "./types";
 
@@ -28,6 +28,9 @@ function getHostname(
 export function createAuditReport(
   audit: WebsiteAuditResult,
   reportMode: ReportMode,
+  options?: {
+    source?: AuditReportSourceValue;
+  },
 ): AuditReport {
   return {
     id: randomUUID(),
@@ -43,6 +46,8 @@ export function createAuditReport(
     ),
 
     reportMode,
+
+    source: options?.source ?? "PUBLIC_FUNNEL",
 
     audit,
   };

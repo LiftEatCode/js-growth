@@ -2,6 +2,7 @@ import "server-only";
 
 import { Prisma, PurchaseStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { isProspectingAuditSource } from "@/lib/website-audit/report-source";
 import {
   buildProfessionalCheckoutSessionParams,
   canReuseOpenCheckoutSession,
@@ -75,10 +76,10 @@ export async function createProfessionalAuditCheckout(
 
   const report = await prisma.auditReport.findUnique({
     where: { id: reportId },
-    select: { id: true, reportMode: true },
+    select: { id: true, reportMode: true, source: true },
   });
 
-  if (!report) {
+  if (!report || isProspectingAuditSource(report.source)) {
     return { status: "not-found" };
   }
 
@@ -207,10 +208,10 @@ export async function fulfillProfessionalAuditCheckout(
 
   const report = await prisma.auditReport.findUnique({
     where: { id: inspection.reportId },
-    select: { id: true },
+    select: { id: true, source: true, reportMode: true },
   });
 
-  if (!report) {
+  if (!report || isProspectingAuditSource(report.source)) {
     return {
       granted: false,
       reportId: inspection.reportId,

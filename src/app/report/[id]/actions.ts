@@ -18,6 +18,7 @@ import {
   generateAuditReportPdf,
 } from "@/lib/website-audit/pdf/generate-audit-report-pdf";
 import { auditReportRepository } from "@/lib/website-audit/storage";
+import { canExposeAuditReportPublicly } from "@/lib/website-audit/report-source";
 
 function publicReportUrl(reportId: string): string {
   const base = (
@@ -117,7 +118,7 @@ export async function captureAuditLead(
         reportId,
       );
 
-    if (!report) {
+    if (!report || !canExposeAuditReportPublicly(report.source)) {
       return {
         success: false,
         message:

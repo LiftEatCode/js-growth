@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 2 — Google Places Business Discovery**
+Current status: **Sprint 3 — Automated Website Audit + Prospect Qualification**
 
 ## Product principle
 
@@ -38,7 +38,7 @@ Sending remains:
 
 **Find → Audit → Qualify → Draft → HUMAN APPROVAL → Send**
 
-V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second human gate: **Import Selected Prospects**. Discovery never auto-imports.
+V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second human gate: **Import Selected Prospects**. Sprint 3 adds Audit → Qualify with a human **Audit & Qualify** trigger. Contact discovery and sending are not built yet.
 
 ## Planned stages
 
@@ -46,7 +46,7 @@ V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second 
 |---|---|---|
 | 1 | Data foundation + manual prospect UI | Complete |
 | 2 | Legitimate business discovery provider | Complete |
-| 3 | Deterministic Website Growth Audit qualification | Not started |
+| 3 | Deterministic Website Growth Audit qualification | Complete |
 | 4 | Public contact discovery + outreach drafts | Not started |
 | 5 | Approval + Resend sending | Not started |
 | 6 | Tracking, Lead conversion, hardening | Not started |
@@ -180,7 +180,7 @@ Operator selects eligible checkboxes, then **Import Selected Prospects**.
 
 - Create a new `Prospect` with `sourceType = GOOGLE_PLACES` and `sourceRef` = Google Place ID.
 - If the hostname/Place ID already exists, reuse that Prospect and attach it with `CampaignProspect` instead of creating a duplicate.
-- Do not create `Lead`, `AuditReport`, `ProspectContact`, or `OutreachMessage`.
+- Do not create `Lead`, `AuditReport`, `ProspectContact`, or `OutreachMessage` during discovery/import. Sprint 3 creates `AuditReport` records only from **Audit & Qualify**.
 
 ### Duplicate hostnames (manual add)
 
@@ -189,3 +189,91 @@ Normalized hostname is indexed, not globally unique.
 Sprint 1 still warns the operator (existing Prospect, inbound Lead website, or suppression entry) and requires confirmation before creating another **manual** row.
 
 Discovery treats those matches as hard exclusions from the eligible import list.
+
+## Sprint 3 — Audit + qualification
+
+Operator clicks **Audit & Qualify Prospects** on a campaign. The system runs the existing deterministic Website Growth Audit internally, stores a `PROSPECTING` `AuditReport`, scores an explainable qualification, and marks the campaign's desired top N (usually 5).
+
+Sprint 3 does **not**:
+
+- call OpenAI
+- find email addresses
+- draft or send outreach
+- create Leads or Stripe checkouts
+- reuse public customer reports
+- schedule background jobs
+
+### Deterministic audit entry point
+
+`runDeterministicWebsiteAudit(url)` performs URL validation, secure fetch, HTML analysis, robots/sitemap discovery, bounded crawl, rules, scoring, priorities, quick wins, and site intelligence.
+
+It does not run competitive analysis, Stripe, AI, analytics, Free report shaping, email, or lead capture.
+
+Public `auditWebsite` reuses this function, then adds competitive intelligence and saves a `PUBLIC_FUNNEL` customer report. Customer behavior is unchanged.
+
+### Prospecting reports
+
+Prospect audits use `AuditReport.source = PROSPECTING` and `reportMode = consultation`.
+
+They are linked on `Prospect.auditReportId`. They are **not** customer-facing:
+
+- `/report/[id]` → 404
+- `/report/[id]/pdf` → 404
+- Professional API → 404
+- Stripe checkout → not found
+
+Internal `/reports/[id]` may still show the stored audit to a signed-in operator. The inbound `/reports` dashboard lists only `PUBLIC_FUNNEL` reports.
+
+### Audit reuse / TTL
+
+If a Prospect is already linked to a `PROSPECTING` audit younger than **7 days**, qualification reuses it instead of recrawling.
+
+V1 does **not** reuse `PUBLIC_FUNNEL` customer audits. That avoids coupling outbound prospecting to a customer's paid/free report.
+
+Operators can **Re-run Audit** to force a new crawl.
+
+### Qualification model
+
+Qualification is deterministic. Overall score is contextual, not the main driver.
+
+Hard skips: invalid website, audit failed, suppressed hostname, customer suppression, existing inbound Lead, weak crawl evidence, campaign state mismatch, or no allowlisted outreach finding.
+
+Factors (capped 0–100):
+
+- Credible allowlisted finding (high weight)
+- Finding business impact and priority
+- Optional secondary finding
+- Category gaps in Content, Local SEO, CRO, and Search (not used as the outreach hook)
+- Light performance context only
+- Capped quick-win points
+- Small bonus for overall scores in a healthy-but-improvable range (about 65–92)
+- Penalty for very low/broken overall scores
+
+Modeled traffic/lead/revenue opportunity is ignored.
+
+### Outreach finding allowlist
+
+Only these finding IDs can become the primary/secondary hook:
+
+- `site-duplicate-titles`
+- `missing-h1`
+- `missing-meta-description`
+- `empty-meta-description`
+- `site-weak-internal-link-support`
+- `local-schema-incomplete`
+- `local-schema-missing`
+- `limited-internal-link-diversity`
+- `missing-internal-links`
+
+Denied as hooks: performance-only issues, robots noise, accessibility-only findings, pass findings, weak evidence, and unsupported category-score claims.
+
+If none are credible: `qualificationStatus = SKIPPED`, skip reason `NO_CREDIBLE_FINDING`.
+
+### Batch safeguards
+
+- `MAX_PROSPECT_AUDITS_PER_RUN = 10`
+- `MAX_AUDIT_CONCURRENCY = 2`
+- One `RUNNING` `ProspectQualificationRun` per campaign
+- No Google Places calls during qualification
+- Manual operator trigger only
+

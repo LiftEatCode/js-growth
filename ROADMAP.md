@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟡 Sprint 2 — Google Places Business Discovery
+Status: 🟡 Sprint 3 — Automated Website Audit + Prospect Qualification
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,17 +91,15 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 2 (current):
+Sprint 3 (current):
 
 - Authenticated `/reports/prospecting` campaigns (Sprint 1)
-- Manual add / edit / skip
-- Duplicate-hostname warnings on manual add (not a global unique constraint)
-- Google Places API (New) Text Search discovery, 25-candidate cap, human import
-- Separate from the inbound `/reports` audit and Lead pipeline
+- Google Places discovery + human import (Sprint 2)
+- Deterministic Website Growth Audit + qualification + recommended top N
+- Prospecting AuditReports are not public customer reports
 
 Later sprints (not started):
 
-- Deterministic Website Growth Audit qualification
 - Public contact discovery and AI outreach drafts
 - Human approval, then Resend send
 - Reply tracking and Prospect → Lead conversion
@@ -294,7 +292,7 @@ Implemented for the audit product
 - Internal reports dashboard (`/reports`)
 - Lead pipeline, follow-ups, notes, and prospect conversion
 - Internal login (session-gated, no public customer accounts)
-- Prospecting Engine V1 Sprint 2 (`/reports/prospecting`) — campaigns, manual businesses, and Google Places discovery, separate from inbound Leads
+- Prospecting Engine V1 Sprint 3 (`/reports/prospecting`) — discovery, internal audits, and qualification, separate from inbound Leads
 
 Still planning (company-wide systems, not built as products)
 
@@ -459,7 +457,7 @@ Build remaining internal systems (CRM, client portal) after launch
 
 Parallel internal workstream
 
-Prospecting Engine V1 Sprint 2 is in use under `/reports/prospecting` (Google Places discovery + human import). Do not start Sprint 3 (prospect Website Growth Audits) until Sprint 2 is in use.
+Prospecting Engine V1 Sprint 3 is in use under `/reports/prospecting` (audit + qualification). Do not start Sprint 4 (contact discovery / outreach drafts) until Sprint 3 is in use.
 
 ---
 

@@ -128,3 +128,22 @@ export function discoveryCandidateStatusLabel(
 ): string {
   return CANDIDATE_STATUS_LABELS[status];
 }
+
+export type QualificationLabelValue =
+  | "STRONG"
+  | "GOOD"
+  | "FAIR"
+  | "WEAK"
+  | "SKIP";
+
+const QUALIFICATION_LABELS: Record<QualificationLabelValue, string> = {
+  STRONG: "Strong",
+  GOOD: "Good",
+  FAIR: "Fair",
+  WEAK: "Weak",
+  SKIP: "Skip",
+};
+
+export function qualificationLabelText(label: QualificationLabelValue): string {
+  return QUALIFICATION_LABELS[label];
+}

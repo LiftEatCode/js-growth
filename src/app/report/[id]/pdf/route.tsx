@@ -5,6 +5,7 @@ import {
 import { canServeProfessionalReportArtifact } from "@/lib/payments/report-artifacts";
 import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
 import { ensureAiInterpretationForEntitledReport } from "@/lib/website-audit/ai-interpretation/ensure";
+import { canExposeAuditReportPublicly } from "@/lib/website-audit/report-source";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 export const runtime = "nodejs";
@@ -22,7 +23,7 @@ export async function GET(
 
   const report = await auditReportRepository.findById(id);
 
-  if (!report) {
+  if (!report || !canExposeAuditReportPublicly(report.source)) {
     return new Response("Report not found.", {
       status: 404,
     });

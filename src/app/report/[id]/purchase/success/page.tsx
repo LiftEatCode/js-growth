@@ -5,6 +5,7 @@ import {
   reportHasProfessionalEntitlement,
   retrieveAndFulfillCheckoutSession,
 } from "@/lib/payments/professional-audit";
+import { canExposeAuditReportPublicly } from "@/lib/website-audit/report-source";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 interface PurchaseSuccessPageProps {
@@ -24,7 +25,13 @@ export default async function PurchaseSuccessPage({
   const query = await searchParams;
   const sessionId = firstValue(query.session_id);
 
-  if (!isReportId(id) || !(await auditReportRepository.findById(id))) {
+  const report = await auditReportRepository.findById(id);
+
+  if (
+    !isReportId(id) ||
+    !report ||
+    !canExposeAuditReportPublicly(report.source)
+  ) {
     return (
       <PurchaseStatusScreen
         reportId={id}

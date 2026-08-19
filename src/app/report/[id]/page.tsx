@@ -14,6 +14,7 @@ import {
 } from "@/components/ui";
 import { reportHasProfessionalEntitlement } from "@/lib/payments/professional-audit";
 import { ensureAiInterpretationForEntitledReport } from "@/lib/website-audit/ai-interpretation/ensure";
+import { canExposeAuditReportPublicly } from "@/lib/website-audit/report-source";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +36,7 @@ export async function generateMetadata({
       id,
     );
 
-  if (!report) {
+  if (!report || !canExposeAuditReportPublicly(report.source)) {
     return {
       title: "Website Audit Report",
       robots: {
@@ -65,7 +66,7 @@ export default async function ReportPage({
       id,
     );
 
-  if (!report) {
+  if (!report || !canExposeAuditReportPublicly(report.source)) {
     notFound();
   }
 

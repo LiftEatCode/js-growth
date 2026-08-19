@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { canServeProfessionalReportArtifact } from "@/lib/payments/report-artifacts";
 import { buildProfessionalReport } from "@/lib/website-audit/professional-report";
+import { canExposeAuditReportPublicly } from "@/lib/website-audit/report-source";
 import { auditReportRepository } from "@/lib/website-audit/storage";
 
 export const runtime = "nodejs";
@@ -18,7 +19,7 @@ export async function GET(
   const { id } = await context.params;
   const report = await auditReportRepository.findById(id);
 
-  if (!report) {
+  if (!report || !canExposeAuditReportPublicly(report.source)) {
     return NextResponse.json(
       {
         error: "Audit report not found.",

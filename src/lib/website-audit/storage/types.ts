@@ -13,6 +13,8 @@ export type AuditLeadStatus =
   | "WON"
   | "LOST";
 
+export type AuditReportSourceValue = "PUBLIC_FUNNEL" | "PROSPECTING";
+
 export interface AuditReport {
   id: string;
 
@@ -25,6 +27,12 @@ export interface AuditReport {
   hostname: string;
 
   reportMode: ReportMode;
+
+  /**
+   * Distinguishes inbound customer audits from internal prospecting scans.
+   * Older in-memory reports omit this and are treated as PUBLIC_FUNNEL.
+   */
+  source?: AuditReportSourceValue;
 
   audit: WebsiteAuditResult;
 }

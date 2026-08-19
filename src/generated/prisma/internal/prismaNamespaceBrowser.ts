@@ -62,7 +62,8 @@ export const ModelName = {
   OutreachMessage: 'OutreachMessage',
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
-  ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate'
+  ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
+  ProspectQualificationRun: 'ProspectQualificationRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -309,6 +310,31 @@ export const ProspectDiscoveryCandidateScalarFieldEnum = {
 } as const
 
 export type ProspectDiscoveryCandidateScalarFieldEnum = (typeof ProspectDiscoveryCandidateScalarFieldEnum)[keyof typeof ProspectDiscoveryCandidateScalarFieldEnum]
+
+
+export const ProspectQualificationRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  status: 'status',
+  requestedCount: 'requestedCount',
+  processedCount: 'processedCount',
+  qualifiedCount: 'qualifiedCount',
+  skippedCount: 'skippedCount',
+  failedCount: 'failedCount',
+  auditsAttempted: 'auditsAttempted',
+  auditsReused: 'auditsReused',
+  auditsCompleted: 'auditsCompleted',
+  auditsFailed: 'auditsFailed',
+  remainingUnaudited: 'remainingUnaudited',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectQualificationRunScalarFieldEnum = (typeof ProspectQualificationRunScalarFieldEnum)[keyof typeof ProspectQualificationRunScalarFieldEnum]
 
 
 export const SortOrder = {

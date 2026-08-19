@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import {
   buildProfessionalReport,
 } from "@/lib/website-audit/professional-report";
+import { canExposeAuditReportPublicly } from "@/lib/website-audit/report-source";
 import {
   auditReportRepository,
 } from "@/lib/website-audit/storage";
@@ -40,7 +41,7 @@ export async function GET(
       id,
     );
 
-  if (!report) {
+  if (!report || !canExposeAuditReportPublicly(report.source)) {
     return NextResponse.json(
       {
         error:

@@ -231,12 +231,17 @@ const reportSource = readFileSync(
   "utf8",
 );
 assert(
-  !reportSource.includes("PROSPECTING"),
-  "createAuditReport does not mark reports as prospecting",
+  reportSource.includes('options?.source ?? "PUBLIC_FUNNEL"'),
+  "createAuditReport defaults to PUBLIC_FUNNEL",
+);
+
+const publicAuditActions = readFileSync(
+  join(here, "../../app/website-audit/actions.ts"),
+  "utf8",
 );
 assert(
-  !reportSource.includes("PUBLIC_FUNNEL"),
-  "public audit helper does not depend on prospecting source enum",
+  !publicAuditActions.includes("PROSPECTING"),
+  "public auditWebsite does not mark reports as prospecting",
 );
 
 const repositorySource = readFileSync(
@@ -244,8 +249,8 @@ const repositorySource = readFileSync(
   "utf8",
 );
 assert(
-  !repositorySource.includes("PROSPECTING"),
-  "audit repository save path does not write prospecting source",
+  repositorySource.includes('source: "PUBLIC_FUNNEL"'),
+  "inbound report list does not mix in prospecting scans",
 );
 
 const pipelineSource = readFileSync(

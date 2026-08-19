@@ -603,6 +603,23 @@ export type EnumDiscoveryCandidateStatusWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
 }
 
+export type EnumQualificationRunStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.QualificationRunStatus | Prisma.EnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQualificationRunStatusFilter<$PrismaModel> | $Enums.QualificationRunStatus
+}
+
+export type EnumQualificationRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QualificationRunStatus | Prisma.EnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQualificationRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.QualificationRunStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQualificationRunStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQualificationRunStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1138,6 +1155,23 @@ export type NestedEnumDiscoveryCandidateStatusWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumQualificationRunStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.QualificationRunStatus | Prisma.EnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQualificationRunStatusFilter<$PrismaModel> | $Enums.QualificationRunStatus
+}
+
+export type NestedEnumQualificationRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QualificationRunStatus | Prisma.EnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QualificationRunStatus[] | Prisma.ListEnumQualificationRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQualificationRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.QualificationRunStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQualificationRunStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQualificationRunStatusFilter<$PrismaModel>
 }
 
 

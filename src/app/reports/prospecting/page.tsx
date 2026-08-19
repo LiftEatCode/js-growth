@@ -69,10 +69,9 @@ export default async function ProspectingDashboardPage() {
         <Card variant="brand" padding="lg">
           <p className="text-sm leading-6 text-brand">
               Optimize for five credible, qualified prospects—not five emails
-              sent. Create a campaign, discover businesses with Google Places,
-              review candidates, and import selected prospects. Website audits,
-              drafts, and sending come later and still require human approval
-              before any outreach.
+              sent. Discover businesses, import selected results, then audit
+              and qualify. Drafts and sending come later and still require
+              human approval.
           </p>
         </Card>
 

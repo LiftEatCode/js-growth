@@ -467,6 +467,18 @@ export async function skipCampaignProspect(
       },
     });
 
+    await prisma.campaignProspect.update({
+      where: {
+        campaignId_prospectId: {
+          campaignId,
+          prospectId,
+        },
+      },
+      data: {
+        isSelectedTopN: false,
+      },
+    });
+
     revalidatePath(`/reports/prospecting/${campaignId}`);
     revalidatePath(
       `/reports/prospecting/${campaignId}/prospects/${prospectId}`,

@@ -266,7 +266,8 @@ model Campaign {
 
   outreachMessages OutreachMessage[]
 
-  discoveryRuns ProspectDiscoveryRun[]
+  discoveryRuns     ProspectDiscoveryRun[]
+  qualificationRuns ProspectQualificationRun[]
 
   @@index([status])
   @@index([createdAt])
@@ -488,4 +489,43 @@ model ProspectDiscoveryCandidate {
   @@index([discoveryRunId, status])
   @@index([hostname])
   @@index([importedProspectId])
+}
+
+enum QualificationRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model ProspectQualificationRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  status QualificationRunStatus @default(RUNNING)
+
+  requestedCount Int
+  processedCount Int @default(0)
+  qualifiedCount Int @default(0)
+  skippedCount   Int @default(0)
+  failedCount    Int @default(0)
+
+  auditsAttempted Int @default(0)
+  auditsReused    Int @default(0)
+  auditsCompleted Int @default(0)
+  auditsFailed    Int @default(0)
+
+  remainingUnaudited Int @default(0)
+  durationMs         Int @default(0)
+
+  errorMessage String?
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdByEmail String
+
+  @@index([campaignId, status])
+  @@index([campaignId, createdAt])
 }

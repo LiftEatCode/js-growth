@@ -65,6 +65,9 @@ function toAuditReport(
     reportMode:
       report.reportMode as AuditReport["reportMode"],
 
+    source:
+      report.source === "PROSPECTING" ? "PROSPECTING" : "PUBLIC_FUNNEL",
+
     audit:
       report.audit as unknown as AuditReport["audit"],
   };
@@ -176,6 +179,11 @@ export class PrismaAuditReportRepository
           reportMode:
             report.reportMode,
 
+          source:
+            report.source === "PROSPECTING"
+              ? "PROSPECTING"
+              : "PUBLIC_FUNNEL",
+
           overallScore:
             audit.overallScore,
 
@@ -217,6 +225,11 @@ export class PrismaAuditReportRepository
 
           reportMode:
             report.reportMode,
+
+          source:
+            report.source === "PROSPECTING"
+              ? "PROSPECTING"
+              : "PUBLIC_FUNNEL",
 
           overallScore:
             audit.overallScore,
@@ -269,6 +282,10 @@ export class PrismaAuditReportRepository
   > {
     const reports =
       await prisma.auditReport.findMany({
+        where: {
+          source: "PUBLIC_FUNNEL",
+        },
+
         select:
           auditReportSummarySelect,
 

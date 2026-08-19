@@ -1,21 +1,23 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AlertTriangle, ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 
 import { Button, Card, Container } from "@/components/ui";
+import { AuditQualifyButton } from "@/components/prospecting/audit-qualify-button";
 import { DiscoverBusinessesButton } from "@/components/prospecting/discover-businesses-button";
 import { prisma } from "@/lib/prisma";
-import { findDuplicateHostnames } from "@/lib/prospecting/duplicate-lookup";
-import { DUPLICATE_WARNING_NOTICE } from "@/lib/prospecting/constants";
+import { getScoreBand } from "@/lib/website-audit/score-bands";
+import { getReportCategoryLabel } from "@/lib/website-audit/report-categories";
+import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import {
   campaignStatusLabel,
   formatProspectLocation,
-  outreachStatusLabel,
+  qualificationLabelText,
   qualificationStatusLabel,
 } from "@/lib/prospecting/labels";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 interface CampaignPageProps {
   params: Promise<{
@@ -32,6 +34,16 @@ export const metadata: Metadata = {
   },
 };
 
+function formatAuditAge(value: Date | null): string {
+  if (!value) {
+    return "—";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+  }).format(value);
+}
+
 export default async function ProspectingCampaignPage({
   params,
 }: CampaignPageProps) {
@@ -41,9 +53,24 @@ export default async function ProspectingCampaignPage({
     where: { id: campaignId },
     include: {
       campaignProspects: {
-        orderBy: { addedAt: "desc" },
+        orderBy: [
+          { isSelectedTopN: "desc" },
+          { qualificationRank: { sort: "asc", nulls: "last" } },
+          { addedAt: "desc" },
+        ],
         include: {
-          prospect: true,
+          prospect: {
+            include: {
+              auditReport: {
+                select: {
+                  id: true,
+                  overallScore: true,
+                  grade: true,
+                  createdAt: true,
+                },
+              },
+            },
+          },
         },
       },
       discoveryRuns: {
@@ -53,12 +80,15 @@ export default async function ProspectingCampaignPage({
           id: true,
           status: true,
           provider: true,
-          startedAt: true,
           returnedCount: true,
           eligibleCount: true,
           importedCount: true,
           errorMessage: true,
         },
+      },
+      qualificationRuns: {
+        orderBy: { createdAt: "desc" },
+        take: 5,
       },
     },
   });
@@ -67,10 +97,24 @@ export default async function ProspectingCampaignPage({
     notFound();
   }
 
-  const hostnames = campaign.campaignProspects
-    .map((row) => row.prospect.hostname)
-    .filter((value): value is string => Boolean(value));
-  const duplicateHostnames = await findDuplicateHostnames(hostnames);
+  const prospects = campaign.campaignProspects;
+  const audited = prospects.filter((row) => row.prospect.auditReportId).length;
+  const qualified = prospects.filter(
+    (row) => row.prospect.qualificationStatus === "QUALIFIED",
+  ).length;
+  const skipped = prospects.filter(
+    (row) => row.prospect.qualificationStatus === "SKIPPED",
+  ).length;
+  const auditFailed = prospects.filter(
+    (row) => row.prospect.qualificationStatus === "AUDIT_FAILED",
+  ).length;
+  const selectedTopN = prospects.filter((row) => row.isSelectedTopN).length;
+  const remainingUnaudited = prospects.filter((row) =>
+    ["DISCOVERED", "AUDITING", "AUDIT_FAILED", "WEBSITE_INVALID"].includes(
+      row.prospect.qualificationStatus,
+    ),
+  ).length;
+  const latestQualification = campaign.qualificationRuns[0] ?? null;
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -94,10 +138,10 @@ export default async function ProspectingCampaignPage({
               {campaign.name}
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-              Target {campaign.desiredQualifiedCount} qualified prospects in{" "}
-              {campaign.locationLabel}
+              Target {campaign.desiredQualifiedCount} credible qualified
+              prospects in {campaign.locationLabel}
               {campaign.radiusMiles ? ` (${campaign.radiusMiles} miles)` : ""}.
-              Businesses in this campaign are not Leads.
+              Audits stay internal. No emails are sent from this screen.
             </p>
           </div>
 
@@ -116,6 +160,10 @@ export default async function ProspectingCampaignPage({
                     : undefined
               }
             />
+            <AuditQualifyButton
+              campaignId={campaign.id}
+              remainingUnaudited={remainingUnaudited}
+            />
             <Button
               variant="outline"
               nativeButton={false}
@@ -133,9 +181,51 @@ export default async function ProspectingCampaignPage({
 
         <Card variant="elevated" padding="lg">
           <h2 className="font-heading text-xl font-semibold text-brand">
-            Targeting
+            Campaign stats
           </h2>
           <dl className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Total prospects
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{prospects.length}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Audited
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{audited}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Qualified
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{qualified}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Skipped
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{skipped}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Audit failed
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{auditFailed}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Selected top {campaign.desiredQualifiedCount}
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{selectedTopN}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Remaining unaudited
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{remainingUnaudited}</dd>
+            </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
                 Location
@@ -144,31 +234,19 @@ export default async function ProspectingCampaignPage({
                 {campaign.locationLabel}
               </dd>
             </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Industries
-              </dt>
-              <dd className="mt-1 text-sm text-brand">
-                {campaign.industries.join(", ") || "—"}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Desired qualified
-              </dt>
-              <dd className="mt-1 text-sm text-brand">
-                {campaign.desiredQualifiedCount}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                Notes
-              </dt>
-              <dd className="mt-1 text-sm text-brand">
-                {campaign.notes || "None"}
-              </dd>
-            </div>
           </dl>
+          {latestQualification ? (
+            <p className="mt-4 text-xs text-muted">
+              Last qualification run: {latestQualification.status.toLowerCase()}{" "}
+              · {latestQualification.auditsCompleted} completed ·{" "}
+              {latestQualification.auditsReused} reused ·{" "}
+              {latestQualification.auditsFailed} failed ·{" "}
+              {Math.round(latestQualification.durationMs / 1000)}s
+              {latestQualification.errorMessage
+                ? ` · ${latestQualification.errorMessage}`
+                : ""}
+            </p>
+          ) : null}
         </Card>
 
         {campaign.discoveryRuns.length > 0 ? (
@@ -176,10 +254,6 @@ export default async function ProspectingCampaignPage({
             <h2 className="font-heading text-xl font-semibold text-brand">
               Discovery runs
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-              Google Places results stay here until you import selected
-              businesses. Website audits are not run in this sprint.
-            </p>
             <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
               {campaign.discoveryRuns.map((run) => (
                 <li key={run.id} className="px-4 py-3 text-sm">
@@ -204,38 +278,40 @@ export default async function ProspectingCampaignPage({
           </Card>
         ) : null}
 
-        {campaign.campaignProspects.length === 0 ? (
+        {prospects.length === 0 ? (
           <Card variant="elevated" padding="lg">
             <h2 className="font-heading text-xl font-semibold text-brand">
               No prospects yet
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-              Discover businesses with Google Places, or add a business by
-              hand. Import remains a human decision. Website audits, email
-              finding, and outreach are not part of this sprint.
+              Discover or add businesses first, then audit and qualify. Contact
+              finding and outreach drafts are not part of this sprint.
             </p>
           </Card>
         ) : (
           <div className="overflow-hidden rounded-2xl border border-border bg-white">
-            <table className="w-full min-w-[56rem] text-left text-sm">
+            <table className="w-full min-w-[72rem] text-left text-sm">
               <thead className="border-b border-border bg-slate-50 text-xs uppercase tracking-[0.08em] text-muted">
                 <tr>
                   <th className="px-4 py-3 font-semibold">Business</th>
                   <th className="px-4 py-3 font-semibold">Website</th>
                   <th className="px-4 py-3 font-semibold">Industry</th>
-                  <th className="px-4 py-3 font-semibold">Location</th>
-                  <th className="px-4 py-3 font-semibold">Qualification</th>
-                  <th className="px-4 py-3 font-semibold">Outreach</th>
-                  <th className="px-4 py-3 font-semibold">Duplicates</th>
+                  <th className="px-4 py-3 font-semibold">Audit</th>
+                  <th className="px-4 py-3 font-semibold">Weakest category</th>
+                  <th className="px-4 py-3 font-semibold">Qual score</th>
+                  <th className="px-4 py-3 font-semibold">Status</th>
+                  <th className="px-4 py-3 font-semibold">Top N</th>
+                  <th className="px-4 py-3 font-semibold">Primary finding</th>
+                  <th className="px-4 py-3 font-semibold">Audit age</th>
                 </tr>
               </thead>
               <tbody>
-                {campaign.campaignProspects.map((row) => {
+                {prospects.map((row) => {
                   const prospect = row.prospect;
-                  const isDuplicate = Boolean(
-                    prospect.hostname &&
-                      duplicateHostnames.has(prospect.hostname),
+                  const qualification = parseStoredQualification(
+                    row.qualificationJson,
                   );
+                  const audit = prospect.auditReport;
 
                   return (
                     <tr
@@ -249,6 +325,9 @@ export default async function ProspectingCampaignPage({
                         >
                           {prospect.businessName}
                         </Link>
+                        <p className="mt-1 text-xs text-muted">
+                          {formatProspectLocation(prospect)}
+                        </p>
                       </td>
                       <td className="px-4 py-3">
                         {prospect.website ? (
@@ -268,7 +347,21 @@ export default async function ProspectingCampaignPage({
                         {prospect.industry || "—"}
                       </td>
                       <td className="px-4 py-3">
-                        {formatProspectLocation(prospect)}
+                        {audit
+                          ? `${audit.overallScore} · ${getScoreBand(audit.overallScore).label}`
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {qualification?.weakestRelevantCategory
+                          ? getReportCategoryLabel(
+                              qualification.weakestRelevantCategory,
+                            )
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {qualification
+                          ? `${qualification.score} · ${qualificationLabelText(qualification.label)}`
+                          : "—"}
                       </td>
                       <td className="px-4 py-3">
                         {qualificationStatusLabel(
@@ -276,20 +369,13 @@ export default async function ProspectingCampaignPage({
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        {outreachStatusLabel(prospect.outreachStatus)}
+                        {row.isSelectedTopN ? "Selected" : "—"}
                       </td>
                       <td className="px-4 py-3">
-                        {isDuplicate ? (
-                          <span className="inline-flex items-center gap-1.5 text-amber-800">
-                            <AlertTriangle
-                              aria-hidden="true"
-                              className="size-3.5"
-                            />
-                            Hostname match
-                          </span>
-                        ) : (
-                          "—"
-                        )}
+                        {qualification?.primaryFindingTitle || "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {formatAuditAge(audit?.createdAt ?? null)}
                       </td>
                     </tr>
                   );
@@ -298,10 +384,6 @@ export default async function ProspectingCampaignPage({
             </table>
           </div>
         )}
-
-        <p className="max-w-3xl text-xs leading-5 text-muted">
-          {DUPLICATE_WARNING_NOTICE}
-        </p>
       </Container>
     </main>
   );

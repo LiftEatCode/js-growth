@@ -1,25 +1,19 @@
 "use server";
 
-import { analyzeHtml } from "@/lib/website-audit/analyze-html";
-import { fetchWebsitePage } from "@/lib/website-audit/audit-url";
 import { buildCompetitiveIntelligence } from "@/lib/website-audit/competitive/crawl-competitor";
 import {
   collectCompetitorRawUrls,
   parseCompetitorInputs,
 } from "@/lib/website-audit/competitive/input";
-import { buildAuditRobotsData } from "@/lib/website-audit/robots";
 import { parseWebsiteAuditInput } from "@/lib/website-audit/schema";
-import { scoreWebsiteAudit } from "@/lib/website-audit/scoring";
-import { discoverSite } from "@/lib/website-audit/site-discovery";
-import { crawlSite } from "@/lib/website-audit/site/crawl";
 import {
   auditReportRepository,
   createAuditReport,
 } from "@/lib/website-audit/storage";
 import { toClientWebsiteAuditResult } from "@/lib/website-audit/report-free-payload";
 import { buildGrowthReportViewModel } from "@/lib/website-audit/report-view";
+import { runDeterministicWebsiteAudit } from "@/lib/website-audit/run-deterministic-audit";
 import type {
-  AuditPageData,
   WebsiteAuditResponse,
   WebsiteAuditResult,
 } from "@/lib/website-audit/types";
@@ -41,153 +35,48 @@ export async function auditWebsite(
     };
   }
 
-    const fetchResult = await fetchWebsitePage(
-      parsedInput.data.url,
-    );
+  const deterministic = await runDeterministicWebsiteAudit(
+    parsedInput.data.url,
+  );
 
-    if (!fetchResult.success) {
-      console.info("[audit] fetch failed", {
-        code: fetchResult.error.code,
-      });
-      return fetchResult;
+  if (!deterministic.success) {
+    console.info("[audit] fetch failed", {
+      code: deterministic.error.code,
+    });
+    return deterministic;
+  }
+
+  try {
+    const auditResult: WebsiteAuditResult = {
+      ...deterministic.audit,
+    };
+
+    try {
+      const parsedCompetitors = parseCompetitorInputs(
+        collectCompetitorRawUrls(formData),
+        auditResult.metadata.finalUrl,
+      );
+
+      if (parsedCompetitors.attempted && auditResult.siteData) {
+        auditResult.competitiveData = await buildCompetitiveIntelligence({
+          customerUrl: auditResult.metadata.finalUrl,
+          customerSiteData: auditResult.siteData,
+          customerPageData: auditResult.pageData,
+          accepted: parsedCompetitors.accepted,
+          skipped: parsedCompetitors.skipped,
+          submittedCount: parsedCompetitors.submittedCount,
+        });
+      }
+    } catch (error) {
+      console.error("Website audit competitive comparison failed:", error);
     }
 
-    try {
-      const {
-        robotsMetaRaw,
-        ...htmlPageData
-      } = analyzeHtml(
-        fetchResult.data.html,
-        fetchResult.data.finalUrl,
-        {
-          advertisedContentLength:
-            fetchResult.data.advertisedContentLength,
-          contentEncoding:
-            fetchResult.data.contentEncoding,
-          cacheControl:
-            fetchResult.data.cacheControl,
-          expires: fetchResult.data.expires,
-          etag: fetchResult.data.etag,
-          lastModified: fetchResult.data.lastModified,
-          documentFetchDurationMs:
-            fetchResult.data.documentFetchDurationMs,
-        },
-      );
-
-      const pageData: AuditPageData = {
-        ...htmlPageData,
-        robots: buildAuditRobotsData(
-          robotsMetaRaw,
-          fetchResult.data.xRobotsTag,
-        ),
-      };
-
-      const siteDiscovery = await discoverSite(
-        fetchResult.data.finalUrl,
-      );
-
-      let siteData: WebsiteAuditResult["siteData"];
-
-      try {
-        siteData = await crawlSite({
-          seedRequestedUrl: fetchResult.data.requestedUrl,
-          seedFinalUrl: fetchResult.data.finalUrl,
-          seedHtml: fetchResult.data.html,
-          seedPageData: pageData,
-          seedStatusCode: fetchResult.data.statusCode,
-          siteDiscovery,
-        });
-      } catch (error) {
-        console.error("Website audit site crawl failed:", error);
-      }
-
-      const scoring = scoreWebsiteAudit(
-        pageData,
-        fetchResult.data.finalUrl,
-        siteDiscovery,
-        siteData,
-      );
-
-      let competitiveData: WebsiteAuditResult["competitiveData"];
-
-      try {
-        const parsedCompetitors = parseCompetitorInputs(
-          collectCompetitorRawUrls(formData),
-          fetchResult.data.finalUrl,
-        );
-
-        if (parsedCompetitors.attempted && siteData) {
-          competitiveData = await buildCompetitiveIntelligence({
-            customerUrl: fetchResult.data.finalUrl,
-            customerSiteData: siteData,
-            customerPageData: pageData,
-            accepted: parsedCompetitors.accepted,
-            skipped: parsedCompetitors.skipped,
-            submittedCount: parsedCompetitors.submittedCount,
-          });
-        }
-      } catch (error) {
-        console.error("Website audit competitive comparison failed:", error);
-      }
-
-      const auditResult: WebsiteAuditResult = {
-        success: true,
-
-        metadata: {
-          requestedUrl:
-            fetchResult.data.requestedUrl,
-
-          finalUrl:
-            fetchResult.data.finalUrl,
-
-          statusCode:
-            fetchResult.data.statusCode,
-
-          contentType:
-            fetchResult.data.contentType,
-
-          fetchedAt:
-            fetchResult.data.fetchedAt,
-        },
-
-        pageData,
-
-        siteDiscovery,
-
-        siteData,
-
-        competitiveData,
-
-        findings:
-          scoring.findings,
-
-        categoryScores:
-          scoring.categoryScores,
-
-        overallScore:
-          scoring.overallScore,
-
-        summary:
-          scoring.summary,
-
-        opportunity:
-          scoring.opportunity,
-      };
-
-    const report = createAuditReport(
-      auditResult,
-      "public",
-    );
+    const report = createAuditReport(auditResult, "public");
 
     try {
-      await auditReportRepository.save(
-        report,
-      );
+      await auditReportRepository.save(report);
     } catch (error) {
-      console.error(
-        "Website audit report save failed:",
-        error,
-      );
+      console.error("Website audit report save failed:", error);
 
       return {
         success: false,
@@ -207,10 +96,7 @@ export async function auditWebsite(
       reportId: report.id,
     };
   } catch (error) {
-    console.error(
-      "Website audit analysis failed:",
-      error,
-    );
+    console.error("Website audit analysis failed:", error);
 
     return {
       success: false,
