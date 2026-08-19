@@ -212,7 +212,9 @@ export async function startCampaignContactDiscovery(
       runId: run.id,
       message: `Checked ${results.length} prospect${results.length === 1 ? "" : "s"} (max ${MAX_CONTACT_DISCOVERY_PER_RUN}). ${found} with contacts, ${noContact} with no public email.`,
     };
-  } catch {
+  } catch (error) {
+    console.error("[prospecting contact discovery]", error);
+
     await prisma.prospectContactDiscoveryRun.update({
       where: { id: run.id },
       data: {

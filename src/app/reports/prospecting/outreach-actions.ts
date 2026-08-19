@@ -208,7 +208,9 @@ export async function startCampaignOutreachDrafts(
       runId: run.id,
       message: `Processed ${results.length} prospect${results.length === 1 ? "" : "s"} (max ${MAX_AI_DRAFTS_PER_RUN}). ${generated} new drafts. No email was sent.`,
     };
-  } catch {
+  } catch (error) {
+    console.error("[prospecting outreach drafts]", error);
+
     await prisma.prospectOutreachDraftRun.update({
       where: { id: run.id },
       data: {
