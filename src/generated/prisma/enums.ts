@@ -72,7 +72,8 @@ export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus
 export const ProspectSourceType = {
   MANUAL: 'MANUAL',
   PROVIDER: 'PROVIDER',
-  WEBSITE: 'WEBSITE'
+  WEBSITE: 'WEBSITE',
+  GOOGLE_PLACES: 'GOOGLE_PLACES'
 } as const
 
 export type ProspectSourceType = (typeof ProspectSourceType)[keyof typeof ProspectSourceType]
@@ -154,3 +155,27 @@ export const SuppressionReason = {
 } as const
 
 export type SuppressionReason = (typeof SuppressionReason)[keyof typeof SuppressionReason]
+
+
+export const DiscoveryRunStatus = {
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type DiscoveryRunStatus = (typeof DiscoveryRunStatus)[keyof typeof DiscoveryRunStatus]
+
+
+export const DiscoveryCandidateStatus = {
+  ELIGIBLE: 'ELIGIBLE',
+  NO_WEBSITE: 'NO_WEBSITE',
+  INVALID_WEBSITE: 'INVALID_WEBSITE',
+  DUPLICATE_PLACE: 'DUPLICATE_PLACE',
+  DUPLICATE_HOSTNAME: 'DUPLICATE_HOSTNAME',
+  EXISTING_PROSPECT: 'EXISTING_PROSPECT',
+  ALREADY_IN_CAMPAIGN: 'ALREADY_IN_CAMPAIGN',
+  EXISTING_LEAD: 'EXISTING_LEAD',
+  SUPPRESSED: 'SUPPRESSED'
+} as const
+
+export type DiscoveryCandidateStatus = (typeof DiscoveryCandidateStatus)[keyof typeof DiscoveryCandidateStatus]

@@ -179,6 +179,7 @@ enum ProspectSourceType {
   MANUAL
   PROVIDER
   WEBSITE
+  GOOGLE_PLACES
 }
 
 enum ProspectQualificationStatus {
@@ -265,6 +266,8 @@ model Campaign {
 
   outreachMessages OutreachMessage[]
 
+  discoveryRuns ProspectDiscoveryRun[]
+
   @@index([status])
   @@index([createdAt])
 }
@@ -302,11 +305,13 @@ model Prospect {
   leadId String?
   lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
-  campaignProspects CampaignProspect[]
-  contacts          ProspectContact[]
-  outreachMessages  OutreachMessage[]
+  campaignProspects           CampaignProspect[]
+  contacts                    ProspectContact[]
+  outreachMessages            OutreachMessage[]
+  importedDiscoveryCandidates ProspectDiscoveryCandidate[]
 
   @@index([hostname])
+  @@index([sourceRef])
   @@index([qualificationStatus])
   @@index([outreachStatus])
   @@index([discoveredAt])
@@ -398,4 +403,89 @@ model SuppressionEntry {
   reason SuppressionReason
 
   @@index([type, value])
+}
+
+enum DiscoveryRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum DiscoveryCandidateStatus {
+  ELIGIBLE
+  NO_WEBSITE
+  INVALID_WEBSITE
+  DUPLICATE_PLACE
+  DUPLICATE_HOSTNAME
+  EXISTING_PROSPECT
+  ALREADY_IN_CAMPAIGN
+  EXISTING_LEAD
+  SUPPRESSED
+}
+
+model ProspectDiscoveryRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  provider String
+  status   DiscoveryRunStatus @default(RUNNING)
+
+  requestedIndustries String[]
+  requestedLocation   String
+  radiusMiles         Int?
+  requestedLimit      Int
+
+  providerRequestCount Int @default(0)
+
+  returnedCount          Int @default(0)
+  eligibleCount          Int @default(0)
+  importedCount          Int @default(0)
+  skippedDuplicateCount  Int @default(0)
+  skippedSuppressedCount Int @default(0)
+  skippedNoWebsiteCount  Int @default(0)
+
+  errorMessage String?
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdByEmail String
+
+  candidates ProspectDiscoveryCandidate[]
+
+  @@index([campaignId, status])
+  @@index([campaignId, createdAt])
+}
+
+model ProspectDiscoveryCandidate {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  discoveryRunId String
+  discoveryRun   ProspectDiscoveryRun @relation(fields: [discoveryRunId], references: [id], onDelete: Cascade)
+
+  providerBusinessId String
+  businessName       String
+  website            String?
+  hostname           String?
+  formattedAddress   String?
+  city               String?
+  state              String?
+  phone              String?
+  category           String?
+  latitude           Float?
+  longitude          Float?
+
+  status          DiscoveryCandidateStatus
+  exclusionReason String?
+
+  importedProspectId String?
+  importedProspect   Prospect? @relation(fields: [importedProspectId], references: [id], onDelete: SetNull)
+
+  @@unique([discoveryRunId, providerBusinessId])
+  @@index([discoveryRunId, status])
+  @@index([hostname])
+  @@index([importedProspectId])
 }

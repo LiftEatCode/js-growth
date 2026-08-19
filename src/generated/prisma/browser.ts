@@ -67,3 +67,13 @@ export type OutreachMessage = Prisma.OutreachMessageModel
  * 
  */
 export type SuppressionEntry = Prisma.SuppressionEntryModel
+/**
+ * Model ProspectDiscoveryRun
+ * 
+ */
+export type ProspectDiscoveryRun = Prisma.ProspectDiscoveryRunModel
+/**
+ * Model ProspectDiscoveryCandidate
+ * 
+ */
+export type ProspectDiscoveryCandidate = Prisma.ProspectDiscoveryCandidateModel

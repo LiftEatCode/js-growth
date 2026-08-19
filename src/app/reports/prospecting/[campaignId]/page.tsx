@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AlertTriangle, ArrowLeft, Plus } from "lucide-react";
 
 import { Button, Card, Container } from "@/components/ui";
+import { DiscoverBusinessesButton } from "@/components/prospecting/discover-businesses-button";
 import { prisma } from "@/lib/prisma";
 import { findDuplicateHostnames } from "@/lib/prospecting/duplicate-lookup";
 import { DUPLICATE_WARNING_NOTICE } from "@/lib/prospecting/constants";
@@ -13,6 +14,8 @@ import {
   outreachStatusLabel,
   qualificationStatusLabel,
 } from "@/lib/prospecting/labels";
+
+export const maxDuration = 60;
 
 interface CampaignPageProps {
   params: Promise<{
@@ -41,6 +44,20 @@ export default async function ProspectingCampaignPage({
         orderBy: { addedAt: "desc" },
         include: {
           prospect: true,
+        },
+      },
+      discoveryRuns: {
+        orderBy: { createdAt: "desc" },
+        take: 8,
+        select: {
+          id: true,
+          status: true,
+          provider: true,
+          startedAt: true,
+          returnedCount: true,
+          eligibleCount: true,
+          importedCount: true,
+          errorMessage: true,
         },
       },
     },
@@ -84,17 +101,34 @@ export default async function ProspectingCampaignPage({
             </p>
           </div>
 
-          <Button
-            nativeButton={false}
-            render={
-              <Link
-                href={`/reports/prospecting/${campaign.id}/prospects/new`}
-              />
-            }
-          >
-            <Plus aria-hidden="true" className="size-4" />
-            Add Prospect
-          </Button>
+          <div className="flex flex-col items-stretch gap-3 sm:items-end">
+            <DiscoverBusinessesButton
+              campaignId={campaign.id}
+              disabled={
+                !campaign.locationLabel.trim() ||
+                campaign.industries.length === 0
+              }
+              disabledReason={
+                !campaign.locationLabel.trim()
+                  ? "Add a campaign location before discovering businesses."
+                  : campaign.industries.length === 0
+                    ? "Add at least one industry before discovering businesses."
+                    : undefined
+              }
+            />
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={
+                <Link
+                  href={`/reports/prospecting/${campaign.id}/prospects/new`}
+                />
+              }
+            >
+              <Plus aria-hidden="true" className="size-4" />
+              Add Prospect
+            </Button>
+          </div>
         </div>
 
         <Card variant="elevated" padding="lg">
@@ -137,14 +171,48 @@ export default async function ProspectingCampaignPage({
           </dl>
         </Card>
 
+        {campaign.discoveryRuns.length > 0 ? (
+          <Card variant="elevated" padding="lg">
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              Discovery runs
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+              Google Places results stay here until you import selected
+              businesses. Website audits are not run in this sprint.
+            </p>
+            <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
+              {campaign.discoveryRuns.map((run) => (
+                <li key={run.id} className="px-4 py-3 text-sm">
+                  <Link
+                    href={`/reports/prospecting/${campaign.id}/discovery/${run.id}`}
+                    className="font-semibold text-brand-blue hover:underline"
+                  >
+                    {run.status === "RUNNING"
+                      ? "Discovery in progress"
+                      : run.status === "FAILED"
+                        ? "Discovery failed"
+                        : "Review candidates"}
+                  </Link>
+                  <p className="mt-1 text-xs text-muted">
+                    {run.provider} · {run.returnedCount} returned ·{" "}
+                    {run.eligibleCount} eligible · {run.importedCount} imported
+                    {run.errorMessage ? ` · ${run.errorMessage}` : ""}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        ) : null}
+
         {campaign.campaignProspects.length === 0 ? (
           <Card variant="elevated" padding="lg">
             <h2 className="font-heading text-xl font-semibold text-brand">
               No prospects yet
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-              Add businesses by hand. Automatic discovery is not enabled in
-              Sprint 1.
+              Discover businesses with Google Places, or add a business by
+              hand. Import remains a human decision. Website audits, email
+              finding, and outreach are not part of this sprint.
             </p>
           </Card>
         ) : (

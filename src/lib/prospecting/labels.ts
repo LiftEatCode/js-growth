@@ -24,7 +24,11 @@ export type ProspectOutreachStatusValue =
   | "NOT_INTERESTED"
   | "CONVERTED";
 
-export type ProspectSourceTypeValue = "MANUAL" | "PROVIDER" | "WEBSITE";
+export type ProspectSourceTypeValue =
+  | "MANUAL"
+  | "PROVIDER"
+  | "WEBSITE"
+  | "GOOGLE_PLACES";
 
 const CAMPAIGN_STATUS_LABELS: Record<CampaignStatusValue, string> = {
   DRAFT: "Draft",
@@ -62,6 +66,7 @@ const SOURCE_TYPE_LABELS: Record<ProspectSourceTypeValue, string> = {
   MANUAL: "Manual",
   PROVIDER: "Provider",
   WEBSITE: "Website",
+  GOOGLE_PLACES: "Google Places",
 };
 
 export function campaignStatusLabel(status: CampaignStatusValue): string {
@@ -93,4 +98,33 @@ export function formatProspectLocation(input: {
   }
 
   return input.city ?? input.state ?? "—";
+}
+
+export type DiscoveryCandidateStatusLabel =
+  | "ELIGIBLE"
+  | "NO_WEBSITE"
+  | "INVALID_WEBSITE"
+  | "DUPLICATE_PLACE"
+  | "DUPLICATE_HOSTNAME"
+  | "EXISTING_PROSPECT"
+  | "ALREADY_IN_CAMPAIGN"
+  | "EXISTING_LEAD"
+  | "SUPPRESSED";
+
+const CANDIDATE_STATUS_LABELS: Record<DiscoveryCandidateStatusLabel, string> = {
+  ELIGIBLE: "Eligible",
+  NO_WEBSITE: "No website",
+  INVALID_WEBSITE: "Invalid website",
+  DUPLICATE_PLACE: "Duplicate place",
+  DUPLICATE_HOSTNAME: "Duplicate hostname",
+  EXISTING_PROSPECT: "Existing prospect",
+  ALREADY_IN_CAMPAIGN: "Already in campaign",
+  EXISTING_LEAD: "Existing lead",
+  SUPPRESSED: "Suppressed",
+};
+
+export function discoveryCandidateStatusLabel(
+  status: DiscoveryCandidateStatusLabel,
+): string {
+  return CANDIDATE_STATUS_LABELS[status];
 }

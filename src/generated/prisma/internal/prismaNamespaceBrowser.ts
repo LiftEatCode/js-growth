@@ -60,7 +60,9 @@ export const ModelName = {
   CampaignProspect: 'CampaignProspect',
   ProspectContact: 'ProspectContact',
   OutreachMessage: 'OutreachMessage',
-  SuppressionEntry: 'SuppressionEntry'
+  SuppressionEntry: 'SuppressionEntry',
+  ProspectDiscoveryRun: 'ProspectDiscoveryRun',
+  ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -258,6 +260,55 @@ export const SuppressionEntryScalarFieldEnum = {
 } as const
 
 export type SuppressionEntryScalarFieldEnum = (typeof SuppressionEntryScalarFieldEnum)[keyof typeof SuppressionEntryScalarFieldEnum]
+
+
+export const ProspectDiscoveryRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  provider: 'provider',
+  status: 'status',
+  requestedIndustries: 'requestedIndustries',
+  requestedLocation: 'requestedLocation',
+  radiusMiles: 'radiusMiles',
+  requestedLimit: 'requestedLimit',
+  providerRequestCount: 'providerRequestCount',
+  returnedCount: 'returnedCount',
+  eligibleCount: 'eligibleCount',
+  importedCount: 'importedCount',
+  skippedDuplicateCount: 'skippedDuplicateCount',
+  skippedSuppressedCount: 'skippedSuppressedCount',
+  skippedNoWebsiteCount: 'skippedNoWebsiteCount',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectDiscoveryRunScalarFieldEnum = (typeof ProspectDiscoveryRunScalarFieldEnum)[keyof typeof ProspectDiscoveryRunScalarFieldEnum]
+
+
+export const ProspectDiscoveryCandidateScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  discoveryRunId: 'discoveryRunId',
+  providerBusinessId: 'providerBusinessId',
+  businessName: 'businessName',
+  website: 'website',
+  hostname: 'hostname',
+  formattedAddress: 'formattedAddress',
+  city: 'city',
+  state: 'state',
+  phone: 'phone',
+  category: 'category',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  status: 'status',
+  exclusionReason: 'exclusionReason',
+  importedProspectId: 'importedProspectId'
+} as const
+
+export type ProspectDiscoveryCandidateScalarFieldEnum = (typeof ProspectDiscoveryCandidateScalarFieldEnum)[keyof typeof ProspectDiscoveryCandidateScalarFieldEnum]
 
 
 export const SortOrder = {

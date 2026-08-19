@@ -406,7 +406,9 @@ export const ModelName = {
   CampaignProspect: 'CampaignProspect',
   ProspectContact: 'ProspectContact',
   OutreachMessage: 'OutreachMessage',
-  SuppressionEntry: 'SuppressionEntry'
+  SuppressionEntry: 'SuppressionEntry',
+  ProspectDiscoveryRun: 'ProspectDiscoveryRun',
+  ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1168,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProspectDiscoveryRun: {
+      payload: Prisma.$ProspectDiscoveryRunPayload<ExtArgs>
+      fields: Prisma.ProspectDiscoveryRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProspectDiscoveryRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProspectDiscoveryRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>
+        }
+        findFirst: {
+          args: Prisma.ProspectDiscoveryRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProspectDiscoveryRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>
+        }
+        findMany: {
+          args: Prisma.ProspectDiscoveryRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>[]
+        }
+        create: {
+          args: Prisma.ProspectDiscoveryRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>
+        }
+        createMany: {
+          args: Prisma.ProspectDiscoveryRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProspectDiscoveryRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>[]
+        }
+        delete: {
+          args: Prisma.ProspectDiscoveryRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>
+        }
+        update: {
+          args: Prisma.ProspectDiscoveryRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProspectDiscoveryRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProspectDiscoveryRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProspectDiscoveryRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProspectDiscoveryRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryRunPayload>
+        }
+        aggregate: {
+          args: Prisma.ProspectDiscoveryRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProspectDiscoveryRun>
+        }
+        groupBy: {
+          args: Prisma.ProspectDiscoveryRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectDiscoveryRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProspectDiscoveryRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectDiscoveryRunCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProspectDiscoveryCandidate: {
+      payload: Prisma.$ProspectDiscoveryCandidatePayload<ExtArgs>
+      fields: Prisma.ProspectDiscoveryCandidateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProspectDiscoveryCandidateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProspectDiscoveryCandidateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>
+        }
+        findFirst: {
+          args: Prisma.ProspectDiscoveryCandidateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProspectDiscoveryCandidateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>
+        }
+        findMany: {
+          args: Prisma.ProspectDiscoveryCandidateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>[]
+        }
+        create: {
+          args: Prisma.ProspectDiscoveryCandidateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>
+        }
+        createMany: {
+          args: Prisma.ProspectDiscoveryCandidateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProspectDiscoveryCandidateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>[]
+        }
+        delete: {
+          args: Prisma.ProspectDiscoveryCandidateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>
+        }
+        update: {
+          args: Prisma.ProspectDiscoveryCandidateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProspectDiscoveryCandidateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProspectDiscoveryCandidateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProspectDiscoveryCandidateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProspectDiscoveryCandidateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectDiscoveryCandidatePayload>
+        }
+        aggregate: {
+          args: Prisma.ProspectDiscoveryCandidateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProspectDiscoveryCandidate>
+        }
+        groupBy: {
+          args: Prisma.ProspectDiscoveryCandidateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectDiscoveryCandidateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProspectDiscoveryCandidateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectDiscoveryCandidateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1384,6 +1534,55 @@ export const SuppressionEntryScalarFieldEnum = {
 } as const
 
 export type SuppressionEntryScalarFieldEnum = (typeof SuppressionEntryScalarFieldEnum)[keyof typeof SuppressionEntryScalarFieldEnum]
+
+
+export const ProspectDiscoveryRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  provider: 'provider',
+  status: 'status',
+  requestedIndustries: 'requestedIndustries',
+  requestedLocation: 'requestedLocation',
+  radiusMiles: 'radiusMiles',
+  requestedLimit: 'requestedLimit',
+  providerRequestCount: 'providerRequestCount',
+  returnedCount: 'returnedCount',
+  eligibleCount: 'eligibleCount',
+  importedCount: 'importedCount',
+  skippedDuplicateCount: 'skippedDuplicateCount',
+  skippedSuppressedCount: 'skippedSuppressedCount',
+  skippedNoWebsiteCount: 'skippedNoWebsiteCount',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ProspectDiscoveryRunScalarFieldEnum = (typeof ProspectDiscoveryRunScalarFieldEnum)[keyof typeof ProspectDiscoveryRunScalarFieldEnum]
+
+
+export const ProspectDiscoveryCandidateScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  discoveryRunId: 'discoveryRunId',
+  providerBusinessId: 'providerBusinessId',
+  businessName: 'businessName',
+  website: 'website',
+  hostname: 'hostname',
+  formattedAddress: 'formattedAddress',
+  city: 'city',
+  state: 'state',
+  phone: 'phone',
+  category: 'category',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  status: 'status',
+  exclusionReason: 'exclusionReason',
+  importedProspectId: 'importedProspectId'
+} as const
+
+export type ProspectDiscoveryCandidateScalarFieldEnum = (typeof ProspectDiscoveryCandidateScalarFieldEnum)[keyof typeof ProspectDiscoveryCandidateScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1700,6 +1899,20 @@ export type ListEnumSuppressionReasonFieldRefInput<$PrismaModel> = FieldRefInput
 
 
 /**
+ * Reference to a field of type 'DiscoveryRunStatus'
+ */
+export type EnumDiscoveryRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscoveryRunStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DiscoveryRunStatus[]'
+ */
+export type ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscoveryRunStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1710,6 +1923,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DiscoveryCandidateStatus'
+ */
+export type EnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscoveryCandidateStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DiscoveryCandidateStatus[]'
+ */
+export type ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscoveryCandidateStatus[]'>
     
 
 /**
@@ -1873,6 +2100,8 @@ export type GlobalOmitConfig = {
   prospectContact?: Prisma.ProspectContactOmit
   outreachMessage?: Prisma.OutreachMessageOmit
   suppressionEntry?: Prisma.SuppressionEntryOmit
+  prospectDiscoveryRun?: Prisma.ProspectDiscoveryRunOmit
+  prospectDiscoveryCandidate?: Prisma.ProspectDiscoveryCandidateOmit
 }
 
 /* Types for Logging */

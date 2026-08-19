@@ -240,7 +240,7 @@ Projects:
 - Client Portal
 - Knowledge Base
 - Reporting System
-- Prospecting Engine (internal; V1 Sprint 1 in progress)
+- Prospecting Engine (internal; V1 Sprint 2 — Google Places discovery)
 
 ---
 

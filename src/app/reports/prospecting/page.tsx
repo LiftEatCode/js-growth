@@ -68,10 +68,11 @@ export default async function ProspectingDashboardPage() {
       <Container className="space-y-8 py-8 sm:py-10 lg:py-12">
         <Card variant="brand" padding="lg">
           <p className="text-sm leading-6 text-brand">
-            Optimize for five credible, qualified prospects—not five emails
-            sent. Sprint 1 is manual: create a campaign, add businesses, skip
-            poor fits. Discovery, audits, drafts, and sending come later and
-            still require human approval before any outreach.
+              Optimize for five credible, qualified prospects—not five emails
+              sent. Create a campaign, discover businesses with Google Places,
+              review candidates, and import selected prospects. Website audits,
+              drafts, and sending come later and still require human approval
+              before any outreach.
           </p>
         </Card>
 

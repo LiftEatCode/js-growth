@@ -542,6 +542,67 @@ export type EnumSuppressionReasonWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSuppressionReasonFilter<$PrismaModel>
 }
 
+export type EnumDiscoveryRunStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryRunStatus | Prisma.EnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryRunStatusFilter<$PrismaModel> | $Enums.DiscoveryRunStatus
+}
+
+export type EnumDiscoveryRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryRunStatus | Prisma.EnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.DiscoveryRunStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDiscoveryRunStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDiscoveryRunStatusFilter<$PrismaModel>
+}
+
+export type FloatNullableFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type EnumDiscoveryCandidateStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryCandidateStatus | Prisma.EnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel> | $Enums.DiscoveryCandidateStatus
+}
+
+export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type EnumDiscoveryCandidateStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryCandidateStatus | Prisma.EnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryCandidateStatusWithAggregatesFilter<$PrismaModel> | $Enums.DiscoveryCandidateStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1027,6 +1088,56 @@ export type NestedEnumSuppressionReasonWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSuppressionReasonFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSuppressionReasonFilter<$PrismaModel>
+}
+
+export type NestedEnumDiscoveryRunStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryRunStatus | Prisma.EnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryRunStatusFilter<$PrismaModel> | $Enums.DiscoveryRunStatus
+}
+
+export type NestedEnumDiscoveryRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryRunStatus | Prisma.EnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryRunStatus[] | Prisma.ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.DiscoveryRunStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDiscoveryRunStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDiscoveryRunStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryCandidateStatus | Prisma.EnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel> | $Enums.DiscoveryCandidateStatus
+}
+
+export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumDiscoveryCandidateStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DiscoveryCandidateStatus | Prisma.EnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DiscoveryCandidateStatus[] | Prisma.ListEnumDiscoveryCandidateStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDiscoveryCandidateStatusWithAggregatesFilter<$PrismaModel> | $Enums.DiscoveryCandidateStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDiscoveryCandidateStatusFilter<$PrismaModel>
 }
 
 
