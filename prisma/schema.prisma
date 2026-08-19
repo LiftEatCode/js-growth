@@ -371,7 +371,7 @@ model ProspectContact {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  discoveredAt   DateTime  @default(now()) @map("capturedAt")
+  discoveredAt   DateTime  @default(now())
   lastVerifiedAt DateTime?
 
   prospectId String
