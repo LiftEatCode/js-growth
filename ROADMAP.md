@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 12 — AI Competitive Interpretation
+Status: 🟢 Sprint 13 — Client-Ready Competitive Growth Analysis
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,13 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 12 (current):
+Sprint 13 (current):
+
+- Internal client-ready Competitive Growth Analysis preview
+- Deterministic view over current Sprint 11 comparison + Sprint 12 interpretation
+- No OpenAI / Places / crawl / outreach on report load; print-friendly preview
+
+Sprint 12:
 
 - AI explanation of a specific Sprint 11 `CompetitiveComparisonSnapshot`
 - Source-key provenance; numbers stay deterministic; historical interpretations

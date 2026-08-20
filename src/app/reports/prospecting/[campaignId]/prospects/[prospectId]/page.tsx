@@ -13,9 +13,11 @@ import { ProspectOutreachSelectionControl } from "@/components/prospecting/prosp
 import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-landscape-panel";
 import { CompetitiveComparisonPanel } from "@/components/prospecting/competitive-comparison-panel";
 import { CompetitiveInterpretationPanel } from "@/components/prospecting/competitive-interpretation-panel";
+import { CompetitiveReportPreviewLink } from "@/components/prospecting/competitive-report-preview-link";
 import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
 import { loadLatestCompetitiveComparison } from "@/lib/competitive-intelligence/comparison/load";
 import { loadLatestCompetitiveInterpretation } from "@/lib/competitive-intelligence/interpretation/load";
+import { getCompetitiveReportReadiness } from "@/lib/competitive-intelligence/report/readiness";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
@@ -164,6 +166,26 @@ export default async function CampaignProspectDetailPage({
     currentComparisonSnapshotId: competitiveComparison.snapshot?.id ?? null,
     currentComparison: competitiveComparison.snapshot?.comparison ?? null,
     targetBusinessName: prospect.businessName,
+  });
+  const competitiveReportReadiness = getCompetitiveReportReadiness({
+    hasTargetAudit: Boolean(prospect.auditReportId ?? prospect.auditReport),
+    hasComparison: Boolean(competitiveComparison.snapshot),
+    comparisonStale: competitiveComparison.stale,
+    comparisonStaleReasons: competitiveComparison.staleReasons,
+    hasCompletedInterpretation: Boolean(
+      competitiveInterpretation.interpretation?.status === "COMPLETED" &&
+        competitiveInterpretation.interpretation.content,
+    ),
+    interpretationStale: competitiveInterpretation.stale,
+    interpretationStaleReasons: competitiveInterpretation.staleReasons,
+    interpretationMatchesComparison: Boolean(
+      competitiveInterpretation.interpretation &&
+        competitiveComparison.snapshot &&
+        competitiveInterpretation.interpretation.comparisonSnapshotId ===
+          competitiveComparison.snapshot.id &&
+        competitiveInterpretation.interpretation.status === "COMPLETED" &&
+        competitiveInterpretation.interpretation.content,
+    ),
   });
   const audit = prospect.auditReport?.audit as WebsiteAuditResult | undefined;
   const qualification = parseStoredQualification(membership.qualificationJson);
@@ -630,6 +652,19 @@ export default async function CampaignProspectDetailPage({
                 competitiveInterpretation.latestFailure?.failureMessage ?? null
               }
               reusableExists={competitiveInterpretation.reusableExists}
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Client Competitive Growth Analysis
+          </h2>
+          <div className="mt-4">
+            <CompetitiveReportPreviewLink
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              readiness={competitiveReportReadiness}
             />
           </div>
         </Card>

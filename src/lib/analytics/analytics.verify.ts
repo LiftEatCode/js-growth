@@ -110,6 +110,9 @@ assert(isForbiddenAnalyticsParamKey("input_fingerprint"), "input_fingerprint key
 assert(isForbiddenAnalyticsParamKey("comparison_snapshot_id"), "comparison_snapshot_id key is forbidden");
 assert(isForbiddenAnalyticsParamKey("internal_talking_points"), "internal_talking_points key is forbidden");
 assert(isForbiddenAnalyticsParamKey("competitive_ai_summary"), "competitive_ai_summary key is forbidden");
+assert(isForbiddenAnalyticsParamKey("competitive_report"), "competitive_report key is forbidden");
+assert(isForbiddenAnalyticsParamKey("competitive_growth_analysis"), "competitive_growth_analysis key is forbidden");
+assert(isForbiddenAnalyticsParamKey("source_key"), "source_key key is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
 assert(isForbiddenAnalyticsParamValue(REPORT_ID), "UUID values are forbidden");
 assert(

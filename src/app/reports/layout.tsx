@@ -21,7 +21,7 @@ export default async function ReportsLayout({
 
   return (
     <>
-      <div className="border-b border-border bg-white">
+      <div className="border-b border-border bg-white print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-brand-blue/10 bg-brand-blue/[0.06] text-brand-blue">
