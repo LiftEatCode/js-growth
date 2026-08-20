@@ -1,4 +1,5 @@
 import { haversineDistanceMiles, geographicBandForDistance } from "./distance";
+import { parseLocationLabel, resolveTargetLocation } from "./location-label";
 import {
   compareGeographyForRanking,
   formatCompetitorDistanceDisplay,
@@ -31,6 +32,21 @@ function candidate(
 
 const houston = { latitude: 29.7604, longitude: -95.3698 };
 const spring = { latitude: 30.0799, longitude: -95.4172 };
+
+const parsedLabel = parseLocationLabel("Spring, TX");
+assert(parsedLabel.city === "Spring", "parses city from location label");
+assert(parsedLabel.state === "TX", "parses state from location label");
+
+const resolved = resolveTargetLocation({
+  prospectCity: null,
+  prospectState: null,
+  prospectAddress: null,
+  campaignCity: null,
+  campaignState: null,
+  campaignLocationLabel: "Spring, TX",
+});
+assert(resolved.city === "Spring", "resolveTargetLocation uses location label");
+assert(resolved.state === "TX", "resolveTargetLocation state from label");
 
 const distance = haversineDistanceMiles(houston, spring);
 assert(distance > 20 && distance < 40, "haversine distance is within tolerance");
@@ -81,6 +97,54 @@ const sameCity = scoreGeography(
 assert(sameCity.mode === "SAME_CITY_FALLBACK", "same city fallback");
 assert(sameCity.score === 14, "same city score is bounded below very near");
 assert(sameCity.band === "same_city", "same city band");
+
+const labelOnlySameCity = scoreGeography(
+  profile({
+    city: null,
+    state: null,
+    latitude: null,
+    longitude: null,
+    locationLabel: "Spring, TX",
+  }),
+  candidate({
+    providerBusinessId: "place-label-city",
+    businessName: "Local Plumbing",
+    city: "Spring",
+    state: "tx",
+    latitude: null,
+    longitude: null,
+  }),
+  null,
+);
+assert(
+  labelOnlySameCity.mode === "SAME_CITY_FALLBACK",
+  "location label supplies target city/state when profile fields are null",
+);
+assert(labelOnlySameCity.score === 14, "label-only same city still scores 14");
+
+const addressOnlySameCity = scoreGeography(
+  profile({
+    city: null,
+    state: null,
+    latitude: null,
+    longitude: null,
+    locationLabel: "Spring, TX",
+  }),
+  candidate({
+    providerBusinessId: "place-address-city",
+    businessName: "Address Plumbing",
+    city: null,
+    state: null,
+    formattedAddress: "Spring, TX",
+    latitude: null,
+    longitude: null,
+  }),
+  null,
+);
+assert(
+  addressOnlySameCity.mode === "SAME_CITY_FALLBACK",
+  "candidate formattedAddress Spring, TX cannot score UNKNOWN against Spring, TX",
+);
 
 const sameRegion = scoreGeography(
   profile({ city: "Spring", state: "TX", latitude: null, longitude: null }),

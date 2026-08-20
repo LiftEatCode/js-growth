@@ -1,71 +1,41 @@
-# Competitive Intelligence — Sprint 9.1
+# Sprint 9.1 — Production geography fix
 
-Geography hardening for Sprint 9 competitive discovery.
+## Root cause (confirmed)
 
-## Root cause
+All production candidates scoring **77 · Likely** with **location unknown** means
+`scoreGeography()` received **no target state**. Same-region fallback is 10
+points (total 79). UNKNOWN is 8 points (total 77). Every listed competitor is
+in Texas, so if `profile.state` had been `"TX"`, none of them could have stayed
+UNKNOWN.
 
-Google Places **already returned** candidate coordinates (`places.location` was in the field mask). Candidate normalization preserved them.
+Campaigns store `locationLabel` (e.g. `"Spring, TX"`) while `campaign.city` /
+`campaign.state` are often null. Prospects imported before city backfill may
+also have null `city`/`state`.
 
-The failure was **target prospect coordinates**:
+`buildCompetitiveProfile()` previously set `city`/`state` only from those
+nullable columns and never parsed `locationLabel`. Candidates still showed
+`Spring, TX` in the UI because Google Places `formattedAddress` was parsed
+onto **candidate** rows.
 
-1. `Prospect` did not store latitude/longitude.
-2. `loadProspectPlacesCategory()` used a single `findFirst` OR query that could miss the imported discovery row or fail when Place ID formats differed (`places/ChIJ…` vs `ChIJ…`).
-3. `normalizeCompetitorCandidate()` required **both** target and candidate coordinates for Haversine. Missing target coords forced `distanceMiles = null` for every candidate.
-4. Validation fell back to the unknown geography band (8 points), producing identical **77 · Likely** scores for all same-vertical competitors.
+Re-run persistence already overwrote scores and `evidenceJson`. The recomputed
+values stayed UNKNOWN because the target profile had no city/state.
 
-## Coordinate flow (after 9.1)
+A second hole: `loadProspectGeography()` returned early when prospect
+coordinates existed and dropped discovery city/state.
 
-```text
-Google Places Text Search (places.location in field mask)
-  → normalizeGooglePlace (lat/lng on DiscoveredBusiness)
-  → normalizeCompetitorCandidate (distance when target+candidate coords exist)
+## Fix
 
-Target resolution (priority):
-  1. Prospect.latitude / Prospect.longitude (new, backfilled + set on import)
-  2. ProspectDiscoveryCandidate via importedProspectId (prefer rows with coords)
-  3. Place ID match with normalized variants
-  4. Hostname match on discovery candidates
-  5. City/state fallback only (no fake coordinates)
-```
+1. Parse `campaign.locationLabel` / prospect address into target city/state
+2. `scoreGeography()` also reads `profile.locationLabel` and candidate
+   `formattedAddress` so Spring, TX vs Spring, TX cannot become UNKNOWN
+3. `loadProspectGeography()` merges coords with discovery city/state
+4. Short `City, ST` addresses parse (not only street-style `…, City, ST`)
+5. Re-run keeps human SELECTED/REJECTED and replaces machine geography
+6. Migration `20260819213000_backfill_prospect_geography`
 
-## Geographic scoring (max 25, unchanged cap)
+## Production retest
 
-| Mode | When | Score |
-|---|---|---|
-| EXACT_DISTANCE | Both coordinate pairs available | 25 / 20 / 10 by band; 0 + reject if distant (>2× radius) |
-| SAME_CITY_FALLBACK | Same city + state, no coords | 14 |
-| SAME_REGION_FALLBACK | Same state, different city, no coords | 10 |
-| UNKNOWN | Insufficient evidence | 8 |
-
-Exact distance remains strongest. Same-city fallback is intentionally below verified very-near (25).
-
-Evidence JSON includes `geography: { mode, distanceMiles, radiusMiles, band, score }`.
-
-## Ranking
-
-Unchanged primary sort: validation score DESC.
-
-Tie-breakers now consider geography mode before distance:
-
-1. EXACT_DISTANCE
-2. SAME_CITY_FALLBACK
-3. SAME_REGION_FALLBACK
-4. UNKNOWN
-
-Then distance ASC (null = last), business name, Place ID.
-
-## Rediscovery
-
-**Re-run Discovery** passes `force = true`, bypassing the 30-day TTL.
-
-On refresh, rows matched by Place ID or hostname **preserve human SELECTED / REJECTED** status (existing Sprint 9 behavior).
-
-## API cost
-
-No new Places requests. Coordinates come from the same Text Search responses (still max 3/prospect).
-
-No Place Details fan-out.
-
-## Migration
-
-`20260819210000_add_prospect_geography` adds `Prospect.latitude` / `Prospect.longitude` and backfills from linked `ProspectDiscoveryCandidate` rows.
+1. Deploy + `npx prisma migrate deploy`
+2. Happy Plumbing → **Re-run Discovery**
+3. Bear's Plumbing (Spring, TX) → **Same city** or **X mi**, score **≠ 77**
+4. Other TX cities → **Same region** or distance, not identical 77

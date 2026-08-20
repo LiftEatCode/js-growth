@@ -15,9 +15,25 @@ export interface GooglePlaceTextSearchPlace {
     text?: string;
   };
   location?: {
-    latitude?: number;
-    longitude?: number;
+    latitude?: number | string;
+    longitude?: number | string;
+    lat?: number | string;
+    lng?: number | string;
   };
+}
+
+function readCoordinate(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  return null;
 }
 
 export function normalizeGooglePlace(
@@ -48,12 +64,8 @@ export function normalizeGooglePlace(
     phone: place.nationalPhoneNumber?.trim() || null,
     category,
     latitude:
-      typeof place.location?.latitude === "number"
-        ? place.location.latitude
-        : null,
+      readCoordinate(place.location?.latitude ?? place.location?.lat),
     longitude:
-      typeof place.location?.longitude === "number"
-        ? place.location.longitude
-        : null,
+      readCoordinate(place.location?.longitude ?? place.location?.lng),
   };
 }

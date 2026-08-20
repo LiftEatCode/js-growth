@@ -1,4 +1,9 @@
 import { geographicBandForDistance, haversineDistanceMiles } from "./distance";
+import {
+  citiesMatch,
+  resolveComparableLocation,
+  statesMatch,
+} from "./location-label";
 import type { CompetitiveProfile, CompetitorCandidate } from "./types";
 
 export type GeographyMode =
@@ -32,24 +37,32 @@ export interface GeographySortInput {
   providerBusinessId: string;
 }
 
-function normalizeLocationToken(value: string | null | undefined): string {
-  return (value ?? "").trim().toLowerCase();
-}
+function readCoordinate(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
 
-function readCoordinates(
-  latitude: number | null | undefined,
-  longitude: number | null | undefined,
-): { latitude: number; longitude: number } | null {
-  if (
-    typeof latitude === "number" &&
-    Number.isFinite(latitude) &&
-    typeof longitude === "number" &&
-    Number.isFinite(longitude)
-  ) {
-    return { latitude, longitude };
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+
+    return Number.isFinite(parsed) ? parsed : null;
   }
 
   return null;
+}
+
+export function readCoordinates(
+  latitude: number | null | undefined,
+  longitude: number | null | undefined,
+): { latitude: number; longitude: number } | null {
+  const lat = readCoordinate(latitude);
+  const lng = readCoordinate(longitude);
+
+  if (lat === null || lng === null) {
+    return null;
+  }
+
+  return { latitude: lat, longitude: lng };
 }
 
 export function resolveCandidateDistanceMiles(
@@ -75,11 +88,16 @@ export function resolveCandidateDistanceMiles(
 export function scoreGeography(
   profile: Pick<
     CompetitiveProfile,
-    "latitude" | "longitude" | "city" | "state" | "radiusMiles"
+    | "latitude"
+    | "longitude"
+    | "city"
+    | "state"
+    | "radiusMiles"
+    | "locationLabel"
   >,
   candidate: Pick<
     CompetitorCandidate,
-    "latitude" | "longitude" | "city" | "state"
+    "latitude" | "longitude" | "city" | "state" | "formattedAddress"
   >,
   distanceMiles: number | null,
 ): GeographyEvidence {
@@ -126,19 +144,18 @@ export function scoreGeography(
     }
   }
 
-  const targetCity = normalizeLocationToken(profile.city);
-  const targetState = normalizeLocationToken(profile.state);
-  const candidateCity = normalizeLocationToken(candidate.city);
-  const candidateState = normalizeLocationToken(candidate.state);
+  const target = resolveComparableLocation({
+    city: profile.city,
+    state: profile.state,
+    locationLabel: profile.locationLabel,
+  });
+  const point = resolveComparableLocation({
+    city: candidate.city,
+    state: candidate.state,
+    formattedAddress: candidate.formattedAddress,
+  });
 
-  if (
-    targetCity &&
-    targetState &&
-    candidateCity &&
-    candidateState &&
-    targetCity === candidateCity &&
-    targetState === candidateState
-  ) {
+  if (citiesMatch(target.city, point.city) && statesMatch(target.state, point.state)) {
     return {
       mode: "SAME_CITY_FALLBACK",
       distanceMiles: null,
@@ -148,11 +165,7 @@ export function scoreGeography(
     };
   }
 
-  if (
-    targetState &&
-    candidateState &&
-    targetState === candidateState
-  ) {
+  if (statesMatch(target.state, point.state)) {
     return {
       mode: "SAME_REGION_FALLBACK",
       distanceMiles: null,

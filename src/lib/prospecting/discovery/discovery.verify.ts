@@ -80,6 +80,14 @@ assert(
 );
 assert(mockPlace?.city === "Magnolia", "parsed city");
 assert(mockPlace?.state === "TX", "parsed state");
+assert(
+  normalizeGooglePlace({
+    id: "ChIJShortAddr",
+    displayName: { text: "Short Address Plumbing" },
+    formattedAddress: "Spring, TX",
+  })?.city === "Spring",
+  "short City, ST formattedAddress parses city",
+);
 assert(mockPlace?.category === "HVAC contractor", "category");
 assert(mockPlace?.phone === "(281) 555-0100", "phone");
 assert(mockPlace?.latitude === 30.2104, "latitude");
@@ -103,6 +111,15 @@ assert(
 const fieldMask = GOOGLE_PLACES_TEXT_SEARCH_FIELD_MASK;
 assert(fieldMask.includes("places.id"), "field mask includes Place ID");
 assert(fieldMask.includes("places.location"), "field mask includes coordinates");
+assert(
+  normalizeGooglePlace({
+    id: "ChIJStringCoords",
+    displayName: { text: "String Coords Electric" },
+    formattedAddress: "100 Main St, Spring, TX 77373, USA",
+    location: { latitude: "30.0799", longitude: "-95.4172" },
+  })?.latitude === 30.0799,
+  "string coordinates from Places normalize to numbers",
+);
 assert(
   fieldMask.includes("places.nationalPhoneNumber"),
   "field mask includes national phone on the same Enterprise SKU",

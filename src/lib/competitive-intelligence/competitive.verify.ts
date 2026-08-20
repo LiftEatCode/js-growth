@@ -10,6 +10,7 @@ import {
   MAX_COMPETITOR_PROVIDER_REQUESTS_PER_PROSPECT,
   MAX_SELECTED_COMPETITORS_PER_PROSPECT,
 } from "./constants";
+import { resolvePersistedCompetitorStatus } from "./persist-status";
 import { dedupeCompetitorCandidates } from "./dedupe";
 import { haversineDistanceMiles } from "./distance";
 import {
@@ -83,13 +84,13 @@ const built = buildCompetitiveProfile({
   website: "https://www.roaelectric.com/",
   hostname: "roaelectric.com",
   industry: "electrical",
-  city: "Pinehurst",
-  state: "TX",
+  city: null,
+  state: null,
   address: null,
   sourceRef: "place-roa",
   campaignLocationLabel: "Pinehurst, TX",
-  campaignCity: "Pinehurst",
-  campaignState: "TX",
+  campaignCity: null,
+  campaignState: null,
   campaignRadiusMiles: 25,
   campaignIndustries: ["electrical"],
   placesCategory: "electrician",
@@ -97,6 +98,8 @@ const built = buildCompetitiveProfile({
   longitude: -95.68,
 });
 assert(built.normalizedVerticals.includes("ELECTRICAL"), "profile uses verticals");
+assert(built.city === "Pinehurst", "profile parses city from location label");
+assert(built.state === "TX", "profile parses state from location label");
 assert(built.searchTerms.length <= 3, "search terms capped at 3");
 assert(
   built.searchTerms.every((term) => term.includes("Pinehurst")),
@@ -120,6 +123,122 @@ assert(nearby.evidence.verticalScore >= 28, "vertical score persisted");
 assert(nearby.evidence.geographicBand === "very_near", "near band");
 assert(nearby.evidence.geography.mode === "EXACT_DISTANCE", "exact geography mode");
 assert(nearby.validationScore > 77, "nearby with coordinates scores above unknown-only baseline");
+
+const locationLabelOnlyProfile = buildCompetitiveProfile({
+  prospectId: "p-happy",
+  businessName: "Happy Plumbing",
+  website: null,
+  hostname: null,
+  industry: "plumbing",
+  city: null,
+  state: null,
+  address: null,
+  sourceRef: null,
+  campaignLocationLabel: "Spring, TX",
+  campaignCity: null,
+  campaignState: null,
+  campaignRadiusMiles: 25,
+  campaignIndustries: ["plumbing"],
+  placesCategory: null,
+  latitude: null,
+  longitude: null,
+});
+const sameCityCandidate = validateCompetitorCandidate(
+  candidate({
+    providerBusinessId: "place-bears",
+    businessName: "Bear's Plumbing",
+    city: "Spring",
+    state: "TX",
+    latitude: null,
+    longitude: null,
+    distanceMiles: null,
+    normalizedVerticals: ["PLUMBING"],
+  }),
+  locationLabelOnlyProfile,
+);
+assert(
+  sameCityCandidate.evidence.geography.mode === "SAME_CITY_FALLBACK",
+  "Spring TX target + Spring TX candidate uses same-city fallback",
+);
+assert(
+  sameCityCandidate.validationScore > 77,
+  "same-city fallback raises score above unknown baseline",
+);
+
+const rediscovered = validateCompetitorCandidate(
+  candidate({
+    providerBusinessId: "place-bears",
+    businessName: "Bear's Plumbing",
+    city: "Spring",
+    state: "TX",
+    latitude: 30.08,
+    longitude: -95.42,
+    distanceMiles: 4.8,
+    normalizedVerticals: ["PLUMBING"],
+  }),
+  buildCompetitiveProfile({
+    prospectId: "p-happy",
+    businessName: "Happy Plumbing",
+    website: null,
+    hostname: null,
+    industry: "plumbing",
+    city: null,
+    state: null,
+    address: null,
+    sourceRef: null,
+    campaignLocationLabel: "Spring, TX",
+    campaignCity: null,
+    campaignState: null,
+    campaignRadiusMiles: 25,
+    campaignIndustries: ["plumbing"],
+    placesCategory: null,
+    latitude: 30.0799,
+    longitude: -95.4172,
+  }),
+);
+assert(
+  rediscovered.evidence.geography.mode === "EXACT_DISTANCE",
+  "coordinates produce exact distance on rediscovery",
+);
+assert(
+  rediscovered.validationScore !== sameCityCandidate.validationScore,
+  "rediscovered score differs when geography improves",
+);
+assert(
+  resolvePersistedCompetitorStatus("SELECTED", "VALIDATED") === "SELECTED",
+  "re-run preserves human SELECTED status",
+);
+assert(
+  resolvePersistedCompetitorStatus("REJECTED", "VALIDATED") === "REJECTED",
+  "re-run preserves human REJECTED status",
+);
+assert(
+  resolvePersistedCompetitorStatus("VALIDATED", "REJECTED") === "REJECTED",
+  "machine status is replaced when no human decision exists",
+);
+
+const staleEvidence = {
+  validationScore: 77,
+  distanceMiles: null as number | null,
+  evidence: { geography: { mode: "UNKNOWN", score: 8 } },
+};
+const refreshedEvidence = {
+  validationScore: rediscovered.validationScore,
+  distanceMiles: rediscovered.distanceMiles,
+  evidence: rediscovered.evidence,
+};
+assert(
+  staleEvidence.validationScore !== refreshedEvidence.validationScore,
+  "forced rediscovery replaces stale validationScore",
+);
+assert(
+  refreshedEvidence.evidence.geography.mode === "EXACT_DISTANCE",
+  "forced rediscovery replaces stale geography evidence",
+);
+assert(
+  resolvePersistedCompetitorStatus("SELECTED", rediscovered.status) === "SELECTED",
+  "forced rediscovery keeps human SELECTED while replacing machine evidence",
+);
 
 const farther = validateCompetitorCandidate(
   candidate({

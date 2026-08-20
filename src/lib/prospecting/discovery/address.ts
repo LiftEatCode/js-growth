@@ -1,5 +1,10 @@
-const CITY_STATE_PATTERN =
-  /,\s*([^,]+),\s*([A-Z]{2})(?:\s+\d{5}(?:-\d{4})?)?(?:,|\s*$)/;
+import { normalizeUsState } from "@/lib/competitive-intelligence/location-label";
+
+const STREET_CITY_STATE_PATTERN =
+  /,\s*([^,]+),\s*([A-Z]{2})(?:\s+\d{5}(?:-\d{4})?)?(?:,|\s*$)/i;
+
+const SHORT_CITY_STATE_PATTERN =
+  /^([^,]+),\s*([A-Za-z]{2,})(?:\s+\d{5}(?:-\d{4})?)?(?:,\s*USA)?\s*$/i;
 
 export function parseUsCityState(formattedAddress: string | null | undefined): {
   city: string | null;
@@ -9,14 +14,23 @@ export function parseUsCityState(formattedAddress: string | null | undefined): {
     return { city: null, state: null };
   }
 
-  const match = formattedAddress.match(CITY_STATE_PATTERN);
+  const streetMatch = formattedAddress.match(STREET_CITY_STATE_PATTERN);
 
-  if (!match) {
+  if (streetMatch) {
+    return {
+      city: streetMatch[1]?.trim() || null,
+      state: normalizeUsState(streetMatch[2]),
+    };
+  }
+
+  const shortMatch = formattedAddress.trim().match(SHORT_CITY_STATE_PATTERN);
+
+  if (!shortMatch) {
     return { city: null, state: null };
   }
 
   return {
-    city: match[1]?.trim() || null,
-    state: match[2]?.trim() || null,
+    city: shortMatch[1]?.trim() || null,
+    state: normalizeUsState(shortMatch[2]),
   };
 }

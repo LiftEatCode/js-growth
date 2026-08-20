@@ -137,7 +137,29 @@ async function discoverForProspect(options: {
     placesCategory: places.category,
     latitude: places.latitude,
     longitude: places.longitude,
+    discoveryCity: places.city,
+    discoveryState: places.state,
   });
+
+  if (
+    (places.latitude !== null && places.longitude !== null) ||
+    profile.city ||
+    profile.state
+  ) {
+    await prisma.prospect.update({
+      where: { id: prospect.id },
+      data: {
+        ...(places.latitude !== null && places.longitude !== null
+          ? {
+              latitude: prospect.latitude ?? places.latitude,
+              longitude: prospect.longitude ?? places.longitude,
+            }
+          : {}),
+        ...(profile.city && !prospect.city ? { city: profile.city } : {}),
+        ...(profile.state && !prospect.state ? { state: profile.state } : {}),
+      },
+    });
+  }
 
   const discovered = await discoverCompetitorCandidates({
     profile,

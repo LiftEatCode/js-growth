@@ -1,4 +1,5 @@
 import { normalizeBusinessVerticals } from "@/lib/business-intelligence/verticals/normalize";
+import { parseUsCityState } from "@/lib/prospecting/discovery/address";
 import { tryNormalizeProspectHostname } from "@/lib/prospecting/hostname";
 import type { DiscoveredBusiness } from "@/lib/prospecting/discovery/types";
 
@@ -18,11 +19,15 @@ export function normalizeCompetitorCandidate(
     { source: "places_display", text: business.category ?? "" },
   ]);
 
+  const parsedAddress = parseUsCityState(business.formattedAddress);
+  const city = business.city ?? parsedAddress.city;
+  const state = business.state ?? parsedAddress.state;
+
   const distanceMiles = resolveCandidateDistanceMiles(profile, {
     latitude: business.latitude,
     longitude: business.longitude,
-    city: business.city,
-    state: business.state,
+    city,
+    state,
   });
 
   return {
@@ -32,8 +37,8 @@ export function normalizeCompetitorCandidate(
     website: business.website,
     normalizedHostname,
     formattedAddress: business.formattedAddress,
-    city: business.city,
-    state: business.state,
+    city,
+    state,
     latitude: business.latitude,
     longitude: business.longitude,
     primaryType: business.category,

@@ -4,6 +4,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
 import { COMPETITOR_PROVIDER_GOOGLE_PLACES } from "./constants";
+import { resolvePersistedCompetitorStatus } from "./persist-status";
 import type { ValidatedCompetitorCandidate } from "./types";
 
 function humanStatus(
@@ -44,9 +45,10 @@ export async function persistDiscoveredCompetitors(options: {
           row.normalizedHostname === candidate.normalizedHostname,
       );
 
-    const nextStatus = humanStatus(match?.status ?? "")
-      ? match!.status
-      : candidate.status;
+    const nextStatus = resolvePersistedCompetitorStatus(
+      match?.status,
+      candidate.status,
+    );
 
     const data = {
       competitorProspectId: candidate.competitorProspectId,

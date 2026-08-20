@@ -4,6 +4,7 @@ import type { BusinessVertical } from "@/lib/business-intelligence/verticals/typ
 import { tryNormalizeProspectHostname } from "@/lib/prospecting/hostname";
 
 import { DEFAULT_COMPETITOR_RADIUS_MILES } from "./constants";
+import { resolveTargetLocation } from "./location-label";
 import type { CompetitiveProfile } from "./types";
 
 export interface CompetitiveProfileInput {
@@ -24,6 +25,8 @@ export interface CompetitiveProfileInput {
   placesCategory: string | null;
   latitude: number | null;
   longitude: number | null;
+  discoveryCity?: string | null;
+  discoveryState?: string | null;
 }
 
 export function buildCompetitiveProfile(
@@ -55,14 +58,25 @@ export function buildCompetitiveProfile(
     input.campaignRadiusMiles,
   );
 
+  const targetLocation = resolveTargetLocation({
+    prospectCity: input.city,
+    prospectState: input.state,
+    prospectAddress: input.address,
+    campaignCity: input.campaignCity,
+    campaignState: input.campaignState,
+    campaignLocationLabel: input.campaignLocationLabel,
+    discoveryCity: input.discoveryCity,
+    discoveryState: input.discoveryState,
+  });
+
   return {
     prospectId: input.prospectId,
     businessName: input.businessName,
     hostname,
     website: input.website,
     locationLabel,
-    city: input.city ?? input.campaignCity,
-    state: input.state ?? input.campaignState,
+    city: targetLocation.city,
+    state: targetLocation.state,
     latitude: input.latitude,
     longitude: input.longitude,
     sourceRef: input.sourceRef,

@@ -3,12 +3,15 @@ import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
+import { readCoordinates } from "./geography";
 import { googlePlaceIdVariants } from "./place-id";
 
 export interface ProspectGeography {
   category: string | null;
   latitude: number | null;
   longitude: number | null;
+  city: string | null;
+  state: string | null;
   source:
     | "prospect_record"
     | "imported_discovery"
@@ -17,29 +20,15 @@ export interface ProspectGeography {
     | "none";
 }
 
-function readCoordinates(
-  latitude: number | null | undefined,
-  longitude: number | null | undefined,
-): { latitude: number; longitude: number } | null {
-  if (
-    typeof latitude === "number" &&
-    Number.isFinite(latitude) &&
-    typeof longitude === "number" &&
-    Number.isFinite(longitude)
-  ) {
-    return { latitude, longitude };
-  }
+type DiscoveryGeoRow = {
+  category: string | null;
+  city: string | null;
+  state: string | null;
+  latitude: number | null;
+  longitude: number | null;
+};
 
-  return null;
-}
-
-function pickBestDiscoveryRow(
-  rows: Array<{
-    category: string | null;
-    latitude: number | null;
-    longitude: number | null;
-  }>,
-): { category: string | null; latitude: number | null; longitude: number | null } | null {
+function pickBestDiscoveryRow(rows: DiscoveryGeoRow[]): DiscoveryGeoRow | null {
   if (rows.length === 0) {
     return null;
   }
@@ -58,41 +47,23 @@ export async function loadProspectGeography(options: {
   prospectLatitude?: number | null;
   prospectLongitude?: number | null;
 }): Promise<ProspectGeography> {
-  const prospectCoords = readCoordinates(
-    options.prospectLatitude,
-    options.prospectLongitude,
-  );
-
-  if (prospectCoords) {
-    return {
-      category: null,
-      latitude: prospectCoords.latitude,
-      longitude: prospectCoords.longitude,
-      source: "prospect_record",
-    };
-  }
+  const discoverySelect = {
+    category: true,
+    city: true,
+    state: true,
+    latitude: true,
+    longitude: true,
+  } as const;
 
   const importedRows = await prisma.prospectDiscoveryCandidate.findMany({
     where: { importedProspectId: options.prospectId },
     orderBy: { createdAt: "desc" },
-    select: {
-      category: true,
-      latitude: true,
-      longitude: true,
-    },
+    select: discoverySelect,
   });
 
   const imported = pickBestDiscoveryRow(importedRows);
 
-  if (imported && readCoordinates(imported.latitude, imported.longitude)) {
-    return {
-      category: imported.category,
-      latitude: imported.latitude,
-      longitude: imported.longitude,
-      source: "imported_discovery",
-    };
-  }
-
+  let placeMatch: DiscoveryGeoRow | null = null;
   const placeVariants = googlePlaceIdVariants(options.sourceRef);
 
   if (placeVariants.length > 0) {
@@ -101,53 +72,50 @@ export async function loadProspectGeography(options: {
         providerBusinessId: { in: placeVariants },
       },
       orderBy: { createdAt: "desc" },
-      select: {
-        category: true,
-        latitude: true,
-        longitude: true,
-      },
+      select: discoverySelect,
     });
-
-    const placeMatch = pickBestDiscoveryRow(byPlace);
-
-    if (placeMatch && readCoordinates(placeMatch.latitude, placeMatch.longitude)) {
-      return {
-        category: placeMatch.category,
-        latitude: placeMatch.latitude,
-        longitude: placeMatch.longitude,
-        source: "place_id",
-      };
-    }
+    placeMatch = pickBestDiscoveryRow(byPlace);
   }
+
+  let hostMatch: DiscoveryGeoRow | null = null;
 
   if (options.hostname) {
     const byHost = await prisma.prospectDiscoveryCandidate.findMany({
       where: { hostname: options.hostname },
       orderBy: { createdAt: "desc" },
-      select: {
-        category: true,
-        latitude: true,
-        longitude: true,
-      },
+      select: discoverySelect,
     });
-
-    const hostMatch = pickBestDiscoveryRow(byHost);
-
-    if (hostMatch && readCoordinates(hostMatch.latitude, hostMatch.longitude)) {
-      return {
-        category: hostMatch.category,
-        latitude: hostMatch.latitude,
-        longitude: hostMatch.longitude,
-        source: "hostname",
-      };
-    }
+    hostMatch = pickBestDiscoveryRow(byHost);
   }
 
+  const discovery = imported ?? placeMatch ?? hostMatch;
+  const prospectCoords = readCoordinates(
+    options.prospectLatitude,
+    options.prospectLongitude,
+  );
+  const discoveryCoords = discovery
+    ? readCoordinates(discovery.latitude, discovery.longitude)
+    : null;
+
+  const latitude = prospectCoords?.latitude ?? discoveryCoords?.latitude ?? null;
+  const longitude =
+    prospectCoords?.longitude ?? discoveryCoords?.longitude ?? null;
+
   return {
-    category: imported?.category ?? null,
-    latitude: null,
-    longitude: null,
-    source: "none",
+    category: discovery?.category ?? null,
+    latitude,
+    longitude,
+    city: discovery?.city ?? null,
+    state: discovery?.state ?? null,
+    source: prospectCoords
+      ? "prospect_record"
+      : imported && discoveryCoords
+        ? "imported_discovery"
+        : placeMatch && discoveryCoords
+          ? "place_id"
+          : hostMatch && discoveryCoords
+            ? "hostname"
+            : "none",
   };
 }
 
