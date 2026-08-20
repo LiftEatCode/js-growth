@@ -2,7 +2,9 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 13 — Client-Ready Competitive Growth Analysis**
+Current status: **V1 complete through Competitive Intelligence Sprint 13.1** (production accepted / hardened). Further work is roadmap-driven, not “next sprint by number.”
+
+Coherent CI product doc: [`competitive-intelligence.md`](competitive-intelligence.md). Historical sprint notes remain under `competitive-intelligence-sprint-*.md`.
 
 ## Product principle
 
@@ -38,7 +40,7 @@ Sending remains:
 
 **Find → Audit → Qualify → Draft → HUMAN APPROVAL → Send**
 
-V1 is not autonomous outbound. Sprint 2 adds Find (Google Places) with a second human gate: **Import Selected Prospects**. Sprint 3 adds Audit → Qualify with a human **Audit & Qualify** trigger. Sprint 4 adds **Find Contacts** and **Generate Missing Drafts**. Sending is not built yet.
+V1 includes Places discovery, audit/qualify, contacts, AI drafts, Resend email, manual contact-form submission, delivery webhooks, outcomes, lead conversion, and Competitive Intelligence through client-ready internal preview. It is **not** autonomous outbound.
 
 ## Planned stages
 

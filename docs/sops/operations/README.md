@@ -101,6 +101,20 @@ Prepare for operational disruptions by documenting recovery procedures, backup s
 
 ---
 
+## 12. JS Growth product operations
+
+Product-critical operator procedures (Website Audit, Prospecting, Competitive Intelligence, outreach safety, production acceptance):
+
+- [website-audit-operations.md](website-audit-operations.md)
+- [prospecting-campaign.md](prospecting-campaign.md)
+- [competitive-analysis.md](competitive-analysis.md)
+- [outreach-safety.md](outreach-safety.md)
+- [production-acceptance.md](production-acceptance.md)
+
+Deployment: [../development/deployment.md](../development/deployment.md)
+
+---
+
 # Operating Principles
 
 Operations at JS Solutions should always emphasize:

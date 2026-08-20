@@ -1,4 +1,7 @@
-# Competitive Intelligence V1
+# Competitive Intelligence V1 (public Website Growth Audit)
+
+> **Scope notice:** This document describes **optional explicit competitor URLs** on the public Website Growth Audit.  
+> For Prospecting Engine Places-based Competitive Intelligence (Sprints 9–13.1), see [`competitive-intelligence.md`](competitive-intelligence.md).
 
 Internal notes for optional competitor comparison in the Website Growth Audit.
 

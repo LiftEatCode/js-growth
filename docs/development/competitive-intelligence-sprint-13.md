@@ -1,5 +1,7 @@
 # Competitive Intelligence — Sprint 13
 
+> **HISTORICAL sprint record.** Product operators should read [`competitive-intelligence.md`](competitive-intelligence.md). This file preserves Sprint 13 build notes.
+
 Client-ready **Competitive Growth Analysis** presentation over persisted
 Sprint 11 + Sprint 12 data.
 

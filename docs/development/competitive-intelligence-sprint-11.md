@@ -1,5 +1,7 @@
 # Competitive Intelligence — Sprint 11
 
+> **HISTORICAL sprint record.** Prefer [`competitive-intelligence.md`](competitive-intelligence.md).
+
 Deterministic competitive comparison between a prospect’s Website Growth Audit
 and human-selected competitors’ Sprint 10 `CompetitorAudit` snapshots.
 

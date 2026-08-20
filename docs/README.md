@@ -1,170 +1,99 @@
-# JS Solutions Documentation
+# JS Growth / JS Solutions — Documentation Index
 
-Welcome to the internal documentation for JS Solutions.
+> **Code is the source of truth.** These docs describe what is implemented in the repository as of Competitive Intelligence V1 (through Sprint 13.1).
 
-This documentation serves as the operational handbook for the company. It contains our business strategy, technical architecture, marketing plans, service offerings, development standards, and future roadmap.
-
-Our goal is to build not only exceptional software but also a repeatable, scalable business.
+JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-growth.com`): marketing site + Website Growth Audit product + internal growth/prospecting/competitive tools.
 
 ---
 
-# Company
+## Start here
 
-The company documentation defines who we are, why we exist, and how we communicate our value.
-
-- Mission
-- Vision
-- Core Values
-- Branding Guide
-- Elevator Pitch
-
-Location:
-
-company/
+| Audience | Start |
+|---|---|
+| New developer | Root [`README.md`](../README.md) |
+| Platform overview | [`development/platform-architecture.md`](development/platform-architecture.md) |
+| What we sell / what is internal | [`development/product-catalog.md`](development/product-catalog.md) |
+| Operators | [`sops/README.md`](sops/README.md) |
+| Roadmap | [`../ROADMAP.md`](../ROADMAP.md) |
 
 ---
 
-# SEO
+## Product & engineering (canonical)
 
-The SEO documentation is our long-term search strategy.
+| Topic | Document |
+|---|---|
+| Platform architecture | [`development/platform-architecture.md`](development/platform-architecture.md) |
+| Website Growth Audit | [`commercial-launch-v1.md`](commercial-launch-v1.md), [`development/stripe-paid-audit.md`](development/stripe-paid-audit.md), [`development/ai-interpretation-v1.md`](development/ai-interpretation-v1.md) |
+| Prospecting Engine V1 | [`development/prospecting-engine-v1.md`](development/prospecting-engine-v1.md) |
+| Competitive Intelligence V1 | [`development/competitive-intelligence.md`](development/competitive-intelligence.md) |
+| Public-audit competitor URLs (separate) | [`development/competitive-intelligence-v1.md`](development/competitive-intelligence-v1.md) |
+| AI architecture (all OpenAI paths) | [`development/ai-architecture.md`](development/ai-architecture.md) |
+| External services / APIs | [`development/external-services.md`](development/external-services.md) |
+| Database / Prisma guide | [`development/database-guide.md`](development/database-guide.md) |
+| Security & privacy | [`development/security-privacy.md`](development/security-privacy.md) |
+| Cost controls | [`development/cost-controls.md`](development/cost-controls.md) |
+| Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
+| Analytics | [`development/analytics.md`](development/analytics.md) |
+| Coding standards | [`development/coding-standards.md`](development/coding-standards.md) |
+| Vercel notes | [`development/vercel.md`](development/vercel.md) |
 
-It includes:
+### Historical sprint notes (preserved)
 
-- Content roadmap
-- Keyword research
-- Topic clusters
-- Internal linking
-- Search Console
-- Authority building
+Competitive Intelligence build history (read the coherent V1 doc first):
 
-Location:
-
-seo/
-
----
-
-# Marketing
-
-Marketing documentation covers how we attract and educate potential customers.
-
-Topics include:
-
-- Facebook
-- LinkedIn
-- Email marketing
-- Lead magnets
-- Paid advertising
-- Content strategy
-
-Location:
-
-marketing/
+- [`development/competitive-intelligence-sprint-9.md`](development/competitive-intelligence-sprint-9.md) … [`sprint-13.md`](development/competitive-intelligence-sprint-13.md)
 
 ---
 
-# Services
+## Operations / SOPs
 
-Each service has its own documentation describing:
+Index: [`sops/README.md`](sops/README.md)
 
-- Target customer
-- Pain points
-- Deliverables
-- Process
-- Pricing
-- FAQs
+Product-critical SOPs:
 
-Current services:
-
-- Website Development
-- Local SEO
-- AI Automation
-- Analytics
-- Custom Software
-
-Location:
-
-services/
+- Website Audit operations
+- Prospecting campaign
+- Competitive analysis
+- Outreach safety
+- Production deployment
+- Production acceptance
 
 ---
 
-# Sales
+## Services (client delivery)
 
-Sales documentation standardizes how we convert prospects into clients.
+[`services/`](services/) — Website Development, Local SEO, AI Automation, Analytics, Custom Software.
 
-Topics include:
-
-- Discovery calls
-- Pricing
-- Proposals
-- Client onboarding
-- Follow-up process
-
-Location:
-
-sales/
+These are **delivery playbooks**. They are not the same as the Website Growth Audit SaaS product. Do not claim automated delivery of capabilities that exist only as internal tools.
 
 ---
 
-# Development
+## Company / sales / marketing / SEO / playbooks
 
-Technical documentation for building and maintaining JS Solutions.
-
-Includes:
-
-- Architecture
-- Coding standards
-- Deployment
-- Analytics
-- Infrastructure
-- Roadmap
-
-Location:
-
-development/
+- [`company/`](company/) — mission, values, branding
+- [`sales/`](sales/), [`marketing/`](marketing/), [`seo/`](seo/), [`playbooks/`](playbooks/), [`templates/`](templates/)
+- [`ideas/`](ideas/) — exploratory; not implemented by default
+- [`decisions/`](decisions/) — ADRs
+- [`legal-data-inventory.md`](legal-data-inventory.md)
 
 ---
 
-# Ideas
+## Planning
 
-Future projects, experiments, and product concepts.
-
-Examples:
-
-- Website Audit Tool
-- Local SEO Audit
-- AI ROI Calculator
-- Client Portal
-- CRM
-
-Location:
-
-ideas/
+[`../planning/`](../planning/) — vision, backlog, milestones. Reconcile against [`../ROADMAP.md`](../ROADMAP.md) and this index when status conflicts.
 
 ---
 
-# Guiding Principles
+## Terminology
 
-Everything we build should satisfy at least one of these goals:
-
-- Generate qualified leads
-- Improve customer experience
-- Increase business efficiency
-- Demonstrate technical expertise
-- Build long-term authority
-- Deliver measurable business value
-
----
-
-# Company Motto
-
-> We don't just build websites.
-
-> We build technology that helps businesses grow.
-
----
-
-Last Updated: August 2026
-
-Owner: Josh Spradling
-
-Status: Active
+| Term | Meaning |
+|---|---|
+| JS Solutions | The company |
+| JS Growth | This application / product platform |
+| Website Growth Audit | Public free + Professional audit product |
+| Website Growth Score | Deterministic 0–100 audit score |
+| Competitive relevance | Prospecting CI score for competitor fit (not Website Growth Score) |
+| Competitive Website Growth Analysis | Client-ready CI report (internal preview in V1) |
+| Prospecting Engine | Internal acquisition workflow |
+| Competitive Intelligence | Prospecting CI pipeline (Places → audits → comparison → AI → report) |
+| Public competitive (audit) | Optional competitor URLs on a public Website Growth Audit |

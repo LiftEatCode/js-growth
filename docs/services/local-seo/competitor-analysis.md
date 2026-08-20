@@ -2,6 +2,8 @@
 
 > Competitor analysis helps identify opportunities, strengths, weaknesses, and market trends by evaluating the online presence of businesses competing for the same customers and search visibility.
 
+> **Tooling note:** JS Growth **Competitive Intelligence V1** (internal Prospecting) can supply **website** comparison evidence (Website Growth Scores, gaps). It does **not** replace GBP, citation, or ranking research in this Local SEO playbook. See `docs/development/competitive-intelligence.md`.
+
 ---
 
 # Purpose

@@ -111,74 +111,90 @@ Confirm:
 
 ---
 
-## Step 2 — Verify Build
+## Step 2 — Validate (JS Growth)
 
-Run:
+For the `js-growth` application, from a clean tree:
 
 ```bash
+git status
+npx prisma validate
+npx tsc --noEmit
 npm run lint
-
 npm run build
 ```
+
+Run the `*.verify.ts` suite when product logic changed (or when unsure).
 
 Confirm:
 
 - No errors
-- No critical warnings
 - Successful production build
 
 ---
 
-## Step 3 — Verify Configuration
+## Step 3 — Prisma migrations (only when needed)
 
-Review:
+**Not every deployment requires a migration.**
 
-- Environment variables
-- Secrets
-- Domain configuration
-- Third-party integrations
+1. Check status against the target database:
 
-Ensure production configuration is complete.
+```bash
+npx prisma migrate status
+```
 
----
+2. If the status reports **pending migrations**, apply them to that database:
 
-## Step 4 — Deploy
+```bash
+npx prisma migrate deploy
+```
 
-Deploy using the approved platform.
+3. If status is up to date (documentation-only or app-only changes with no schema migration), **do not** run `migrate deploy` as a ritual.
 
-Current JS Solutions standard:
-
-- GitHub
-- Vercel
-
-For applicable projects:
-
-- Confirm deployment completes successfully.
-- Review deployment logs.
-- Verify deployment status.
+Never invent migrations during a docs-only release. Never use `migrate dev` against production.
 
 ---
 
-## Step 5 — Verify Production
+## Step 4 — Verify Configuration
 
-After deployment:
+Review environment variable **categories** (see root README / `.env.example`):
 
-Review:
+- Database (`DATABASE_URL`, `DIRECT_URL`)
+- Internal session (`REPORTS_*`)
+- Resend / contact
+- Stripe (test vs live discipline)
+- Optional GA
+- OpenAI (server-only)
+- Google Places (server-only)
+- `NEXT_PUBLIC_SITE_URL`
 
-- Homepage
-- Navigation
-- Authentication
-- Contact forms
-- APIs
-- External integrations
-- Images
-- Styling
+Ensure production configuration matches the features being released. Do not paste secrets into tickets or docs.
+
+---
+
+## Step 5 — Deploy (JS Growth)
+
+Typical path:
+
+1. Commit and push to the branch that deploys to production (usually `main` via GitHub → Vercel).
+2. Confirm the Vercel deployment succeeds.
+3. Review build/runtime logs.
+
+---
+
+## Step 6 — Verify Production
+
+After deployment, run the relevant parts of [Production Acceptance](../operations/production-acceptance.md):
+
+- Homepage / audit funnel
+- Internal login / prospecting (if touched)
+- Stripe / Resend webhooks (if touched)
+- Competitive Intelligence isolation (if touched)
 
 Verify the application behaves as expected.
 
 ---
 
-## Step 6 — Monitor Logs
+## Step 7 — Monitor Logs
 
 Review:
 
@@ -191,25 +207,22 @@ Investigate unexpected behavior immediately.
 
 ---
 
-## Step 7 — Verify Analytics
+## Step 8 — Verify Analytics (if public site affected)
 
 Confirm:
 
-- Google Analytics tracking
-- Search Console connectivity
-- Event tracking
-- Conversion tracking
-
-Ensure reporting continues after deployment.
+- Google Analytics tracking (when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set)
+- Event tracking without PII leakage
 
 ---
 
-## Step 8 — Communicate Completion
+## Step 9 — Communicate Completion
 
 Document:
 
 - Deployment date
 - Version deployed
+- Whether migrations were applied (`migrate status` result)
 - Significant changes
 - Known issues (if any)
 
@@ -236,20 +249,20 @@ Never continue deploying while a production issue remains unresolved.
 
 Before deployment, verify:
 
-- [ ] Build successful
-- [ ] Lint passes
-- [ ] Documentation updated
-- [ ] Environment variables verified
+- [ ] `git status` clean for intended commit
+- [ ] `prisma validate` / typecheck / lint / build successful
+- [ ] `prisma migrate status` reviewed (deploy migrations **only if pending**)
+- [ ] Documentation updated when behavior/ops changed
+- [ ] Environment variables verified for touched integrations
 - [ ] Production configuration reviewed
 - [ ] Deployment approved
 
 After deployment, verify:
 
 - [ ] Homepage functioning
-- [ ] Navigation working
-- [ ] Forms tested
-- [ ] APIs responding
-- [ ] Analytics verified
+- [ ] Relevant acceptance checklist items ([production-acceptance.md](../operations/production-acceptance.md))
+- [ ] Webhooks healthy if payment/email changed
+- [ ] Analytics verified if applicable
 - [ ] Logs reviewed
 - [ ] Stakeholders notified
 
@@ -307,6 +320,7 @@ A deployment is successful when:
 | Version | Date | Description |
 |---------|------|-------------|
 | 1.0 | August 2026 | Initial version |
+| 1.1 | August 2026 | JS Growth: Prisma migrate status vs deploy; acceptance link |
 
 ---
 
@@ -324,6 +338,6 @@ A deployment is successful when:
 
 **Status:** Approved
 
-**Version:** 1.0
+**Version:** 1.1
 
 **Last Updated:** August 2026

@@ -1,296 +1,112 @@
-# JS Solutions Documentation
+# JS Growth
 
-> **The operating system for JS Solutions.**
+Next.js application for **JS Solutions** (`js-growth.com`): marketing site, commercial **Website Growth Audit**, and internal growth tools (leads, Prospecting Engine, Competitive Intelligence).
 
-Welcome to the internal documentation for JS Solutions.
+**JS Solutions** = the company. **JS Growth** = this product platform.
 
-This documentation serves as the company's single source of truth for business strategy, service delivery, software development, marketing, sales, and operational processes.
-
----
-
-# Purpose
-
-The documentation exists to ensure that every project, process, and decision is:
-
-- Consistent
-- Repeatable
-- Well documented
-- Scalable
-- Continuously improving
-
-Whether you're developing software, onboarding a client, publishing content, or planning the company's future, start here.
+> Implementation under `src/` and `prisma/` is the source of truth. Prefer [`docs/README.md`](docs/README.md) over outdated sprint notes when status conflicts.
 
 ---
 
-# Documentation Structure
+## Major systems
 
-## 🏢 Company
+| System | Audience | Summary |
+|---|---|---|
+| Marketing site | Public | Company presence, content, contact |
+| Free Website Growth Audit | Public | Deterministic scan; no OpenAI |
+| Professional Website Growth Audit | Public (paid) | Stripe entitlement, PDF, AI interpretation |
+| Lead / report workspace | Internal | Session-gated `/reports` |
+| Prospecting Engine V1 | Internal | Discover → qualify → human-approved outreach |
+| Competitive Intelligence V1 | Internal | Competitors → audits → comparison → AI → analysis preview |
 
-Core business documentation.
-
-```
-company/
-```
-
-Includes:
-
-- Mission
-- Vision
-- Vision 2030
-- Core Values
-- Principles
-- Branding Guide
-- Elevator Pitch
+Details: [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md).
 
 ---
 
-## 💼 Services
+## Tech stack
 
-Complete service playbooks.
-
-```
-services/
-```
-
-Current Services
-
-- Website Development
-- Local SEO
-- AI Automation
-- Analytics
-- Custom Software
-
-Each service contains:
-
-- Overview
-- Discovery
-- Planning
-- Delivery
-- Pricing
-- FAQ
-- Templates
-- Checklists
+- Next.js (App Router) · React · TypeScript
+- Prisma · PostgreSQL
+- Vercel hosting
+- Stripe · Resend · OpenAI · Google Places API (New)
 
 ---
 
-## 💻 Development
+## Local setup
 
-Technical standards and engineering documentation.
+1. Clone the repo and install dependencies: `npm install`
+2. Copy `.env.example` → `.env.local` and fill **non-secret placeholders** with real local values (never commit secrets)
+3. Ensure Postgres is reachable via `DATABASE_URL` / `DIRECT_URL`
+4. Apply migrations for local DB: `npx prisma migrate deploy` (or project-standard local migrate workflow)
+5. Generate client if needed: `npx prisma generate`
+6. Start: `npm run dev`
 
-```
-development/
-```
+### Environment variable categories
 
-Includes:
+See `.env.example`. Groups:
 
-- Architecture
-- Coding Standards
-- Deployment
-- Infrastructure
-- Roadmaps
-- Analytics
-
----
-
-## 📈 SEO
-
-Everything related to search optimization.
-
-```
-seo/
-```
-
-Includes:
-
-- Keyword Research
-- Search Console
-- Content Strategy
-- Internal Linking
-- Backlinks
-- Authority Building
-- Roadmaps
+- Database
+- Site URL
+- Internal reports session (`REPORTS_*`)
+- Resend / contact emails
+- Stripe (test keys locally)
+- Optional Google Analytics
+- OpenAI (server-only; never `NEXT_PUBLIC_`)
+- Google Places (server-only)
 
 ---
 
-## 📣 Marketing
+## Validation
 
-Marketing strategy and content planning.
-
+```bash
+npx prisma validate
+npx tsc --noEmit
+npm run lint
+npm run build
 ```
-marketing/
-```
 
-Includes:
-
-- Facebook
-- LinkedIn
-- Email Marketing
-- Advertising
-- Campaigns
-- Branding
+Product logic: run the repository `*.verify.ts` suite (see existing npm/tsx scripts used in development docs).
 
 ---
 
-## 🤝 Sales
+## Deployment
 
-Sales processes and client onboarding.
+GitHub → Vercel. **Not every deploy needs a Prisma migration.**
 
-```
-sales/
-```
+1. `npx prisma migrate status`
+2. If pending: `npx prisma migrate deploy` on the target DB
+3. Push / deploy; run [production acceptance](docs/sops/operations/production-acceptance.md) for touched areas
 
-Includes:
-
-- Discovery Calls
-- Sales Process
-- Proposal Process
-- Pricing
-- Client Onboarding
+Full SOP: [`docs/sops/development/deployment.md`](docs/sops/development/deployment.md).
 
 ---
 
-## 📋 Playbooks
+## Documentation map
 
-Step-by-step operational guides.
-
-```
-playbooks/
-```
-
-Examples:
-
-- Website Launch
-- Client Onboarding
-- Monthly SEO
-- Facebook Content
-- Blog Publishing
-- Quarterly Business Reviews
+| Need | Go to |
+|---|---|
+| Doc index | [`docs/README.md`](docs/README.md) |
+| Architecture | [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md) |
+| Website Audit launch | [`docs/commercial-launch-v1.md`](docs/commercial-launch-v1.md) |
+| Prospecting | [`docs/development/prospecting-engine-v1.md`](docs/development/prospecting-engine-v1.md) |
+| Competitive Intelligence | [`docs/development/competitive-intelligence.md`](docs/development/competitive-intelligence.md) |
+| AI / APIs / DB / security / cost | [`docs/development/`](docs/development/) |
+| Operator SOPs | [`docs/sops/README.md`](docs/sops/README.md) |
+| Service playbooks | [`docs/services/`](docs/services/) |
+| Roadmap | [`ROADMAP.md`](ROADMAP.md) |
+| Company handbook-style docs | [`docs/company/`](docs/company/), marketing, sales, playbooks |
 
 ---
 
-## 📝 Templates
+## Safety product rules (do not “fix” in code or ops)
 
-Reusable documents.
-
-```
-templates/
-```
-
-Examples:
-
-- Proposal Template
-- Discovery Notes
-- Meeting Notes
-- Monthly Reports
-- Blog Template
-- Client Questionnaire
+- No automatic bulk email sending
+- No automated contact-form submission
+- No CAPTCHA bypass
+- Competitive Intelligence V1 is internal-only
 
 ---
 
-## 🏛 Decisions
+## License / ownership
 
-Architecture Decision Records (ADRs).
-
-```
-decisions/
-```
-
-Every significant technical or business decision should be documented here.
-
----
-
-## 💡 Ideas
-
-Future products, features, and business opportunities.
-
-```
-ideas/
-```
-
-Examples:
-
-- Website Audit Tool
-- Client Portal
-- CRM
-- AI ROI Calculator
-- Local SEO Audit Tool
-
----
-
-# Documentation Standards
-
-Every document should:
-
-- Have a clear purpose.
-- Be concise and actionable.
-- Be updated when processes change.
-- Follow consistent formatting.
-- Include an owner and version when appropriate.
-
-Documentation should evolve alongside the business.
-
----
-
-# Guiding Philosophy
-
-We believe documentation is a competitive advantage.
-
-Well-maintained documentation:
-
-- Improves consistency
-- Reduces mistakes
-- Preserves knowledge
-- Speeds up onboarding
-- Enables automation
-- Makes the business more scalable
-
-If a process is important enough to repeat, it is important enough to document.
-
----
-
-# Recommended Reading Order
-
-For someone new to JS Solutions:
-
-1. Company
-2. Principles
-3. Vision 2030
-4. Roadmap
-5. Projects
-6. Service Playbooks
-7. Development Standards
-8. Marketing
-9. Sales
-10. Playbooks
-
----
-
-# Related Root Documents
-
-The following documents live in the root of the repository:
-
-- `README.md` — Public project overview
-- `ROADMAP.md` — Long-term strategy
-- `PROJECTS.md` — Active initiatives
-- `VISION-2030.md` — Company vision
-- `PRINCIPLES.md` — Decision-making framework
-
----
-
-# Our Goal
-
-The goal of this documentation is simple:
-
-> Build a company where knowledge is shared, processes are repeatable, and technology consistently helps businesses grow.
-
----
-
-**Owner:** Josh Spradling
-
-**Company:** JS Solutions
-
-**Status:** Living Documentation
-
-**Version:** 1.0
-
-**Last Updated:** August 2026
+Private JS Solutions repository. All rights reserved unless otherwise noted.

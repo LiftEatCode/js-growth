@@ -21,9 +21,18 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Active milestone:** Production Launch V1 for the Website Growth Audit.
+**Platform milestone:** Competitive Intelligence V1 complete (through Sprint 13.1) + Website Growth Audit commercial product in production use.
 
-The marketing website is in production. The Website Growth Audit is implemented and is a **launch candidate**, not a planned project.
+**Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
+
+### Status legend (this roadmap)
+
+| Bucket | Meaning |
+|---|---|
+| **IMPLEMENTED** | Shipped in code |
+| **HARDENING / OPERATIONS** | QA, live Stripe, SOPs, observability — not new product surface |
+| **NEXT** | Highest-leverage candidates given current product (not auto-assigned sprint numbers) |
+| **LATER / EXPLORATORY** | Valuable but not committed |
 
 ---
 
@@ -31,156 +40,98 @@ The marketing website is in production. The Website Growth Audit is implemented 
 
 Status: 🟢 Production
 
-Hosting: Vercel
-
-Framework: Next.js
-
-Deployment: GitHub → Vercel CI/CD
-
-Performance Goals
-
-- ✅ Lighthouse 90+
-- ⏳ Lighthouse 95+
-- ⏳ Lighthouse 100
+Hosting: Vercel · Framework: Next.js · Deployment: GitHub → Vercel CI/CD
 
 ---
 
 ## Website Growth Audit
 
-Status: 🟡 Launch Candidate
+Status: 🟢 Implemented (commercial Free + Professional)
 
-Priority: Critical
+Priority: Critical commercial product on `js-growth.com`
 
-This is the current commercial product on `js-growth.com`. It is not backlog, planning, or a future SaaS sketch.
+Implemented capabilities (summary):
 
-Implemented capabilities:
+- Free deterministic Website Growth Audit (no OpenAI)
+- Professional upgrade via Stripe one-time Checkout + entitlement
+- Technical SEO, on-page/content, performance signals, CRO, Local SEO signals, multi-page crawl budgets
+- Optional **explicit** competitor URLs on the public audit (bounded) — distinct from Prospecting CI
+- Professional PDF + AI Interpretation (entitled)
+- Internal lead/report workspace
+- Published Privacy / Terms / Refund pages
 
-- **Free Website Growth Audit** — score, category scores, limited top priorities, limited quick wins, methodology, representative multi-page scan summary, competitive teaser when competitor URLs are supplied. No credit card. No OpenAI call.
-- **Professional Website Growth Audit** — full recommendations, 30–90 day action plan, technical evidence, category deep dives, complete findings, site overview and page inventory, Competitive Intelligence, Executive Growth Analysis (AI Interpretation), Professional PDF, implementation CTA.
-- **Stripe one-time paid upgrade and entitlement** — Checkout `mode: "payment"` only. Webhook grants `ReportPurchase.status = PAID`. Access is by report URL; there are no customer accounts.
-- **Technical SEO V2** — crawlability, indexability, robots, sitemap, canonical, structured data, Open Graph, viewport, and site-level indexability/canonical/duplicate-metadata patterns.
-- **On-Page SEO / Content Intelligence** — titles, meta descriptions, headings, title/H1 alignment, content depth and structure, images, and internal links, including multi-page content patterns.
-- **Performance Intelligence** — static HTML/resource signals (document size, scripts, styles, images, third-party hosts, resource hints). Not Lighthouse and not measured Core Web Vitals.
-- **Multi-Page Site Intelligence** — bounded same-site crawl (representative scan, not a complete site inventory). Free and Professional run the same crawl once; payment changes report visibility, not recrawl.
-- **CRO / Conversion Intelligence** — conversion paths, contact CTAs, lead forms, trust signals, and site-level conversion coverage.
-- **Local SEO Intelligence** — NAP, LocalBusiness schema, hours, location/service-area pages, and geographic signals from public HTML. Not Google Business Profile, citations, rankings, or reviews APIs.
-- **Competitive Intelligence** — optional explicit competitor URLs (up to three), bounded competitor scans, median/benchmark comparison. No automatic competitor discovery, SERP data, or traffic estimates.
-- **Professional report and PDF** — entitled `/report/[id]` experience plus gated PDF download.
-- **AI Interpretation V1** — Professional-only OpenAI strategist layer over stored deterministic evidence. Generated after entitlement on first Professional view; persisted and reused. Free audits make zero AI calls.
-- **Internal lead/report management** — session-gated `/reports` workspace with pipeline, follow-ups, lead capture, prospect conversion, and report detail.
-- **Published legal pages** — Privacy Policy (`/privacy`), Terms of Service (`/terms`), and Refund Policy (`/refund-policy`).
-
-Known product constraints that remain true at launch:
-
-- Representative scan, not every URL on the site
-- No rank tracking, GBP data, backlinks, or recurring monitoring
-- No customer login; report UUID URLs
-- Policies are operational drafts and should be reviewed by qualified legal counsel as the business scales
+Known constraints remain: representative scan; no rank/GBP/backlink APIs; report UUID access; policies are operational drafts.
 
 ---
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 13 — Client-Ready Competitive Growth Analysis
+Status: 🟢 Implemented (internal)
 
-Priority: Internal acquisition workflow (does not replace Production Launch V1)
+Priority: Internal acquisition — **not** customer SaaS
 
-This is an **internal JS Solutions** workspace. It is not a customer-facing SaaS.
+Includes discovery → qualification → contacts → human-approved Resend / manual forms → delivery → outcomes → lead conversion, plus Competitive Intelligence V1 (below).
 
-Product principle: produce **five credible, qualified prospects** per session, not five emails sent.
+Canonical doc: `docs/development/prospecting-engine-v1.md`
 
-**Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
+---
 
-Sprint 13 (current):
+## Competitive Intelligence V1 (prospecting)
 
-- Internal client-ready Competitive Growth Analysis preview
-- Deterministic view over current Sprint 11 comparison + Sprint 12 interpretation
-- No OpenAI / Places / crawl / outreach on report load; print-friendly preview
+Status: 🟢 Implemented through Sprint 13.1 (internal)
 
-Sprint 12:
+Canonical doc: `docs/development/competitive-intelligence.md`  
+Historical build notes: `docs/development/competitive-intelligence-sprint-*.md`
 
-- AI explanation of a specific Sprint 11 `CompetitiveComparisonSnapshot`
-- Source-key provenance; numbers stay deterministic; historical interpretations
-- Explicit Generate / Regenerate only (no auto OpenAI on page load)
+Pipeline: profile → Places candidates → validate → human select ≤3 → competitor audits → deterministic comparison → AI interpretation → internal Competitive Website Growth Analysis preview.
 
-Sprint 11:
+**Not in V1:** public share links, competitive PDF SKU, Stripe CI product, monitoring/re-audit schedules.
 
-- Deterministic prospect vs selected-competitor Website Growth Audit comparison
-- Overall / category / finding gap analysis with historical snapshots
-- No OpenAI, Places, crawling, or outreach during comparison
+Sprint history (completed):
 
-Sprint 10:
+- Sprint 13 / 13.1 — Client-ready report presentation + language/presentation hardening
+- Sprint 12 / 12.1 — AI interpretation + validation hardening
+- Sprint 11 — Deterministic comparison
+- Sprint 10 — Competitor Website Growth Audits
+- Sprint 9 / 9.1 — Discovery, validation, geography
 
-- Human-selected competitor Website Growth Audits (max 3)
-- Reuses `runDeterministicWebsiteAudit` with dedicated `CompetitorAudit` snapshots
-- 30-day TTL reuse + explicit Re-run Audit
-- No public reports, OpenAI, Places, contacts, or outreach from competitor audits
+Earlier prospecting sprints 1–8 (contacts, sending, webhooks, outcomes) remain **IMPLEMENTED** — see prospecting doc.
 
-Sprint 9.1:
+---
 
-- Target prospect coordinate resolution + backfill
-- Exact Haversine distance when both coordinate pairs exist
-- Conservative same-city / same-region fallback for historical prospects
-- Geography-aware ranking and UI labels (mi / Same city / —)
+## HARDENING / OPERATIONS (not new features)
 
-Sprint 9:
+- Stripe LIVE go-live checklist and controlled live transaction (if not already complete in your environment)
+- Repeatable production acceptance using `docs/sops/operations/production-acceptance.md`
+- Observability / analytics completeness for commercial funnel
+- Legal counsel review of published policies as volume grows
+- Operator adoption of prospecting + CI SOPs
 
-- Deterministic competitive profile + vertical normalization
-- Google Places competitor *candidate* discovery (bounded)
-- Explainable validation, ranking, and human select/reject (max 3)
-- Prospect and campaign competitor discovery runs
-- No competitor website audits, OpenAI, or outreach (audits added in Sprint 10)
+## NEXT (recommended product leverage — evaluate, do not auto-sprint)
 
-Sprint 8:
+Prioritize based on business leverage with the **current** stack:
 
-- Resend webhook endpoint with Svix signature verification (`POST /api/resend/webhook`)
-- `OutreachDeliveryEvent` history (does not overwrite message lifecycle)
-- Automatic bounce/complaint/suppression handling from verified webhooks
-- Email delivery timeline on prospect detail
-- Campaign email delivery health metrics
-- Resend send idempotency key per outreach message
-- Contact-form manual submission path unchanged
+1. Turn CI V1 into a controlled **client deliverable** workflow (still internal-first): packaging, talk tracks, optional share mechanism when ready
+2. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
+3. Prospecting throughput: reply handling / follow-up **with human gates** (not autonomous sequences)
+4. Evidence → service proposal: structured handoff from audit/CI findings into Website / Local SEO / CRO scopes
+5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF — **after** internal delivery works
 
-Sprint 7:
+## LATER / EXPLORATORY
 
-- Everything in Sprint 6, plus:
-- Deterministic public contact-form discovery during bounded website contact discovery
-- Separate `ProspectContactForm` model (not fake email contacts)
-- Channel-aware outreach selection: email preferred, then contact form
-- Contact-form AI drafts via the existing bounded draft pipeline
-- Manual contact-form workflow: copy message, open form, operator submits externally, mark as submitted
-- `SUBMITTED` lifecycle for contact-form outreach (distinct from email `SENT`)
-- Channel-aware campaign funnel metrics and outcome recording (`BOUNCED` hidden for forms)
-
-Sprint 6:
-
-- Authenticated `/reports/prospecting` campaigns (Sprint 1)
-- Google Places discovery + human import (Sprint 2)
-- Deterministic Website Growth Audit + qualification + recommended top N
-- Prospecting AuditReports are not public customer reports
-- First-party public contact discovery with provenance
-- Grounded AI outreach drafts for human review
-- Explicit draft approval and per-message Resend sending with final eligibility re-checks
-- Daily send cap and duplicate-send protection
-- Manual outreach outcome recording with history trail
-- NOT_INTERESTED / opt-out / bounce / converted-lead suppression
-- Explicit Prospect → Lead conversion into the existing inbound pipeline
-- Campaign funnel metrics with deterministic rate definitions
-
-Later milestones (not started):
-
-- Gmail / Resend inbound reply detection
-- Automated follow-ups or sequences
-
-V1 sending, when built, remains **human-approved**. No autonomous outbound.
-
-See `docs/development/prospecting-engine-v1.md`.
+- Standalone paid competitive analysis SKU
+- Competitive monitoring / scheduled re-audits / trend comparisons
+- Lead capture from competitive reports
+- Multi-location competitive analysis
+- Broader CRM expansion / campaign optimization ML
+- Service recommendation generators as automated SKUs
+- Autonomous outbound (explicitly out of V1 principles)
 
 ---
 
 ## Documentation
 
-Status: 🟢 Active
+Status: 🟢 Active (repository consolidation Aug 2026)
 
 Company Documentation
 
@@ -203,29 +154,15 @@ Playbooks and SOPs
 - ✅ Client lifecycle
 - ✅ Marketing
 - ✅ Development
-- ✅ Operations files
-- 🚧 Remaining service playbooks and SEO/Support SOP coverage
+- ✅ Operations files + JS Growth product SOPs (audit, prospecting, CI, outreach safety, acceptance)
 
 ---
 
-# Active Milestone — Production Launch V1
+# Active Focus — Operations & Commercial Proof
 
-This is the only current product-launch milestone. It is QA, configuration, and go-live work. It does **not** add new audit product features.
+Feature freeze for CI V1 / Prospecting V1 unless a critical production defect. Current focus is **operations, commercial proof, and documentation accuracy** — not Sprint 14 by default.
 
-1. Automated verification / build / lint — wire existing `*.verify.ts` checks, `npm run lint`, and `npm run build` into a repeatable gate (no GitHub Actions workflow exists yet).
-2. Real-world audit QA — strong site, weak site, local business, and service-area business through the live UI.
-3. Free-to-Professional funnel QA — landing → Free audit → Free report → upgrade CTA → Checkout → Professional report.
-4. AI interpretation QA — Professional-only generation, persistence/reuse, Free path makes zero OpenAI calls, failure does not block entitlement.
-5. Desktop / mobile / report / PDF visual QA.
-6. Stripe **TEST MODE** end-to-end purchase, including webhook entitlement and later return to the same report URL.
-7. Analytics / logging / observability verification — Google Analytics plus commercial events (`audit_completed`, `professional_checkout_started`, multi-page / competitive / AI events) and server AI logs.
-8. Production environment configuration review — `DATABASE_URL`, Stripe, Resend, `OPENAI_API_KEY`, model, site URL, GA. No test keys in production. Never prefix secrets with `NEXT_PUBLIC_`.
-9. Stripe **LIVE** configuration — live Product/Price, secret key, webhook `https://<domain>/api/stripe/webhook`, live Price ID, matching display price label. Confirm Automatic Tax intent, Product tax code/behavior, and legal nexus/obligations separately (TEST tax is not legal confirmation).
-10. Controlled live transaction — confirm `ReportPurchase.status = PAID`, Stripe receipt, Professional report and PDF access on refresh.
-11. Soft launch — limited real traffic with the Free/Professional funnel.
-12. `website-audit-v1.0` release/tag.
-
-Do not mix Stripe test Price IDs with live keys.
+Historical “Production Launch V1” checklist items remain useful for QA/LIVE Stripe; they are hardening, not a claim that the audit product is unimplemented.
 
 ---
 

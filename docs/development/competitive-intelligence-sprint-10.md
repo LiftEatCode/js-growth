@@ -1,5 +1,7 @@
 # Competitive Intelligence — Sprint 10
 
+> **HISTORICAL sprint record.** Prefer [`competitive-intelligence.md`](competitive-intelligence.md).
+
 Internal competitor **Website Growth Auditing**. This is not a customer-facing product.
 
 ## Goal

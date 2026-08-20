@@ -1,5 +1,7 @@
 # Competitive Intelligence — Sprint 9
 
+> **HISTORICAL sprint record.** Prefer [`competitive-intelligence.md`](competitive-intelligence.md).
+
 Internal research foundation for Prospecting Engine V1. This is **not** a customer-facing product.
 
 ## Competitor definition

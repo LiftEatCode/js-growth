@@ -1,0 +1,83 @@
+# Product & Capability Catalog
+
+Verified against implementation. Separates **public products**, **internal tools**, and **planned**.
+
+---
+
+## Implemented products (customer-facing)
+
+### Free Website Growth Audit
+
+- Public deterministic multi-page representative scan
+- Score, category scores, limited priorities / quick wins, methodology
+- Optional explicit competitor URLs (public competitive teaser) — **not** Places CI
+- **No** credit card, **no** OpenAI
+
+### Professional Website Growth Audit
+
+- Stripe one-time upgrade / entitlement
+- Full findings, action plan, evidence, PDF
+- AI Interpretation (Executive Growth Analysis) after entitlement
+- Access via report URL (no customer accounts)
+
+---
+
+## Internal operational tools (not public SaaS)
+
+### Lead / report workspace
+
+- Session-gated `/reports`
+- Lead lifecycle, activities, inbound audits, prospect conversions
+
+### Prospecting Engine V1
+
+- Campaigns, Places discovery, import, audit/qualify, Top N / manual select
+- Contact discovery, AI drafts, human approve, Resend email
+- Manual contact-form submission workflow
+- Delivery events, outcomes, suppression, funnel metrics
+- **No** automatic bulk send; **no** auto form POST; **no** CAPTCHA bypass
+
+### Competitive Intelligence V1 (prospecting)
+
+- Profile → Places candidates → validate → human select ≤3 → competitor audits → deterministic comparison → AI interpretation → internal Competitive Website Growth Analysis preview
+- **Not** publicly shareable in V1; **no** competitive PDF SKU
+
+---
+
+## Planned / not implemented (examples)
+
+Confirm against [ROADMAP.md](../../ROADMAP.md) before promising clients:
+
+- Public / shareable Competitive Growth Analysis
+- Competitive PDF / standalone paid competitive product
+- Lead capture from competitive reports
+- Competitive monitoring / scheduled re-audits / trend history productization
+- Follow-up outreach automation / reply ingestion
+- Broader CRM / multi-location BI
+- Service recommendation generators as a productized SKU
+
+---
+
+## Services JS Solutions can deliver (human + tools)
+
+Supported by the platform and playbooks — **delivery is human-led** unless a specific automation is listed as implemented:
+
+| Service area | Platform support today |
+|---|---|
+| Website Development | Marketing + audit evidence for discovery |
+| Website Growth Audits | Productized Free / Professional |
+| SEO / Local SEO / Content / CRO | Audit categories + service playbooks; not full rank/GBP APIs |
+| Competitive Website Analysis | Internal CI V1 for operators; client delivery via human share of internal preview / exports as process allows |
+| Lead generation / prospect research | Internal Prospecting Engine |
+| Marketing automation / AI integration / BPA | Service playbooks; app automations are the specific paths above only |
+
+Do not sell “fully automated outbound” or “CAPTCHA-solving form bots” — those are explicitly out of product.
+
+---
+
+## Related
+
+- [platform-architecture.md](platform-architecture.md)
+- [competitive-intelligence.md](competitive-intelligence.md)
+- [prospecting-engine-v1.md](prospecting-engine-v1.md)
+- [../commercial-launch-v1.md](../commercial-launch-v1.md)

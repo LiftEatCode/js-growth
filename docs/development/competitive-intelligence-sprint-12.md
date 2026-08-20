@@ -1,5 +1,7 @@
 # Competitive Intelligence — Sprint 12
 
+> **HISTORICAL sprint record.** Prefer [`competitive-intelligence.md`](competitive-intelligence.md).
+
 AI Competitive Interpretation for a specific Sprint 11
 `CompetitiveComparisonSnapshot`.
 

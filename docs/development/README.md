@@ -1,10 +1,37 @@
-# Development
+# Development documentation
 
-- [Stripe Paid Audit V1](./stripe-paid-audit.md) — one-time Professional Website Growth Audit checkout, webhooks, and entitlement.
-- [Commercial Launch Readiness V1](../commercial-launch-v1.md) — funnel copy, pricing display, launch checklist, live Stripe requirements.
-- [Legal data inventory](../legal-data-inventory.md) — internal data practices for Privacy, Terms, and Refund Policy drafts. These policies should be reviewed by qualified legal counsel as the business scales or data practices change.
-- [Performance Intelligence V2](./performance-intelligence-v2.md) — static HTML/resource performance signals versus measured Core Web Vitals.
-- [Multi-Page Site Intelligence V1](./multi-page-site-intelligence-v1.md) — bounded same-site crawl, site-level findings, and Professional Site Overview.
-- [Competitive Intelligence V1](./competitive-intelligence-v1.md) — optional explicit competitor URLs, bounded competitor scans, and Professional comparison (no rankings, discovery, or AI).
-- [AI Interpretation V1](./ai-interpretation-v1.md) — Professional-only OpenAI strategist layer over stored deterministic audit evidence.
-- [Audit scoring notes](./audit-scoring-notes.md) — not-applicable category scoring and thin-content extraction confidence.
+Canonical index: [`../README.md`](../README.md).
+
+## Start here
+
+| Doc | Topic |
+|---|---|
+| [platform-architecture.md](platform-architecture.md) | Whole-platform architecture |
+| [product-catalog.md](product-catalog.md) | Implemented vs internal vs planned |
+| [prospecting-engine-v1.md](prospecting-engine-v1.md) | Prospecting Engine |
+| [competitive-intelligence.md](competitive-intelligence.md) | Prospecting CI V1 (Places → report) |
+| [competitive-intelligence-v1.md](competitive-intelligence-v1.md) | **Public audit** optional competitor URLs (different product) |
+| [ai-architecture.md](ai-architecture.md) | All OpenAI paths |
+| [external-services.md](external-services.md) | APIs / env categories |
+| [database-guide.md](database-guide.md) | Prisma entity guide |
+| [security-privacy.md](security-privacy.md) | Boundaries & safety rules |
+| [cost-controls.md](cost-controls.md) | Caps & spend |
+
+## Website Growth Audit
+
+- [Stripe Paid Audit](stripe-paid-audit.md)
+- [Commercial Launch](../commercial-launch-v1.md)
+- [AI Interpretation V1](ai-interpretation-v1.md)
+- [Multi-Page Site Intelligence](multi-page-site-intelligence-v1.md)
+- [Performance Intelligence V2](performance-intelligence-v2.md)
+- [Audit scoring notes](audit-scoring-notes.md)
+
+## Historical CI sprint notes
+
+Preserved build history — prefer [competitive-intelligence.md](competitive-intelligence.md) for operators:
+
+`competitive-intelligence-sprint-9.md` … `sprint-13.md` (and 9.1 / 12.1 / 13.1 sections therein).
+
+## Other
+
+- [Analytics](analytics.md) · [Coding standards](coding-standards.md) · [Vercel](vercel.md) · [Legal data inventory](../legal-data-inventory.md)

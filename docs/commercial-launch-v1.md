@@ -96,14 +96,14 @@ Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set
 ## Known limitations
 
 - Representative multi-page scan of the submitted URL — not a complete crawl of every page
-- No competitor data
-- No Google Business Profile data
-- No rank tracking
-- No recurring monitoring / historical scores
-- No AI interpretation
+- Public competitive data only when the submitter supplies **explicit competitor URLs** (bounded scans). No Places-based competitor discovery on the public audit product
+- No Google Business Profile / rankings / backlink / traffic APIs
+- No recurring monitoring / historical score product
+- Free audits: **no** AI interpretation; Professional: AI Interpretation after entitlement (persisted/reused)
 - No customer accounts — access is by report URL
 - Professional PDF is gated to paid/internal/admin access
 - Refunds are not automated
+- Prospecting Competitive Intelligence is a **separate internal** pipeline (not part of this public funnel)
 
 ## Recommended funnel events
 

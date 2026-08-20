@@ -2,6 +2,8 @@
 
 > **The strategic roadmap for JS Solutions.**
 >
+> For **implemented product status**, prefer root [`ROADMAP.md`](../ROADMAP.md) and [`docs/README.md`](../docs/README.md). This file remains the long-horizon business roadmap; reconcile conflicts in favor of the codebase.
+
 > This document serves as the single source of truth for the long-term direction of the business. It defines the vision, strategic priorities, major initiatives, and roadmap for building JS Solutions into a scalable technology company.
 
 ---
@@ -240,7 +242,8 @@ Projects:
 - Client Portal
 - Knowledge Base
 - Reporting System
-- Prospecting Engine (internal; V1 Sprint 13 — client Competitive Growth Analysis preview)
+- Prospecting Engine (internal; **V1 complete** through CI Sprint 13.1 — see `docs/development/competitive-intelligence.md`)
+- Website Growth Audit (commercial Free + Professional — implemented; see `docs/commercial-launch-v1.md`)
 
 ---
 
