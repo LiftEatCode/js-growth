@@ -240,7 +240,7 @@ Projects:
 - Client Portal
 - Knowledge Base
 - Reporting System
-- Prospecting Engine (internal; V1 Sprint 11 — deterministic competitive comparison)
+- Prospecting Engine (internal; V1 Sprint 12 — AI competitive interpretation)
 
 ---
 

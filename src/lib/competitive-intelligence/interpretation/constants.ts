@@ -1,0 +1,27 @@
+import { AI_GENERATION_TIMEOUT_MS } from "@/lib/website-audit/ai-interpretation/constants";
+
+export const COMPETITIVE_INTERPRETATION_VERSION = 1;
+export const COMPETITIVE_INTERPRETATION_PROMPT_VERSION = 1;
+
+export const MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION = 1;
+export const MAX_AI_COMPETITORS = 3;
+export const MAX_AI_OPPORTUNITIES = 8;
+export const MAX_AI_ADVANTAGES = 6;
+export const MAX_AI_FINDING_EVIDENCE_PER_ITEM = 5;
+
+export const MAX_EXECUTIVE_HEADLINE_CHARS = 120;
+export const MAX_EXECUTIVE_SUMMARY_CHARS = 1200;
+export const MAX_EXPLANATION_CHARS = 800;
+export const MAX_TITLE_CHARS = 160;
+export const MAX_ACTION_CHARS = 240;
+export const MAX_TALKING_POINT_CHARS = 280;
+
+export const MAX_RISKS = 5;
+export const MAX_ADVANTAGES_OUT = 5;
+export const MAX_PRIORITIES = 5;
+export const MAX_ACTIONS_PER_PRIORITY = 4;
+export const MAX_NINETY_DAY_PHASES = 3;
+export const MAX_PHASE_ACTIONS = 5;
+export const MAX_TALKING_POINTS = 6;
+
+export const COMPETITIVE_INTERPRETATION_TIMEOUT_MS = AI_GENERATION_TIMEOUT_MS;

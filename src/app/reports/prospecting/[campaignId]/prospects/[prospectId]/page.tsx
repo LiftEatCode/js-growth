@@ -12,8 +12,10 @@ import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-l
 import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-landscape-panel";
 import { CompetitiveComparisonPanel } from "@/components/prospecting/competitive-comparison-panel";
+import { CompetitiveInterpretationPanel } from "@/components/prospecting/competitive-interpretation-panel";
 import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
 import { loadLatestCompetitiveComparison } from "@/lib/competitive-intelligence/comparison/load";
+import { loadLatestCompetitiveInterpretation } from "@/lib/competitive-intelligence/interpretation/load";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
@@ -156,6 +158,13 @@ export default async function CampaignProspectDetailPage({
   });
 
   const prospect = membership.prospect;
+  const competitiveInterpretation = await loadLatestCompetitiveInterpretation({
+    campaignId,
+    prospectId,
+    currentComparisonSnapshotId: competitiveComparison.snapshot?.id ?? null,
+    currentComparison: competitiveComparison.snapshot?.comparison ?? null,
+    targetBusinessName: prospect.businessName,
+  });
   const audit = prospect.auditReport?.audit as WebsiteAuditResult | undefined;
   const qualification = parseStoredQualification(membership.qualificationJson);
   const highFindings =
@@ -583,6 +592,44 @@ export default async function CampaignProspectDetailPage({
               canGenerate={competitiveComparison.canGenerate}
               generateBlocker={competitiveComparison.generateBlocker}
               skippedCompetitors={competitiveComparison.skippedCompetitors}
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            AI Competitive Interpretation
+          </h2>
+          <div className="mt-4">
+            <CompetitiveInterpretationPanel
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              comparisonSnapshotId={
+                competitiveComparison.snapshot?.id ?? null
+              }
+              comparison={
+                competitiveComparison.snapshot?.comparison ?? null
+              }
+              interpretation={
+                competitiveInterpretation.interpretation?.content
+                  ? {
+                      id: competitiveInterpretation.interpretation.id,
+                      createdAtLabel: formatDate(
+                        competitiveInterpretation.interpretation.createdAt,
+                      ),
+                      content:
+                        competitiveInterpretation.interpretation.content,
+                    }
+                  : null
+              }
+              stale={competitiveInterpretation.stale}
+              staleReasons={competitiveInterpretation.staleReasons}
+              canGenerate={competitiveInterpretation.canGenerate}
+              generateBlocker={competitiveInterpretation.generateBlocker}
+              latestFailureMessage={
+                competitiveInterpretation.latestFailure?.failureMessage ?? null
+              }
+              reusableExists={competitiveInterpretation.reusableExists}
             />
           </div>
         </Card>

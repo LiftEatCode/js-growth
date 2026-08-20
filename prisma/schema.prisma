@@ -339,6 +339,7 @@ model Campaign {
   competitorAuditRuns     CompetitorAuditRun[]
   competitorAudits        CompetitorAudit[]
   competitiveComparisons  CompetitiveComparisonSnapshot[]
+  competitiveInterpretations CompetitiveInterpretation[]
 
   @@index([status])
   @@index([createdAt])
@@ -395,6 +396,7 @@ model Prospect {
   competitorAuditRuns         CompetitorAuditRun[]
   competitorAudits            CompetitorAudit[]            @relation("TargetProspectCompetitorAudits")
   competitiveComparisons      CompetitiveComparisonSnapshot[]
+  competitiveInterpretations  CompetitiveInterpretation[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -958,9 +960,59 @@ model CompetitiveComparisonSnapshot {
 
   createdByEmail String
 
+  interpretations CompetitiveInterpretation[]
+
   @@index([prospectId, campaignId, createdAt])
   @@index([auditReportId])
   @@index([createdAt])
+}
+
+enum CompetitiveInterpretationStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+/// AI explanation of a Sprint 11 CompetitiveComparisonSnapshot.
+/// Interpretation only — never recalculates comparison facts.
+model CompetitiveInterpretation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  comparisonSnapshotId String
+  comparisonSnapshot   CompetitiveComparisonSnapshot @relation(fields: [comparisonSnapshotId], references: [id], onDelete: Cascade)
+
+  status CompetitiveInterpretationStatus @default(PENDING)
+
+  model                   String?
+  promptVersion           Int
+  interpretationVersion   Int
+  comparisonVersion       Int
+  auditEngineVersion      Int
+  inputFingerprint        String
+
+  interpretationJson Json?
+
+  startedAt     DateTime?
+  completedAt   DateTime?
+  failedAt      DateTime?
+  failureCode   String?
+  failureMessage String?
+
+  createdByEmail String
+
+  @@index([prospectId, campaignId, createdAt])
+  @@index([comparisonSnapshotId, createdAt])
+  @@index([status, createdAt])
+  @@index([inputFingerprint])
 }
 
 model CompetitorAuditRun {

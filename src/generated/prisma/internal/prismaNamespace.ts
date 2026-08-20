@@ -418,6 +418,7 @@ export const ModelName = {
   ProspectCompetitor: 'ProspectCompetitor',
   CompetitorAudit: 'CompetitorAudit',
   CompetitiveComparisonSnapshot: 'CompetitiveComparisonSnapshot',
+  CompetitiveInterpretation: 'CompetitiveInterpretation',
   CompetitorAuditRun: 'CompetitorAuditRun',
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
 } as const
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitorAuditRun" | "competitorDiscoveryRun"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1993,6 +1994,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CompetitiveInterpretation: {
+      payload: Prisma.$CompetitiveInterpretationPayload<ExtArgs>
+      fields: Prisma.CompetitiveInterpretationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompetitiveInterpretationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompetitiveInterpretationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>
+        }
+        findFirst: {
+          args: Prisma.CompetitiveInterpretationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompetitiveInterpretationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>
+        }
+        findMany: {
+          args: Prisma.CompetitiveInterpretationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>[]
+        }
+        create: {
+          args: Prisma.CompetitiveInterpretationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>
+        }
+        createMany: {
+          args: Prisma.CompetitiveInterpretationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompetitiveInterpretationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>[]
+        }
+        delete: {
+          args: Prisma.CompetitiveInterpretationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>
+        }
+        update: {
+          args: Prisma.CompetitiveInterpretationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompetitiveInterpretationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompetitiveInterpretationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompetitiveInterpretationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompetitiveInterpretationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitiveInterpretationPayload>
+        }
+        aggregate: {
+          args: Prisma.CompetitiveInterpretationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompetitiveInterpretation>
+        }
+        groupBy: {
+          args: Prisma.CompetitiveInterpretationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitiveInterpretationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompetitiveInterpretationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitiveInterpretationCountAggregateOutputType> | number
+        }
+      }
+    }
     CompetitorAuditRun: {
       payload: Prisma.$CompetitorAuditRunPayload<ExtArgs>
       fields: Prisma.CompetitorAuditRunFieldRefs
@@ -2647,6 +2722,32 @@ export const CompetitiveComparisonSnapshotScalarFieldEnum = {
 export type CompetitiveComparisonSnapshotScalarFieldEnum = (typeof CompetitiveComparisonSnapshotScalarFieldEnum)[keyof typeof CompetitiveComparisonSnapshotScalarFieldEnum]
 
 
+export const CompetitiveInterpretationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  comparisonSnapshotId: 'comparisonSnapshotId',
+  status: 'status',
+  model: 'model',
+  promptVersion: 'promptVersion',
+  interpretationVersion: 'interpretationVersion',
+  comparisonVersion: 'comparisonVersion',
+  auditEngineVersion: 'auditEngineVersion',
+  inputFingerprint: 'inputFingerprint',
+  interpretationJson: 'interpretationJson',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CompetitiveInterpretationScalarFieldEnum = (typeof CompetitiveInterpretationScalarFieldEnum)[keyof typeof CompetitiveInterpretationScalarFieldEnum]
+
+
 export const CompetitorAuditRunScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -3189,6 +3290,20 @@ export type EnumCompetitorAuditStatusFieldRefInput<$PrismaModel> = FieldRefInput
 export type ListEnumCompetitorAuditStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompetitorAuditStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'CompetitiveInterpretationStatus'
+ */
+export type EnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompetitiveInterpretationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CompetitiveInterpretationStatus[]'
+ */
+export type ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompetitiveInterpretationStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3361,6 +3476,7 @@ export type GlobalOmitConfig = {
   prospectCompetitor?: Prisma.ProspectCompetitorOmit
   competitorAudit?: Prisma.CompetitorAuditOmit
   competitiveComparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotOmit
+  competitiveInterpretation?: Prisma.CompetitiveInterpretationOmit
   competitorAuditRun?: Prisma.CompetitorAuditRunOmit
   competitorDiscoveryRun?: Prisma.CompetitorDiscoveryRunOmit
 }

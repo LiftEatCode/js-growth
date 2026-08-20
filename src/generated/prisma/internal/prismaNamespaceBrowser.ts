@@ -72,6 +72,7 @@ export const ModelName = {
   ProspectCompetitor: 'ProspectCompetitor',
   CompetitorAudit: 'CompetitorAudit',
   CompetitiveComparisonSnapshot: 'CompetitiveComparisonSnapshot',
+  CompetitiveInterpretation: 'CompetitiveInterpretation',
   CompetitorAuditRun: 'CompetitorAuditRun',
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
 } as const
@@ -557,6 +558,32 @@ export const CompetitiveComparisonSnapshotScalarFieldEnum = {
 } as const
 
 export type CompetitiveComparisonSnapshotScalarFieldEnum = (typeof CompetitiveComparisonSnapshotScalarFieldEnum)[keyof typeof CompetitiveComparisonSnapshotScalarFieldEnum]
+
+
+export const CompetitiveInterpretationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  comparisonSnapshotId: 'comparisonSnapshotId',
+  status: 'status',
+  model: 'model',
+  promptVersion: 'promptVersion',
+  interpretationVersion: 'interpretationVersion',
+  comparisonVersion: 'comparisonVersion',
+  auditEngineVersion: 'auditEngineVersion',
+  inputFingerprint: 'inputFingerprint',
+  interpretationJson: 'interpretationJson',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CompetitiveInterpretationScalarFieldEnum = (typeof CompetitiveInterpretationScalarFieldEnum)[keyof typeof CompetitiveInterpretationScalarFieldEnum]
 
 
 export const CompetitorAuditRunScalarFieldEnum = {

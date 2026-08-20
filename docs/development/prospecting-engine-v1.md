@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 11 — Deterministic Competitive Comparison**
+Current status: **Sprint 12 — AI Competitive Interpretation**
 
 ## Product principle
 
@@ -704,7 +704,7 @@ Operator workflow:
 3. Review Website Growth Score separately from Competitive relevance
 4. View Audit / Re-run Audit as needed
 5. Generate Competitive Comparison (Sprint 11) when audits exist
-6. **Stop.** No AI competitive interpretation yet (Sprint 12)
+6. Generate AI Competitive Interpretation (Sprint 12) from a specific snapshot
 
 ## Sprint 11 — Deterministic competitive comparison
 
@@ -713,6 +713,14 @@ Compare the prospect `AuditReport` against SELECTED competitors’ COMPLETED
 rows. No network, OpenAI, Places, or crawling.
 
 See `docs/development/competitive-intelligence-sprint-11.md`.
+
+## Sprint 12 — AI competitive interpretation
+
+Explain a specific Sprint 11 snapshot for operators. Bounded OpenAI input,
+source-key provenance, historical `CompetitiveInterpretation` rows. Does not
+recalculate comparison facts. No Places, crawl, contacts, or Resend.
+
+See `docs/development/competitive-intelligence-sprint-12.md`.
 
 
 

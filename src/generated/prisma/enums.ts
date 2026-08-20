@@ -298,3 +298,13 @@ export const CompetitorAuditStatus = {
 } as const
 
 export type CompetitorAuditStatus = (typeof CompetitorAuditStatus)[keyof typeof CompetitorAuditStatus]
+
+
+export const CompetitiveInterpretationStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type CompetitiveInterpretationStatus = (typeof CompetitiveInterpretationStatus)[keyof typeof CompetitiveInterpretationStatus]

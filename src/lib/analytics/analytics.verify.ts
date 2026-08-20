@@ -104,6 +104,12 @@ assert(isForbiddenAnalyticsParamKey("provider_message_id"), "provider_message_id
 assert(isForbiddenAnalyticsParamKey("delivery_status"), "delivery_status is forbidden");
 assert(isForbiddenAnalyticsParamKey("bounce_reason"), "bounce_reason is forbidden");
 assert(isForbiddenAnalyticsParamKey("webhook_id"), "webhook_id is forbidden");
+assert(isForbiddenAnalyticsParamKey("competitive_interpretation_id"), "competitive_interpretation_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("interpretation_json"), "interpretation_json key is forbidden");
+assert(isForbiddenAnalyticsParamKey("input_fingerprint"), "input_fingerprint key is forbidden");
+assert(isForbiddenAnalyticsParamKey("comparison_snapshot_id"), "comparison_snapshot_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("internal_talking_points"), "internal_talking_points key is forbidden");
+assert(isForbiddenAnalyticsParamKey("competitive_ai_summary"), "competitive_ai_summary key is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
 assert(isForbiddenAnalyticsParamValue(REPORT_ID), "UUID values are forbidden");
 assert(

@@ -130,3 +130,5 @@ Analytics forbids comparison identifiers and gap payloads.
 
 Send `CompetitiveComparison` JSON as factual input to AI interpretation.
 Do not let the model recalculate averages, ranks, or gap classifications.
+
+Implemented in Sprint 12 — see `docs/development/competitive-intelligence-sprint-12.md`.

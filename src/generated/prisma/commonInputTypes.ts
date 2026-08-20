@@ -773,6 +773,23 @@ export type EnumCompetitorAuditStatusWithAggregatesFilter<$PrismaModel = never> 
   _max?: Prisma.NestedEnumCompetitorAuditStatusFilter<$PrismaModel>
 }
 
+export type EnumCompetitiveInterpretationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CompetitiveInterpretationStatus | Prisma.EnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel> | $Enums.CompetitiveInterpretationStatus
+}
+
+export type EnumCompetitiveInterpretationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CompetitiveInterpretationStatus | Prisma.EnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCompetitiveInterpretationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CompetitiveInterpretationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1478,6 +1495,23 @@ export type NestedEnumCompetitorAuditStatusWithAggregatesFilter<$PrismaModel = n
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCompetitorAuditStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCompetitorAuditStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CompetitiveInterpretationStatus | Prisma.EnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel> | $Enums.CompetitiveInterpretationStatus
+}
+
+export type NestedEnumCompetitiveInterpretationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CompetitiveInterpretationStatus | Prisma.EnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CompetitiveInterpretationStatus[] | Prisma.ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCompetitiveInterpretationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CompetitiveInterpretationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCompetitiveInterpretationStatusFilter<$PrismaModel>
 }
 
 

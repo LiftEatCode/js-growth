@@ -149,6 +149,12 @@ export type CompetitorAudit = Prisma.CompetitorAuditModel
  */
 export type CompetitiveComparisonSnapshot = Prisma.CompetitiveComparisonSnapshotModel
 /**
+ * Model CompetitiveInterpretation
+ * AI explanation of a Sprint 11 CompetitiveComparisonSnapshot.
+ * Interpretation only — never recalculates comparison facts.
+ */
+export type CompetitiveInterpretation = Prisma.CompetitiveInterpretationModel
+/**
  * Model CompetitorAuditRun
  * 
  */
