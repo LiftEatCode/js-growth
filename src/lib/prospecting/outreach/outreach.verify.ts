@@ -148,6 +148,14 @@ const actions = readFileSync(
   join(here, "../../../app/reports/prospecting/outreach-actions.ts"),
   "utf8",
 );
+const contactActions = readFileSync(
+  join(here, "../../../app/reports/prospecting/contact-actions.ts"),
+  "utf8",
+);
+const selectionActions = readFileSync(
+  join(here, "../../../app/reports/prospecting/selection-actions.ts"),
+  "utf8",
+);
 const createDraft = readFileSync(join(here, "./create-draft.ts"), "utf8");
 const prompt = readFileSync(join(here, "./prompt.ts"), "utf8");
 const generateSource = readFileSync(join(here, "./generate.ts"), "utf8");
@@ -168,7 +176,19 @@ assert(
   "sending uses Resend",
 );
 assert(!createDraft.includes("resend.emails.send"), "draft generation does not send email");
-assert(createDraft.includes("isSelectedTopN"), "only selected prospects get drafts");
+assert(createDraft.includes("isProspectSelectedForOutreach"), "only effectively selected prospects get drafts");
+assert(
+  actions.includes("campaignProspectEffectiveOutreachWhere"),
+  "batch draft generation uses effective outreach selection",
+);
+assert(
+  contactActions.includes("campaignProspectEffectiveOutreachWhere"),
+  "find contacts uses effective outreach selection",
+);
+assert(
+  selectionActions.includes("getInternalSession"),
+  "selection mutations require internal session",
+);
 assert(createDraft.includes("selectProspectOutreachChannel"), "channel selection blocks generation when needed");
 assert(createDraft.includes("loadContactSuppressionContext"), "suppression context loads before drafting");
 assert(createDraft.includes("primaryFindingId"), "credible finding required");

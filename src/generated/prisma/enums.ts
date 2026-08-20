@@ -169,6 +169,40 @@ export const OutreachChannel = {
 export type OutreachChannel = (typeof OutreachChannel)[keyof typeof OutreachChannel]
 
 
+export const OutreachDeliveryProvider = {
+  RESEND: 'RESEND'
+} as const
+
+export type OutreachDeliveryProvider = (typeof OutreachDeliveryProvider)[keyof typeof OutreachDeliveryProvider]
+
+
+export const OutreachDeliveryEventType = {
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  DELIVERY_DELAYED: 'DELIVERY_DELAYED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED',
+  COMPLAINED: 'COMPLAINED',
+  SUPPRESSED: 'SUPPRESSED'
+} as const
+
+export type OutreachDeliveryEventType = (typeof OutreachDeliveryEventType)[keyof typeof OutreachDeliveryEventType]
+
+
+export const ProviderDeliveryStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  DELAYED: 'DELAYED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED',
+  COMPLAINED: 'COMPLAINED',
+  SUPPRESSED: 'SUPPRESSED'
+} as const
+
+export type ProviderDeliveryStatus = (typeof ProviderDeliveryStatus)[keyof typeof ProviderDeliveryStatus]
+
+
 export const SuppressionType = {
   HOSTNAME: 'HOSTNAME',
   EMAIL: 'EMAIL'
@@ -183,6 +217,7 @@ export const SuppressionReason = {
   CUSTOMER: 'CUSTOMER',
   OPTED_OUT: 'OPTED_OUT',
   BOUNCED: 'BOUNCED',
+  COMPLAINT: 'COMPLAINT',
   MANUAL: 'MANUAL',
   CONVERTED: 'CONVERTED'
 } as const

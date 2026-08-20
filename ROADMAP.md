@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 7 — Contact Form Discovery + Contact-Form Outreach
+Status: 🟢 Sprint 8 — Resend Webhooks, Delivery Intelligence & Operational Hardening
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,17 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 7 (current):
+Sprint 8 (current):
+
+- Resend webhook endpoint with Svix signature verification (`POST /api/resend/webhook`)
+- `OutreachDeliveryEvent` history (does not overwrite message lifecycle)
+- Automatic bounce/complaint/suppression handling from verified webhooks
+- Email delivery timeline on prospect detail
+- Campaign email delivery health metrics
+- Resend send idempotency key per outreach message
+- Contact-form manual submission path unchanged
+
+Sprint 7:
 
 - Everything in Sprint 6, plus:
 - Deterministic public contact-form discovery during bounded website contact discovery

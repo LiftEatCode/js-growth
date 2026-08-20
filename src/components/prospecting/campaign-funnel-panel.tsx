@@ -25,6 +25,7 @@ export function CampaignFunnelPanel({ metrics }: CampaignFunnelPanelProps) {
         <Metric label="Audited" value={counts.audited} />
         <Metric label="Qualified" value={counts.qualified} />
         <Metric label="Selected top N" value={counts.selectedTopN} />
+        <Metric label="Selected for outreach" value={counts.selectedForOutreach} />
         <Metric label="Contactable" value={counts.contactable} />
         <Metric label="Email contacts" value={counts.emailContacts} />
         <Metric label="Contact forms" value={counts.contactForms} />

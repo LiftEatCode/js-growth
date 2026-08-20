@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 7 — Contact Form Discovery + Contact-Form Outreach**
+Current status: **Sprint 8 — Resend Webhooks, Delivery Intelligence & Operational Hardening**
 
 ## Product principle
 
@@ -292,6 +292,10 @@ Operator workflow:
 7. Review contact provenance and edit the draft
 8. **Stop.** No email is sent.
 
+### Manual outreach selection
+
+Top N remains the deterministic qualification recommendation (`isSelectedTopN`). Operators may additionally mark any **qualified** prospect for outreach with `isSelectedForOutreach`. Effective selection for Find Contacts and Generate Missing Drafts is `isSelectedTopN || isSelectedForOutreach`. Top N recalculation updates only `isSelectedTopN`; manual selections survive reruns. Migration backfill sets `isSelectedForOutreach = true` where `isSelectedTopN = true` so existing campaigns keep current behavior.
+
 ### No guessed emails
 
 An email must appear in publicly accessible first-party business content. The system does not generate `info@`, `contact@`, `owner@`, or similar addresses.
@@ -353,7 +357,7 @@ This helper must be called again in Sprint 5 before send. Sprint 4 approval does
 
 ### AI grounding
 
-Drafts are generated only for selected Top N qualified prospects that have a primary public contact, a usable prospecting audit, and a credible allowlisted finding.
+Drafts are generated only for effectively selected qualified prospects (`isSelectedTopN` or operator `isSelectedForOutreach`) that have a primary public contact, a usable prospecting audit, and a credible allowlisted finding.
 
 The model receives a compact JSON context (business, location, one primary finding, optional secondary, score band). It does not receive raw HTML, the full audit JSON, Stripe data, report UUIDs, or Google Place IDs.
 
@@ -477,7 +481,8 @@ Deterministic counts from the database on the campaign page:
 | Imported | campaign prospects |
 | Audited | prospects with linked audit |
 | Qualified | `qualificationStatus = QUALIFIED` |
-| Selected Top N | `isSelectedTopN = true` |
+| Selected Top N | `isSelectedTopN = true` (algorithm recommendation only) |
+| Selected for outreach | `isSelectedTopN \|\| isSelectedForOutreach` (effective operator + algorithm selection) |
 | Contacts Found | selected prospects with usable primary contact |
 | Drafts Generated | prospects with any outreach message |
 | Approved | prospects with approved/sent draft |
@@ -568,5 +573,83 @@ Hostname-level suppression blocks both channels. Email-only bounce suppression d
 ### Privacy
 
 Contact-form URLs/IDs, outreach channel, submitted-by metadata, drafts, and submission history remain internal-only. Analytics sanitizers block keys such as `contact_form_url`, `contact_form_id`, `outreach_channel`, and `submitted_by_email`.
+
+## Sprint 8 — Resend webhooks & delivery intelligence
+
+### Goal
+
+Make **email delivery state** trustworthy for prospecting outreach without changing the human-reviewed send workflow or Sprint 7 contact-form behavior.
+
+### Webhook endpoint
+
+- `POST /api/resend/webhook`
+- Verifies Svix signatures against the **raw request body**
+- Server-only env: `RESEND_WEBHOOK_SECRET` (never `NEXT_PUBLIC_`)
+- No internal browser session required
+- Invalid signature → 400/401, no DB mutation
+- Temporary DB failure → 500 (Resend retries)
+- Verified unmatched message ID → 200 after safe log
+- Duplicate verified event → 200
+
+### Resend events handled (Sprint 8)
+
+Enable in the Resend dashboard:
+
+- `email.sent`
+- `email.delivered`
+- `email.delivery_delayed`
+- `email.failed`
+- `email.bounced`
+- `email.complained`
+- `email.suppressed`
+
+**Not implemented:** `email.opened`, `email.clicked`, open/click tracking, pixels, or link rewriting.
+
+### Event semantics
+
+| Event | Meaning | Suppression |
+|---|---|---|
+| `email.sent` | Resend accepted the send | None |
+| `email.delivered` | Accepted by recipient mail server | None |
+| `email.delivery_delayed` | Temporary delay | None |
+| `email.failed` | Provider send failure | None (no automatic hostname block) |
+| `email.bounced` | Hard bounce | Email only |
+| `email.complained` | Spam complaint | Email + hostname (hard block) |
+| `email.suppressed` | Resend suppressed send | Email by default |
+
+**Delivered ≠ read.** Delivered means the recipient's mail server accepted the message; it does not guarantee inbox placement.
+
+### Persistence
+
+- `OutreachDeliveryEvent` stores event history (idempotent via `payloadFingerprint`)
+- `OutreachMessage` keeps convenience timestamps/status (`deliveredAt`, `providerDeliveryStatus`, etc.)
+- Matching uses `providerMessageId` from Sprint 5 sends
+- `CONTACT_FORM` messages never receive Resend delivery events
+
+### Send idempotency
+
+Resend API calls include a stable idempotency key:
+
+`prospecting-outreach/<OutreachMessage.id>`
+
+This complements the existing DB lock (`APPROVED` → `SENDING` → `SENT`). Retries within Resend's idempotency window must reuse the same key and payload.
+
+### Suppression integration
+
+Webhook suppression reuses centralized helpers:
+
+- **Bounced:** email-level only; contact form may remain usable
+- **Complained:** email + hostname; blocks email and contact-form outreach
+- Stronger existing suppressions (OPTED_OUT, CUSTOMER, CONVERTED) are never weakened
+
+### Production configuration
+
+1. Deploy migration/code
+2. Set `RESEND_WEBHOOK_SECRET` in production
+3. Create Resend webhook: `https://js-growth.com/api/resend/webhook`
+4. Enable only the Sprint 8 events listed above
+5. Send one low-risk approved test email and verify delivery timeline + events
+
+Contact-form submission remains **manual**. No automatic sending, reply ingestion, or follow-up sequences in Sprint 8.
 
 

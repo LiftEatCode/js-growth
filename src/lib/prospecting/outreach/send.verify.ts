@@ -136,6 +136,14 @@ assert(
   "send action uses Resend",
 );
 assert(
+  actionsSource.includes("idempotencyKey"),
+  "Resend send includes idempotency key",
+);
+assert(
+  actionsSource.includes("outreachSendIdempotencyKey"),
+  "idempotency key is stable per outreach message",
+);
+assert(
   !actionsSource.includes("generateOutreachDraft("),
   "send action does not regenerate drafts",
 );

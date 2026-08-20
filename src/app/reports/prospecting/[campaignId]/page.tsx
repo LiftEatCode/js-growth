@@ -6,11 +6,15 @@ import { ArrowLeft, Plus } from "lucide-react";
 import { Button, Card, Container } from "@/components/ui";
 import { AuditQualifyButton } from "@/components/prospecting/audit-qualify-button";
 import { CampaignFunnelPanel } from "@/components/prospecting/campaign-funnel-panel";
+import { CampaignDeliveryHealthPanel } from "@/components/prospecting/campaign-delivery-health-panel";
 import { DiscoverBusinessesButton } from "@/components/prospecting/discover-businesses-button";
 import { FindContactsButton } from "@/components/prospecting/find-contacts-button";
 import { GenerateDraftsButton } from "@/components/prospecting/generate-drafts-button";
+import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { prisma } from "@/lib/prisma";
+import { isProspectSelectedForOutreach } from "@/lib/prospecting/selection/outreach-selection";
 import { loadCampaignFunnelMetrics } from "@/lib/prospecting/metrics/load-campaign-funnel";
+import { loadCampaignDeliveryHealth } from "@/lib/prospecting/metrics/load-campaign-delivery";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import {
   campaignStatusLabel,
@@ -137,6 +141,9 @@ export default async function ProspectingCampaignPage({
     (row) => row.prospect.qualificationStatus === "AUDIT_FAILED",
   ).length;
   const selectedTopN = prospects.filter((row) => row.isSelectedTopN).length;
+  const selectedForOutreach = prospects.filter((row) =>
+    isProspectSelectedForOutreach(row),
+  ).length;
   const remainingUnaudited = prospects.filter((row) =>
     ["DISCOVERED", "AUDITING", "AUDIT_FAILED", "WEBSITE_INVALID"].includes(
       row.prospect.qualificationStatus,
@@ -146,8 +153,11 @@ export default async function ProspectingCampaignPage({
   const latestContactRun = campaign.contactDiscoveryRuns[0] ?? null;
   const latestDraftRun = campaign.outreachDraftRuns[0] ?? null;
   const funnelMetrics = await loadCampaignFunnelMetrics(campaignId);
+  const deliveryHealth = await loadCampaignDeliveryHealth(campaignId);
 
-  const selectedRows = prospects.filter((row) => row.isSelectedTopN);
+  const selectedRows = prospects.filter((row) =>
+    isProspectSelectedForOutreach(row),
+  );
   const emailContacts = selectedRows.filter((row) =>
     row.prospect.contacts.some(
       (contact) =>
@@ -374,6 +384,10 @@ export default async function ProspectingCampaignPage({
         </Card>
 
         <Card variant="elevated" padding="lg">
+          <CampaignDeliveryHealthPanel counts={deliveryHealth} />
+        </Card>
+
+        <Card variant="elevated" padding="lg">
           <h2 className="font-heading text-xl font-semibold text-brand">
             Campaign stats
           </h2>
@@ -413,6 +427,12 @@ export default async function ProspectingCampaignPage({
                 Selected top {campaign.desiredQualifiedCount}
               </dt>
               <dd className="mt-1 text-sm text-brand">{selectedTopN}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                Selected for outreach
+              </dt>
+              <dd className="mt-1 text-sm text-brand">{selectedForOutreach}</dd>
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
@@ -568,6 +588,7 @@ export default async function ProspectingCampaignPage({
                   <th className="px-4 py-3 font-semibold">Contact</th>
                   <th className="px-4 py-3 font-semibold">Draft status</th>
                   <th className="px-4 py-3 font-semibold">Outreach</th>
+                  <th className="px-4 py-3 font-semibold">Progress</th>
                 </tr>
               </thead>
               <tbody>
@@ -620,6 +641,16 @@ export default async function ProspectingCampaignPage({
                       </td>
                       <td className="px-4 py-3">
                         {draftStatusLabel(draftStatus)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <ProspectOutreachSelectionControl
+                          campaignId={campaign.id}
+                          prospectId={prospect.id}
+                          qualificationStatus={prospect.qualificationStatus}
+                          isSelectedTopN={row.isSelectedTopN}
+                          isSelectedForOutreach={row.isSelectedForOutreach}
+                          variant="table"
+                        />
                       </td>
                       <td className="px-4 py-3">
                         {prospectOutreachProgressLabel(prospect)}

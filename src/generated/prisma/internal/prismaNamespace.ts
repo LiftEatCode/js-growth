@@ -407,6 +407,7 @@ export const ModelName = {
   ProspectContact: 'ProspectContact',
   ProspectContactForm: 'ProspectContactForm',
   OutreachMessage: 'OutreachMessage',
+  OutreachDeliveryEvent: 'OutreachDeliveryEvent',
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
   ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1173,6 +1174,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OutreachDeliveryEvent: {
+      payload: Prisma.$OutreachDeliveryEventPayload<ExtArgs>
+      fields: Prisma.OutreachDeliveryEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OutreachDeliveryEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OutreachDeliveryEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>
+        }
+        findFirst: {
+          args: Prisma.OutreachDeliveryEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OutreachDeliveryEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>
+        }
+        findMany: {
+          args: Prisma.OutreachDeliveryEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>[]
+        }
+        create: {
+          args: Prisma.OutreachDeliveryEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>
+        }
+        createMany: {
+          args: Prisma.OutreachDeliveryEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OutreachDeliveryEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>[]
+        }
+        delete: {
+          args: Prisma.OutreachDeliveryEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>
+        }
+        update: {
+          args: Prisma.OutreachDeliveryEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.OutreachDeliveryEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OutreachDeliveryEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OutreachDeliveryEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.OutreachDeliveryEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutreachDeliveryEventPayload>
+        }
+        aggregate: {
+          args: Prisma.OutreachDeliveryEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOutreachDeliveryEvent>
+        }
+        groupBy: {
+          args: Prisma.OutreachDeliveryEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OutreachDeliveryEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OutreachDeliveryEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OutreachDeliveryEventCountAggregateOutputType> | number
+        }
+      }
+    }
     SuppressionEntry: {
       payload: Prisma.$SuppressionEntryPayload<ExtArgs>
       fields: Prisma.SuppressionEntryFieldRefs
@@ -1859,6 +1934,7 @@ export const CampaignProspectScalarFieldEnum = {
   discoveryRank: 'discoveryRank',
   qualificationRank: 'qualificationRank',
   isSelectedTopN: 'isSelectedTopN',
+  isSelectedForOutreach: 'isSelectedForOutreach',
   qualificationJson: 'qualificationJson'
 } as const
 
@@ -1936,11 +2012,35 @@ export const OutreachMessageScalarFieldEnum = {
   submittedAt: 'submittedAt',
   submittedByEmail: 'submittedByEmail',
   error: 'error',
+  deliveredAt: 'deliveredAt',
+  deliveryDelayedAt: 'deliveryDelayedAt',
+  failedAt: 'failedAt',
+  bouncedAt: 'bouncedAt',
+  complainedAt: 'complainedAt',
+  providerSuppressedAt: 'providerSuppressedAt',
+  providerDeliveryStatus: 'providerDeliveryStatus',
   approvedAt: 'approvedAt',
   approvedByEmail: 'approvedByEmail'
 } as const
 
 export type OutreachMessageScalarFieldEnum = (typeof OutreachMessageScalarFieldEnum)[keyof typeof OutreachMessageScalarFieldEnum]
+
+
+export const OutreachDeliveryEventScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  outreachMessageId: 'outreachMessageId',
+  provider: 'provider',
+  providerEventId: 'providerEventId',
+  providerMessageId: 'providerMessageId',
+  eventType: 'eventType',
+  occurredAt: 'occurredAt',
+  receivedAt: 'receivedAt',
+  payloadFingerprint: 'payloadFingerprint',
+  safeMetadataJson: 'safeMetadataJson'
+} as const
+
+export type OutreachDeliveryEventScalarFieldEnum = (typeof OutreachDeliveryEventScalarFieldEnum)[keyof typeof OutreachDeliveryEventScalarFieldEnum]
 
 
 export const SuppressionEntryScalarFieldEnum = {
@@ -2400,6 +2500,48 @@ export type ListEnumOutreachMessageStatusFieldRefInput<$PrismaModel> = FieldRefI
 
 
 /**
+ * Reference to a field of type 'ProviderDeliveryStatus'
+ */
+export type EnumProviderDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProviderDeliveryStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProviderDeliveryStatus[]'
+ */
+export type ListEnumProviderDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProviderDeliveryStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OutreachDeliveryProvider'
+ */
+export type EnumOutreachDeliveryProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachDeliveryProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'OutreachDeliveryProvider[]'
+ */
+export type ListEnumOutreachDeliveryProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachDeliveryProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OutreachDeliveryEventType'
+ */
+export type EnumOutreachDeliveryEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachDeliveryEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'OutreachDeliveryEventType[]'
+ */
+export type ListEnumOutreachDeliveryEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachDeliveryEventType[]'>
+    
+
+
+/**
  * Reference to a field of type 'SuppressionType'
  */
 export type EnumSuppressionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SuppressionType'>
@@ -2657,6 +2799,7 @@ export type GlobalOmitConfig = {
   prospectContact?: Prisma.ProspectContactOmit
   prospectContactForm?: Prisma.ProspectContactFormOmit
   outreachMessage?: Prisma.OutreachMessageOmit
+  outreachDeliveryEvent?: Prisma.OutreachDeliveryEventOmit
   suppressionEntry?: Prisma.SuppressionEntryOmit
   prospectDiscoveryRun?: Prisma.ProspectDiscoveryRunOmit
   prospectDiscoveryCandidate?: Prisma.ProspectDiscoveryCandidateOmit

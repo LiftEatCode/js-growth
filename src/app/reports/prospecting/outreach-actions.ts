@@ -14,6 +14,7 @@ import { createOrReuseOutreachDraft } from "@/lib/prospecting/outreach/create-dr
 import { clampOutreachDraftBatchSize } from "@/lib/prospecting/outreach/limit";
 import { runWithConcurrency } from "@/lib/website-audit/site/pool";
 import { getResendClient } from "@/lib/email/resend";
+import { outreachSendIdempotencyKey } from "@/lib/prospecting/outreach/delivery/types";
 import { loadContactSuppressionContext } from "@/lib/prospecting/suppression/load";
 import {
   canContactProspect,
@@ -22,6 +23,10 @@ import {
 import { loadQualificationBlockers } from "@/lib/prospecting/qualification/audit-prospect";
 import { canSendOutreachMessage } from "@/lib/prospecting/outreach/can-send";
 import { canSubmitContactFormMessage } from "@/lib/prospecting/outreach/can-submit";
+import {
+  campaignProspectEffectiveOutreachWhere,
+  qualifiedProspectWithOutreachChannelWhere,
+} from "@/lib/prospecting/selection/outreach-selection";
 
 export interface OutreachActionResult {
   success: boolean;
@@ -118,16 +123,8 @@ export async function startCampaignOutreachDrafts(
     const memberships = await prisma.campaignProspect.findMany({
       where: {
         campaignId,
-        isSelectedTopN: true,
-        prospect: {
-          qualificationStatus: "QUALIFIED",
-          contacts: {
-            some: {
-              isPrimary: true,
-              status: { in: ["SELECTED", "DISCOVERED"] },
-            },
-          },
-        },
+        ...campaignProspectEffectiveOutreachWhere(),
+        prospect: qualifiedProspectWithOutreachChannelWhere(),
       },
       include: {
         prospect: {
@@ -869,13 +866,18 @@ export async function sendOutreachMessage(
 
   try {
     const resend = getResendClient();
-    const { error: sendError, data } = await resend.emails.send({
-      from: fromEmail,
-      to: message.toEmail ?? "",
-      replyTo: replyTo ?? undefined,
-      subject: message.subject,
-      text: message.bodyText,
-    });
+    const { error: sendError, data } = await resend.emails.send(
+      {
+        from: fromEmail,
+        to: message.toEmail ?? "",
+        replyTo: replyTo ?? undefined,
+        subject: message.subject,
+        text: message.bodyText,
+      },
+      {
+        idempotencyKey: outreachSendIdempotencyKey(message.id),
+      },
+    );
 
     if (sendError) {
       await prisma.outreachMessage.update({
@@ -904,6 +906,7 @@ export async function sendOutreachMessage(
         status: "SENT",
         sentAt: new Date(),
         providerMessageId,
+        providerDeliveryStatus: "SENT",
         error: null,
       },
     });

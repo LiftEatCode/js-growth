@@ -253,6 +253,31 @@ enum OutreachChannel {
   CONTACT_FORM
 }
 
+enum OutreachDeliveryProvider {
+  RESEND
+}
+
+enum OutreachDeliveryEventType {
+  SENT
+  DELIVERED
+  DELIVERY_DELAYED
+  FAILED
+  BOUNCED
+  COMPLAINED
+  SUPPRESSED
+}
+
+enum ProviderDeliveryStatus {
+  PENDING
+  SENT
+  DELIVERED
+  DELAYED
+  FAILED
+  BOUNCED
+  COMPLAINED
+  SUPPRESSED
+}
+
 enum SuppressionType {
   HOSTNAME
   EMAIL
@@ -264,6 +289,7 @@ enum SuppressionReason {
   CUSTOMER
   OPTED_OUT
   BOUNCED
+  COMPLAINT
   MANUAL
   CONVERTED
 }
@@ -377,6 +403,10 @@ model CampaignProspect {
   qualificationRank Int?
 
   isSelectedTopN Boolean @default(false)
+
+  /// Human operator override: include this qualified prospect in outreach
+  /// workflows without changing Top N ranking. Preserved across Top N recalculation.
+  isSelectedForOutreach Boolean @default(false)
 
   qualificationJson Json?
 
@@ -496,10 +526,19 @@ model OutreachMessage {
   submittedByEmail  String?
   error             String?
 
+  deliveredAt        DateTime?
+  deliveryDelayedAt  DateTime?
+  failedAt           DateTime?
+  bouncedAt          DateTime?
+  complainedAt       DateTime?
+  providerSuppressedAt DateTime?
+  providerDeliveryStatus ProviderDeliveryStatus?
+
   approvedAt      DateTime?
   approvedByEmail String?
 
-  outcomes OutreachOutcome[]
+  outcomes        OutreachOutcome[]
+  deliveryEvents  OutreachDeliveryEvent[]
 
   @@index([prospectId])
   @@index([campaignId])
@@ -508,6 +547,31 @@ model OutreachMessage {
   @@index([auditReportId])
   @@index([status])
   @@index([channel])
+  @@index([providerMessageId])
+  @@index([providerDeliveryStatus])
+}
+
+model OutreachDeliveryEvent {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  outreachMessageId String
+  outreachMessage   OutreachMessage @relation(fields: [outreachMessageId], references: [id], onDelete: Cascade)
+
+  provider           OutreachDeliveryProvider @default(RESEND)
+  providerEventId    String?
+  providerMessageId  String
+  eventType          OutreachDeliveryEventType
+  occurredAt         DateTime
+  receivedAt         DateTime @default(now())
+  payloadFingerprint String
+  safeMetadataJson   Json?
+
+  @@unique([payloadFingerprint])
+  @@index([outreachMessageId])
+  @@index([providerMessageId])
+  @@index([eventType])
+  @@index([occurredAt])
 }
 
 model SuppressionEntry {

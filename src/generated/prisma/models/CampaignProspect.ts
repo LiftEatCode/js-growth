@@ -44,6 +44,7 @@ export type CampaignProspectMinAggregateOutputType = {
   discoveryRank: number | null
   qualificationRank: number | null
   isSelectedTopN: boolean | null
+  isSelectedForOutreach: boolean | null
 }
 
 export type CampaignProspectMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type CampaignProspectMaxAggregateOutputType = {
   discoveryRank: number | null
   qualificationRank: number | null
   isSelectedTopN: boolean | null
+  isSelectedForOutreach: boolean | null
 }
 
 export type CampaignProspectCountAggregateOutputType = {
@@ -64,6 +66,7 @@ export type CampaignProspectCountAggregateOutputType = {
   discoveryRank: number
   qualificationRank: number
   isSelectedTopN: number
+  isSelectedForOutreach: number
   qualificationJson: number
   _all: number
 }
@@ -87,6 +90,7 @@ export type CampaignProspectMinAggregateInputType = {
   discoveryRank?: true
   qualificationRank?: true
   isSelectedTopN?: true
+  isSelectedForOutreach?: true
 }
 
 export type CampaignProspectMaxAggregateInputType = {
@@ -97,6 +101,7 @@ export type CampaignProspectMaxAggregateInputType = {
   discoveryRank?: true
   qualificationRank?: true
   isSelectedTopN?: true
+  isSelectedForOutreach?: true
 }
 
 export type CampaignProspectCountAggregateInputType = {
@@ -107,6 +112,7 @@ export type CampaignProspectCountAggregateInputType = {
   discoveryRank?: true
   qualificationRank?: true
   isSelectedTopN?: true
+  isSelectedForOutreach?: true
   qualificationJson?: true
   _all?: true
 }
@@ -205,6 +211,7 @@ export type CampaignProspectGroupByOutputType = {
   discoveryRank: number | null
   qualificationRank: number | null
   isSelectedTopN: boolean
+  isSelectedForOutreach: boolean
   qualificationJson: runtime.JsonValue | null
   _count: CampaignProspectCountAggregateOutputType | null
   _avg: CampaignProspectAvgAggregateOutputType | null
@@ -239,6 +246,7 @@ export type CampaignProspectWhereInput = {
   discoveryRank?: Prisma.IntNullableFilter<"CampaignProspect"> | number | null
   qualificationRank?: Prisma.IntNullableFilter<"CampaignProspect"> | number | null
   isSelectedTopN?: Prisma.BoolFilter<"CampaignProspect"> | boolean
+  isSelectedForOutreach?: Prisma.BoolFilter<"CampaignProspect"> | boolean
   qualificationJson?: Prisma.JsonNullableFilter<"CampaignProspect">
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
@@ -252,6 +260,7 @@ export type CampaignProspectOrderByWithRelationInput = {
   discoveryRank?: Prisma.SortOrderInput | Prisma.SortOrder
   qualificationRank?: Prisma.SortOrderInput | Prisma.SortOrder
   isSelectedTopN?: Prisma.SortOrder
+  isSelectedForOutreach?: Prisma.SortOrder
   qualificationJson?: Prisma.SortOrderInput | Prisma.SortOrder
   campaign?: Prisma.CampaignOrderByWithRelationInput
   prospect?: Prisma.ProspectOrderByWithRelationInput
@@ -269,6 +278,7 @@ export type CampaignProspectWhereUniqueInput = Prisma.AtLeast<{
   discoveryRank?: Prisma.IntNullableFilter<"CampaignProspect"> | number | null
   qualificationRank?: Prisma.IntNullableFilter<"CampaignProspect"> | number | null
   isSelectedTopN?: Prisma.BoolFilter<"CampaignProspect"> | boolean
+  isSelectedForOutreach?: Prisma.BoolFilter<"CampaignProspect"> | boolean
   qualificationJson?: Prisma.JsonNullableFilter<"CampaignProspect">
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
@@ -282,6 +292,7 @@ export type CampaignProspectOrderByWithAggregationInput = {
   discoveryRank?: Prisma.SortOrderInput | Prisma.SortOrder
   qualificationRank?: Prisma.SortOrderInput | Prisma.SortOrder
   isSelectedTopN?: Prisma.SortOrder
+  isSelectedForOutreach?: Prisma.SortOrder
   qualificationJson?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CampaignProspectCountOrderByAggregateInput
   _avg?: Prisma.CampaignProspectAvgOrderByAggregateInput
@@ -301,6 +312,7 @@ export type CampaignProspectScalarWhereWithAggregatesInput = {
   discoveryRank?: Prisma.IntNullableWithAggregatesFilter<"CampaignProspect"> | number | null
   qualificationRank?: Prisma.IntNullableWithAggregatesFilter<"CampaignProspect"> | number | null
   isSelectedTopN?: Prisma.BoolWithAggregatesFilter<"CampaignProspect"> | boolean
+  isSelectedForOutreach?: Prisma.BoolWithAggregatesFilter<"CampaignProspect"> | boolean
   qualificationJson?: Prisma.JsonNullableWithAggregatesFilter<"CampaignProspect">
 }
 
@@ -310,6 +322,7 @@ export type CampaignProspectCreateInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   campaign: Prisma.CampaignCreateNestedOneWithoutCampaignProspectsInput
   prospect: Prisma.ProspectCreateNestedOneWithoutCampaignProspectsInput
@@ -323,6 +336,7 @@ export type CampaignProspectUncheckedCreateInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -332,6 +346,7 @@ export type CampaignProspectUpdateInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutCampaignProspectsNestedInput
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCampaignProspectsNestedInput
@@ -345,6 +360,7 @@ export type CampaignProspectUncheckedUpdateInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -356,6 +372,7 @@ export type CampaignProspectCreateManyInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -365,6 +382,7 @@ export type CampaignProspectUpdateManyMutationInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -376,6 +394,7 @@ export type CampaignProspectUncheckedUpdateManyInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -402,6 +421,7 @@ export type CampaignProspectCountOrderByAggregateInput = {
   discoveryRank?: Prisma.SortOrder
   qualificationRank?: Prisma.SortOrder
   isSelectedTopN?: Prisma.SortOrder
+  isSelectedForOutreach?: Prisma.SortOrder
   qualificationJson?: Prisma.SortOrder
 }
 
@@ -418,6 +438,7 @@ export type CampaignProspectMaxOrderByAggregateInput = {
   discoveryRank?: Prisma.SortOrder
   qualificationRank?: Prisma.SortOrder
   isSelectedTopN?: Prisma.SortOrder
+  isSelectedForOutreach?: Prisma.SortOrder
 }
 
 export type CampaignProspectMinOrderByAggregateInput = {
@@ -428,6 +449,7 @@ export type CampaignProspectMinOrderByAggregateInput = {
   discoveryRank?: Prisma.SortOrder
   qualificationRank?: Prisma.SortOrder
   isSelectedTopN?: Prisma.SortOrder
+  isSelectedForOutreach?: Prisma.SortOrder
 }
 
 export type CampaignProspectSumOrderByAggregateInput = {
@@ -525,6 +547,7 @@ export type CampaignProspectCreateWithoutCampaignInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   prospect: Prisma.ProspectCreateNestedOneWithoutCampaignProspectsInput
 }
@@ -536,6 +559,7 @@ export type CampaignProspectUncheckedCreateWithoutCampaignInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -576,6 +600,7 @@ export type CampaignProspectScalarWhereInput = {
   discoveryRank?: Prisma.IntNullableFilter<"CampaignProspect"> | number | null
   qualificationRank?: Prisma.IntNullableFilter<"CampaignProspect"> | number | null
   isSelectedTopN?: Prisma.BoolFilter<"CampaignProspect"> | boolean
+  isSelectedForOutreach?: Prisma.BoolFilter<"CampaignProspect"> | boolean
   qualificationJson?: Prisma.JsonNullableFilter<"CampaignProspect">
 }
 
@@ -585,6 +610,7 @@ export type CampaignProspectCreateWithoutProspectInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   campaign: Prisma.CampaignCreateNestedOneWithoutCampaignProspectsInput
 }
@@ -596,6 +622,7 @@ export type CampaignProspectUncheckedCreateWithoutProspectInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -632,6 +659,7 @@ export type CampaignProspectCreateManyCampaignInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -641,6 +669,7 @@ export type CampaignProspectUpdateWithoutCampaignInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCampaignProspectsNestedInput
 }
@@ -652,6 +681,7 @@ export type CampaignProspectUncheckedUpdateWithoutCampaignInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -662,6 +692,7 @@ export type CampaignProspectUncheckedUpdateManyWithoutCampaignInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -672,6 +703,7 @@ export type CampaignProspectCreateManyProspectInput = {
   discoveryRank?: number | null
   qualificationRank?: number | null
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -681,6 +713,7 @@ export type CampaignProspectUpdateWithoutProspectInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutCampaignProspectsNestedInput
 }
@@ -692,6 +725,7 @@ export type CampaignProspectUncheckedUpdateWithoutProspectInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -702,6 +736,7 @@ export type CampaignProspectUncheckedUpdateManyWithoutProspectInput = {
   discoveryRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   qualificationRank?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isSelectedTopN?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSelectedForOutreach?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qualificationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
@@ -715,6 +750,7 @@ export type CampaignProspectSelect<ExtArgs extends runtime.Types.Extensions.Inte
   discoveryRank?: boolean
   qualificationRank?: boolean
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: boolean
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
@@ -728,6 +764,7 @@ export type CampaignProspectSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   discoveryRank?: boolean
   qualificationRank?: boolean
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: boolean
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
@@ -741,6 +778,7 @@ export type CampaignProspectSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   discoveryRank?: boolean
   qualificationRank?: boolean
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: boolean
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
@@ -754,10 +792,11 @@ export type CampaignProspectSelectScalar = {
   discoveryRank?: boolean
   qualificationRank?: boolean
   isSelectedTopN?: boolean
+  isSelectedForOutreach?: boolean
   qualificationJson?: boolean
 }
 
-export type CampaignProspectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "addedAt" | "campaignId" | "prospectId" | "discoveryRank" | "qualificationRank" | "isSelectedTopN" | "qualificationJson", ExtArgs["result"]["campaignProspect"]>
+export type CampaignProspectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "addedAt" | "campaignId" | "prospectId" | "discoveryRank" | "qualificationRank" | "isSelectedTopN" | "isSelectedForOutreach" | "qualificationJson", ExtArgs["result"]["campaignProspect"]>
 export type CampaignProspectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
@@ -785,6 +824,11 @@ export type $CampaignProspectPayload<ExtArgs extends runtime.Types.Extensions.In
     discoveryRank: number | null
     qualificationRank: number | null
     isSelectedTopN: boolean
+    /**
+     * Human operator override: include this qualified prospect in outreach
+     * workflows without changing Top N ranking. Preserved across Top N recalculation.
+     */
+    isSelectedForOutreach: boolean
     qualificationJson: runtime.JsonValue | null
   }, ExtArgs["result"]["campaignProspect"]>
   composites: {}
@@ -1218,6 +1262,7 @@ export interface CampaignProspectFieldRefs {
   readonly discoveryRank: Prisma.FieldRef<"CampaignProspect", 'Int'>
   readonly qualificationRank: Prisma.FieldRef<"CampaignProspect", 'Int'>
   readonly isSelectedTopN: Prisma.FieldRef<"CampaignProspect", 'Boolean'>
+  readonly isSelectedForOutreach: Prisma.FieldRef<"CampaignProspect", 'Boolean'>
   readonly qualificationJson: Prisma.FieldRef<"CampaignProspect", 'Json'>
 }
     

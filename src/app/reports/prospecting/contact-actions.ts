@@ -11,6 +11,7 @@ import {
 } from "@/lib/prospecting/contacts/constants";
 import { discoverProspectContacts } from "@/lib/prospecting/contacts/discover";
 import { clampContactDiscoveryBatchSize } from "@/lib/prospecting/contacts/limit";
+import { campaignProspectEffectiveOutreachWhere } from "@/lib/prospecting/selection/outreach-selection";
 import { runWithConcurrency } from "@/lib/website-audit/site/pool";
 
 export interface ContactActionResult {
@@ -108,7 +109,7 @@ export async function startCampaignContactDiscovery(
     const memberships = await prisma.campaignProspect.findMany({
       where: {
         campaignId,
-        isSelectedTopN: true,
+        ...campaignProspectEffectiveOutreachWhere(),
         prospect: {
           qualificationStatus: "QUALIFIED",
         },

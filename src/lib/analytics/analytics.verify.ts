@@ -84,6 +84,10 @@ assert(isForbiddenAnalyticsParamKey("contact_form_url"), "contact_form_url is fo
 assert(isForbiddenAnalyticsParamKey("contact_form_id"), "contact_form_id is forbidden");
 assert(isForbiddenAnalyticsParamKey("outreach_channel"), "outreach_channel is forbidden");
 assert(isForbiddenAnalyticsParamKey("submitted_by_email"), "submitted_by_email is forbidden");
+assert(isForbiddenAnalyticsParamKey("provider_message_id"), "provider_message_id is forbidden");
+assert(isForbiddenAnalyticsParamKey("delivery_status"), "delivery_status is forbidden");
+assert(isForbiddenAnalyticsParamKey("bounce_reason"), "bounce_reason is forbidden");
+assert(isForbiddenAnalyticsParamKey("webhook_id"), "webhook_id is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
 assert(isForbiddenAnalyticsParamValue(REPORT_ID), "UUID values are forbidden");
 assert(

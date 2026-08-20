@@ -14,6 +14,7 @@ const rows: CampaignFunnelProspectRow[] = [
     qualificationStatus: "QUALIFIED",
     outreachStatus: "INTERESTED",
     isSelectedTopN: true,
+    isSelectedForOutreach: true,
     auditReportId: "audit-1",
     leadId: null,
     hasPrimaryEmail: true,
@@ -29,6 +30,7 @@ const rows: CampaignFunnelProspectRow[] = [
     qualificationStatus: "QUALIFIED",
     outreachStatus: "SENT",
     isSelectedTopN: true,
+    isSelectedForOutreach: true,
     auditReportId: "audit-2",
     leadId: null,
     hasPrimaryEmail: false,
@@ -44,6 +46,7 @@ const rows: CampaignFunnelProspectRow[] = [
     qualificationStatus: "QUALIFIED",
     outreachStatus: "CONVERTED",
     isSelectedTopN: true,
+    isSelectedForOutreach: true,
     auditReportId: "audit-3",
     leadId: "lead-3",
     hasPrimaryEmail: true,
@@ -54,6 +57,22 @@ const rows: CampaignFunnelProspectRow[] = [
     hasFormSubmitted: false,
     outcomes: ["INTERESTED"] satisfies OutreachOutcomeValue[],
   },
+  {
+    prospectId: "p4",
+    qualificationStatus: "QUALIFIED",
+    outreachStatus: "NOT_READY",
+    isSelectedTopN: false,
+    isSelectedForOutreach: true,
+    auditReportId: "audit-4",
+    leadId: null,
+    hasPrimaryEmail: true,
+    hasPrimaryContactForm: false,
+    hasDraft: false,
+    hasApprovedDraft: false,
+    hasEmailSent: false,
+    hasFormSubmitted: false,
+    outcomes: [] satisfies OutreachOutcomeValue[],
+  },
 ];
 
 const metrics = computeCampaignFunnelMetrics({
@@ -61,6 +80,11 @@ const metrics = computeCampaignFunnelMetrics({
   rows,
 });
 
+assert(metrics.counts.selectedTopN === 3, "selected top N stays algorithm-only");
+assert(
+  metrics.counts.selectedForOutreach === 4,
+  "selected for outreach includes manual non-Top-N",
+);
 assert(metrics.counts.emailSent === 2, "email sent counts correctly");
 assert(metrics.counts.formsSubmitted === 1, "form submitted counts correctly");
 assert(

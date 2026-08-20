@@ -1,11 +1,13 @@
 import type { OutreachChannelValue } from "@/lib/prospecting/outreach/types";
 import type { OutreachOutcomeValue } from "@/lib/prospecting/outreach/outcome-types";
+import { isProspectSelectedForOutreach } from "@/lib/prospecting/selection/outreach-selection";
 
 export interface CampaignFunnelProspectRow {
   prospectId: string;
   qualificationStatus: string;
   outreachStatus: string;
   isSelectedTopN: boolean;
+  isSelectedForOutreach: boolean;
   auditReportId: string | null;
   leadId: string | null;
   hasPrimaryEmail: boolean;
@@ -23,6 +25,7 @@ export interface CampaignFunnelCounts {
   audited: number;
   qualified: number;
   selectedTopN: number;
+  selectedForOutreach: number;
   contactable: number;
   emailContacts: number;
   contactForms: number;
@@ -82,6 +85,12 @@ export function computeCampaignFunnelMetrics(input: {
 }): CampaignFunnelMetrics {
   const rows = input.rows;
   const selectedRows = rows.filter((row) => row.isSelectedTopN);
+  const outreachSelectedRows = rows.filter((row) =>
+    isProspectSelectedForOutreach({
+      isSelectedTopN: row.isSelectedTopN,
+      isSelectedForOutreach: row.isSelectedForOutreach,
+    }),
+  );
 
   const emailContacts = uniqueProspectsMatching(
     selectedRows,
@@ -129,6 +138,7 @@ export function computeCampaignFunnelMetrics(input: {
       (row) => row.qualificationStatus === "QUALIFIED",
     ),
     selectedTopN: selectedRows.length,
+    selectedForOutreach: outreachSelectedRows.length,
     contactable,
     emailContacts,
     contactForms,

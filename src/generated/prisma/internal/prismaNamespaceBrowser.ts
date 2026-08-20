@@ -61,6 +61,7 @@ export const ModelName = {
   ProspectContact: 'ProspectContact',
   ProspectContactForm: 'ProspectContactForm',
   OutreachMessage: 'OutreachMessage',
+  OutreachDeliveryEvent: 'OutreachDeliveryEvent',
   SuppressionEntry: 'SuppressionEntry',
   ProspectDiscoveryRun: 'ProspectDiscoveryRun',
   ProspectDiscoveryCandidate: 'ProspectDiscoveryCandidate',
@@ -215,6 +216,7 @@ export const CampaignProspectScalarFieldEnum = {
   discoveryRank: 'discoveryRank',
   qualificationRank: 'qualificationRank',
   isSelectedTopN: 'isSelectedTopN',
+  isSelectedForOutreach: 'isSelectedForOutreach',
   qualificationJson: 'qualificationJson'
 } as const
 
@@ -292,11 +294,35 @@ export const OutreachMessageScalarFieldEnum = {
   submittedAt: 'submittedAt',
   submittedByEmail: 'submittedByEmail',
   error: 'error',
+  deliveredAt: 'deliveredAt',
+  deliveryDelayedAt: 'deliveryDelayedAt',
+  failedAt: 'failedAt',
+  bouncedAt: 'bouncedAt',
+  complainedAt: 'complainedAt',
+  providerSuppressedAt: 'providerSuppressedAt',
+  providerDeliveryStatus: 'providerDeliveryStatus',
   approvedAt: 'approvedAt',
   approvedByEmail: 'approvedByEmail'
 } as const
 
 export type OutreachMessageScalarFieldEnum = (typeof OutreachMessageScalarFieldEnum)[keyof typeof OutreachMessageScalarFieldEnum]
+
+
+export const OutreachDeliveryEventScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  outreachMessageId: 'outreachMessageId',
+  provider: 'provider',
+  providerEventId: 'providerEventId',
+  providerMessageId: 'providerMessageId',
+  eventType: 'eventType',
+  occurredAt: 'occurredAt',
+  receivedAt: 'receivedAt',
+  payloadFingerprint: 'payloadFingerprint',
+  safeMetadataJson: 'safeMetadataJson'
+} as const
+
+export type OutreachDeliveryEventScalarFieldEnum = (typeof OutreachDeliveryEventScalarFieldEnum)[keyof typeof OutreachDeliveryEventScalarFieldEnum]
 
 
 export const SuppressionEntryScalarFieldEnum = {

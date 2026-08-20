@@ -68,6 +68,11 @@ export type ProspectContactForm = Prisma.ProspectContactFormModel
  */
 export type OutreachMessage = Prisma.OutreachMessageModel
 /**
+ * Model OutreachDeliveryEvent
+ * 
+ */
+export type OutreachDeliveryEvent = Prisma.OutreachDeliveryEventModel
+/**
  * Model SuppressionEntry
  * 
  */

@@ -52,6 +52,7 @@ export async function loadCampaignFunnelMetrics(
       qualificationStatus: prospect.qualificationStatus,
       outreachStatus: prospect.outreachStatus,
       isSelectedTopN: membership.isSelectedTopN,
+      isSelectedForOutreach: membership.isSelectedForOutreach,
       auditReportId: prospect.auditReportId,
       leadId: prospect.leadId,
       hasPrimaryEmail: prospect.contacts.some(

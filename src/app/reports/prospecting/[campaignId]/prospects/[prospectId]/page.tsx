@@ -6,8 +6,10 @@ import { ArrowLeft } from "lucide-react";
 import { ProspectAuditActions } from "@/components/prospecting/prospect-audit-actions";
 import { ProspectContactsPanel } from "@/components/prospecting/prospect-contacts-panel";
 import { OutreachDraftEditor } from "@/components/prospecting/outreach-draft-editor";
+import { EmailDeliveryTimeline } from "@/components/prospecting/email-delivery-timeline";
 import { OutreachOutcomePanel } from "@/components/prospecting/outreach-outcome-panel";
 import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-lead-conversion-panel";
+import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
@@ -17,8 +19,14 @@ import type { DetectedContactFormFields } from "@/lib/prospecting/contacts/form-
 import { loadProspectSuppressionState } from "@/lib/prospecting/metrics/load-campaign-funnel";
 import { loadContactSuppressionContext } from "@/lib/prospecting/suppression/load";
 import { canConvertProspect } from "@/lib/prospecting/outreach/lifecycle";
+import {
+  buildEmailDeliveryTimeline,
+  getOutreachDeliveryState,
+  providerDeliveryStatusLabel,
+} from "@/lib/prospecting/outreach/delivery/state";
 import { outreachOutcomeLabel } from "@/lib/prospecting/outreach/outcome-types";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
+import { isProspectSelectedForOutreach } from "@/lib/prospecting/selection/outreach-selection";
 import {
   outreachStatusLabel,
   qualificationLabelText,
@@ -154,6 +162,46 @@ export default async function CampaignProspectDetailPage({
     prospect.contacts.find((contact) => contact.isPrimary) ??
     prospect.contacts[0] ??
     null;
+  const emailDeliveryMessage =
+    prospect.outreachMessages.find(
+      (message) =>
+        message.channel === "EMAIL" &&
+        (message.status === "SENT" || message.providerDeliveryStatus),
+    ) ?? null;
+  const emailDeliveryTimeline = emailDeliveryMessage
+    ? buildEmailDeliveryTimeline({
+        channel: emailDeliveryMessage.channel,
+        status: emailDeliveryMessage.status,
+        approvedAt: emailDeliveryMessage.approvedAt,
+        sentAt: emailDeliveryMessage.sentAt,
+        submittedAt: emailDeliveryMessage.submittedAt,
+        providerDeliveryStatus: emailDeliveryMessage.providerDeliveryStatus,
+        deliveredAt: emailDeliveryMessage.deliveredAt,
+        deliveryDelayedAt: emailDeliveryMessage.deliveryDelayedAt,
+        failedAt: emailDeliveryMessage.failedAt,
+        bouncedAt: emailDeliveryMessage.bouncedAt,
+        complainedAt: emailDeliveryMessage.complainedAt,
+        providerSuppressedAt: emailDeliveryMessage.providerSuppressedAt,
+      })
+    : [];
+  const emailDeliveryStatusLabel = emailDeliveryMessage
+    ? providerDeliveryStatusLabel(
+        getOutreachDeliveryState({
+          channel: emailDeliveryMessage.channel,
+          status: emailDeliveryMessage.status,
+          approvedAt: emailDeliveryMessage.approvedAt,
+          sentAt: emailDeliveryMessage.sentAt,
+          submittedAt: emailDeliveryMessage.submittedAt,
+          providerDeliveryStatus: emailDeliveryMessage.providerDeliveryStatus,
+          deliveredAt: emailDeliveryMessage.deliveredAt,
+          deliveryDelayedAt: emailDeliveryMessage.deliveryDelayedAt,
+          failedAt: emailDeliveryMessage.failedAt,
+          bouncedAt: emailDeliveryMessage.bouncedAt,
+          complainedAt: emailDeliveryMessage.complainedAt,
+          providerSuppressedAt: emailDeliveryMessage.providerSuppressedAt,
+        }),
+      )
+    : null;
   const latestOutcome = prospect.outreachOutcomes[0]?.outcome ?? null;
   const [existingLead, suppression, contactSuppression] = await Promise.all([
     findExistingLeadByHostname(prospect.hostname),
@@ -392,13 +440,29 @@ export default async function CampaignProspectDetailPage({
         </Card>
 
         <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Outreach selection
+          </h2>
+          <div className="mt-4">
+            <ProspectOutreachSelectionControl
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              qualificationStatus={prospect.qualificationStatus}
+              isSelectedTopN={membership.isSelectedTopN}
+              isSelectedForOutreach={membership.isSelectedForOutreach}
+              variant="detail"
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
           <OutreachDraftEditor
             key={currentDraft?.id ?? "no-draft"}
             campaignId={membership.campaign.id}
             prospectId={prospect.id}
             businessName={prospect.businessName}
             canGenerate={
-              membership.isSelectedTopN &&
+              isProspectSelectedForOutreach(membership) &&
               prospect.qualificationStatus === "QUALIFIED" &&
               !prospect.leadId &&
               prospect.outreachStatus !== "CONVERTED" &&
@@ -428,6 +492,15 @@ export default async function CampaignProspectDetailPage({
             }
           />
         </Card>
+
+        {emailDeliveryMessage && emailDeliveryTimeline.length > 0 ? (
+          <Card variant="elevated" padding="lg">
+            <EmailDeliveryTimeline
+              steps={emailDeliveryTimeline}
+              providerDeliveryStatus={emailDeliveryStatusLabel}
+            />
+          </Card>
+        ) : null}
 
         {completedMessages.length > 0 ? (
           <Card variant="elevated" padding="lg">

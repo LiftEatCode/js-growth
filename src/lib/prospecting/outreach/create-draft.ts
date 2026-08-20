@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { parseStoredQualification } from "@/lib/prospecting/qualification/parse";
 import { loadQualificationBlockers } from "@/lib/prospecting/qualification/audit-prospect";
 import { selectProspectOutreachChannel } from "@/lib/prospecting/contacts/select-channel";
+import { isProspectSelectedForOutreach } from "@/lib/prospecting/selection/outreach-selection";
 import { loadContactSuppressionContext } from "@/lib/prospecting/suppression/load";
 import type { WebsiteAuditResult } from "@/lib/website-audit/types";
 import {
@@ -76,7 +77,7 @@ export async function createOrReuseOutreachDraft(options: {
 
   if (
     prospect.qualificationStatus !== "QUALIFIED" ||
-    !membership.isSelectedTopN
+    !isProspectSelectedForOutreach(membership)
   ) {
     return {
       outcome: "SKIPPED",
