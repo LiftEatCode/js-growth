@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 10 — Competitor Website Auditing
+Status: 🟢 Sprint 11 — Deterministic Competitive Comparison
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,13 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 10 (current):
+Sprint 11 (current):
+
+- Deterministic prospect vs selected-competitor Website Growth Audit comparison
+- Overall / category / finding gap analysis with historical snapshots
+- No OpenAI, Places, crawling, or outreach during comparison
+
+Sprint 10:
 
 - Human-selected competitor Website Growth Audits (max 3)
 - Reuses `runDeterministicWebsiteAudit` with dedicated `CompetitorAudit` snapshots

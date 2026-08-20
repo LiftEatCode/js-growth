@@ -61,6 +61,8 @@ model AuditReport {
 
   outreachMessages OutreachMessage[]
 
+  competitiveComparisons CompetitiveComparisonSnapshot[]
+
   aiStatus         AiInterpretationStatus?
   aiAttemptCount   Int                     @default(0)
   aiStartedAt      DateTime?
@@ -336,6 +338,7 @@ model Campaign {
   competitorDiscoveryRuns CompetitorDiscoveryRun[]
   competitorAuditRuns     CompetitorAuditRun[]
   competitorAudits        CompetitorAudit[]
+  competitiveComparisons  CompetitiveComparisonSnapshot[]
 
   @@index([status])
   @@index([createdAt])
@@ -391,6 +394,7 @@ model Prospect {
   competitorDiscoveryRuns     CompetitorDiscoveryRun[]
   competitorAuditRuns         CompetitorAuditRun[]
   competitorAudits            CompetitorAudit[]            @relation("TargetProspectCompetitorAudits")
+  competitiveComparisons      CompetitiveComparisonSnapshot[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -928,6 +932,35 @@ model CompetitorAudit {
   @@index([campaignId, createdAt])
   @@index([status, completedAt])
   @@index([runId])
+}
+
+/// Deterministic prospect-vs-competitor comparison snapshot (Sprint 11).
+/// Not a public report. No AI. No network. Historical point-in-time facts.
+model CompetitiveComparisonSnapshot {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  auditReportId String
+  auditReport   AuditReport @relation(fields: [auditReportId], references: [id], onDelete: Cascade)
+
+  auditEngineVersion Int
+  comparisonVersion  Int
+
+  comparisonJson            Json
+  competitorAuditIdsJson    Json
+  selectedCompetitorIdsJson Json
+
+  createdByEmail String
+
+  @@index([prospectId, campaignId, createdAt])
+  @@index([auditReportId])
+  @@index([createdAt])
 }
 
 model CompetitorAuditRun {

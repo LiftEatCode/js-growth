@@ -11,7 +11,9 @@ import { OutreachOutcomePanel } from "@/components/prospecting/outreach-outcome-
 import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-lead-conversion-panel";
 import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-landscape-panel";
+import { CompetitiveComparisonPanel } from "@/components/prospecting/competitive-comparison-panel";
 import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
+import { loadLatestCompetitiveComparison } from "@/lib/competitive-intelligence/comparison/load";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
@@ -147,6 +149,11 @@ export default async function CampaignProspectDetailPage({
   if (!membership) {
     notFound();
   }
+
+  const competitiveComparison = await loadLatestCompetitiveComparison({
+    campaignId,
+    prospectId,
+  });
 
   const prospect = membership.prospect;
   const audit = prospect.auditReport?.audit as WebsiteAuditResult | undefined;
@@ -548,6 +555,34 @@ export default async function CampaignProspectDetailPage({
                     : null,
                 };
               })}
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Competitive comparison
+          </h2>
+          <div className="mt-4">
+            <CompetitiveComparisonPanel
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              snapshot={
+                competitiveComparison.snapshot
+                  ? {
+                      id: competitiveComparison.snapshot.id,
+                      createdAtLabel: formatDate(
+                        competitiveComparison.snapshot.createdAt,
+                      ),
+                      comparison: competitiveComparison.snapshot.comparison,
+                    }
+                  : null
+              }
+              stale={competitiveComparison.stale}
+              staleReasons={competitiveComparison.staleReasons}
+              canGenerate={competitiveComparison.canGenerate}
+              generateBlocker={competitiveComparison.generateBlocker}
+              skippedCompetitors={competitiveComparison.skippedCompetitors}
             />
           </div>
         </Card>

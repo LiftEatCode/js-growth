@@ -143,6 +143,12 @@ export type ProspectCompetitor = Prisma.ProspectCompetitorModel
  */
 export type CompetitorAudit = Prisma.CompetitorAuditModel
 /**
+ * Model CompetitiveComparisonSnapshot
+ * Deterministic prospect-vs-competitor comparison snapshot (Sprint 11).
+ * Not a public report. No AI. No network. Historical point-in-time facts.
+ */
+export type CompetitiveComparisonSnapshot = Prisma.CompetitiveComparisonSnapshotModel
+/**
  * Model CompetitorAuditRun
  * 
  */
