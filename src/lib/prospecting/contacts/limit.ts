@@ -17,6 +17,7 @@ export function isReusableContactDiscovery(options: {
   lastContactDiscoveryAt: Date | string | null | undefined;
   outreachStatus: string | null | undefined;
   hasUsableContact: boolean;
+  hasUsableForm?: boolean;
   now?: Date;
   ttlMs?: number;
 }): boolean {
@@ -28,7 +29,7 @@ export function isReusableContactDiscovery(options: {
     options.outreachStatus === "CONTACT_DISCOVERY_FAILED" ||
     options.outreachStatus === "DRAFT_GENERATION_FAILED"
   ) {
-    return options.hasUsableContact;
+    return options.hasUsableContact || options.hasUsableForm === true;
   }
 
   const discoveredAt =
@@ -48,12 +49,19 @@ export function isReusableContactDiscovery(options: {
     return false;
   }
 
-  return (
-    options.hasUsableContact ||
-    options.outreachStatus === "NO_CONTACT" ||
-    options.outreachStatus === "SUPPRESSED" ||
-    options.outreachStatus === "CONTACT_FOUND" ||
-    options.outreachStatus === "DRAFT_READY" ||
-    options.outreachStatus === "APPROVED"
-  );
+  const hasUsableForm = options.hasUsableForm === true;
+
+  if (options.hasUsableContact && hasUsableForm) {
+    return true;
+  }
+
+  if (!options.hasUsableContact && hasUsableForm) {
+    return true;
+  }
+
+  if (options.hasUsableContact && !hasUsableForm) {
+    return false;
+  }
+
+  return false;
 }

@@ -118,6 +118,7 @@ export async function startCampaignContactDiscovery(
         prospect: {
           include: {
             contacts: true,
+            contactForms: true,
           },
         },
       },
@@ -125,13 +126,24 @@ export async function startCampaignContactDiscovery(
     });
 
     const pending = memberships.filter((row) => {
-      const usable = row.prospect.contacts.some(
+      const hasUsableEmail = row.prospect.contacts.some(
         (contact) =>
           (contact.status === "DISCOVERED" || contact.status === "SELECTED") &&
           contact.email,
       );
+      const hasUsableForm = row.prospect.contactForms.some(
+        (form) => form.status === "DISCOVERED" || form.status === "SELECTED",
+      );
 
-      return !usable || row.prospect.outreachStatus === "CONTACT_DISCOVERY_FAILED";
+      if (row.prospect.outreachStatus === "CONTACT_DISCOVERY_FAILED") {
+        return true;
+      }
+
+      if (hasUsableEmail && !hasUsableForm) {
+        return true;
+      }
+
+      return !hasUsableEmail && !hasUsableForm;
     });
 
     const batch = pending.slice(0, clampContactDiscoveryBatchSize(pending.length));

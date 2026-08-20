@@ -150,18 +150,20 @@ assert(clampContactDiscoveryBatchSize(40) === MAX_CONTACT_DISCOVERY_PER_RUN, "ba
 assert(MAX_CONTACT_DISCOVERY_CONCURRENCY === 2, "concurrency is 2");
 assert(CONTACT_TTL_MS === 30 * 24 * 60 * 60 * 1000, "contact TTL is 30 days");
 assert(
-  isReusableContactDiscovery({
+  !isReusableContactDiscovery({
     lastContactDiscoveryAt: new Date(),
     outreachStatus: "NO_CONTACT",
     hasUsableContact: false,
+    hasUsableForm: false,
   }),
-  "NO_PUBLIC_EMAIL_FOUND can be reused within TTL",
+  "zero-channel results are rediscovered on batch find",
 );
 assert(
   !isReusableContactDiscovery({
     lastContactDiscoveryAt: new Date(Date.now() - CONTACT_TTL_MS - 1000),
     outreachStatus: "CONTACT_FOUND",
     hasUsableContact: true,
+    hasUsableForm: true,
   }),
   "expired contacts are not reused",
 );

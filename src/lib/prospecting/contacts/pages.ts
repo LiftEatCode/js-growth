@@ -19,13 +19,25 @@ const PAGE_PATTERNS: Array<{
   sourceType: ContactSourceType;
 }> = [
   {
-    pattern: /^\/contact(-us)?(\/|$)/,
+    pattern: /^\/contact([\w-]+)?(\/|$)/,
     rank: 100,
     sourceType: "WEBSITE_CONTACT_PAGE",
   },
   {
-    pattern: /^\/(get-in-touch|reach-us|contactus)(\/|$)/,
-    rank: 90,
+    pattern:
+      /^\/(get-in-touch|reach-us|contactus|contact-us|contact_us)(\/|$)/,
+    rank: 95,
+    sourceType: "WEBSITE_CONTACT_PAGE",
+  },
+  {
+    pattern:
+      /^\/(request-service|request-a-service|service-request|request-an-estimate|request-estimate|free-estimate|get-a-quote|request-quote|request-a-quote)(\/|$)/,
+    rank: 92,
+    sourceType: "WEBSITE_CONTACT_PAGE",
+  },
+  {
+    pattern: /^\/(schedule|schedule-service|book|book-service|appointment)(\/|$)/,
+    rank: 88,
     sourceType: "WEBSITE_CONTACT_PAGE",
   },
   {
@@ -49,6 +61,9 @@ const PAGE_PATTERNS: Array<{
     sourceType: "WEBSITE_TEAM_PAGE",
   },
 ];
+
+const CONTACT_ANCHOR_PATTERN =
+  /\b(contact us|contact|get in touch|request service|request an estimate|request a service|free estimate|get a quote|request a quote|request quote|schedule service|book service|schedule appointment|service request|get estimate)\b/i;
 
 export function classifyContactPage(
   pageUrl: string,
@@ -95,9 +110,29 @@ export function rankContactPage(pageUrl: string): number {
   return 0;
 }
 
+export function rankContactLink(input: {
+  href: string;
+  anchorText?: string;
+}): number {
+  const pathRank = rankContactPage(input.href);
+
+  if (pathRank > 0) {
+    return pathRank;
+  }
+
+  const anchor = input.anchorText?.trim() ?? "";
+
+  if (CONTACT_ANCHOR_PATTERN.test(anchor)) {
+    return 85;
+  }
+
+  return 0;
+}
+
 export function selectContactPagesToFetch(options: {
   homepageUrl: string;
   linkedHrefs: string[];
+  linkedCandidates?: Array<{ href: string; anchorText: string }>;
   maxPages?: number;
 }): RankedContactPage[] {
   const maxPages = options.maxPages ?? MAX_CONTACT_PAGES_PER_PROSPECT;
@@ -118,6 +153,14 @@ export function selectContactPagesToFetch(options: {
   ];
   const seen = new Set([homepage.href]);
 
+  const anchorByHref = new Map<string, string>();
+
+  for (const candidate of options.linkedCandidates ?? []) {
+    if (!anchorByHref.has(candidate.href)) {
+      anchorByHref.set(candidate.href, candidate.anchorText);
+    }
+  }
+
   const ranked = options.linkedHrefs
     .map((href) => {
       try {
@@ -127,7 +170,10 @@ export function selectContactPagesToFetch(options: {
           return null;
         }
 
-        const rank = rankContactPage(url.href);
+        const rank = rankContactLink({
+          href: url.href,
+          anchorText: anchorByHref.get(href) ?? anchorByHref.get(url.href),
+        });
 
         if (rank <= 0) {
           return null;

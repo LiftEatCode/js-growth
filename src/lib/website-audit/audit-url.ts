@@ -114,11 +114,15 @@ function mapSecureFetchError(
 
 export async function fetchWebsitePage(
   requestedUrl: string,
+  options?: {
+    timeoutMs?: number;
+  },
 ): Promise<FetchWebsiteResult> {
   const result = await fetchPublicHttpResource(requestedUrl, {
     accept:
       "text/html,application/xhtml+xml;q=0.9,*/*;q=0.1",
     maxResponseBytes: MAX_HTML_RESPONSE_BYTES,
+    timeoutMs: options?.timeoutMs,
     readBody: ({ contentType }) =>
       isAllowedContentType(contentType),
   });

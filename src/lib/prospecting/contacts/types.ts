@@ -58,6 +58,13 @@ export interface WebsiteContactDiscoveryResult {
   forms: import("./form-types").NormalizedContactFormCandidate[];
   failed: boolean;
   failureMessage: string | null;
+  diagnostics?: {
+    pagesSelected: number;
+    rawFormsSeen: number;
+    formsAccepted: number;
+    emailsFound: number;
+    fetchFailures: number;
+  };
 }
 
 export interface ProspectContactDiscoveryProvider {

@@ -40,7 +40,7 @@ function isUsableFormStatus(status: string): boolean {
 function hasFreshUsableChannel(input: {
   contacts: Array<{ status: string; isPrimary: boolean; lastVerifiedAt: Date | null; discoveredAt: Date }>;
   forms: Array<{ status: string; isPrimary: boolean; lastVerifiedAt: Date | null; discoveredAt: Date }>;
-}): boolean {
+}): { hasContact: boolean; hasForm: boolean; hasAny: boolean } {
   const usableContacts = input.contacts.filter((contact) =>
     isUsableContactStatus(contact.status),
   );
@@ -48,16 +48,20 @@ function hasFreshUsableChannel(input: {
     isUsableFormStatus(form.status),
   );
 
-  return (
-    usableContacts.some((contact) => {
-      const verifiedAt = contact.lastVerifiedAt ?? contact.discoveredAt;
-      return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
-    }) ||
-    usableForms.some((form) => {
-      const verifiedAt = form.lastVerifiedAt ?? form.discoveredAt;
-      return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
-    })
-  );
+  const hasContact = usableContacts.some((contact) => {
+    const verifiedAt = contact.lastVerifiedAt ?? contact.discoveredAt;
+    return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
+  });
+  const hasForm = usableForms.some((form) => {
+    const verifiedAt = form.lastVerifiedAt ?? form.discoveredAt;
+    return Date.now() - verifiedAt.getTime() < CONTACT_TTL_MS;
+  });
+
+  return {
+    hasContact,
+    hasForm,
+    hasAny: hasContact || hasForm,
+  };
 }
 
 export async function discoverProspectContacts(options: {
@@ -90,7 +94,7 @@ export async function discoverProspectContacts(options: {
   const usableForms = prospect.contactForms.filter((form) =>
     isUsableFormStatus(form.status),
   );
-  const hasUsableChannel = hasFreshUsableChannel({
+  const freshChannels = hasFreshUsableChannel({
     contacts: prospect.contacts,
     forms: prospect.contactForms,
   });
@@ -100,14 +104,15 @@ export async function discoverProspectContacts(options: {
     isReusableContactDiscovery({
       lastContactDiscoveryAt: prospect.lastContactDiscoveryAt,
       outreachStatus: prospect.outreachStatus,
-      hasUsableContact: hasUsableChannel,
+      hasUsableContact: freshChannels.hasContact,
+      hasUsableForm: freshChannels.hasForm,
     })
   ) {
     const primary =
       usableContacts.find((contact) => contact.isPrimary) ?? usableContacts[0] ?? null;
 
     return {
-      outcome: hasUsableChannel
+      outcome: freshChannels.hasAny
         ? "REUSED"
         : prospect.outreachStatus === "SUPPRESSED"
           ? "SUPPRESSED"
@@ -115,7 +120,7 @@ export async function discoverProspectContacts(options: {
       reused: true,
       contactCount: usableContacts.length + usableForms.length,
       primaryEmail: primary?.email ?? null,
-      message: hasUsableChannel
+      message: freshChannels.hasAny
         ? primary
           ? "Recently discovered contacts were reused."
           : "Recently discovered contact form was reused."

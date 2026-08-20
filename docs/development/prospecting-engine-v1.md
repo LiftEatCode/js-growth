@@ -296,6 +296,19 @@ Operator workflow:
 
 Top N remains the deterministic qualification recommendation (`isSelectedTopN`). Operators may additionally mark any **qualified** prospect for outreach with `isSelectedForOutreach`. Effective selection for Find Contacts and Generate Missing Drafts is `isSelectedTopN || isSelectedForOutreach`. Top N recalculation updates only `isSelectedTopN`; manual selections survive reruns. Migration backfill sets `isSelectedForOutreach = true` where `isSelectedTopN = true` so existing campaigns keep current behavior.
 
+### Sprint 7.1 contact-form discovery hardening
+
+Contact discovery now:
+
+- discovers **email and contact forms in the same run** (email does not short-circuit form discovery)
+- reruns when a prospect has email but no stored form, or when no channel was found (batch Find Contacts no longer silently reuses stale zero-form results within TTL)
+- ranks `/contact-3`, request-service, schedule, and anchor-text CTAs ("Contact Us", "Request Service", …)
+- detects Elementor/WP-style forms, iframe embeds from known providers, and external hosted form links
+- tries www/apex host fallbacks and uses a 20s contact-fetch timeout for slow hosts
+- documents Google Sites login redirects as static-fetch limitations
+
+Recheck Contacts (`force: true`) and campaign Find Contacts both upgrade existing prospects after deploy.
+
 ### No guessed emails
 
 An email must appear in publicly accessible first-party business content. The system does not generate `info@`, `contact@`, `owner@`, or similar addresses.

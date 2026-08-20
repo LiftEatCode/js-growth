@@ -1,9 +1,8 @@
 import "server-only";
 
-import { fetchWebsitePage } from "@/lib/website-audit/audit-url";
+import { interpretPublicWebsiteUrl } from "@/lib/website-audit/schema";
 import { extractSiteLinkCandidates } from "@/lib/website-audit/site/extract-candidates";
 import { runWithConcurrency } from "@/lib/website-audit/site/pool";
-import { interpretPublicWebsiteUrl } from "@/lib/website-audit/schema";
 
 import {
   CONTACT_PAGE_FETCH_CONCURRENCY,
@@ -12,11 +11,13 @@ import {
 import {
   dedupeExtractedContactForms,
   extractContactFormsFromHtml,
+  summarizeContactFormExtraction,
 } from "./extract-forms";
 import {
   dedupeExtractedEmails,
   extractEmailsFromHtml,
 } from "./extract";
+import { fetchContactDiscoveryPage } from "./fetch-page";
 import type { NormalizedContactFormCandidate } from "./form-types";
 import { normalizeContactCandidates } from "./normalize";
 import { classifyContactPage, isSameHostUrl, selectContactPagesToFetch } from "./pages";
@@ -25,7 +26,18 @@ import type {
   WebsiteContactDiscoveryResult,
 } from "./types";
 
-function failedResult(message: string): WebsiteContactDiscoveryResult {
+export interface ContactDiscoveryDiagnostics {
+  pagesSelected: number;
+  rawFormsSeen: number;
+  formsAccepted: number;
+  emailsFound: number;
+  fetchFailures: number;
+}
+
+function failedResult(
+  message: string,
+  diagnostics?: ContactDiscoveryDiagnostics,
+): WebsiteContactDiscoveryResult {
   return {
     pagesFetched: 0,
     pageUrls: [],
@@ -33,6 +45,13 @@ function failedResult(message: string): WebsiteContactDiscoveryResult {
     forms: [],
     failed: true,
     failureMessage: message,
+    diagnostics: diagnostics ?? {
+      pagesSelected: 0,
+      rawFormsSeen: 0,
+      formsAccepted: 0,
+      emailsFound: 0,
+      fetchFailures: 1,
+    },
   };
 }
 
@@ -45,23 +64,27 @@ export function createWebsiteContactDiscoveryProvider(): ProspectContactDiscover
         return failedResult(parsed.error);
       }
 
-      const homepage = await fetchWebsitePage(parsed.url);
+      const homepage = await fetchContactDiscoveryPage(parsed.url);
 
       if (!homepage.success) {
         return failedResult(homepage.error.message);
       }
 
       const homepageUrl = homepage.data.finalUrl;
-      const linkedHrefs = extractSiteLinkCandidates(
+      const linkCandidates = extractSiteLinkCandidates(
         homepage.data.html,
         homepageUrl,
         homepageUrl,
         0,
-      ).map((candidate) => candidate.normalized.href);
+      );
 
       const pages = selectContactPagesToFetch({
         homepageUrl,
-        linkedHrefs,
+        linkedHrefs: linkCandidates.map((candidate) => candidate.normalized.href),
+        linkedCandidates: linkCandidates.map((candidate) => ({
+          href: candidate.normalized.href,
+          anchorText: candidate.anchorText,
+        })),
         maxPages: MAX_CONTACT_PAGES_PER_PROSPECT,
       });
 
@@ -70,7 +93,7 @@ export function createWebsiteContactDiscoveryProvider(): ProspectContactDiscover
         extra,
         CONTACT_PAGE_FETCH_CONCURRENCY,
         async (page) => {
-          const fetched = await fetchWebsitePage(page.href);
+          const fetched = await fetchContactDiscoveryPage(page.href);
 
           if (!fetched.success) {
             return null;
@@ -99,13 +122,19 @@ export function createWebsiteContactDiscoveryProvider(): ProspectContactDiscover
         ),
       ].slice(0, MAX_CONTACT_PAGES_PER_PROSPECT);
 
-      const extracted = fetchedPages.flatMap((page) =>
-        extractEmailsFromHtml(
+      let rawFormsSeen = 0;
+
+      const extracted = fetchedPages.flatMap((page) => {
+        const sourceType = classifyContactPage(page.finalUrl, homepageUrl);
+        const stats = summarizeContactFormExtraction(
           page.html,
           page.finalUrl,
-          classifyContactPage(page.finalUrl, homepageUrl),
-        ),
-      );
+          sourceType,
+        );
+        rawFormsSeen += stats.rawForms;
+
+        return extractEmailsFromHtml(page.html, page.finalUrl, sourceType);
+      });
 
       const extractedForms = fetchedPages.flatMap((page) =>
         extractContactFormsFromHtml(
@@ -130,16 +159,25 @@ export function createWebsiteContactDiscoveryProvider(): ProspectContactDiscover
         confidenceReason: form.confidenceReason,
       }));
 
+      const normalizedCandidates = normalizeContactCandidates(
+        dedupeExtractedEmails(extracted),
+        hostname,
+      );
+
       return {
         pagesFetched: fetchedPages.length,
         pageUrls: fetchedPages.map((page) => page.finalUrl),
-        candidates: normalizeContactCandidates(
-          dedupeExtractedEmails(extracted),
-          hostname,
-        ),
+        candidates: normalizedCandidates,
         forms,
         failed: false,
         failureMessage: null,
+        diagnostics: {
+          pagesSelected: pages.length,
+          rawFormsSeen,
+          formsAccepted: forms.length,
+          emailsFound: normalizedCandidates.length,
+          fetchFailures: pages.length - fetchedPages.length,
+        },
       };
     },
   };
