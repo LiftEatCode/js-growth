@@ -262,6 +262,13 @@ export function CompetitiveInterpretationPanel({
                     comparison={comparison}
                     sourceKey={priority.sourceKey}
                   />
+                  {(priority.supportingSourceKeys ?? []).map((key) => (
+                    <EvidenceBlock
+                      key={key}
+                      comparison={comparison}
+                      sourceKey={key}
+                    />
+                  ))}
                 </li>
               ))}
             </ol>

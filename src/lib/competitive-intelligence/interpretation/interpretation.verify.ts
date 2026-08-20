@@ -18,10 +18,12 @@ import {
   MAX_AI_COMPETITORS,
   MAX_AI_FINDING_EVIDENCE_PER_ITEM,
   MAX_AI_OPPORTUNITIES,
+  MAX_COMPETITIVE_INTERPRETATION_REPAIR_ATTEMPTS,
   MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION,
   MAX_EXECUTIVE_HEADLINE_CHARS,
   MAX_RISKS,
 } from "./constants";
+import { detectUnsupportedCommercialClaims } from "./claims";
 import { fingerprintCompetitiveAiInput } from "./fingerprint";
 import { buildCompetitiveAiInput, buildSourceKeyCatalog } from "./input";
 import { COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT } from "./prompt";
@@ -62,12 +64,16 @@ const repoRoot = join(here, "../../../..");
 
 assert(COMPETITIVE_INTERPRETATION_VERSION === 1, "interpretation version is 1");
 assert(
-  COMPETITIVE_INTERPRETATION_PROMPT_VERSION === 1,
-  "prompt version is 1",
+  COMPETITIVE_INTERPRETATION_PROMPT_VERSION === 2,
+  "prompt version is 2 after Sprint 12.1 hardening",
 );
 assert(
   MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION === 1,
   "max one interpretation per action",
+);
+assert(
+  MAX_COMPETITIVE_INTERPRETATION_REPAIR_ATTEMPTS === 1,
+  "max one repair attempt",
 );
 assert(MAX_AI_COMPETITORS === 3, "max 3 competitors in AI input");
 assert(MAX_AI_OPPORTUNITIES === 8, "max 8 opportunities");
@@ -508,7 +514,7 @@ const claimRejected = validateCompetitiveInterpretationContent(
     ...validContent,
     executiveSummary: {
       headline: "Behind overall",
-      summary: "Competitors generate more revenue and more leads than this business.",
+      summary: "Improving this will generate more leads for the business.",
     },
   },
   buildCompetitiveAiInput({
@@ -518,6 +524,349 @@ const claimRejected = validateCompetitiveInterpretationContent(
   }),
 );
 assert(!claimRejected.ok, "unsupported commercial claims rejected");
+assert(
+  !claimRejected.ok && claimRejected.rule === "UNSUPPORTED_LEAD_CAUSALITY",
+  "lead causality rule identified",
+);
+
+const mustRejectClaims = [
+  "Improving this will generate more leads.",
+  "Fixing your SEO will increase Google rankings.",
+  "These changes will increase revenue.",
+  "Your competitor receives more traffic.",
+  "This will improve your conversion rate.",
+  "Your competitor is getting more customers because its score is higher.",
+];
+
+for (const text of mustRejectClaims) {
+  const result = detectUnsupportedCommercialClaims(text);
+  assert(!result.valid, `must reject: ${text}`);
+}
+
+const mustAcceptClaims = [
+  "Make the next step clearer for visitors.",
+  "Strengthen the path from service information to contacting the business.",
+  "Content is the largest measured gap in this comparison.",
+  "Search Optimization deserves attention because the deterministic comparison shows a substantial gap.",
+  "Preserve the site's performance strength while improving weaker areas.",
+  "The comparison is directional because it currently contains one audited competitor.",
+  "Improving calls to action may make the next step clearer for visitors.",
+];
+
+for (const text of mustAcceptClaims) {
+  const result = detectUnsupportedCommercialClaims(text);
+  assert(result.valid, `must accept: ${text}`);
+}
+
+const productionTarget: ComparisonInputAudit = {
+  overallScore: 74,
+  auditEngineVersion: 1,
+  categoryScores: [
+    {
+      category: "technical",
+      label: "Technical SEO",
+      score: 85,
+      maxScore: 100,
+      applicable: true,
+    },
+    {
+      category: "seo",
+      label: "Search Optimization",
+      score: 65,
+      maxScore: 100,
+      applicable: true,
+    },
+    {
+      category: "content",
+      label: "Content",
+      score: 53,
+      maxScore: 100,
+      applicable: true,
+    },
+    {
+      category: "cro",
+      label: "Conversion",
+      score: 80,
+      maxScore: 100,
+      applicable: true,
+    },
+    {
+      category: "performance",
+      label: "Performance",
+      score: 90,
+      maxScore: 100,
+      applicable: true,
+    },
+  ],
+  findings: [
+    {
+      id: "content-thin",
+      title: "Thin service content",
+      category: "content",
+      status: "fail",
+      priority: "high",
+    },
+  ],
+};
+
+const productionCompetitor: ComparisonCompetitorInput = {
+  prospectCompetitorId: "elite",
+  competitorAuditId: "audit-elite",
+  businessName: "Elite Roofers - Magnolia Roofing Contractor",
+  website: "https://elite.example",
+  competitiveRelevanceScore: 83,
+  distanceMiles: 5,
+  auditedAt: "2026-08-20T00:00:00.000Z",
+  audit: {
+    overallScore: 85,
+    auditEngineVersion: 1,
+    categoryScores: [
+      {
+        category: "technical",
+        label: "Technical SEO",
+        score: 95,
+        maxScore: 100,
+        applicable: true,
+      },
+      {
+        category: "seo",
+        label: "Search Optimization",
+        score: 95,
+        maxScore: 100,
+        applicable: true,
+      },
+      {
+        category: "content",
+        label: "Content",
+        score: 87,
+        maxScore: 100,
+        applicable: true,
+      },
+      {
+        category: "cro",
+        label: "Conversion",
+        score: 93,
+        maxScore: 100,
+        applicable: true,
+      },
+      {
+        category: "performance",
+        label: "Performance",
+        score: 80,
+        maxScore: 100,
+        applicable: true,
+      },
+    ],
+    findings: [
+      {
+        id: "content-thin",
+        title: "Thin service content",
+        category: "content",
+        status: "pass",
+        priority: "high",
+      },
+    ],
+  },
+};
+
+const productionComparison = buildCompetitiveComparison({
+  prospectId: "prod-prospect",
+  campaignId: "prod-campaign",
+  auditReportId: "prod-audit",
+  targetLabel: "Production Target",
+  target: productionTarget,
+  competitors: [productionCompetitor],
+});
+
+assert(productionComparison.overall.targetScore === 74, "prod overall target 74");
+assert(
+  productionComparison.overall.competitorAverage === 85,
+  "prod competitor average 85",
+);
+assert(productionComparison.overall.gapVsAverage === -11, "prod gap -11");
+assert(productionComparison.overall.targetRank === 2, "prod rank 2/2");
+assert(
+  productionComparison.competitorsCompared.length === 1,
+  "prod one competitor",
+);
+
+const productionAiInput = buildCompetitiveAiInput({
+  comparison: productionComparison,
+  comparisonSnapshotId: "prod-snapshot",
+  targetBusinessName: "Production Target",
+});
+assert(productionAiInput.comparison.competitorCount === 1, "AI input one competitor");
+
+const contentGap = productionComparison.categories.find(
+  (row) => row.category === "content",
+);
+const seoGap = productionComparison.categories.find((row) => row.category === "seo");
+const croGap = productionComparison.categories.find((row) => row.category === "cro");
+const performanceAdv = productionComparison.categories.find(
+  (row) => row.category === "performance",
+);
+
+assert(contentGap?.position === "MAJOR_GAP", "content MAJOR_GAP");
+assert(seoGap?.position === "MAJOR_GAP", "seo MAJOR_GAP");
+assert(croGap?.position === "GAP", "conversion GAP");
+assert(performanceAdv?.position === "ADVANTAGE", "performance ADVANTAGE");
+
+const productionInvalidPriority = validateCompetitiveInterpretationContent(
+  {
+    executiveSummary: {
+      headline: "Trails the selected competitor",
+      summary:
+        "This comparison currently includes one audited competitor, so the findings are best treated as directional rather than a broad market benchmark.",
+    },
+    competitivePosition: {
+      assessment: "Behind the selected competitor overall",
+      explanation:
+        "The Website Growth Score trails the selected competitor in this comparison.",
+    },
+    risks: [
+      {
+        sourceKey: "category:content",
+        title: "Content gap",
+        explanation: "Content is the largest measured gap in this comparison.",
+      },
+    ],
+    advantages: [
+      {
+        sourceKey: "category:performance",
+        title: "Performance strength",
+        explanation:
+          "Preserve the site's performance strength while improving weaker areas.",
+      },
+    ],
+    priorities: [
+      {
+        sourceKey: "advantage:category-performance",
+        title: "Maintain strong performance",
+        rationale: "Performance leads this comparison.",
+        recommendedActions: ["Keep performance strong"],
+      },
+    ],
+    ninetyDayPlan: [
+      {
+        phase: "Days 1–30",
+        objective: "Address the content gap identified by the audit.",
+        actions: ["Strengthen service page content"],
+        sourceKeys: ["category:content"],
+      },
+    ],
+    internalTalkingPoints: [],
+  },
+  productionAiInput,
+);
+assert(
+  !productionInvalidPriority.ok,
+  "production: advantage primary priority rejected",
+);
+assert(
+  !productionInvalidPriority.ok &&
+    productionInvalidPriority.rule === "INVALID_PRIORITY_PRIMARY_SOURCE",
+  "production: INVALID_PRIORITY_PRIMARY_SOURCE",
+);
+
+const productionValid = validateCompetitiveInterpretationContent(
+  {
+    executiveSummary: {
+      headline: "Trails the selected competitor",
+      summary:
+        "This comparison currently includes one audited competitor, so the findings are best treated as directional rather than a broad market benchmark. Content and search optimization are the clearest gaps.",
+    },
+    competitivePosition: {
+      assessment: "Behind in this comparison",
+      explanation:
+        "The site trails the selected competitor overall, with Content as the largest measured gap.",
+    },
+    risks: [
+      {
+        sourceKey: "category:content",
+        title: "Content gap",
+        explanation: "Content is the largest measured gap in this comparison.",
+      },
+      {
+        sourceKey: "category:seo",
+        title: "Search optimization gap",
+        explanation:
+          "Search Optimization deserves attention because the deterministic comparison shows a substantial gap.",
+      },
+    ],
+    advantages: [
+      {
+        sourceKey: "category:performance",
+        title: "Performance strength",
+        explanation:
+          "Preserve the site's performance strength while improving weaker areas.",
+      },
+    ],
+    priorities: [
+      {
+        sourceKey: "category:content",
+        supportingSourceKeys: ["advantage:category-performance"],
+        title: "Strengthen content without sacrificing performance",
+        rationale:
+          "Content is the largest measured gap; preserve existing performance strength while closing it.",
+        recommendedActions: [
+          "Make service information easier to understand",
+          "Strengthen the path from service information to contacting the business",
+        ],
+      },
+      {
+        sourceKey: "category:seo",
+        title: "Improve search optimization fundamentals",
+        rationale:
+          "Search Optimization shows a major gap versus the selected competitor.",
+        recommendedActions: [
+          "Make important service pages easier for search engines to understand",
+        ],
+      },
+      {
+        sourceKey: "category:cro",
+        title: "Clarify conversion paths",
+        rationale: "Conversion trails the selected competitor in this comparison.",
+        recommendedActions: [
+          "Make the next step clearer for visitors",
+          "Strengthen calls to action",
+        ],
+      },
+    ],
+    ninetyDayPlan: [
+      {
+        phase: "Days 1–30",
+        objective: "Address the content gap identified by the audit.",
+        actions: ["Strengthen service page content depth"],
+        sourceKeys: ["category:content"],
+      },
+      {
+        phase: "Days 31–60",
+        objective: "Strengthen search optimization fundamentals.",
+        actions: ["Improve on-page search clarity"],
+        sourceKeys: ["category:seo"],
+      },
+      {
+        phase: "Days 61–90",
+        objective: "Refine conversion paths and reassess.",
+        actions: ["Clarify primary calls to action"],
+        sourceKeys: ["category:cro", "overall"],
+      },
+    ],
+    internalTalkingPoints: [
+      "Lead with content and SEO gaps; treat one-competitor comparison as directional.",
+    ],
+  },
+  productionAiInput,
+);
+assert(productionValid.ok, "production fixture interpretation accepted");
+assert(
+  COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT.includes("competitorCount == 1"),
+  "one-competitor language in system prompt",
+);
+assert(
+  COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT.includes("improvement priorities"),
+  "priority primary sourceKey guidance in prompt",
+);
 
 const freshnessCurrent = evaluateCompetitiveInterpretationStaleness({
   interpretation: {
@@ -695,5 +1044,10 @@ assert(
   createSource.includes("FAILED"),
   "failed status handled without deleting completed",
 );
+assert(
+  createSource.includes("MAX_COMPETITIVE_INTERPRETATION_REPAIR_ATTEMPTS"),
+  "repair retry constant referenced",
+);
+assert(createSource.includes("VALIDATION_FAILED"), "validation failure code used");
 
 console.log("interpretation.verify.ts: PASS");

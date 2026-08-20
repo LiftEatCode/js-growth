@@ -69,10 +69,20 @@ advantages must reference strengths.
 ## Versions
 
 - `COMPETITIVE_INTERPRETATION_VERSION = 1`
-- `COMPETITIVE_INTERPRETATION_PROMPT_VERSION = 1`
+- `COMPETITIVE_INTERPRETATION_PROMPT_VERSION = 2` (Sprint 12.1 hardening)
 
 Also stored: model, `comparisonSnapshotId`, comparison version, audit engine
 version, input fingerprint.
+
+### Sprint 12.1 hardening
+
+- Primary priority `sourceKey` must be overall / opportunity / GAP|MAJOR_GAP.
+- Optional `supportingSourceKeys` may cite advantages (e.g. preserve performance).
+- Commercial-claim validation is contextual (causal/guarantee rules), not a
+  bare keyword blacklist for words like “leads” or “conversion”.
+- One bounded validation repair retry (`MAX_COMPETITIVE_INTERPRETATION_REPAIR_ATTEMPTS = 1`).
+- One-competitor comparisons must use directional language, not “market” claims.
+- Failure messages include a safe rule code for internal debugging.
 
 ## Model configuration
 

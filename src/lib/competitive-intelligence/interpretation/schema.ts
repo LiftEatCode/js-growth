@@ -11,6 +11,7 @@ import {
   MAX_PHASE_ACTIONS,
   MAX_PRIORITIES,
   MAX_RISKS,
+  MAX_SUPPORTING_SOURCE_KEYS,
   MAX_TALKING_POINT_CHARS,
   MAX_TALKING_POINTS,
   MAX_TITLE_CHARS,
@@ -49,6 +50,10 @@ export const competitiveInterpretationContentSchema = z.object({
     .array(
       z.object({
         sourceKey: z.string().min(1).max(120),
+        supportingSourceKeys: z
+          .array(z.string().min(1).max(120))
+          .max(MAX_SUPPORTING_SOURCE_KEYS)
+          .optional(),
         title: z.string().min(1).max(MAX_TITLE_CHARS),
         rationale: z.string().min(1).max(MAX_EXPLANATION_CHARS),
         recommendedActions: z
