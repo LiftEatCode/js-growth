@@ -52,8 +52,7 @@ export const competitiveInterpretationContentSchema = z.object({
         sourceKey: z.string().min(1).max(120),
         supportingSourceKeys: z
           .array(z.string().min(1).max(120))
-          .max(MAX_SUPPORTING_SOURCE_KEYS)
-          .optional(),
+          .max(MAX_SUPPORTING_SOURCE_KEYS),
         title: z.string().min(1).max(MAX_TITLE_CHARS),
         rationale: z.string().min(1).max(MAX_EXPLANATION_CHARS),
         recommendedActions: z
@@ -86,3 +85,89 @@ export const competitiveInterpretationContentSchema = z.object({
 export type CompetitiveInterpretationContentParsed = z.infer<
   typeof competitiveInterpretationContentSchema
 >;
+
+/**
+ * OpenAI Structured Outputs requires every property listed under `properties`
+ * to also appear in that object's `required` array. Prefer required empty
+ * arrays for collections instead of optional properties.
+ */
+export function jsonSchemaForCompetitiveInterpretation(): Record<string, unknown> {
+  return z.toJSONSchema(competitiveInterpretationContentSchema, {
+    target: "draft-7",
+  }) as Record<string, unknown>;
+}
+
+export function assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(
+  schema: unknown,
+  path = "root",
+): void {
+  if (!schema || typeof schema !== "object" || Array.isArray(schema)) {
+    return;
+  }
+
+  const node = schema as Record<string, unknown>;
+
+  if (node.type === "object" || node.properties) {
+    const properties = (node.properties ?? {}) as Record<string, unknown>;
+    const required = Array.isArray(node.required)
+      ? (node.required as string[])
+      : [];
+    const propertyKeys = Object.keys(properties);
+
+    for (const key of propertyKeys) {
+      if (!required.includes(key)) {
+        throw new Error(
+          `OpenAI Structured Outputs schema has optional property at ${path}.properties.${key}`,
+        );
+      }
+    }
+
+    for (const [key, nested] of Object.entries(properties)) {
+      assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(
+        nested,
+        `${path}.properties.${key}`,
+      );
+    }
+  }
+
+  if (node.items) {
+    assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(
+      node.items,
+      `${path}.items`,
+    );
+  }
+
+  for (const combiner of ["anyOf", "oneOf", "allOf"] as const) {
+    const entries = node[combiner];
+    if (Array.isArray(entries)) {
+      entries.forEach((entry, index) => {
+        assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(
+          entry,
+          `${path}.${combiner}[${index}]`,
+        );
+      });
+    }
+  }
+
+  if (node.$defs && typeof node.$defs === "object") {
+    for (const [key, nested] of Object.entries(
+      node.$defs as Record<string, unknown>,
+    )) {
+      assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(
+        nested,
+        `${path}.$defs.${key}`,
+      );
+    }
+  }
+
+  if (node.definitions && typeof node.definitions === "object") {
+    for (const [key, nested] of Object.entries(
+      node.definitions as Record<string, unknown>,
+    )) {
+      assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(
+        nested,
+        `${path}.definitions.${key}`,
+      );
+    }
+  }
+}

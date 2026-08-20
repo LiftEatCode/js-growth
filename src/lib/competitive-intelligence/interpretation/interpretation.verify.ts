@@ -22,12 +22,17 @@ import {
   MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION,
   MAX_EXECUTIVE_HEADLINE_CHARS,
   MAX_RISKS,
+  MAX_SUPPORTING_SOURCE_KEYS,
 } from "./constants";
 import { detectUnsupportedCommercialClaims } from "./claims";
 import { fingerprintCompetitiveAiInput } from "./fingerprint";
 import { buildCompetitiveAiInput, buildSourceKeyCatalog } from "./input";
 import { COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT } from "./prompt";
-import { competitiveInterpretationContentSchema } from "./schema";
+import {
+  assertOpenAiStructuredOutputSchemaHasNoOptionalProperties,
+  competitiveInterpretationContentSchema,
+  jsonSchemaForCompetitiveInterpretation,
+} from "./schema";
 import { evaluateCompetitiveInterpretationStaleness } from "./staleness";
 import type { CompetitiveInterpretationContent } from "./types";
 import { validateCompetitiveInterpretationContent } from "./validate";
@@ -64,8 +69,8 @@ const repoRoot = join(here, "../../../..");
 
 assert(COMPETITIVE_INTERPRETATION_VERSION === 1, "interpretation version is 1");
 assert(
-  COMPETITIVE_INTERPRETATION_PROMPT_VERSION === 2,
-  "prompt version is 2 after Sprint 12.1 hardening",
+  COMPETITIVE_INTERPRETATION_PROMPT_VERSION === 3,
+  "prompt version is 3 after structured-output supportingSourceKeys hotfix",
 );
 assert(
   MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION === 1,
@@ -424,6 +429,7 @@ const validContent: CompetitiveInterpretationContent = {
   priorities: [
     {
       sourceKey: "category:cro",
+      supportingSourceKeys: [],
       title: "Improve conversion paths",
       rationale:
         "Deterministic comparison shows Conversion as the largest gap versus competitors.",
@@ -461,6 +467,74 @@ const validContent: CompetitiveInterpretationContent = {
 const schemaOk = competitiveInterpretationContentSchema.safeParse(validContent);
 assert(schemaOk.success, "valid structured output accepted");
 
+const missingSupportingKeys = competitiveInterpretationContentSchema.safeParse({
+  ...validContent,
+  priorities: [
+    {
+      sourceKey: "category:cro",
+      title: "Improve conversion paths",
+      rationale: "Gap exists.",
+      recommendedActions: ["Clarify primary calls to action"],
+    },
+  ],
+});
+assert(
+  !missingSupportingKeys.success,
+  "supportingSourceKeys is required in structured output schema",
+);
+
+const emptySupportingAccepted = competitiveInterpretationContentSchema.safeParse({
+  ...validContent,
+  priorities: [
+    {
+      sourceKey: "category:cro",
+      supportingSourceKeys: [],
+      title: "Improve conversion paths",
+      rationale: "Gap exists.",
+      recommendedActions: ["Clarify primary calls to action"],
+    },
+  ],
+});
+assert(emptySupportingAccepted.success, "empty supportingSourceKeys [] accepted");
+
+const tooManySupporting = competitiveInterpretationContentSchema.safeParse({
+  ...validContent,
+  priorities: [
+    {
+      sourceKey: "category:cro",
+      supportingSourceKeys: Array.from(
+        { length: MAX_SUPPORTING_SOURCE_KEYS + 1 },
+        (_, index) => `overall-extra-${index}`,
+      ),
+      title: "Improve conversion paths",
+      rationale: "Gap exists.",
+      recommendedActions: ["Clarify primary calls to action"],
+    },
+  ],
+});
+assert(!tooManySupporting.success, "more than 3 supportingSourceKeys rejected by schema");
+
+const openAiJsonSchema = jsonSchemaForCompetitiveInterpretation();
+try {
+  assertOpenAiStructuredOutputSchemaHasNoOptionalProperties(openAiJsonSchema);
+} catch (error) {
+  throw new Error(
+    error instanceof Error
+      ? error.message
+      : "OpenAI structured output schema optional property check failed",
+  );
+}
+
+const schemaSource = readFileSync(join(here, "schema.ts"), "utf8");
+assert(
+  !schemaSource.includes(".optional()"),
+  "competitive interpretation Zod schema must not use .optional()",
+);
+assert(
+  !schemaSource.includes(".nullable()"),
+  "competitive interpretation Zod schema must not use .nullable() without need",
+);
+
 const validated = validateCompetitiveInterpretationContent(
   validContent,
   buildCompetitiveAiInput({
@@ -470,6 +544,27 @@ const validated = validateCompetitiveInterpretationContent(
   }),
 );
 assert(validated.ok, "valid source keys accepted");
+
+const unknownSupportingRejected = validateCompetitiveInterpretationContent(
+  {
+    ...validContent,
+    priorities: [
+      {
+        sourceKey: "category:cro",
+        supportingSourceKeys: ["advantage:not-real"],
+        title: "Improve conversion paths",
+        rationale: "Gap exists.",
+        recommendedActions: ["Clarify primary calls to action"],
+      },
+    ],
+  },
+  buildCompetitiveAiInput({
+    comparison,
+    comparisonSnapshotId: "snapshot-1",
+    targetBusinessName: "Target HVAC",
+  }),
+);
+assert(!unknownSupportingRejected.ok, "unknown supporting source keys rejected");
 
 const unknownRejected = validateCompetitiveInterpretationContent(
   {
@@ -741,6 +836,7 @@ const productionInvalidPriority = validateCompetitiveInterpretationContent(
     priorities: [
       {
         sourceKey: "advantage:category-performance",
+        supportingSourceKeys: [],
         title: "Maintain strong performance",
         rationale: "Performance leads this comparison.",
         recommendedActions: ["Keep performance strong"],
@@ -815,6 +911,7 @@ const productionValid = validateCompetitiveInterpretationContent(
       },
       {
         sourceKey: "category:seo",
+        supportingSourceKeys: [],
         title: "Improve search optimization fundamentals",
         rationale:
           "Search Optimization shows a major gap versus the selected competitor.",
@@ -824,6 +921,7 @@ const productionValid = validateCompetitiveInterpretationContent(
       },
       {
         sourceKey: "category:cro",
+        supportingSourceKeys: [],
         title: "Clarify conversion paths",
         rationale: "Conversion trails the selected competitor in this comparison.",
         recommendedActions: [

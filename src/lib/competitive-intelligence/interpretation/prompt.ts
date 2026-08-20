@@ -33,6 +33,8 @@ Do not use an ADVANTAGE or MAJOR_ADVANTAGE as the primary sourceKey of a recomme
 Do not use advantage:* keys as the primary sourceKey of a priority.
 Advantages belong in the advantages section.
 You may mention preserving a strength while fixing a weakness, and you may list that strength in supportingSourceKeys, but the priority must remain grounded in the weakness/opportunity.
+Every priority MUST include supportingSourceKeys as an array. When there are no supporting sources, return "supportingSourceKeys": [].
+Never omit supportingSourceKeys.
 
 Comparison-size language:
 - If competitorCount == 1: refer to "the selected competitor", "this comparison", or "the current comparison". Do NOT say "the market", "market benchmark", "industry average", "competitors overall", or "the local market". State that findings are directional because only one competitor is included.
@@ -58,7 +60,8 @@ export function buildCompetitiveInterpretationUserPrompt(
     "Emphasize major category gaps/advantages and high/critical opportunities.",
     "De-emphasize low-value technical trivia unless it is decisive.",
     "Provide a concise executive summary, position assessment, risks, advantages, priorities, a high-level 90-day direction, and optional internal talking points.",
-    "Priorities are improvement priorities: primary sourceKey must be overall, an opportunity, or a GAP/MAJOR_GAP category. Put strengths in advantages; optional supportingSourceKeys may reference advantages.",
+    "Priorities are improvement priorities: primary sourceKey must be overall, an opportunity, or a GAP/MAJOR_GAP category. Put strengths in advantages.",
+    'Every priority MUST include supportingSourceKeys. Use [] when there are none. Example: {"sourceKey":"category:content","supportingSourceKeys":[]} or {"sourceKey":"category:content","supportingSourceKeys":["advantage:category-performance"]}.',
     "The 90-day plan is directional guidance only — not a guaranteed project timeline, cost estimate, or results promise.",
     "Respect competitorCount language rules from the system instructions.",
     "",
@@ -78,6 +81,7 @@ export function buildCompetitiveInterpretationRepairPrompt(options: {
     "Fix ONLY the validation errors listed below.",
     "Primary priority sourceKeys must remain overall, an opportunity, or a GAP/MAJOR_GAP category.",
     "Advantages may appear in supportingSourceKeys or the advantages section, not as primary improvement priorities.",
+    'Every priority must include supportingSourceKeys as an array. Use [] when empty — do not omit the field.',
     "Remove unsupported commercial, traffic, ranking, revenue, lead-volume, or guaranteed-outcome claims.",
     "Preserve safe recommendation language grounded in the supplied evidence.",
     "",

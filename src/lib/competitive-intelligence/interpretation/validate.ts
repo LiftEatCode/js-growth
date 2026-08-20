@@ -181,7 +181,7 @@ export function validateCompetitiveInterpretationContent(
       );
     }
 
-    const supporting = priority.supportingSourceKeys ?? [];
+    const supporting = priority.supportingSourceKeys;
     const seenSupporting = new Set<string>();
     for (const key of supporting) {
       const supportingUnknown = assertSourceKey(

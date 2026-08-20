@@ -115,7 +115,7 @@ export interface CompetitiveInterpretationContent {
   }>;
   priorities: Array<{
     sourceKey: string;
-    supportingSourceKeys?: string[];
+    supportingSourceKeys: string[];
     title: string;
     rationale: string;
     recommendedActions: string[];

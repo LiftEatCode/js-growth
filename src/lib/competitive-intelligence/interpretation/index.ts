@@ -13,6 +13,11 @@ export { buildCompetitiveAiInput, buildSourceKeyCatalog } from "./input";
 export { fingerprintCompetitiveAiInput } from "./fingerprint";
 export { generateCompetitiveInterpretation } from "./create";
 export { loadLatestCompetitiveInterpretation } from "./load";
+export {
+  assertOpenAiStructuredOutputSchemaHasNoOptionalProperties,
+  competitiveInterpretationContentSchema,
+  jsonSchemaForCompetitiveInterpretation,
+} from "./schema";
 export { evaluateCompetitiveInterpretationStaleness } from "./staleness";
 export { validateCompetitiveInterpretationContent } from "./validate";
 export type {

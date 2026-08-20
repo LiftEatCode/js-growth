@@ -69,7 +69,7 @@ advantages must reference strengths.
 ## Versions
 
 - `COMPETITIVE_INTERPRETATION_VERSION = 1`
-- `COMPETITIVE_INTERPRETATION_PROMPT_VERSION = 2` (Sprint 12.1 hardening)
+- `COMPETITIVE_INTERPRETATION_PROMPT_VERSION = 3` (required `supportingSourceKeys: []` for OpenAI Structured Outputs)
 
 Also stored: model, `comparisonSnapshotId`, comparison version, audit engine
 version, input fingerprint.
