@@ -4,13 +4,14 @@
 
 ## Active focus (Aug 2026)
 
-**Documentation, SOP & product consolidation** — complete repository docs against the implemented codebase. **No Sprint 14 feature work by default.**
+**Commercialization phase** — Commercial Sprint 1 (Implementation Plan foundation) implemented. Prefer [`../ROADMAP.md`](../ROADMAP.md) and [`../docs/development/implementation-plan-engine.md`](../docs/development/implementation-plan-engine.md).
 
 ## Completed product milestones (reference)
 
 - Website Growth Audit Free + Professional
 - Prospecting Engine V1 (through outreach + outcomes)
 - Competitive Intelligence V1 (Sprints 9–13.1)
+- Commercial Sprint 1 — Implementation Plan (deterministic)
 
 ## Operator SOPs (use these)
 

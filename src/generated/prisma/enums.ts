@@ -308,3 +308,13 @@ export const CompetitiveInterpretationStatus = {
 } as const
 
 export type CompetitiveInterpretationStatus = (typeof CompetitiveInterpretationStatus)[keyof typeof CompetitiveInterpretationStatus]
+
+
+export const ImplementationPlanStatus = {
+  DRAFT: 'DRAFT',
+  REVIEWED: 'REVIEWED',
+  APPROVED: 'APPROVED',
+  SUPERSEDED: 'SUPERSEDED'
+} as const
+
+export type ImplementationPlanStatus = (typeof ImplementationPlanStatus)[keyof typeof ImplementationPlanStatus]

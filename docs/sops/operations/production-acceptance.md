@@ -49,6 +49,17 @@ Reusable checklist. Not every item applies to every deploy — check what change
 - [ ] Report load does not call OpenAI/Places/crawl
 - [ ] CI routes remain internal (not public `/report`)
 
+## Implementation Plan (Commercial Sprint 1)
+
+- [ ] Generate on audited prospect (audit-only works)
+- [ ] Optional current comparison strengthens priorities
+- [ ] Stale comparison excluded from evidence
+- [ ] Workstreams show evidence, capabilities, actions, preservation
+- [ ] Remove / reorder / priority / approve require session
+- [ ] Rebuild creates new snapshot; prior plan SUPERSEDED
+- [ ] Not exposed on public `/report/*`
+- [ ] Generate does not call OpenAI / Places / crawl / Resend
+
 ## AI
 
 - [ ] Pro audit AI only when entitled

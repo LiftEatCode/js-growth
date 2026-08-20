@@ -261,6 +261,7 @@ export type CompetitiveComparisonSnapshotWhereInput = {
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   auditReport?: Prisma.XOR<Prisma.AuditReportScalarRelationFilter, Prisma.AuditReportWhereInput>
   interpretations?: Prisma.CompetitiveInterpretationListRelationFilter
+  implementationPlans?: Prisma.ImplementationPlanListRelationFilter
 }
 
 export type CompetitiveComparisonSnapshotOrderByWithRelationInput = {
@@ -279,6 +280,7 @@ export type CompetitiveComparisonSnapshotOrderByWithRelationInput = {
   campaign?: Prisma.CampaignOrderByWithRelationInput
   auditReport?: Prisma.AuditReportOrderByWithRelationInput
   interpretations?: Prisma.CompetitiveInterpretationOrderByRelationAggregateInput
+  implementationPlans?: Prisma.ImplementationPlanOrderByRelationAggregateInput
 }
 
 export type CompetitiveComparisonSnapshotWhereUniqueInput = Prisma.AtLeast<{
@@ -300,6 +302,7 @@ export type CompetitiveComparisonSnapshotWhereUniqueInput = Prisma.AtLeast<{
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   auditReport?: Prisma.XOR<Prisma.AuditReportScalarRelationFilter, Prisma.AuditReportWhereInput>
   interpretations?: Prisma.CompetitiveInterpretationListRelationFilter
+  implementationPlans?: Prisma.ImplementationPlanListRelationFilter
 }, "id">
 
 export type CompetitiveComparisonSnapshotOrderByWithAggregationInput = {
@@ -351,6 +354,7 @@ export type CompetitiveComparisonSnapshotCreateInput = {
   campaign: Prisma.CampaignCreateNestedOneWithoutCompetitiveComparisonsInput
   auditReport: Prisma.AuditReportCreateNestedOneWithoutCompetitiveComparisonsInput
   interpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedCreateInput = {
@@ -366,6 +370,7 @@ export type CompetitiveComparisonSnapshotUncheckedCreateInput = {
   selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail: string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotUpdateInput = {
@@ -381,6 +386,7 @@ export type CompetitiveComparisonSnapshotUpdateInput = {
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   interpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateInput = {
@@ -396,6 +402,7 @@ export type CompetitiveComparisonSnapshotUncheckedUpdateInput = {
   selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotCreateManyInput = {
@@ -496,6 +503,11 @@ export type CompetitiveComparisonSnapshotSumOrderByAggregateInput = {
 export type CompetitiveComparisonSnapshotScalarRelationFilter = {
   is?: Prisma.CompetitiveComparisonSnapshotWhereInput
   isNot?: Prisma.CompetitiveComparisonSnapshotWhereInput
+}
+
+export type CompetitiveComparisonSnapshotNullableScalarRelationFilter = {
+  is?: Prisma.CompetitiveComparisonSnapshotWhereInput | null
+  isNot?: Prisma.CompetitiveComparisonSnapshotWhereInput | null
 }
 
 export type CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput = {
@@ -638,6 +650,22 @@ export type CompetitiveComparisonSnapshotUpdateOneRequiredWithoutInterpretations
   update?: Prisma.XOR<Prisma.XOR<Prisma.CompetitiveComparisonSnapshotUpdateToOneWithWhereWithoutInterpretationsInput, Prisma.CompetitiveComparisonSnapshotUpdateWithoutInterpretationsInput>, Prisma.CompetitiveComparisonSnapshotUncheckedUpdateWithoutInterpretationsInput>
 }
 
+export type CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput = {
+  create?: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotCreateWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUncheckedCreateWithoutImplementationPlansInput>
+  connectOrCreate?: Prisma.CompetitiveComparisonSnapshotCreateOrConnectWithoutImplementationPlansInput
+  connect?: Prisma.CompetitiveComparisonSnapshotWhereUniqueInput
+}
+
+export type CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotCreateWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUncheckedCreateWithoutImplementationPlansInput>
+  connectOrCreate?: Prisma.CompetitiveComparisonSnapshotCreateOrConnectWithoutImplementationPlansInput
+  upsert?: Prisma.CompetitiveComparisonSnapshotUpsertWithoutImplementationPlansInput
+  disconnect?: Prisma.CompetitiveComparisonSnapshotWhereInput | boolean
+  delete?: Prisma.CompetitiveComparisonSnapshotWhereInput | boolean
+  connect?: Prisma.CompetitiveComparisonSnapshotWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CompetitiveComparisonSnapshotUpdateToOneWithWhereWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUpdateWithoutImplementationPlansInput>, Prisma.CompetitiveComparisonSnapshotUncheckedUpdateWithoutImplementationPlansInput>
+}
+
 export type CompetitiveComparisonSnapshotCreateWithoutAuditReportInput = {
   id?: string
   createdAt?: Date | string
@@ -650,6 +678,7 @@ export type CompetitiveComparisonSnapshotCreateWithoutAuditReportInput = {
   prospect: Prisma.ProspectCreateNestedOneWithoutCompetitiveComparisonsInput
   campaign: Prisma.CampaignCreateNestedOneWithoutCompetitiveComparisonsInput
   interpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedCreateWithoutAuditReportInput = {
@@ -664,6 +693,7 @@ export type CompetitiveComparisonSnapshotUncheckedCreateWithoutAuditReportInput 
   selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail: string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotCreateOrConnectWithoutAuditReportInput = {
@@ -721,6 +751,7 @@ export type CompetitiveComparisonSnapshotCreateWithoutCampaignInput = {
   prospect: Prisma.ProspectCreateNestedOneWithoutCompetitiveComparisonsInput
   auditReport: Prisma.AuditReportCreateNestedOneWithoutCompetitiveComparisonsInput
   interpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedCreateWithoutCampaignInput = {
@@ -735,6 +766,7 @@ export type CompetitiveComparisonSnapshotUncheckedCreateWithoutCampaignInput = {
   selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail: string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotCreateOrConnectWithoutCampaignInput = {
@@ -775,6 +807,7 @@ export type CompetitiveComparisonSnapshotCreateWithoutProspectInput = {
   campaign: Prisma.CampaignCreateNestedOneWithoutCompetitiveComparisonsInput
   auditReport: Prisma.AuditReportCreateNestedOneWithoutCompetitiveComparisonsInput
   interpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedCreateWithoutProspectInput = {
@@ -789,6 +822,7 @@ export type CompetitiveComparisonSnapshotUncheckedCreateWithoutProspectInput = {
   selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail: string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutComparisonSnapshotInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotCreateOrConnectWithoutProspectInput = {
@@ -829,6 +863,7 @@ export type CompetitiveComparisonSnapshotCreateWithoutInterpretationsInput = {
   prospect: Prisma.ProspectCreateNestedOneWithoutCompetitiveComparisonsInput
   campaign: Prisma.CampaignCreateNestedOneWithoutCompetitiveComparisonsInput
   auditReport: Prisma.AuditReportCreateNestedOneWithoutCompetitiveComparisonsInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedCreateWithoutInterpretationsInput = {
@@ -843,6 +878,7 @@ export type CompetitiveComparisonSnapshotUncheckedCreateWithoutInterpretationsIn
   competitorAuditIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
   selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail: string
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutComparisonSnapshotInput
 }
 
 export type CompetitiveComparisonSnapshotCreateOrConnectWithoutInterpretationsInput = {
@@ -873,6 +909,7 @@ export type CompetitiveComparisonSnapshotUpdateWithoutInterpretationsInput = {
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutInterpretationsInput = {
@@ -887,6 +924,83 @@ export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutInterpretationsIn
   competitorAuditIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
+}
+
+export type CompetitiveComparisonSnapshotCreateWithoutImplementationPlansInput = {
+  id?: string
+  createdAt?: Date | string
+  auditEngineVersion: number
+  comparisonVersion: number
+  comparisonJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  competitorAuditIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdByEmail: string
+  prospect: Prisma.ProspectCreateNestedOneWithoutCompetitiveComparisonsInput
+  campaign: Prisma.CampaignCreateNestedOneWithoutCompetitiveComparisonsInput
+  auditReport: Prisma.AuditReportCreateNestedOneWithoutCompetitiveComparisonsInput
+  interpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutComparisonSnapshotInput
+}
+
+export type CompetitiveComparisonSnapshotUncheckedCreateWithoutImplementationPlansInput = {
+  id?: string
+  createdAt?: Date | string
+  prospectId: string
+  campaignId: string
+  auditReportId: string
+  auditEngineVersion: number
+  comparisonVersion: number
+  comparisonJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  competitorAuditIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  selectedCompetitorIdsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdByEmail: string
+  interpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutComparisonSnapshotInput
+}
+
+export type CompetitiveComparisonSnapshotCreateOrConnectWithoutImplementationPlansInput = {
+  where: Prisma.CompetitiveComparisonSnapshotWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotCreateWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUncheckedCreateWithoutImplementationPlansInput>
+}
+
+export type CompetitiveComparisonSnapshotUpsertWithoutImplementationPlansInput = {
+  update: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotUpdateWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUncheckedUpdateWithoutImplementationPlansInput>
+  create: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotCreateWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUncheckedCreateWithoutImplementationPlansInput>
+  where?: Prisma.CompetitiveComparisonSnapshotWhereInput
+}
+
+export type CompetitiveComparisonSnapshotUpdateToOneWithWhereWithoutImplementationPlansInput = {
+  where?: Prisma.CompetitiveComparisonSnapshotWhereInput
+  data: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotUpdateWithoutImplementationPlansInput, Prisma.CompetitiveComparisonSnapshotUncheckedUpdateWithoutImplementationPlansInput>
+}
+
+export type CompetitiveComparisonSnapshotUpdateWithoutImplementationPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditEngineVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  comparisonVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  comparisonJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  competitorAuditIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
+  campaign?: Prisma.CampaignUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
+  auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
+  interpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutComparisonSnapshotNestedInput
+}
+
+export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutImplementationPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.StringFieldUpdateOperationsInput | string
+  auditReportId?: Prisma.StringFieldUpdateOperationsInput | string
+  auditEngineVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  comparisonVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  comparisonJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  competitorAuditIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  interpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotCreateManyAuditReportInput = {
@@ -914,6 +1028,7 @@ export type CompetitiveComparisonSnapshotUpdateWithoutAuditReportInput = {
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   interpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutAuditReportInput = {
@@ -928,6 +1043,7 @@ export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutAuditReportInput 
   selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportInput = {
@@ -968,6 +1084,7 @@ export type CompetitiveComparisonSnapshotUpdateWithoutCampaignInput = {
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   interpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutCampaignInput = {
@@ -982,6 +1099,7 @@ export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutCampaignInput = {
   selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutCampaignInput = {
@@ -1022,6 +1140,7 @@ export type CompetitiveComparisonSnapshotUpdateWithoutProspectInput = {
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   interpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutProspectInput = {
@@ -1036,6 +1155,7 @@ export type CompetitiveComparisonSnapshotUncheckedUpdateWithoutProspectInput = {
   selectedCompetitorIdsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   interpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotNestedInput
 }
 
 export type CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutProspectInput = {
@@ -1058,10 +1178,12 @@ export type CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutProspectInput
 
 export type CompetitiveComparisonSnapshotCountOutputType = {
   interpretations: number
+  implementationPlans: number
 }
 
 export type CompetitiveComparisonSnapshotCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   interpretations?: boolean | CompetitiveComparisonSnapshotCountOutputTypeCountInterpretationsArgs
+  implementationPlans?: boolean | CompetitiveComparisonSnapshotCountOutputTypeCountImplementationPlansArgs
 }
 
 /**
@@ -1081,6 +1203,13 @@ export type CompetitiveComparisonSnapshotCountOutputTypeCountInterpretationsArgs
   where?: Prisma.CompetitiveInterpretationWhereInput
 }
 
+/**
+ * CompetitiveComparisonSnapshotCountOutputType without action
+ */
+export type CompetitiveComparisonSnapshotCountOutputTypeCountImplementationPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ImplementationPlanWhereInput
+}
+
 
 export type CompetitiveComparisonSnapshotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1098,6 +1227,7 @@ export type CompetitiveComparisonSnapshotSelect<ExtArgs extends runtime.Types.Ex
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   auditReport?: boolean | Prisma.AuditReportDefaultArgs<ExtArgs>
   interpretations?: boolean | Prisma.CompetitiveComparisonSnapshot$interpretationsArgs<ExtArgs>
+  implementationPlans?: boolean | Prisma.CompetitiveComparisonSnapshot$implementationPlansArgs<ExtArgs>
   _count?: boolean | Prisma.CompetitiveComparisonSnapshotCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["competitiveComparisonSnapshot"]>
 
@@ -1155,6 +1285,7 @@ export type CompetitiveComparisonSnapshotInclude<ExtArgs extends runtime.Types.E
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   auditReport?: boolean | Prisma.AuditReportDefaultArgs<ExtArgs>
   interpretations?: boolean | Prisma.CompetitiveComparisonSnapshot$interpretationsArgs<ExtArgs>
+  implementationPlans?: boolean | Prisma.CompetitiveComparisonSnapshot$implementationPlansArgs<ExtArgs>
   _count?: boolean | Prisma.CompetitiveComparisonSnapshotCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CompetitiveComparisonSnapshotIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1175,6 +1306,7 @@ export type $CompetitiveComparisonSnapshotPayload<ExtArgs extends runtime.Types.
     campaign: Prisma.$CampaignPayload<ExtArgs>
     auditReport: Prisma.$AuditReportPayload<ExtArgs>
     interpretations: Prisma.$CompetitiveInterpretationPayload<ExtArgs>[]
+    implementationPlans: Prisma.$ImplementationPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1586,6 +1718,7 @@ export interface Prisma__CompetitiveComparisonSnapshotClient<T, Null = never, Ex
   campaign<T extends Prisma.CampaignDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CampaignDefaultArgs<ExtArgs>>): Prisma.Prisma__CampaignClient<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   auditReport<T extends Prisma.AuditReportDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReportDefaultArgs<ExtArgs>>): Prisma.Prisma__AuditReportClient<runtime.Types.Result.GetResult<Prisma.$AuditReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   interpretations<T extends Prisma.CompetitiveComparisonSnapshot$interpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompetitiveComparisonSnapshot$interpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitiveInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  implementationPlans<T extends Prisma.CompetitiveComparisonSnapshot$implementationPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompetitiveComparisonSnapshot$implementationPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2048,6 +2181,30 @@ export type CompetitiveComparisonSnapshot$interpretationsArgs<ExtArgs extends ru
   take?: number
   skip?: number
   distinct?: Prisma.CompetitiveInterpretationScalarFieldEnum | Prisma.CompetitiveInterpretationScalarFieldEnum[]
+}
+
+/**
+ * CompetitiveComparisonSnapshot.implementationPlans
+ */
+export type CompetitiveComparisonSnapshot$implementationPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImplementationPlan
+   */
+  select?: Prisma.ImplementationPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImplementationPlan
+   */
+  omit?: Prisma.ImplementationPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImplementationPlanInclude<ExtArgs> | null
+  where?: Prisma.ImplementationPlanWhereInput
+  orderBy?: Prisma.ImplementationPlanOrderByWithRelationInput | Prisma.ImplementationPlanOrderByWithRelationInput[]
+  cursor?: Prisma.ImplementationPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ImplementationPlanScalarFieldEnum | Prisma.ImplementationPlanScalarFieldEnum[]
 }
 
 /**

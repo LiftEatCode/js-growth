@@ -12,7 +12,7 @@ JS Growth is:
 
 1. A **public marketing site** for JS Solutions
 2. A **commercial Website Growth Audit** product (Free + Professional)
-3. An **internal workspace** for leads, prospecting, outreach, and competitive intelligence
+3. An **internal workspace** for leads, prospecting, outreach, competitive intelligence, and implementation planning
 
 It is **not** a multi-tenant SaaS CRM sold as a product, and Competitive Intelligence V1 is **not** publicly shareable.
 
@@ -56,12 +56,20 @@ COMPETITIVE INTELLIGENCE (internal)
        ↓
   Competitive Website Growth Analysis (presentation; DB-only)
 
+COMMERCIALIZATION (internal)
+  Audit facts (+ optional current comparison)
+       ↓
+  Deterministic Implementation Plan (Commercial Sprint 1)
+       ↓
+  Human review / approve
+       ↓
+  (Future) Opportunity → Proposal → Won/Lost → Delivery
+
 LEAD / SERVICE HANDOFF
-  Lead + AuditReport evidence
+  Lead + AuditReport + Implementation Plan evidence
        ↓
   Human-delivered services (websites, SEO, Local SEO, content, CRO, automation)
 ```
-
 ---
 
 ## Route boundaries
@@ -83,6 +91,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 |---|---|---|
 | Deterministic Website Audit | Scores, findings, crawl | No |
 | Deterministic Competitive Comparison | Gaps, ranks, opportunities | No |
+| Deterministic Implementation Plan | Evidence → workstreams / capabilities | No |
 | AI Interpretation (audit / outreach / CI) | Explain or draft | Yes, explicit human trigger (or entitled first Pro view for audit AI) |
 | Client report presentation | Render Sprint 11 + 12 | No |
 
@@ -96,6 +105,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 | Payments | `src/lib/payments/` |
 | Prospecting | `src/lib/prospecting/` |
 | Competitive intelligence | `src/lib/competitive-intelligence/` |
+| Commercialization / implementation plans | `src/lib/commercialization/` |
 | Email / Resend | `src/lib/email/` |
 | Internal auth | `src/lib/internal-auth.ts` |
 | Analytics sanitization | `src/lib/analytics/` |
@@ -107,6 +117,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 - [Product catalog](product-catalog.md)
 - [Prospecting Engine](prospecting-engine-v1.md)
 - [Competitive Intelligence V1](competitive-intelligence.md)
+- [Implementation Plan Engine](implementation-plan-engine.md)
 - [AI architecture](ai-architecture.md)
 - [Database guide](database-guide.md)
 - [Security & privacy](security-privacy.md)

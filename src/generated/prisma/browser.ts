@@ -140,3 +140,14 @@ export type CompetitorAuditRun = Prisma.CompetitorAuditRunModel
  * 
  */
 export type CompetitorDiscoveryRun = Prisma.CompetitorDiscoveryRunModel
+/**
+ * Model ImplementationPlan
+ * Deterministic Implementation Recommendation snapshot (Commercial Sprint 1).
+ * Facts → capabilities → workstreams. No AI. No pricing. Internal only.
+ */
+export type ImplementationPlan = Prisma.ImplementationPlanModel
+/**
+ * Model ImplementationPlanWorkstream
+ * 
+ */
+export type ImplementationPlanWorkstream = Prisma.ImplementationPlanWorkstreamModel

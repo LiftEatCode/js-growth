@@ -10,6 +10,7 @@ Canonical index: [`../README.md`](../README.md).
 | [product-catalog.md](product-catalog.md) | Implemented vs internal vs planned |
 | [prospecting-engine-v1.md](prospecting-engine-v1.md) | Prospecting Engine |
 | [competitive-intelligence.md](competitive-intelligence.md) | Prospecting CI V1 (Places → report) |
+| [implementation-plan-engine.md](implementation-plan-engine.md) | Commercial Sprint 1 — deterministic implementation plans |
 | [competitive-intelligence-v1.md](competitive-intelligence-v1.md) | **Public audit** optional competitor URLs (different product) |
 | [ai-architecture.md](ai-architecture.md) | All OpenAI paths |
 | [external-services.md](external-services.md) | APIs / env categories |

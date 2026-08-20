@@ -10,6 +10,7 @@ High-level data model for JS Growth. **Do not treat this as a full schema dump**
 2. **Leads / workspace** — CRM-lite for inbound and converted prospects
 3. **Prospecting** — campaigns, prospects, contacts, outreach, delivery, outcomes, suppression
 4. **Competitive Intelligence** — competitor candidates, audits, comparison snapshots, interpretations
+5. **Commercialization** — implementation plan snapshots and workstreams
 
 ---
 
@@ -59,6 +60,15 @@ High-level data model for JS Growth. **Do not treat this as a full schema dump**
 | `CompetitiveComparisonSnapshot` | Deterministic comparison facts | Historical snapshots; “current” selected by app logic |
 | `CompetitiveInterpretation` | AI explanation of a specific snapshot | Historical rows; regenerate creates new |
 
+---
+
+## Commercialization entities
+
+| Model | Role | Mutability |
+|---|---|---|
+| `ImplementationPlan` | Deterministic recommendation snapshot | New rows on rebuild; status lifecycle; SUPERSEDED retained |
+| `ImplementationPlanWorkstream` | Workstream within a plan | Operator may reorder/priority/remove; evidence JSON not falsified |
+
 Snapshots and interpretations are designed so prior generations remain available for auditability.
 
 ---
@@ -68,6 +78,7 @@ Snapshots and interpretations are designed so prior generations remain available
 - **Deterministic audit payloads** are the factual backbone for public reports, prospect qualification, and CI.
 - **CompetitorAudit** is separate from public `AuditReport` — competitor audits are internal and not public report URLs.
 - **Comparison** never requires OpenAI; **interpretation** is optional explanation layered on a snapshot.
+- **Implementation plans** never require OpenAI; competitive evidence is optional and only from current comparisons.
 - **Delivery events** should not be rewritten; suppressions override send paths.
 
 ---

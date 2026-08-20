@@ -244,6 +244,7 @@ Projects:
 - Reporting System
 - Prospecting Engine (internal; **V1 complete** through CI Sprint 13.1 — see `docs/development/competitive-intelligence.md`)
 - Website Growth Audit (commercial Free + Professional — implemented; see `docs/commercial-launch-v1.md`)
+- Implementation Plan Engine (Commercial Sprint 1 — deterministic; see `docs/development/implementation-plan-engine.md`)
 
 ---
 

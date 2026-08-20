@@ -345,6 +345,7 @@ export type AuditReportWhereInput = {
   prospects?: Prisma.ProspectListRelationFilter
   outreachMessages?: Prisma.OutreachMessageListRelationFilter
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotListRelationFilter
+  implementationPlans?: Prisma.ImplementationPlanListRelationFilter
 }
 
 export type AuditReportOrderByWithRelationInput = {
@@ -372,6 +373,7 @@ export type AuditReportOrderByWithRelationInput = {
   prospects?: Prisma.ProspectOrderByRelationAggregateInput
   outreachMessages?: Prisma.OutreachMessageOrderByRelationAggregateInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotOrderByRelationAggregateInput
+  implementationPlans?: Prisma.ImplementationPlanOrderByRelationAggregateInput
 }
 
 export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
@@ -402,6 +404,7 @@ export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
   prospects?: Prisma.ProspectListRelationFilter
   outreachMessages?: Prisma.OutreachMessageListRelationFilter
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotListRelationFilter
+  implementationPlans?: Prisma.ImplementationPlanListRelationFilter
 }, "id">
 
 export type AuditReportOrderByWithAggregationInput = {
@@ -480,6 +483,7 @@ export type AuditReportCreateInput = {
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateInput = {
@@ -506,6 +510,7 @@ export type AuditReportUncheckedCreateInput = {
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUpdateInput = {
@@ -532,6 +537,7 @@ export type AuditReportUpdateInput = {
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateInput = {
@@ -558,6 +564,7 @@ export type AuditReportUncheckedUpdateInput = {
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportCreateManyInput = {
@@ -859,6 +866,20 @@ export type AuditReportUpdateOneRequiredWithoutCompetitiveComparisonsNestedInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AuditReportUpdateToOneWithWhereWithoutCompetitiveComparisonsInput, Prisma.AuditReportUpdateWithoutCompetitiveComparisonsInput>, Prisma.AuditReportUncheckedUpdateWithoutCompetitiveComparisonsInput>
 }
 
+export type AuditReportCreateNestedOneWithoutImplementationPlansInput = {
+  create?: Prisma.XOR<Prisma.AuditReportCreateWithoutImplementationPlansInput, Prisma.AuditReportUncheckedCreateWithoutImplementationPlansInput>
+  connectOrCreate?: Prisma.AuditReportCreateOrConnectWithoutImplementationPlansInput
+  connect?: Prisma.AuditReportWhereUniqueInput
+}
+
+export type AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.AuditReportCreateWithoutImplementationPlansInput, Prisma.AuditReportUncheckedCreateWithoutImplementationPlansInput>
+  connectOrCreate?: Prisma.AuditReportCreateOrConnectWithoutImplementationPlansInput
+  upsert?: Prisma.AuditReportUpsertWithoutImplementationPlansInput
+  connect?: Prisma.AuditReportWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AuditReportUpdateToOneWithWhereWithoutImplementationPlansInput, Prisma.AuditReportUpdateWithoutImplementationPlansInput>, Prisma.AuditReportUncheckedUpdateWithoutImplementationPlansInput>
+}
+
 export type AuditReportCreateWithoutLeadInput = {
   id: string
   version: number
@@ -882,6 +903,7 @@ export type AuditReportCreateWithoutLeadInput = {
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutLeadInput = {
@@ -907,6 +929,7 @@ export type AuditReportUncheckedCreateWithoutLeadInput = {
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutLeadInput = {
@@ -983,6 +1006,7 @@ export type AuditReportCreateWithoutPurchasesInput = {
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutPurchasesInput = {
@@ -1008,6 +1032,7 @@ export type AuditReportUncheckedCreateWithoutPurchasesInput = {
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutPurchasesInput = {
@@ -1049,6 +1074,7 @@ export type AuditReportUpdateWithoutPurchasesInput = {
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
@@ -1074,6 +1100,7 @@ export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportCreateWithoutProspectsInput = {
@@ -1099,6 +1126,7 @@ export type AuditReportCreateWithoutProspectsInput = {
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutProspectsInput = {
@@ -1124,6 +1152,7 @@ export type AuditReportUncheckedCreateWithoutProspectsInput = {
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutProspectsInput = {
@@ -1165,6 +1194,7 @@ export type AuditReportUpdateWithoutProspectsInput = {
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutProspectsInput = {
@@ -1190,6 +1220,7 @@ export type AuditReportUncheckedUpdateWithoutProspectsInput = {
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportCreateWithoutOutreachMessagesInput = {
@@ -1215,6 +1246,7 @@ export type AuditReportCreateWithoutOutreachMessagesInput = {
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutOutreachMessagesInput = {
@@ -1240,6 +1272,7 @@ export type AuditReportUncheckedCreateWithoutOutreachMessagesInput = {
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutOutreachMessagesInput = {
@@ -1281,6 +1314,7 @@ export type AuditReportUpdateWithoutOutreachMessagesInput = {
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutOutreachMessagesInput = {
@@ -1306,6 +1340,7 @@ export type AuditReportUncheckedUpdateWithoutOutreachMessagesInput = {
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportCreateWithoutCompetitiveComparisonsInput = {
@@ -1331,6 +1366,7 @@ export type AuditReportCreateWithoutCompetitiveComparisonsInput = {
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportUncheckedCreateWithoutCompetitiveComparisonsInput = {
@@ -1356,6 +1392,7 @@ export type AuditReportUncheckedCreateWithoutCompetitiveComparisonsInput = {
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutAuditReportInput
 }
 
 export type AuditReportCreateOrConnectWithoutCompetitiveComparisonsInput = {
@@ -1397,6 +1434,7 @@ export type AuditReportUpdateWithoutCompetitiveComparisonsInput = {
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutCompetitiveComparisonsInput = {
@@ -1422,6 +1460,127 @@ export type AuditReportUncheckedUpdateWithoutCompetitiveComparisonsInput = {
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutAuditReportNestedInput
+}
+
+export type AuditReportCreateWithoutImplementationPlansInput = {
+  id: string
+  version: number
+  createdAt?: Date | string
+  website: string
+  hostname: string
+  reportMode: string
+  source?: $Enums.AuditReportSource
+  overallScore: number
+  grade: string
+  criticalIssues: number
+  quickWins: number
+  opportunityScore: number
+  audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
+  purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
+  prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutAuditReportInput
+}
+
+export type AuditReportUncheckedCreateWithoutImplementationPlansInput = {
+  id: string
+  version: number
+  createdAt?: Date | string
+  website: string
+  hostname: string
+  reportMode: string
+  source?: $Enums.AuditReportSource
+  overallScore: number
+  grade: string
+  criticalIssues: number
+  quickWins: number
+  opportunityScore: number
+  audit: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  leadId?: string | null
+  aiStatus?: $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: number
+  aiStartedAt?: Date | string | null
+  aiGeneratedAt?: Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
+  prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
+}
+
+export type AuditReportCreateOrConnectWithoutImplementationPlansInput = {
+  where: Prisma.AuditReportWhereUniqueInput
+  create: Prisma.XOR<Prisma.AuditReportCreateWithoutImplementationPlansInput, Prisma.AuditReportUncheckedCreateWithoutImplementationPlansInput>
+}
+
+export type AuditReportUpsertWithoutImplementationPlansInput = {
+  update: Prisma.XOR<Prisma.AuditReportUpdateWithoutImplementationPlansInput, Prisma.AuditReportUncheckedUpdateWithoutImplementationPlansInput>
+  create: Prisma.XOR<Prisma.AuditReportCreateWithoutImplementationPlansInput, Prisma.AuditReportUncheckedCreateWithoutImplementationPlansInput>
+  where?: Prisma.AuditReportWhereInput
+}
+
+export type AuditReportUpdateToOneWithWhereWithoutImplementationPlansInput = {
+  where?: Prisma.AuditReportWhereInput
+  data: Prisma.XOR<Prisma.AuditReportUpdateWithoutImplementationPlansInput, Prisma.AuditReportUncheckedUpdateWithoutImplementationPlansInput>
+}
+
+export type AuditReportUpdateWithoutImplementationPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  website?: Prisma.StringFieldUpdateOperationsInput | string
+  hostname?: Prisma.StringFieldUpdateOperationsInput | string
+  reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
+  overallScore?: Prisma.IntFieldUpdateOperationsInput | number
+  grade?: Prisma.StringFieldUpdateOperationsInput | string
+  criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
+  quickWins?: Prisma.IntFieldUpdateOperationsInput | number
+  opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
+  audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
+  purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
+  prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutAuditReportNestedInput
+}
+
+export type AuditReportUncheckedUpdateWithoutImplementationPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  website?: Prisma.StringFieldUpdateOperationsInput | string
+  hostname?: Prisma.StringFieldUpdateOperationsInput | string
+  reportMode?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.EnumAuditReportSourceFieldUpdateOperationsInput | $Enums.AuditReportSource
+  overallScore?: Prisma.IntFieldUpdateOperationsInput | number
+  grade?: Prisma.StringFieldUpdateOperationsInput | string
+  criticalIssues?: Prisma.IntFieldUpdateOperationsInput | number
+  quickWins?: Prisma.IntFieldUpdateOperationsInput | number
+  opportunityScore?: Prisma.IntFieldUpdateOperationsInput | number
+  audit?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aiStatus?: Prisma.NullableEnumAiInterpretationStatusFieldUpdateOperationsInput | $Enums.AiInterpretationStatus | null
+  aiAttemptCount?: Prisma.IntFieldUpdateOperationsInput | number
+  aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
+  prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportCreateManyLeadInput = {
@@ -1468,6 +1627,7 @@ export type AuditReportUpdateWithoutLeadInput = {
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateWithoutLeadInput = {
@@ -1493,6 +1653,7 @@ export type AuditReportUncheckedUpdateWithoutLeadInput = {
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutAuditReportNestedInput
 }
 
 export type AuditReportUncheckedUpdateManyWithoutLeadInput = {
@@ -1526,6 +1687,7 @@ export type AuditReportCountOutputType = {
   prospects: number
   outreachMessages: number
   competitiveComparisons: number
+  implementationPlans: number
 }
 
 export type AuditReportCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1533,6 +1695,7 @@ export type AuditReportCountOutputTypeSelect<ExtArgs extends runtime.Types.Exten
   prospects?: boolean | AuditReportCountOutputTypeCountProspectsArgs
   outreachMessages?: boolean | AuditReportCountOutputTypeCountOutreachMessagesArgs
   competitiveComparisons?: boolean | AuditReportCountOutputTypeCountCompetitiveComparisonsArgs
+  implementationPlans?: boolean | AuditReportCountOutputTypeCountImplementationPlansArgs
 }
 
 /**
@@ -1573,6 +1736,13 @@ export type AuditReportCountOutputTypeCountCompetitiveComparisonsArgs<ExtArgs ex
   where?: Prisma.CompetitiveComparisonSnapshotWhereInput
 }
 
+/**
+ * AuditReportCountOutputType without action
+ */
+export type AuditReportCountOutputTypeCountImplementationPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ImplementationPlanWhereInput
+}
+
 
 export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1599,6 +1769,7 @@ export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   prospects?: boolean | Prisma.AuditReport$prospectsArgs<ExtArgs>
   outreachMessages?: boolean | Prisma.AuditReport$outreachMessagesArgs<ExtArgs>
   competitiveComparisons?: boolean | Prisma.AuditReport$competitiveComparisonsArgs<ExtArgs>
+  implementationPlans?: boolean | Prisma.AuditReport$implementationPlansArgs<ExtArgs>
   _count?: boolean | Prisma.AuditReportCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["auditReport"]>
 
@@ -1677,6 +1848,7 @@ export type AuditReportInclude<ExtArgs extends runtime.Types.Extensions.Internal
   prospects?: boolean | Prisma.AuditReport$prospectsArgs<ExtArgs>
   outreachMessages?: boolean | Prisma.AuditReport$outreachMessagesArgs<ExtArgs>
   competitiveComparisons?: boolean | Prisma.AuditReport$competitiveComparisonsArgs<ExtArgs>
+  implementationPlans?: boolean | Prisma.AuditReport$implementationPlansArgs<ExtArgs>
   _count?: boolean | Prisma.AuditReportCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AuditReportIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1694,6 +1866,7 @@ export type $AuditReportPayload<ExtArgs extends runtime.Types.Extensions.Interna
     prospects: Prisma.$ProspectPayload<ExtArgs>[]
     outreachMessages: Prisma.$OutreachMessagePayload<ExtArgs>[]
     competitiveComparisons: Prisma.$CompetitiveComparisonSnapshotPayload<ExtArgs>[]
+    implementationPlans: Prisma.$ImplementationPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2118,6 +2291,7 @@ export interface Prisma__AuditReportClient<T, Null = never, ExtArgs extends runt
   prospects<T extends Prisma.AuditReport$prospectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$prospectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   outreachMessages<T extends Prisma.AuditReport$outreachMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$outreachMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutreachMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   competitiveComparisons<T extends Prisma.AuditReport$competitiveComparisonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$competitiveComparisonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitiveComparisonSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  implementationPlans<T extends Prisma.AuditReport$implementationPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReport$implementationPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2679,6 +2853,30 @@ export type AuditReport$competitiveComparisonsArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.CompetitiveComparisonSnapshotScalarFieldEnum | Prisma.CompetitiveComparisonSnapshotScalarFieldEnum[]
+}
+
+/**
+ * AuditReport.implementationPlans
+ */
+export type AuditReport$implementationPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImplementationPlan
+   */
+  select?: Prisma.ImplementationPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImplementationPlan
+   */
+  omit?: Prisma.ImplementationPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImplementationPlanInclude<ExtArgs> | null
+  where?: Prisma.ImplementationPlanWhereInput
+  orderBy?: Prisma.ImplementationPlanOrderByWithRelationInput | Prisma.ImplementationPlanOrderByWithRelationInput[]
+  cursor?: Prisma.ImplementationPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ImplementationPlanScalarFieldEnum | Prisma.ImplementationPlanScalarFieldEnum[]
 }
 
 /**

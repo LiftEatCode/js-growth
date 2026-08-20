@@ -74,7 +74,9 @@ export const ModelName = {
   CompetitiveComparisonSnapshot: 'CompetitiveComparisonSnapshot',
   CompetitiveInterpretation: 'CompetitiveInterpretation',
   CompetitorAuditRun: 'CompetitorAuditRun',
-  CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
+  CompetitorDiscoveryRun: 'CompetitorDiscoveryRun',
+  ImplementationPlan: 'ImplementationPlan',
+  ImplementationPlanWorkstream: 'ImplementationPlanWorkstream'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -632,6 +634,53 @@ export const CompetitorDiscoveryRunScalarFieldEnum = {
 } as const
 
 export type CompetitorDiscoveryRunScalarFieldEnum = (typeof CompetitorDiscoveryRunScalarFieldEnum)[keyof typeof CompetitorDiscoveryRunScalarFieldEnum]
+
+
+export const ImplementationPlanScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  leadId: 'leadId',
+  auditReportId: 'auditReportId',
+  comparisonSnapshotId: 'comparisonSnapshotId',
+  status: 'status',
+  planVersion: 'planVersion',
+  mappingVersion: 'mappingVersion',
+  capabilityVersion: 'capabilityVersion',
+  inputFingerprint: 'inputFingerprint',
+  competitiveEvidenceUsed: 'competitiveEvidenceUsed',
+  operatorNotes: 'operatorNotes',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ImplementationPlanScalarFieldEnum = (typeof ImplementationPlanScalarFieldEnum)[keyof typeof ImplementationPlanScalarFieldEnum]
+
+
+export const ImplementationPlanWorkstreamScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  implementationPlanId: 'implementationPlanId',
+  workstreamType: 'workstreamType',
+  priority: 'priority',
+  priorityScore: 'priorityScore',
+  title: 'title',
+  summary: 'summary',
+  sortOrder: 'sortOrder',
+  removed: 'removed',
+  operatorNote: 'operatorNote',
+  capabilitiesJson: 'capabilitiesJson',
+  evidenceJson: 'evidenceJson',
+  actionsJson: 'actionsJson',
+  preservationConstraintsJson: 'preservationConstraintsJson'
+} as const
+
+export type ImplementationPlanWorkstreamScalarFieldEnum = (typeof ImplementationPlanWorkstreamScalarFieldEnum)[keyof typeof ImplementationPlanWorkstreamScalarFieldEnum]
 
 
 export const SortOrder = {

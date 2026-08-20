@@ -42,6 +42,12 @@ Verified against implementation. Separates **public products**, **internal tools
 - Profile → Places candidates → validate → human select ≤3 → competitor audits → deterministic comparison → AI interpretation → internal Competitive Website Growth Analysis preview
 - **Not** publicly shareable in V1; **no** competitive PDF SKU
 
+### Implementation Plan (Commercial Sprint 1)
+
+- Deterministic workstreams from audit (+ optional current comparison)
+- Human review / approve; historical snapshots
+- **No** AI, pricing, proposals, or public exposure
+
 ---
 
 ## Planned / not implemented (examples)

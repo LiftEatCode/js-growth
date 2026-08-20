@@ -113,6 +113,9 @@ assert(isForbiddenAnalyticsParamKey("competitive_ai_summary"), "competitive_ai_s
 assert(isForbiddenAnalyticsParamKey("competitive_report"), "competitive_report key is forbidden");
 assert(isForbiddenAnalyticsParamKey("competitive_growth_analysis"), "competitive_growth_analysis key is forbidden");
 assert(isForbiddenAnalyticsParamKey("source_key"), "source_key key is forbidden");
+assert(isForbiddenAnalyticsParamKey("implementation_plan_id"), "implementation_plan_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("workstream_id"), "workstream_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("evidence_json"), "evidence_json key is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
 assert(isForbiddenAnalyticsParamValue(REPORT_ID), "UUID values are forbidden");
 assert(

@@ -420,7 +420,9 @@ export const ModelName = {
   CompetitiveComparisonSnapshot: 'CompetitiveComparisonSnapshot',
   CompetitiveInterpretation: 'CompetitiveInterpretation',
   CompetitorAuditRun: 'CompetitorAuditRun',
-  CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
+  CompetitorDiscoveryRun: 'CompetitorDiscoveryRun',
+  ImplementationPlan: 'ImplementationPlan',
+  ImplementationPlanWorkstream: 'ImplementationPlanWorkstream'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -436,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2216,6 +2218,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ImplementationPlan: {
+      payload: Prisma.$ImplementationPlanPayload<ExtArgs>
+      fields: Prisma.ImplementationPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ImplementationPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ImplementationPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.ImplementationPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ImplementationPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>
+        }
+        findMany: {
+          args: Prisma.ImplementationPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>[]
+        }
+        create: {
+          args: Prisma.ImplementationPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>
+        }
+        createMany: {
+          args: Prisma.ImplementationPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ImplementationPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.ImplementationPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>
+        }
+        update: {
+          args: Prisma.ImplementationPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.ImplementationPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ImplementationPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ImplementationPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.ImplementationPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.ImplementationPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateImplementationPlan>
+        }
+        groupBy: {
+          args: Prisma.ImplementationPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImplementationPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ImplementationPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImplementationPlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    ImplementationPlanWorkstream: {
+      payload: Prisma.$ImplementationPlanWorkstreamPayload<ExtArgs>
+      fields: Prisma.ImplementationPlanWorkstreamFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ImplementationPlanWorkstreamFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ImplementationPlanWorkstreamFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>
+        }
+        findFirst: {
+          args: Prisma.ImplementationPlanWorkstreamFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ImplementationPlanWorkstreamFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>
+        }
+        findMany: {
+          args: Prisma.ImplementationPlanWorkstreamFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>[]
+        }
+        create: {
+          args: Prisma.ImplementationPlanWorkstreamCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>
+        }
+        createMany: {
+          args: Prisma.ImplementationPlanWorkstreamCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ImplementationPlanWorkstreamCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>[]
+        }
+        delete: {
+          args: Prisma.ImplementationPlanWorkstreamDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>
+        }
+        update: {
+          args: Prisma.ImplementationPlanWorkstreamUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>
+        }
+        deleteMany: {
+          args: Prisma.ImplementationPlanWorkstreamDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ImplementationPlanWorkstreamUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ImplementationPlanWorkstreamUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>[]
+        }
+        upsert: {
+          args: Prisma.ImplementationPlanWorkstreamUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanWorkstreamPayload>
+        }
+        aggregate: {
+          args: Prisma.ImplementationPlanWorkstreamAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateImplementationPlanWorkstream>
+        }
+        groupBy: {
+          args: Prisma.ImplementationPlanWorkstreamGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImplementationPlanWorkstreamGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ImplementationPlanWorkstreamCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImplementationPlanWorkstreamCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2796,6 +2946,53 @@ export const CompetitorDiscoveryRunScalarFieldEnum = {
 export type CompetitorDiscoveryRunScalarFieldEnum = (typeof CompetitorDiscoveryRunScalarFieldEnum)[keyof typeof CompetitorDiscoveryRunScalarFieldEnum]
 
 
+export const ImplementationPlanScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  leadId: 'leadId',
+  auditReportId: 'auditReportId',
+  comparisonSnapshotId: 'comparisonSnapshotId',
+  status: 'status',
+  planVersion: 'planVersion',
+  mappingVersion: 'mappingVersion',
+  capabilityVersion: 'capabilityVersion',
+  inputFingerprint: 'inputFingerprint',
+  competitiveEvidenceUsed: 'competitiveEvidenceUsed',
+  operatorNotes: 'operatorNotes',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ImplementationPlanScalarFieldEnum = (typeof ImplementationPlanScalarFieldEnum)[keyof typeof ImplementationPlanScalarFieldEnum]
+
+
+export const ImplementationPlanWorkstreamScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  implementationPlanId: 'implementationPlanId',
+  workstreamType: 'workstreamType',
+  priority: 'priority',
+  priorityScore: 'priorityScore',
+  title: 'title',
+  summary: 'summary',
+  sortOrder: 'sortOrder',
+  removed: 'removed',
+  operatorNote: 'operatorNote',
+  capabilitiesJson: 'capabilitiesJson',
+  evidenceJson: 'evidenceJson',
+  actionsJson: 'actionsJson',
+  preservationConstraintsJson: 'preservationConstraintsJson'
+} as const
+
+export type ImplementationPlanWorkstreamScalarFieldEnum = (typeof ImplementationPlanWorkstreamScalarFieldEnum)[keyof typeof ImplementationPlanWorkstreamScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3304,6 +3501,20 @@ export type EnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel> = Fie
 export type ListEnumCompetitiveInterpretationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompetitiveInterpretationStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'ImplementationPlanStatus'
+ */
+export type EnumImplementationPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImplementationPlanStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ImplementationPlanStatus[]'
+ */
+export type ListEnumImplementationPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImplementationPlanStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3479,6 +3690,8 @@ export type GlobalOmitConfig = {
   competitiveInterpretation?: Prisma.CompetitiveInterpretationOmit
   competitorAuditRun?: Prisma.CompetitorAuditRunOmit
   competitorDiscoveryRun?: Prisma.CompetitorDiscoveryRunOmit
+  implementationPlan?: Prisma.ImplementationPlanOmit
+  implementationPlanWorkstream?: Prisma.ImplementationPlanWorkstreamOmit
 }
 
 /* Types for Logging */

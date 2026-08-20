@@ -14,10 +14,12 @@ import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-
 import { CompetitiveComparisonPanel } from "@/components/prospecting/competitive-comparison-panel";
 import { CompetitiveInterpretationPanel } from "@/components/prospecting/competitive-interpretation-panel";
 import { CompetitiveReportPreviewLink } from "@/components/prospecting/competitive-report-preview-link";
+import { ImplementationPlanPanel } from "@/components/prospecting/implementation-plan-panel";
 import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
 import { loadLatestCompetitiveComparison } from "@/lib/competitive-intelligence/comparison/load";
 import { loadLatestCompetitiveInterpretation } from "@/lib/competitive-intelligence/interpretation/load";
 import { getCompetitiveReportReadiness } from "@/lib/competitive-intelligence/report/readiness";
+import { loadLatestImplementationPlan } from "@/lib/commercialization/implementation-plan/load";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
@@ -186,6 +188,10 @@ export default async function CampaignProspectDetailPage({
         competitiveInterpretation.interpretation.status === "COMPLETED" &&
         competitiveInterpretation.interpretation.content,
     ),
+  });
+  const implementationPlanLoad = await loadLatestImplementationPlan({
+    campaignId,
+    prospectId,
   });
   const audit = prospect.auditReport?.audit as WebsiteAuditResult | undefined;
   const qualification = parseStoredQualification(membership.qualificationJson);
@@ -665,6 +671,42 @@ export default async function CampaignProspectDetailPage({
               campaignId={membership.campaign.id}
               prospectId={prospect.id}
               readiness={competitiveReportReadiness}
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Implementation Plan
+          </h2>
+          <div className="mt-4">
+            <ImplementationPlanPanel
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              plan={
+                implementationPlanLoad.plan
+                  ? {
+                      id: implementationPlanLoad.plan.id,
+                      status: implementationPlanLoad.plan.status,
+                      createdAtLabel: formatDate(
+                        implementationPlanLoad.plan.createdAt,
+                      ),
+                      competitiveEvidenceUsed:
+                        implementationPlanLoad.plan.competitiveEvidenceUsed,
+                      approvedAtLabel: implementationPlanLoad.plan.approvedAt
+                        ? formatDate(implementationPlanLoad.plan.approvedAt)
+                        : null,
+                      approvedByEmail:
+                        implementationPlanLoad.plan.approvedByEmail,
+                      operatorNotes: implementationPlanLoad.plan.operatorNotes,
+                      workstreams: implementationPlanLoad.plan.workstreams,
+                    }
+                  : null
+              }
+              stale={implementationPlanLoad.stale}
+              staleReasons={implementationPlanLoad.staleReasons}
+              canGenerate={implementationPlanLoad.canGenerate}
+              generateBlocker={implementationPlanLoad.generateBlocker}
             />
           </div>
         </Card>

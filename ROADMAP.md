@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 complete (through Sprint 13.1) + Website Growth Audit commercial product in production use.
+**Platform milestone:** Competitive Intelligence V1 complete (through Sprint 13.1) + Website Growth Audit commercial product + **Commercial Sprint 1 (Implementation Plan foundation)** implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -99,6 +99,18 @@ Earlier prospecting sprints 1–8 (contacts, sending, webhooks, outcomes) remain
 
 ---
 
+## Commercial Sprint 1 — Implementation Plan Foundation
+
+Status: 🟢 Implemented (internal)
+
+Canonical doc: `docs/development/implementation-plan-engine.md`
+
+Deterministic evidence → capabilities → workstreams → priorities → persisted snapshot + human approve.
+
+**Not included:** AI interpretation of plans, pricing, opportunities, proposals, public plans, outreach.
+
+---
+
 ## HARDENING / OPERATIONS (not new features)
 
 - Stripe LIVE go-live checklist and controlled live transaction (if not already complete in your environment)
@@ -111,11 +123,11 @@ Earlier prospecting sprints 1–8 (contacts, sending, webhooks, outcomes) remain
 
 Prioritize based on business leverage with the **current** stack:
 
-1. Turn CI V1 into a controlled **client deliverable** workflow (still internal-first): packaging, talk tracks, optional share mechanism when ready
+1. Commercial Sprint 2 (optional): AI **explanation** of an approved Implementation Plan — facts stay Sprint 1
 2. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-3. Prospecting throughput: reply handling / follow-up **with human gates** (not autonomous sequences)
-4. Evidence → service proposal: structured handoff from audit/CI findings into Website / Local SEO / CRO scopes
-5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF — **after** internal delivery works
+3. Opportunity / proposal layer on top of approved Implementation Plans (still human-gated)
+4. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
+5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
 
 ## LATER / EXPLORATORY
 
@@ -124,8 +136,8 @@ Prioritize based on business leverage with the **current** stack:
 - Lead capture from competitive reports
 - Multi-location competitive analysis
 - Broader CRM expansion / campaign optimization ML
-- Service recommendation generators as automated SKUs
 - Autonomous outbound (explicitly out of V1 principles)
+- Automated pricing / e-sign proposals
 
 ---
 

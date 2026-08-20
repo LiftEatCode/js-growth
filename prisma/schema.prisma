@@ -63,6 +63,8 @@ model AuditReport {
 
   competitiveComparisons CompetitiveComparisonSnapshot[]
 
+  implementationPlans ImplementationPlan[]
+
   aiStatus         AiInterpretationStatus?
   aiAttemptCount   Int                     @default(0)
   aiStartedAt      DateTime?
@@ -106,6 +108,8 @@ model Lead {
   activities LeadActivity[]
 
   prospects Prospect[]
+
+  implementationPlans ImplementationPlan[]
 
   @@index([email])
   @@index([website])
@@ -340,6 +344,7 @@ model Campaign {
   competitorAudits        CompetitorAudit[]
   competitiveComparisons  CompetitiveComparisonSnapshot[]
   competitiveInterpretations CompetitiveInterpretation[]
+  implementationPlans     ImplementationPlan[]
 
   @@index([status])
   @@index([createdAt])
@@ -397,6 +402,7 @@ model Prospect {
   competitorAudits            CompetitorAudit[]            @relation("TargetProspectCompetitorAudits")
   competitiveComparisons      CompetitiveComparisonSnapshot[]
   competitiveInterpretations  CompetitiveInterpretation[]
+  implementationPlans         ImplementationPlan[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -962,6 +968,8 @@ model CompetitiveComparisonSnapshot {
 
   interpretations CompetitiveInterpretation[]
 
+  implementationPlans ImplementationPlan[]
+
   @@index([prospectId, campaignId, createdAt])
   @@index([auditReportId])
   @@index([createdAt])
@@ -1081,4 +1089,88 @@ model CompetitorDiscoveryRun {
   @@index([campaignId, status])
   @@index([prospectId, createdAt])
   @@index([createdAt])
+}
+
+enum ImplementationPlanStatus {
+  DRAFT
+  REVIEWED
+  APPROVED
+  SUPERSEDED
+}
+
+/// Deterministic Implementation Recommendation snapshot (Commercial Sprint 1).
+/// Facts → capabilities → workstreams. No AI. No pricing. Internal only.
+model ImplementationPlan {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  auditReportId String
+  auditReport   AuditReport @relation(fields: [auditReportId], references: [id], onDelete: Cascade)
+
+  comparisonSnapshotId String?
+  comparisonSnapshot   CompetitiveComparisonSnapshot? @relation(fields: [comparisonSnapshotId], references: [id], onDelete: SetNull)
+
+  status ImplementationPlanStatus @default(DRAFT)
+
+  planVersion       Int
+  mappingVersion    Int
+  capabilityVersion Int
+  inputFingerprint  String
+
+  competitiveEvidenceUsed Boolean @default(false)
+
+  operatorNotes String?
+
+  approvedAt      DateTime?
+  approvedByEmail String?
+  supersededAt    DateTime?
+
+  createdByEmail String
+
+  workstreams ImplementationPlanWorkstream[]
+
+  @@index([prospectId, campaignId, createdAt])
+  @@index([auditReportId])
+  @@index([comparisonSnapshotId])
+  @@index([status, createdAt])
+  @@index([leadId])
+}
+
+model ImplementationPlanWorkstream {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  implementationPlanId String
+  implementationPlan   ImplementationPlan @relation(fields: [implementationPlanId], references: [id], onDelete: Cascade)
+
+  workstreamType String
+  priority       String
+  priorityScore  Int
+  title          String
+  summary        String
+  sortOrder      Int
+
+  /// Operator soft-remove; evidence JSON remains for auditability.
+  removed Boolean @default(false)
+
+  operatorNote String?
+
+  capabilitiesJson            Json
+  evidenceJson                Json
+  actionsJson                 Json
+  preservationConstraintsJson Json
+
+  @@index([implementationPlanId, sortOrder])
+  @@index([implementationPlanId, removed])
 }

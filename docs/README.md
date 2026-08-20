@@ -25,7 +25,8 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Platform architecture | [`development/platform-architecture.md`](development/platform-architecture.md) |
 | Website Growth Audit | [`commercial-launch-v1.md`](commercial-launch-v1.md), [`development/stripe-paid-audit.md`](development/stripe-paid-audit.md), [`development/ai-interpretation-v1.md`](development/ai-interpretation-v1.md) |
 | Prospecting Engine V1 | [`development/prospecting-engine-v1.md`](development/prospecting-engine-v1.md) |
-| Competitive Intelligence V1 | [`development/competitive-intelligence.md`](development/competitive-intelligence.md) |
+| Competitive Intelligence | [`development/competitive-intelligence.md`](development/competitive-intelligence.md) |
+| Implementation Plan Engine | [`development/implementation-plan-engine.md`](development/implementation-plan-engine.md) |
 | Public-audit competitor URLs (separate) | [`development/competitive-intelligence-v1.md`](development/competitive-intelligence-v1.md) |
 | AI architecture (all OpenAI paths) | [`development/ai-architecture.md`](development/ai-architecture.md) |
 | External services / APIs | [`development/external-services.md`](development/external-services.md) |
