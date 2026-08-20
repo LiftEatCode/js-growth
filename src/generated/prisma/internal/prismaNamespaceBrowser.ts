@@ -68,7 +68,9 @@ export const ModelName = {
   ProspectQualificationRun: 'ProspectQualificationRun',
   ProspectContactDiscoveryRun: 'ProspectContactDiscoveryRun',
   ProspectOutreachDraftRun: 'ProspectOutreachDraftRun',
-  OutreachOutcome: 'OutreachOutcome'
+  OutreachOutcome: 'OutreachOutcome',
+  ProspectCompetitor: 'ProspectCompetitor',
+  CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -201,6 +203,7 @@ export const ProspectScalarFieldEnum = {
   skipReason: 'skipReason',
   notes: 'notes',
   lastContactDiscoveryAt: 'lastContactDiscoveryAt',
+  lastCompetitorDiscoveryAt: 'lastCompetitorDiscoveryAt',
   auditReportId: 'auditReportId',
   leadId: 'leadId'
 } as const
@@ -466,6 +469,63 @@ export const OutreachOutcomeScalarFieldEnum = {
 } as const
 
 export type OutreachOutcomeScalarFieldEnum = (typeof OutreachOutcomeScalarFieldEnum)[keyof typeof OutreachOutcomeScalarFieldEnum]
+
+
+export const ProspectCompetitorScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  competitorProspectId: 'competitorProspectId',
+  provider: 'provider',
+  providerBusinessId: 'providerBusinessId',
+  businessName: 'businessName',
+  website: 'website',
+  normalizedHostname: 'normalizedHostname',
+  formattedAddress: 'formattedAddress',
+  city: 'city',
+  state: 'state',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  primaryType: 'primaryType',
+  normalizedVerticalsJson: 'normalizedVerticalsJson',
+  distanceMiles: 'distanceMiles',
+  validationScore: 'validationScore',
+  validationLabel: 'validationLabel',
+  evidenceJson: 'evidenceJson',
+  status: 'status',
+  isRecommended: 'isRecommended',
+  discoveredAt: 'discoveredAt',
+  lastValidatedAt: 'lastValidatedAt'
+} as const
+
+export type ProspectCompetitorScalarFieldEnum = (typeof ProspectCompetitorScalarFieldEnum)[keyof typeof ProspectCompetitorScalarFieldEnum]
+
+
+export const CompetitorDiscoveryRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  prospectId: 'prospectId',
+  status: 'status',
+  requestedProspects: 'requestedProspects',
+  processedProspects: 'processedProspects',
+  providerRequests: 'providerRequests',
+  candidatesReturned: 'candidatesReturned',
+  validatedCount: 'validatedCount',
+  rejectedCount: 'rejectedCount',
+  recommendedCount: 'recommendedCount',
+  selectedCount: 'selectedCount',
+  reusedCount: 'reusedCount',
+  failedCount: 'failedCount',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CompetitorDiscoveryRunScalarFieldEnum = (typeof CompetitorDiscoveryRunScalarFieldEnum)[keyof typeof CompetitorDiscoveryRunScalarFieldEnum]
 
 
 export const SortOrder = {

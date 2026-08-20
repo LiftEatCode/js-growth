@@ -9,6 +9,8 @@ import { CampaignFunnelPanel } from "@/components/prospecting/campaign-funnel-pa
 import { CampaignDeliveryHealthPanel } from "@/components/prospecting/campaign-delivery-health-panel";
 import { DiscoverBusinessesButton } from "@/components/prospecting/discover-businesses-button";
 import { FindContactsButton } from "@/components/prospecting/find-contacts-button";
+import { FindCompetitorsButton } from "@/components/prospecting/find-competitors-button";
+import { CampaignCompetitiveSummary } from "@/components/prospecting/campaign-competitive-summary";
 import { GenerateDraftsButton } from "@/components/prospecting/generate-drafts-button";
 import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { prisma } from "@/lib/prisma";
@@ -122,6 +124,10 @@ export default async function ProspectingCampaignPage({
         orderBy: { createdAt: "desc" },
         take: 3,
       },
+      competitorDiscoveryRuns: {
+        orderBy: { createdAt: "desc" },
+        take: 3,
+      },
     },
   });
 
@@ -152,8 +158,32 @@ export default async function ProspectingCampaignPage({
   const latestQualification = campaign.qualificationRuns[0] ?? null;
   const latestContactRun = campaign.contactDiscoveryRuns[0] ?? null;
   const latestDraftRun = campaign.outreachDraftRuns[0] ?? null;
+  const latestCompetitorRun = campaign.competitorDiscoveryRuns[0] ?? null;
   const funnelMetrics = await loadCampaignFunnelMetrics(campaignId);
   const deliveryHealth = await loadCampaignDeliveryHealth(campaignId);
+  const competitorRows = await prisma.prospectCompetitor.findMany({
+    where: {
+      prospectId: { in: prospects.map((row) => row.prospectId) },
+    },
+    select: {
+      prospectId: true,
+      status: true,
+    },
+  });
+  const prospectsWithCompetitorSet = new Set(
+    competitorRows
+      .filter((row) => row.status === "SELECTED")
+      .map((row) => row.prospectId),
+  ).size;
+  const competitorCandidatesFound = competitorRows.filter(
+    (row) => row.status !== "STALE",
+  ).length;
+  const validatedCompetitors = competitorRows.filter(
+    (row) => row.status === "VALIDATED" || row.status === "SELECTED",
+  ).length;
+  const selectedCompetitors = competitorRows.filter(
+    (row) => row.status === "SELECTED",
+  ).length;
 
   const selectedRows = prospects.filter((row) =>
     isProspectSelectedForOutreach(row),
@@ -319,6 +349,7 @@ export default async function ProspectingCampaignPage({
               campaignId={campaign.id}
               missingCount={draftMissing}
             />
+            <FindCompetitorsButton campaignId={campaign.id} />
             <Button
               variant="outline"
               nativeButton={false}
@@ -385,6 +416,27 @@ export default async function ProspectingCampaignPage({
 
         <Card variant="elevated" padding="lg">
           <CampaignDeliveryHealthPanel counts={deliveryHealth} />
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <CampaignCompetitiveSummary
+            prospectsWithCompetitorSet={prospectsWithCompetitorSet}
+            candidatesFound={competitorCandidatesFound}
+            validatedCompetitors={validatedCompetitors}
+            selectedCompetitors={selectedCompetitors}
+          />
+          {latestCompetitorRun ? (
+            <p className="mt-4 text-xs text-muted">
+              Last competitor run: {latestCompetitorRun.status.toLowerCase()} ·{" "}
+              {latestCompetitorRun.processedProspects} prospects ·{" "}
+              {latestCompetitorRun.providerRequests} Places requests ·{" "}
+              {latestCompetitorRun.candidatesReturned} candidates ·{" "}
+              {latestCompetitorRun.reusedCount} reused
+              {latestCompetitorRun.errorMessage
+                ? ` · ${latestCompetitorRun.errorMessage}`
+                : ""}
+            </p>
+          ) : null}
         </Card>
 
         <Card variant="elevated" padding="lg">

@@ -36,6 +36,14 @@ assert(
     "professional_checkout_started",
   "professional_checkout_started event name is unchanged",
 );
+assert(
+  isForbiddenAnalyticsParamKey("competitor_id"),
+  "competitor ids are stripped from analytics",
+);
+assert(
+  isForbiddenAnalyticsParamKey("provider_business_id"),
+  "place ids are stripped from analytics",
+);
 
 const auditCompleted = sanitizeCommercialEventParams({
   pages_scanned: 4,

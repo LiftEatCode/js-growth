@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 8 — Resend Webhooks, Delivery Intelligence & Operational Hardening
+Status: 🟢 Sprint 9 — Competitive Discovery Foundation
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,15 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 8 (current):
+Sprint 9 (current):
+
+- Deterministic competitive profile + vertical normalization
+- Google Places competitor *candidate* discovery (bounded)
+- Explainable validation, ranking, and human select/reject (max 3)
+- Prospect and campaign competitor discovery runs
+- No competitor website audits, OpenAI, or outreach
+
+Sprint 8:
 
 - Resend webhook endpoint with Svix signature verification (`POST /api/resend/webhook`)
 - `OutreachDeliveryEvent` history (does not overwrite message lifecycle)

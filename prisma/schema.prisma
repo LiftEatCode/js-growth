@@ -333,6 +333,7 @@ model Campaign {
   qualificationRuns      ProspectQualificationRun[]
   contactDiscoveryRuns   ProspectContactDiscoveryRun[]
   outreachDraftRuns      ProspectOutreachDraftRun[]
+  competitorDiscoveryRuns CompetitorDiscoveryRun[]
 
   @@index([status])
   @@index([createdAt])
@@ -365,7 +366,8 @@ model Prospect {
   skipReason String?
   notes      String?
 
-  lastContactDiscoveryAt DateTime?
+  lastContactDiscoveryAt     DateTime?
+  lastCompetitorDiscoveryAt  DateTime?
 
   auditReportId String?
   auditReport   AuditReport? @relation(fields: [auditReportId], references: [id], onDelete: SetNull)
@@ -379,6 +381,9 @@ model Prospect {
   outreachMessages            OutreachMessage[]
   outreachOutcomes            OutreachOutcome[]
   importedDiscoveryCandidates ProspectDiscoveryCandidate[]
+  competitors                 ProspectCompetitor[]         @relation("ProspectCompetitors")
+  competitorOf                ProspectCompetitor[]         @relation("CompetitorProspectLink")
+  competitorDiscoveryRuns     CompetitorDiscoveryRun[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -789,4 +794,99 @@ model OutreachOutcome {
   @@index([prospectId])
   @@index([outcome])
   @@index([occurredAt])
+}
+
+enum ProspectCompetitorStatus {
+  CANDIDATE
+  VALIDATED
+  SELECTED
+  REJECTED
+  STALE
+}
+
+enum ProspectCompetitorValidationLabel {
+  STRONG
+  LIKELY
+  WEAK
+  REJECTED
+}
+
+model ProspectCompetitor {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prospectId String
+  prospect   Prospect @relation("ProspectCompetitors", fields: [prospectId], references: [id], onDelete: Cascade)
+
+  competitorProspectId String?
+  competitorProspect   Prospect? @relation("CompetitorProspectLink", fields: [competitorProspectId], references: [id], onDelete: SetNull)
+
+  provider           String
+  providerBusinessId String
+
+  businessName       String
+  website            String?
+  normalizedHostname String?
+
+  formattedAddress String?
+  city             String?
+  state            String?
+  latitude         Float?
+  longitude        Float?
+
+  primaryType             String?
+  normalizedVerticalsJson Json?
+
+  distanceMiles   Float?
+  validationScore Int
+  validationLabel ProspectCompetitorValidationLabel
+  evidenceJson    Json
+
+  status        ProspectCompetitorStatus @default(CANDIDATE)
+  isRecommended Boolean                  @default(false)
+
+  discoveredAt    DateTime @default(now())
+  lastValidatedAt DateTime @default(now())
+
+  @@unique([prospectId, provider, providerBusinessId])
+  @@index([prospectId, status])
+  @@index([prospectId, isRecommended])
+  @@index([normalizedHostname])
+  @@index([competitorProspectId])
+}
+
+model CompetitorDiscoveryRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  campaignId String?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  prospectId String?
+  prospect   Prospect? @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  status DiscoveryRunStatus @default(RUNNING)
+
+  requestedProspects Int
+  processedProspects Int @default(0)
+  providerRequests   Int @default(0)
+  candidatesReturned Int @default(0)
+  validatedCount     Int @default(0)
+  rejectedCount      Int @default(0)
+  recommendedCount   Int @default(0)
+  selectedCount      Int @default(0)
+  reusedCount        Int @default(0)
+  failedCount        Int @default(0)
+
+  durationMs   Int     @default(0)
+  errorMessage String?
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdByEmail String
+
+  @@index([campaignId, status])
+  @@index([prospectId, createdAt])
+  @@index([createdAt])
 }

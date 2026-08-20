@@ -267,3 +267,24 @@ export const QualificationRunStatus = {
 } as const
 
 export type QualificationRunStatus = (typeof QualificationRunStatus)[keyof typeof QualificationRunStatus]
+
+
+export const ProspectCompetitorStatus = {
+  CANDIDATE: 'CANDIDATE',
+  VALIDATED: 'VALIDATED',
+  SELECTED: 'SELECTED',
+  REJECTED: 'REJECTED',
+  STALE: 'STALE'
+} as const
+
+export type ProspectCompetitorStatus = (typeof ProspectCompetitorStatus)[keyof typeof ProspectCompetitorStatus]
+
+
+export const ProspectCompetitorValidationLabel = {
+  STRONG: 'STRONG',
+  LIKELY: 'LIKELY',
+  WEAK: 'WEAK',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ProspectCompetitorValidationLabel = (typeof ProspectCompetitorValidationLabel)[keyof typeof ProspectCompetitorValidationLabel]

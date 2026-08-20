@@ -414,7 +414,9 @@ export const ModelName = {
   ProspectQualificationRun: 'ProspectQualificationRun',
   ProspectContactDiscoveryRun: 'ProspectContactDiscoveryRun',
   ProspectOutreachDraftRun: 'ProspectOutreachDraftRun',
-  OutreachOutcome: 'OutreachOutcome'
+  OutreachOutcome: 'OutreachOutcome',
+  ProspectCompetitor: 'ProspectCompetitor',
+  CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -430,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorDiscoveryRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1766,6 +1768,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProspectCompetitor: {
+      payload: Prisma.$ProspectCompetitorPayload<ExtArgs>
+      fields: Prisma.ProspectCompetitorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProspectCompetitorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProspectCompetitorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>
+        }
+        findFirst: {
+          args: Prisma.ProspectCompetitorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProspectCompetitorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>
+        }
+        findMany: {
+          args: Prisma.ProspectCompetitorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>[]
+        }
+        create: {
+          args: Prisma.ProspectCompetitorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>
+        }
+        createMany: {
+          args: Prisma.ProspectCompetitorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProspectCompetitorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>[]
+        }
+        delete: {
+          args: Prisma.ProspectCompetitorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>
+        }
+        update: {
+          args: Prisma.ProspectCompetitorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProspectCompetitorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProspectCompetitorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProspectCompetitorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProspectCompetitorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProspectCompetitorPayload>
+        }
+        aggregate: {
+          args: Prisma.ProspectCompetitorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProspectCompetitor>
+        }
+        groupBy: {
+          args: Prisma.ProspectCompetitorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectCompetitorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProspectCompetitorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProspectCompetitorCountAggregateOutputType> | number
+        }
+      }
+    }
+    CompetitorDiscoveryRun: {
+      payload: Prisma.$CompetitorDiscoveryRunPayload<ExtArgs>
+      fields: Prisma.CompetitorDiscoveryRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompetitorDiscoveryRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompetitorDiscoveryRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>
+        }
+        findFirst: {
+          args: Prisma.CompetitorDiscoveryRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompetitorDiscoveryRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>
+        }
+        findMany: {
+          args: Prisma.CompetitorDiscoveryRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>[]
+        }
+        create: {
+          args: Prisma.CompetitorDiscoveryRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>
+        }
+        createMany: {
+          args: Prisma.CompetitorDiscoveryRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompetitorDiscoveryRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>[]
+        }
+        delete: {
+          args: Prisma.CompetitorDiscoveryRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>
+        }
+        update: {
+          args: Prisma.CompetitorDiscoveryRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompetitorDiscoveryRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompetitorDiscoveryRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompetitorDiscoveryRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompetitorDiscoveryRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorDiscoveryRunPayload>
+        }
+        aggregate: {
+          args: Prisma.CompetitorDiscoveryRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompetitorDiscoveryRun>
+        }
+        groupBy: {
+          args: Prisma.CompetitorDiscoveryRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitorDiscoveryRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompetitorDiscoveryRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitorDiscoveryRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1919,6 +2069,7 @@ export const ProspectScalarFieldEnum = {
   skipReason: 'skipReason',
   notes: 'notes',
   lastContactDiscoveryAt: 'lastContactDiscoveryAt',
+  lastCompetitorDiscoveryAt: 'lastCompetitorDiscoveryAt',
   auditReportId: 'auditReportId',
   leadId: 'leadId'
 } as const
@@ -2184,6 +2335,63 @@ export const OutreachOutcomeScalarFieldEnum = {
 } as const
 
 export type OutreachOutcomeScalarFieldEnum = (typeof OutreachOutcomeScalarFieldEnum)[keyof typeof OutreachOutcomeScalarFieldEnum]
+
+
+export const ProspectCompetitorScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  competitorProspectId: 'competitorProspectId',
+  provider: 'provider',
+  providerBusinessId: 'providerBusinessId',
+  businessName: 'businessName',
+  website: 'website',
+  normalizedHostname: 'normalizedHostname',
+  formattedAddress: 'formattedAddress',
+  city: 'city',
+  state: 'state',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  primaryType: 'primaryType',
+  normalizedVerticalsJson: 'normalizedVerticalsJson',
+  distanceMiles: 'distanceMiles',
+  validationScore: 'validationScore',
+  validationLabel: 'validationLabel',
+  evidenceJson: 'evidenceJson',
+  status: 'status',
+  isRecommended: 'isRecommended',
+  discoveredAt: 'discoveredAt',
+  lastValidatedAt: 'lastValidatedAt'
+} as const
+
+export type ProspectCompetitorScalarFieldEnum = (typeof ProspectCompetitorScalarFieldEnum)[keyof typeof ProspectCompetitorScalarFieldEnum]
+
+
+export const CompetitorDiscoveryRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  prospectId: 'prospectId',
+  status: 'status',
+  requestedProspects: 'requestedProspects',
+  processedProspects: 'processedProspects',
+  providerRequests: 'providerRequests',
+  candidatesReturned: 'candidatesReturned',
+  validatedCount: 'validatedCount',
+  rejectedCount: 'rejectedCount',
+  recommendedCount: 'recommendedCount',
+  selectedCount: 'selectedCount',
+  reusedCount: 'reusedCount',
+  failedCount: 'failedCount',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CompetitorDiscoveryRunScalarFieldEnum = (typeof CompetitorDiscoveryRunScalarFieldEnum)[keyof typeof CompetitorDiscoveryRunScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2638,6 +2846,34 @@ export type EnumOutreachOutcomeTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
 export type ListEnumOutreachOutcomeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachOutcomeType[]'>
     
 
+
+/**
+ * Reference to a field of type 'ProspectCompetitorValidationLabel'
+ */
+export type EnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectCompetitorValidationLabel'>
+    
+
+
+/**
+ * Reference to a field of type 'ProspectCompetitorValidationLabel[]'
+ */
+export type ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectCompetitorValidationLabel[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ProspectCompetitorStatus'
+ */
+export type EnumProspectCompetitorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectCompetitorStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProspectCompetitorStatus[]'
+ */
+export type ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectCompetitorStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2807,6 +3043,8 @@ export type GlobalOmitConfig = {
   prospectContactDiscoveryRun?: Prisma.ProspectContactDiscoveryRunOmit
   prospectOutreachDraftRun?: Prisma.ProspectOutreachDraftRunOmit
   outreachOutcome?: Prisma.OutreachOutcomeOmit
+  prospectCompetitor?: Prisma.ProspectCompetitorOmit
+  competitorDiscoveryRun?: Prisma.CompetitorDiscoveryRunOmit
 }
 
 /* Types for Logging */

@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 8 — Resend Webhooks, Delivery Intelligence & Operational Hardening**
+Current status: **Sprint 9 — Competitive Discovery Foundation**
 
 ## Product principle
 
@@ -664,5 +664,24 @@ Webhook suppression reuses centralized helpers:
 5. Send one low-risk approved test email and verify delivery timeline + events
 
 Contact-form submission remains **manual**. No automatic sending, reply ingestion, or follow-up sequences in Sprint 8.
+
+## Sprint 9 — Competitive discovery foundation
+
+Build a **research** competitive landscape for a Prospect. Google Places results are candidates, not competitors, until deterministic validation and human review.
+
+See `docs/development/competitive-intelligence-sprint-9.md`.
+
+Operator workflow:
+
+1. Open a qualified prospect
+2. Discover Competitors
+3. Review up to 10 validated/rejected candidates
+4. Select up to 3
+5. **Stop.** No competitor website audit. No outreach.
+
+Campaign **Find Competitors** processes at most 5 effectively selected qualified prospects.
+
+Sprint 9 does **not** add competitive claims to drafts, AI summaries, SERP scraping, or competitor audits.
+
 
 

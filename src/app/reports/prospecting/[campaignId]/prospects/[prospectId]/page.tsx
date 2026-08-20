@@ -10,6 +10,7 @@ import { EmailDeliveryTimeline } from "@/components/prospecting/email-delivery-t
 import { OutreachOutcomePanel } from "@/components/prospecting/outreach-outcome-panel";
 import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-lead-conversion-panel";
 import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
+import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-landscape-panel";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
@@ -113,6 +114,13 @@ export default async function CampaignProspectDetailPage({
                 },
               },
             },
+          },
+          competitors: {
+            orderBy: [
+              { isRecommended: "desc" },
+              { validationScore: "desc" },
+              { businessName: "asc" },
+            ],
           },
         },
       },
@@ -451,6 +459,50 @@ export default async function CampaignProspectDetailPage({
               isSelectedTopN={membership.isSelectedTopN}
               isSelectedForOutreach={membership.isSelectedForOutreach}
               variant="detail"
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Competitive landscape
+          </h2>
+          <div className="mt-4">
+            <CompetitiveLandscapePanel
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              rows={prospect.competitors.map((row) => {
+                const evidence = (row.evidenceJson ?? {}) as {
+                  matchedVerticals?: string[];
+                  geographicBand?: string;
+                  rejectionReasons?: string[];
+                };
+
+                return {
+                  id: row.id,
+                  businessName: row.businessName,
+                  website: row.website,
+                  city: row.city,
+                  state: row.state,
+                  distanceMiles: row.distanceMiles,
+                  verticals: Array.isArray(row.normalizedVerticalsJson)
+                    ? (row.normalizedVerticalsJson as string[])
+                    : [],
+                  validationScore: row.validationScore,
+                  validationLabel: row.validationLabel,
+                  status: row.status,
+                  isRecommended: row.isRecommended,
+                  matchedVerticals: evidence.matchedVerticals ?? [],
+                  geographicBand:
+                    (evidence.geographicBand as
+                      | "very_near"
+                      | "near"
+                      | "regional"
+                      | "distant"
+                      | "unknown") ?? "unknown",
+                  rejectionReasons: evidence.rejectionReasons ?? [],
+                };
+              })}
             />
           </div>
         </Card>

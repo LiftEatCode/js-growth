@@ -722,6 +722,40 @@ export type EnumOutreachOutcomeTypeWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumOutreachOutcomeTypeFilter<$PrismaModel>
 }
 
+export type EnumProspectCompetitorValidationLabelFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorValidationLabel | Prisma.EnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel> | $Enums.ProspectCompetitorValidationLabel
+}
+
+export type EnumProspectCompetitorStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorStatus | Prisma.EnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorStatusFilter<$PrismaModel> | $Enums.ProspectCompetitorStatus
+}
+
+export type EnumProspectCompetitorValidationLabelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorValidationLabel | Prisma.EnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorValidationLabelWithAggregatesFilter<$PrismaModel> | $Enums.ProspectCompetitorValidationLabel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel>
+}
+
+export type EnumProspectCompetitorStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorStatus | Prisma.EnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProspectCompetitorStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProspectCompetitorStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProspectCompetitorStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1376,6 +1410,40 @@ export type NestedEnumOutreachOutcomeTypeWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumOutreachOutcomeTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumOutreachOutcomeTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorValidationLabel | Prisma.EnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel> | $Enums.ProspectCompetitorValidationLabel
+}
+
+export type NestedEnumProspectCompetitorStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorStatus | Prisma.EnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorStatusFilter<$PrismaModel> | $Enums.ProspectCompetitorStatus
+}
+
+export type NestedEnumProspectCompetitorValidationLabelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorValidationLabel | Prisma.EnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorValidationLabel[] | Prisma.ListEnumProspectCompetitorValidationLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorValidationLabelWithAggregatesFilter<$PrismaModel> | $Enums.ProspectCompetitorValidationLabel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProspectCompetitorValidationLabelFilter<$PrismaModel>
+}
+
+export type NestedEnumProspectCompetitorStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProspectCompetitorStatus | Prisma.EnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProspectCompetitorStatus[] | Prisma.ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProspectCompetitorStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProspectCompetitorStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProspectCompetitorStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProspectCompetitorStatusFilter<$PrismaModel>
 }
 
 

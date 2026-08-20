@@ -107,3 +107,13 @@ export type ProspectOutreachDraftRun = Prisma.ProspectOutreachDraftRunModel
  * 
  */
 export type OutreachOutcome = Prisma.OutreachOutcomeModel
+/**
+ * Model ProspectCompetitor
+ * 
+ */
+export type ProspectCompetitor = Prisma.ProspectCompetitorModel
+/**
+ * Model CompetitorDiscoveryRun
+ * 
+ */
+export type CompetitorDiscoveryRun = Prisma.CompetitorDiscoveryRunModel
