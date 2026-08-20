@@ -4,7 +4,7 @@ Canonical inventory of **all OpenAI usage** in JS Growth.
 
 **Model env:** `OPENAI_API_KEY` (server-only), optional `OPENAI_AUDIT_MODEL` (default `gpt-4.1-mini`).
 
-There are **exactly three** OpenAI call paths. Everything else is deterministic or third-party non-LLM.
+There are **exactly four** OpenAI call paths. Everything else is deterministic or third-party non-LLM.
 
 ---
 
@@ -58,6 +58,23 @@ Client Competitive Growth Analysis **loads** interpretation from DB — **0 Open
 
 ---
 
+## 4. Commercialization — Implementation Plan AI Strategy
+
+| Field | Detail |
+|---|---|
+| **Purpose** | Explain a deterministic `ImplementationPlan` for operators (client-readable strategy prose) |
+| **Code** | `src/lib/commercialization/implementation-interpretation/` |
+| **Trigger** | Explicit Generate / Regenerate under Implementation Plan on prospect detail (never on page load) |
+| **Cap** | `MAX_IMPLEMENTATION_INTERPRETATIONS_PER_ACTION = 1` + optional `MAX_IMPLEMENTATION_INTERPRETATION_REPAIR_ATTEMPTS = 1` (max 2 OpenAI calls per click) |
+| **Input** | Bounded plan workstreams / actions / evidence / preservation + source keys |
+| **Output** | Zod-validated structured strategy; historical rows retained |
+| **Validation** | Exact workstream set, action/preservation source keys, commercial claims, English/script |
+| **Authority** | Implementation Plan facts always win; AI must not add/remove workstreams or invent actions/pricing |
+
+Canonical doc: [implementation-plan-ai-strategy.md](implementation-plan-ai-strategy.md)
+
+---
+
 ## Where OpenAI is explicitly NOT used
 
 | Area | Notes |
@@ -68,7 +85,7 @@ Client Competitive Growth Analysis **loads** interpretation from DB — **0 Open
 | Google Places discovery / competitor discovery | Places API only |
 | Competitor validation / geographic relevance | Deterministic |
 | Competitor website audits | Same deterministic audit engine |
-| Competitive comparison snapshots | Deterministic |
+| Deterministic Implementation Plan generation | Commercial Sprint 1 / 1.1 — zero OpenAI |
 | Contact discovery (email / forms from HTML) | Fetch + parse |
 | Resend send / webhooks / suppression | Email infrastructure |
 | Stripe checkout / webhooks | Payments |

@@ -245,6 +245,7 @@ Projects:
 - Prospecting Engine (internal; **V1 complete** through CI Sprint 13.1 — see `docs/development/competitive-intelligence.md`)
 - Website Growth Audit (commercial Free + Professional — implemented; see `docs/commercial-launch-v1.md`)
 - Implementation Plan Engine (Commercial Sprint 1 + **1.1** quality hardening — `IMPLEMENTATION_MAPPING_VERSION = 2`; see `docs/development/implementation-plan-engine.md`)
+- Implementation Plan AI Strategy (Commercial Sprint 2 — explanation only; see `docs/development/implementation-plan-ai-strategy.md`)
 
 ---
 

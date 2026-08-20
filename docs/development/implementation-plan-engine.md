@@ -21,7 +21,9 @@ Persisted ImplementationPlan snapshot
         ↓
 Human review / approve
         ↓
-(Future) Opportunity / Proposal / AI explanation — NOT implemented
+AI Implementation Strategy (Commercial Sprint 2 — explanation only)
+        ↓
+(Future) Opportunity / Proposal — NOT implemented
 ```
 
 ---
@@ -112,9 +114,11 @@ Optional. Current comparison only. Stale excluded. Sprint 12 AI interpretation i
 
 ---
 
-## Not in scope
+## Not in scope (this engine)
 
-Pricing, proposals, opportunities, public plans, AI explanation (Commercial Sprint 2), outreach.
+Pricing, proposals, opportunities, public plans, outreach.
+
+AI explanation of plans: **Commercial Sprint 2** — see [implementation-plan-ai-strategy.md](implementation-plan-ai-strategy.md).
 
 Code: `src/lib/commercialization/`  
-UI: prospect detail → Implementation Plan  
+UI: prospect detail → Implementation Plan (+ AI Implementation Strategy)  

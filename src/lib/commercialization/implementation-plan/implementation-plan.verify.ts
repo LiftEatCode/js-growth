@@ -3,7 +3,7 @@
  * Pure deterministic tests. No OpenAI, Places, crawl, Resend, or DB.
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { dirname, extname, join } from "node:path";
+import { dirname, extname, join, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { CompetitiveComparison } from "@/lib/competitive-intelligence/comparison/types";
@@ -694,6 +694,11 @@ function walk(dir: string, acc: string[] = []): string[] {
 }
 
 for (const file of walk(commercializationRoot)) {
+  // Commercial Sprint 2 AI strategy lives under implementation-interpretation/
+  // and is allowed OpenAI. Sprint 1 deterministic engine remains OpenAI-free.
+  if (file.includes(`${sep}implementation-interpretation${sep}`)) {
+    continue;
+  }
   const source = readFileSync(file, "utf8");
   assert(!/openai|OpenAI|chat\.completions|responses\.create/i.test(source), `no OpenAI in ${file}`);
   assert(!/GOOGLE_PLACES|PlacesClient|places\.googleapis/i.test(source), `no Places in ${file}`);

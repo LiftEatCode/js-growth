@@ -76,7 +76,8 @@ export const ModelName = {
   CompetitorAuditRun: 'CompetitorAuditRun',
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun',
   ImplementationPlan: 'ImplementationPlan',
-  ImplementationPlanWorkstream: 'ImplementationPlanWorkstream'
+  ImplementationPlanWorkstream: 'ImplementationPlanWorkstream',
+  ImplementationPlanInterpretation: 'ImplementationPlanInterpretation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -681,6 +682,33 @@ export const ImplementationPlanWorkstreamScalarFieldEnum = {
 } as const
 
 export type ImplementationPlanWorkstreamScalarFieldEnum = (typeof ImplementationPlanWorkstreamScalarFieldEnum)[keyof typeof ImplementationPlanWorkstreamScalarFieldEnum]
+
+
+export const ImplementationPlanInterpretationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  implementationPlanId: 'implementationPlanId',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  leadId: 'leadId',
+  status: 'status',
+  model: 'model',
+  promptVersion: 'promptVersion',
+  interpretationVersion: 'interpretationVersion',
+  planVersion: 'planVersion',
+  mappingVersion: 'mappingVersion',
+  inputFingerprint: 'inputFingerprint',
+  interpretationJson: 'interpretationJson',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ImplementationPlanInterpretationScalarFieldEnum = (typeof ImplementationPlanInterpretationScalarFieldEnum)[keyof typeof ImplementationPlanInterpretationScalarFieldEnum]
 
 
 export const SortOrder = {

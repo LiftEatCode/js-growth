@@ -343,6 +343,7 @@ export type ImplementationPlanWhereInput = {
   auditReport?: Prisma.XOR<Prisma.AuditReportScalarRelationFilter, Prisma.AuditReportWhereInput>
   comparisonSnapshot?: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotNullableScalarRelationFilter, Prisma.CompetitiveComparisonSnapshotWhereInput> | null
   workstreams?: Prisma.ImplementationPlanWorkstreamListRelationFilter
+  interpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
 }
 
 export type ImplementationPlanOrderByWithRelationInput = {
@@ -371,6 +372,7 @@ export type ImplementationPlanOrderByWithRelationInput = {
   auditReport?: Prisma.AuditReportOrderByWithRelationInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotOrderByWithRelationInput
   workstreams?: Prisma.ImplementationPlanWorkstreamOrderByRelationAggregateInput
+  interpretations?: Prisma.ImplementationPlanInterpretationOrderByRelationAggregateInput
 }
 
 export type ImplementationPlanWhereUniqueInput = Prisma.AtLeast<{
@@ -402,6 +404,7 @@ export type ImplementationPlanWhereUniqueInput = Prisma.AtLeast<{
   auditReport?: Prisma.XOR<Prisma.AuditReportScalarRelationFilter, Prisma.AuditReportWhereInput>
   comparisonSnapshot?: Prisma.XOR<Prisma.CompetitiveComparisonSnapshotNullableScalarRelationFilter, Prisma.CompetitiveComparisonSnapshotWhereInput> | null
   workstreams?: Prisma.ImplementationPlanWorkstreamListRelationFilter
+  interpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
 }, "id">
 
 export type ImplementationPlanOrderByWithAggregationInput = {
@@ -477,6 +480,7 @@ export type ImplementationPlanCreateInput = {
   auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
   workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateInput = {
@@ -500,6 +504,7 @@ export type ImplementationPlanUncheckedCreateInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUpdateInput = {
@@ -523,6 +528,7 @@ export type ImplementationPlanUpdateInput = {
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
   workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateInput = {
@@ -546,6 +552,7 @@ export type ImplementationPlanUncheckedUpdateInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanCreateManyInput = {
@@ -930,6 +937,20 @@ export type ImplementationPlanUpdateOneRequiredWithoutWorkstreamsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ImplementationPlanUpdateToOneWithWhereWithoutWorkstreamsInput, Prisma.ImplementationPlanUpdateWithoutWorkstreamsInput>, Prisma.ImplementationPlanUncheckedUpdateWithoutWorkstreamsInput>
 }
 
+export type ImplementationPlanCreateNestedOneWithoutInterpretationsInput = {
+  create?: Prisma.XOR<Prisma.ImplementationPlanCreateWithoutInterpretationsInput, Prisma.ImplementationPlanUncheckedCreateWithoutInterpretationsInput>
+  connectOrCreate?: Prisma.ImplementationPlanCreateOrConnectWithoutInterpretationsInput
+  connect?: Prisma.ImplementationPlanWhereUniqueInput
+}
+
+export type ImplementationPlanUpdateOneRequiredWithoutInterpretationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ImplementationPlanCreateWithoutInterpretationsInput, Prisma.ImplementationPlanUncheckedCreateWithoutInterpretationsInput>
+  connectOrCreate?: Prisma.ImplementationPlanCreateOrConnectWithoutInterpretationsInput
+  upsert?: Prisma.ImplementationPlanUpsertWithoutInterpretationsInput
+  connect?: Prisma.ImplementationPlanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ImplementationPlanUpdateToOneWithWhereWithoutInterpretationsInput, Prisma.ImplementationPlanUpdateWithoutInterpretationsInput>, Prisma.ImplementationPlanUncheckedUpdateWithoutInterpretationsInput>
+}
+
 export type ImplementationPlanCreateWithoutAuditReportInput = {
   id?: string
   createdAt?: Date | string
@@ -950,6 +971,7 @@ export type ImplementationPlanCreateWithoutAuditReportInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationPlansInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
   workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateWithoutAuditReportInput = {
@@ -972,6 +994,7 @@ export type ImplementationPlanUncheckedCreateWithoutAuditReportInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanCreateOrConnectWithoutAuditReportInput = {
@@ -1045,6 +1068,7 @@ export type ImplementationPlanCreateWithoutLeadInput = {
   auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
   workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateWithoutLeadInput = {
@@ -1067,6 +1091,7 @@ export type ImplementationPlanUncheckedCreateWithoutLeadInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanCreateOrConnectWithoutLeadInput = {
@@ -1115,6 +1140,7 @@ export type ImplementationPlanCreateWithoutCampaignInput = {
   auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
   workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateWithoutCampaignInput = {
@@ -1137,6 +1163,7 @@ export type ImplementationPlanUncheckedCreateWithoutCampaignInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanCreateOrConnectWithoutCampaignInput = {
@@ -1185,6 +1212,7 @@ export type ImplementationPlanCreateWithoutProspectInput = {
   auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
   workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateWithoutProspectInput = {
@@ -1207,6 +1235,7 @@ export type ImplementationPlanUncheckedCreateWithoutProspectInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanCreateOrConnectWithoutProspectInput = {
@@ -1255,6 +1284,7 @@ export type ImplementationPlanCreateWithoutComparisonSnapshotInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationPlansInput
   auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
   workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateWithoutComparisonSnapshotInput = {
@@ -1277,6 +1307,7 @@ export type ImplementationPlanUncheckedCreateWithoutComparisonSnapshotInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanCreateOrConnectWithoutComparisonSnapshotInput = {
@@ -1325,6 +1356,7 @@ export type ImplementationPlanCreateWithoutWorkstreamsInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationPlansInput
   auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
+  interpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanUncheckedCreateWithoutWorkstreamsInput = {
@@ -1347,6 +1379,7 @@ export type ImplementationPlanUncheckedCreateWithoutWorkstreamsInput = {
   approvedByEmail?: string | null
   supersededAt?: Date | string | null
   createdByEmail: string
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutImplementationPlanInput
 }
 
 export type ImplementationPlanCreateOrConnectWithoutWorkstreamsInput = {
@@ -1385,6 +1418,7 @@ export type ImplementationPlanUpdateWithoutWorkstreamsInput = {
   lead?: Prisma.LeadUpdateOneWithoutImplementationPlansNestedInput
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateWithoutWorkstreamsInput = {
@@ -1407,6 +1441,115 @@ export type ImplementationPlanUncheckedUpdateWithoutWorkstreamsInput = {
   approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
+}
+
+export type ImplementationPlanCreateWithoutInterpretationsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  status?: $Enums.ImplementationPlanStatus
+  planVersion: number
+  mappingVersion: number
+  capabilityVersion: number
+  inputFingerprint: string
+  competitiveEvidenceUsed?: boolean
+  operatorNotes?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  supersededAt?: Date | string | null
+  createdByEmail: string
+  prospect: Prisma.ProspectCreateNestedOneWithoutImplementationPlansInput
+  campaign: Prisma.CampaignCreateNestedOneWithoutImplementationPlansInput
+  lead?: Prisma.LeadCreateNestedOneWithoutImplementationPlansInput
+  auditReport: Prisma.AuditReportCreateNestedOneWithoutImplementationPlansInput
+  comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotCreateNestedOneWithoutImplementationPlansInput
+  workstreams?: Prisma.ImplementationPlanWorkstreamCreateNestedManyWithoutImplementationPlanInput
+}
+
+export type ImplementationPlanUncheckedCreateWithoutInterpretationsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  campaignId: string
+  leadId?: string | null
+  auditReportId: string
+  comparisonSnapshotId?: string | null
+  status?: $Enums.ImplementationPlanStatus
+  planVersion: number
+  mappingVersion: number
+  capabilityVersion: number
+  inputFingerprint: string
+  competitiveEvidenceUsed?: boolean
+  operatorNotes?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  supersededAt?: Date | string | null
+  createdByEmail: string
+  workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedCreateNestedManyWithoutImplementationPlanInput
+}
+
+export type ImplementationPlanCreateOrConnectWithoutInterpretationsInput = {
+  where: Prisma.ImplementationPlanWhereUniqueInput
+  create: Prisma.XOR<Prisma.ImplementationPlanCreateWithoutInterpretationsInput, Prisma.ImplementationPlanUncheckedCreateWithoutInterpretationsInput>
+}
+
+export type ImplementationPlanUpsertWithoutInterpretationsInput = {
+  update: Prisma.XOR<Prisma.ImplementationPlanUpdateWithoutInterpretationsInput, Prisma.ImplementationPlanUncheckedUpdateWithoutInterpretationsInput>
+  create: Prisma.XOR<Prisma.ImplementationPlanCreateWithoutInterpretationsInput, Prisma.ImplementationPlanUncheckedCreateWithoutInterpretationsInput>
+  where?: Prisma.ImplementationPlanWhereInput
+}
+
+export type ImplementationPlanUpdateToOneWithWhereWithoutInterpretationsInput = {
+  where?: Prisma.ImplementationPlanWhereInput
+  data: Prisma.XOR<Prisma.ImplementationPlanUpdateWithoutInterpretationsInput, Prisma.ImplementationPlanUncheckedUpdateWithoutInterpretationsInput>
+}
+
+export type ImplementationPlanUpdateWithoutInterpretationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumImplementationPlanStatusFieldUpdateOperationsInput | $Enums.ImplementationPlanStatus
+  planVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  mappingVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  capabilityVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  inputFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  competitiveEvidenceUsed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  operatorNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutImplementationPlansNestedInput
+  campaign?: Prisma.CampaignUpdateOneRequiredWithoutImplementationPlansNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutImplementationPlansNestedInput
+  auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
+  comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
+  workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+}
+
+export type ImplementationPlanUncheckedUpdateWithoutInterpretationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  auditReportId?: Prisma.StringFieldUpdateOperationsInput | string
+  comparisonSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumImplementationPlanStatusFieldUpdateOperationsInput | $Enums.ImplementationPlanStatus
+  planVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  mappingVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  capabilityVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  inputFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  competitiveEvidenceUsed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  operatorNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanCreateManyAuditReportInput = {
@@ -1450,6 +1593,7 @@ export type ImplementationPlanUpdateWithoutAuditReportInput = {
   lead?: Prisma.LeadUpdateOneWithoutImplementationPlansNestedInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
   workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateWithoutAuditReportInput = {
@@ -1472,6 +1616,7 @@ export type ImplementationPlanUncheckedUpdateWithoutAuditReportInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateManyWithoutAuditReportInput = {
@@ -1536,6 +1681,7 @@ export type ImplementationPlanUpdateWithoutLeadInput = {
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
   workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateWithoutLeadInput = {
@@ -1558,6 +1704,7 @@ export type ImplementationPlanUncheckedUpdateWithoutLeadInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateManyWithoutLeadInput = {
@@ -1622,6 +1769,7 @@ export type ImplementationPlanUpdateWithoutCampaignInput = {
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
   workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateWithoutCampaignInput = {
@@ -1644,6 +1792,7 @@ export type ImplementationPlanUncheckedUpdateWithoutCampaignInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateManyWithoutCampaignInput = {
@@ -1708,6 +1857,7 @@ export type ImplementationPlanUpdateWithoutProspectInput = {
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
   comparisonSnapshot?: Prisma.CompetitiveComparisonSnapshotUpdateOneWithoutImplementationPlansNestedInput
   workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateWithoutProspectInput = {
@@ -1730,6 +1880,7 @@ export type ImplementationPlanUncheckedUpdateWithoutProspectInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateManyWithoutProspectInput = {
@@ -1794,6 +1945,7 @@ export type ImplementationPlanUpdateWithoutComparisonSnapshotInput = {
   lead?: Prisma.LeadUpdateOneWithoutImplementationPlansNestedInput
   auditReport?: Prisma.AuditReportUpdateOneRequiredWithoutImplementationPlansNestedInput
   workstreams?: Prisma.ImplementationPlanWorkstreamUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateWithoutComparisonSnapshotInput = {
@@ -1816,6 +1968,7 @@ export type ImplementationPlanUncheckedUpdateWithoutComparisonSnapshotInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   workstreams?: Prisma.ImplementationPlanWorkstreamUncheckedUpdateManyWithoutImplementationPlanNestedInput
+  interpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanNestedInput
 }
 
 export type ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotInput = {
@@ -1846,10 +1999,12 @@ export type ImplementationPlanUncheckedUpdateManyWithoutComparisonSnapshotInput 
 
 export type ImplementationPlanCountOutputType = {
   workstreams: number
+  interpretations: number
 }
 
 export type ImplementationPlanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workstreams?: boolean | ImplementationPlanCountOutputTypeCountWorkstreamsArgs
+  interpretations?: boolean | ImplementationPlanCountOutputTypeCountInterpretationsArgs
 }
 
 /**
@@ -1867,6 +2022,13 @@ export type ImplementationPlanCountOutputTypeDefaultArgs<ExtArgs extends runtime
  */
 export type ImplementationPlanCountOutputTypeCountWorkstreamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ImplementationPlanWorkstreamWhereInput
+}
+
+/**
+ * ImplementationPlanCountOutputType without action
+ */
+export type ImplementationPlanCountOutputTypeCountInterpretationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ImplementationPlanInterpretationWhereInput
 }
 
 
@@ -1896,6 +2058,7 @@ export type ImplementationPlanSelect<ExtArgs extends runtime.Types.Extensions.In
   auditReport?: boolean | Prisma.AuditReportDefaultArgs<ExtArgs>
   comparisonSnapshot?: boolean | Prisma.ImplementationPlan$comparisonSnapshotArgs<ExtArgs>
   workstreams?: boolean | Prisma.ImplementationPlan$workstreamsArgs<ExtArgs>
+  interpretations?: boolean | Prisma.ImplementationPlan$interpretationsArgs<ExtArgs>
   _count?: boolean | Prisma.ImplementationPlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["implementationPlan"]>
 
@@ -1983,6 +2146,7 @@ export type ImplementationPlanInclude<ExtArgs extends runtime.Types.Extensions.I
   auditReport?: boolean | Prisma.AuditReportDefaultArgs<ExtArgs>
   comparisonSnapshot?: boolean | Prisma.ImplementationPlan$comparisonSnapshotArgs<ExtArgs>
   workstreams?: boolean | Prisma.ImplementationPlan$workstreamsArgs<ExtArgs>
+  interpretations?: boolean | Prisma.ImplementationPlan$interpretationsArgs<ExtArgs>
   _count?: boolean | Prisma.ImplementationPlanCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ImplementationPlanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2009,6 +2173,7 @@ export type $ImplementationPlanPayload<ExtArgs extends runtime.Types.Extensions.
     auditReport: Prisma.$AuditReportPayload<ExtArgs>
     comparisonSnapshot: Prisma.$CompetitiveComparisonSnapshotPayload<ExtArgs> | null
     workstreams: Prisma.$ImplementationPlanWorkstreamPayload<ExtArgs>[]
+    interpretations: Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2430,6 +2595,7 @@ export interface Prisma__ImplementationPlanClient<T, Null = never, ExtArgs exten
   auditReport<T extends Prisma.AuditReportDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AuditReportDefaultArgs<ExtArgs>>): Prisma.Prisma__AuditReportClient<runtime.Types.Result.GetResult<Prisma.$AuditReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   comparisonSnapshot<T extends Prisma.ImplementationPlan$comparisonSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ImplementationPlan$comparisonSnapshotArgs<ExtArgs>>): Prisma.Prisma__CompetitiveComparisonSnapshotClient<runtime.Types.Result.GetResult<Prisma.$CompetitiveComparisonSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   workstreams<T extends Prisma.ImplementationPlan$workstreamsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ImplementationPlan$workstreamsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanWorkstreamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  interpretations<T extends Prisma.ImplementationPlan$interpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ImplementationPlan$interpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2938,6 +3104,30 @@ export type ImplementationPlan$workstreamsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.ImplementationPlanWorkstreamScalarFieldEnum | Prisma.ImplementationPlanWorkstreamScalarFieldEnum[]
+}
+
+/**
+ * ImplementationPlan.interpretations
+ */
+export type ImplementationPlan$interpretationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImplementationPlanInterpretation
+   */
+  select?: Prisma.ImplementationPlanInterpretationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImplementationPlanInterpretation
+   */
+  omit?: Prisma.ImplementationPlanInterpretationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImplementationPlanInterpretationInclude<ExtArgs> | null
+  where?: Prisma.ImplementationPlanInterpretationWhereInput
+  orderBy?: Prisma.ImplementationPlanInterpretationOrderByWithRelationInput | Prisma.ImplementationPlanInterpretationOrderByWithRelationInput[]
+  cursor?: Prisma.ImplementationPlanInterpretationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ImplementationPlanInterpretationScalarFieldEnum | Prisma.ImplementationPlanInterpretationScalarFieldEnum[]
 }
 
 /**

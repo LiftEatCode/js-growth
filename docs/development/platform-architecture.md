@@ -59,7 +59,13 @@ COMPETITIVE INTELLIGENCE (internal)
 COMMERCIALIZATION (internal)
   Audit facts (+ optional current comparison)
        ↓
-  Deterministic Implementation Plan (Commercial Sprint 1)
+  Deterministic Implementation Plan (Commercial Sprint 1 / 1.1)
+        ↓
+  AI Implementation Strategy (Commercial Sprint 2 — explanation only)
+        ↓
+  Human review / approval
+        ↓
+  (Future) Opportunity / Proposal — NOT implemented
        ↓
   Human review / approve
        ↓
@@ -118,6 +124,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 - [Prospecting Engine](prospecting-engine-v1.md)
 - [Competitive Intelligence V1](competitive-intelligence.md)
 - [Implementation Plan Engine](implementation-plan-engine.md)
+- [Implementation Plan AI Strategy](implementation-plan-ai-strategy.md)
 - [AI architecture](ai-architecture.md)
 - [Database guide](database-guide.md)
 - [Security & privacy](security-privacy.md)

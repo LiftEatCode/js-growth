@@ -15,10 +15,12 @@ import { CompetitiveComparisonPanel } from "@/components/prospecting/competitive
 import { CompetitiveInterpretationPanel } from "@/components/prospecting/competitive-interpretation-panel";
 import { CompetitiveReportPreviewLink } from "@/components/prospecting/competitive-report-preview-link";
 import { ImplementationPlanPanel } from "@/components/prospecting/implementation-plan-panel";
+import { ImplementationStrategyPanel } from "@/components/prospecting/implementation-strategy-panel";
 import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
 import { loadLatestCompetitiveComparison } from "@/lib/competitive-intelligence/comparison/load";
 import { loadLatestCompetitiveInterpretation } from "@/lib/competitive-intelligence/interpretation/load";
 import { getCompetitiveReportReadiness } from "@/lib/competitive-intelligence/report/readiness";
+import { loadLatestImplementationInterpretation } from "@/lib/commercialization/implementation-interpretation/load";
 import { loadLatestImplementationPlan } from "@/lib/commercialization/implementation-plan/load";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
@@ -193,6 +195,17 @@ export default async function CampaignProspectDetailPage({
     campaignId,
     prospectId,
   });
+  const prospectLocation =
+    [prospect.city, prospect.state].filter(Boolean).join(", ") || null;
+  const implementationInterpretationLoad =
+    await loadLatestImplementationInterpretation({
+      campaignId,
+      prospectId,
+      plan: implementationPlanLoad.plan,
+      planStale: implementationPlanLoad.stale,
+      businessName: prospect.businessName,
+      location: prospectLocation,
+    });
   const audit = prospect.auditReport?.audit as WebsiteAuditResult | undefined;
   const qualification = parseStoredQualification(membership.qualificationJson);
   const highFindings =
@@ -708,6 +721,54 @@ export default async function CampaignProspectDetailPage({
               canGenerate={implementationPlanLoad.canGenerate}
               generateBlocker={implementationPlanLoad.generateBlocker}
             />
+          </div>
+          <div className="mt-8 border-t border-border/70 pt-6">
+            <h3 className="font-heading text-lg font-semibold text-brand">
+              AI Implementation Strategy
+            </h3>
+            <div className="mt-4">
+              <ImplementationStrategyPanel
+                campaignId={membership.campaign.id}
+                prospectId={prospect.id}
+                implementationPlanId={
+                  implementationPlanLoad.plan?.id ?? null
+                }
+                plan={
+                  implementationPlanLoad.plan
+                    ? {
+                        workstreams: implementationPlanLoad.plan.workstreams,
+                      }
+                    : null
+                }
+                interpretation={
+                  implementationInterpretationLoad.interpretation?.content
+                    ? {
+                        id: implementationInterpretationLoad.interpretation.id,
+                        createdAtLabel: formatDate(
+                          implementationInterpretationLoad.interpretation
+                            .createdAt,
+                        ),
+                        content:
+                          implementationInterpretationLoad.interpretation
+                            .content,
+                      }
+                    : null
+                }
+                stale={implementationInterpretationLoad.stale}
+                staleReasons={implementationInterpretationLoad.staleReasons}
+                canGenerate={implementationInterpretationLoad.canGenerate}
+                generateBlocker={
+                  implementationInterpretationLoad.generateBlocker
+                }
+                latestFailureMessage={
+                  implementationInterpretationLoad.latestFailure
+                    ?.failureMessage ?? null
+                }
+                reusableExists={
+                  implementationInterpretationLoad.reusableExists
+                }
+              />
+            </div>
           </div>
         </Card>
 

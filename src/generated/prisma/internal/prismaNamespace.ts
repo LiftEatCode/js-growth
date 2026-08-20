@@ -422,7 +422,8 @@ export const ModelName = {
   CompetitorAuditRun: 'CompetitorAuditRun',
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun',
   ImplementationPlan: 'ImplementationPlan',
-  ImplementationPlanWorkstream: 'ImplementationPlanWorkstream'
+  ImplementationPlanWorkstream: 'ImplementationPlanWorkstream',
+  ImplementationPlanInterpretation: 'ImplementationPlanInterpretation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -438,7 +439,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2366,6 +2367,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ImplementationPlanInterpretation: {
+      payload: Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>
+      fields: Prisma.ImplementationPlanInterpretationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ImplementationPlanInterpretationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ImplementationPlanInterpretationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>
+        }
+        findFirst: {
+          args: Prisma.ImplementationPlanInterpretationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ImplementationPlanInterpretationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>
+        }
+        findMany: {
+          args: Prisma.ImplementationPlanInterpretationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>[]
+        }
+        create: {
+          args: Prisma.ImplementationPlanInterpretationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>
+        }
+        createMany: {
+          args: Prisma.ImplementationPlanInterpretationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ImplementationPlanInterpretationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>[]
+        }
+        delete: {
+          args: Prisma.ImplementationPlanInterpretationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>
+        }
+        update: {
+          args: Prisma.ImplementationPlanInterpretationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ImplementationPlanInterpretationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ImplementationPlanInterpretationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ImplementationPlanInterpretationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ImplementationPlanInterpretationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImplementationPlanInterpretationPayload>
+        }
+        aggregate: {
+          args: Prisma.ImplementationPlanInterpretationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateImplementationPlanInterpretation>
+        }
+        groupBy: {
+          args: Prisma.ImplementationPlanInterpretationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImplementationPlanInterpretationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ImplementationPlanInterpretationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImplementationPlanInterpretationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2993,6 +3068,33 @@ export const ImplementationPlanWorkstreamScalarFieldEnum = {
 export type ImplementationPlanWorkstreamScalarFieldEnum = (typeof ImplementationPlanWorkstreamScalarFieldEnum)[keyof typeof ImplementationPlanWorkstreamScalarFieldEnum]
 
 
+export const ImplementationPlanInterpretationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  implementationPlanId: 'implementationPlanId',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  leadId: 'leadId',
+  status: 'status',
+  model: 'model',
+  promptVersion: 'promptVersion',
+  interpretationVersion: 'interpretationVersion',
+  planVersion: 'planVersion',
+  mappingVersion: 'mappingVersion',
+  inputFingerprint: 'inputFingerprint',
+  interpretationJson: 'interpretationJson',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ImplementationPlanInterpretationScalarFieldEnum = (typeof ImplementationPlanInterpretationScalarFieldEnum)[keyof typeof ImplementationPlanInterpretationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3515,6 +3617,20 @@ export type EnumImplementationPlanStatusFieldRefInput<$PrismaModel> = FieldRefIn
 export type ListEnumImplementationPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImplementationPlanStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'ImplementationInterpretationStatus'
+ */
+export type EnumImplementationInterpretationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImplementationInterpretationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ImplementationInterpretationStatus[]'
+ */
+export type ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImplementationInterpretationStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3692,6 +3808,7 @@ export type GlobalOmitConfig = {
   competitorDiscoveryRun?: Prisma.CompetitorDiscoveryRunOmit
   implementationPlan?: Prisma.ImplementationPlanOmit
   implementationPlanWorkstream?: Prisma.ImplementationPlanWorkstreamOmit
+  implementationPlanInterpretation?: Prisma.ImplementationPlanInterpretationOmit
 }
 
 /* Types for Logging */

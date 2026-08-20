@@ -9,7 +9,7 @@ Variable cost surfaces and **code-enforced** caps. Values from `src/lib/**/const
 | Service | When cost is incurred | Primary caps |
 |---|---|---|
 | **Google Places** | Discover businesses; discover competitors | Discovery: `MAX_PROVIDER_REQUESTS_PER_RUN = 3`, `MAX_DISCOVERY_CANDIDATES_PER_RUN = 25`. CI: `MAX_COMPETITOR_PROVIDER_REQUESTS_PER_PROSPECT = 3`, `MAX_COMPETITOR_CANDIDATES_PER_PROSPECT = 10`, discovery TTL 30 days |
-| **OpenAI** | Pro audit AI; outreach drafts; CI interpretation | Audit AI: attempts ≤ 2, persist/reuse. Drafts: `MAX_AI_DRAFTS_PER_RUN = 5`. CI: 1 generation + optional 1 repair per click |
+| **OpenAI** | Pro audit AI; outreach drafts; CI interpretation; Implementation Plan AI strategy | Audit AI: attempts ≤ 2, persist/reuse. Drafts: `MAX_AI_DRAFTS_PER_RUN = 5`. CI / Implementation strategy: 1 generation + optional 1 repair per click |
 | **Resend** | Contact notifications; approved outreach sends | `MAX_OUTREACH_EMAILS_PER_DAY = 10`; suppression |
 | **Stripe** | Successful Professional Checkout | One-time Product; no CI SKU |
 | **Hosting / DB** | Always-on platform | Vercel + Postgres plan |
@@ -25,6 +25,8 @@ Variable cost surfaces and **code-enforced** caps. Values from `src/lib/**/const
 | Competitor audits | `MAX_COMPETITOR_AUDITS_PER_RUN = 3`, concurrency 1, 30-day TTL |
 | Competitive comparison | Pure computation over stored audits — **no** Places / OpenAI |
 | Competitive report load | DB read — **0** OpenAI / Places / crawl |
+| Implementation Plan generate | Deterministic — **0** OpenAI |
+| Implementation AI strategy load | DB read / fingerprint reuse — **0** OpenAI unless Generate clicked |
 | Contact discovery | Fetch/parse HTML — capped pages/run |
 
 ---

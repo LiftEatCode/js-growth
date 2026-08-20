@@ -111,6 +111,8 @@ model Lead {
 
   implementationPlans ImplementationPlan[]
 
+  implementationInterpretations ImplementationPlanInterpretation[]
+
   @@index([email])
   @@index([website])
   @@index([status])
@@ -345,6 +347,7 @@ model Campaign {
   competitiveComparisons  CompetitiveComparisonSnapshot[]
   competitiveInterpretations CompetitiveInterpretation[]
   implementationPlans     ImplementationPlan[]
+  implementationInterpretations ImplementationPlanInterpretation[]
 
   @@index([status])
   @@index([createdAt])
@@ -403,6 +406,7 @@ model Prospect {
   competitiveComparisons      CompetitiveComparisonSnapshot[]
   competitiveInterpretations  CompetitiveInterpretation[]
   implementationPlans         ImplementationPlan[]
+  implementationInterpretations ImplementationPlanInterpretation[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -1139,6 +1143,8 @@ model ImplementationPlan {
 
   workstreams ImplementationPlanWorkstream[]
 
+  interpretations ImplementationPlanInterpretation[]
+
   @@index([prospectId, campaignId, createdAt])
   @@index([auditReportId])
   @@index([comparisonSnapshotId])
@@ -1173,4 +1179,56 @@ model ImplementationPlanWorkstream {
 
   @@index([implementationPlanId, sortOrder])
   @@index([implementationPlanId, removed])
+}
+
+enum ImplementationInterpretationStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+/// AI explanation of a deterministic ImplementationPlan (Commercial Sprint 2).
+/// Interpretation only — never alters plan facts, priorities, or capabilities.
+model ImplementationPlanInterpretation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  implementationPlanId String
+  implementationPlan   ImplementationPlan @relation(fields: [implementationPlanId], references: [id], onDelete: Cascade)
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  status ImplementationInterpretationStatus @default(PENDING)
+
+  model                 String?
+  promptVersion         Int
+  interpretationVersion Int
+  planVersion           Int
+  mappingVersion        Int
+  inputFingerprint      String
+
+  interpretationJson Json?
+
+  startedAt      DateTime?
+  completedAt    DateTime?
+  failedAt       DateTime?
+  failureCode    String?
+  failureMessage String?
+
+  createdByEmail String
+
+  @@index([implementationPlanId, createdAt])
+  @@index([prospectId, campaignId, createdAt])
+  @@index([status, createdAt])
+  @@index([inputFingerprint])
+  @@index([leadId])
 }

@@ -807,6 +807,23 @@ export type EnumImplementationPlanStatusWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumImplementationPlanStatusFilter<$PrismaModel>
 }
 
+export type EnumImplementationInterpretationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImplementationInterpretationStatus | Prisma.EnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel> | $Enums.ImplementationInterpretationStatus
+}
+
+export type EnumImplementationInterpretationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImplementationInterpretationStatus | Prisma.EnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImplementationInterpretationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ImplementationInterpretationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1546,6 +1563,23 @@ export type NestedEnumImplementationPlanStatusWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumImplementationPlanStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumImplementationPlanStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumImplementationInterpretationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImplementationInterpretationStatus | Prisma.EnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel> | $Enums.ImplementationInterpretationStatus
+}
+
+export type NestedEnumImplementationInterpretationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImplementationInterpretationStatus | Prisma.EnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImplementationInterpretationStatus[] | Prisma.ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImplementationInterpretationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ImplementationInterpretationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
 }
 
 

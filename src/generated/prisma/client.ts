@@ -175,3 +175,9 @@ export type ImplementationPlan = Prisma.ImplementationPlanModel
  * 
  */
 export type ImplementationPlanWorkstream = Prisma.ImplementationPlanWorkstreamModel
+/**
+ * Model ImplementationPlanInterpretation
+ * AI explanation of a deterministic ImplementationPlan (Commercial Sprint 2).
+ * Interpretation only — never alters plan facts, priorities, or capabilities.
+ */
+export type ImplementationPlanInterpretation = Prisma.ImplementationPlanInterpretationModel

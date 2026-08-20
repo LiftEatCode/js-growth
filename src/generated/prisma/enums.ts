@@ -318,3 +318,13 @@ export const ImplementationPlanStatus = {
 } as const
 
 export type ImplementationPlanStatus = (typeof ImplementationPlanStatus)[keyof typeof ImplementationPlanStatus]
+
+
+export const ImplementationInterpretationStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type ImplementationInterpretationStatus = (typeof ImplementationInterpretationStatus)[keyof typeof ImplementationInterpretationStatus]

@@ -109,7 +109,19 @@ Deterministic evidence → capabilities → workstreams → priorities → persi
 
 Sprint 1.1: evidence dedupe, action provenance, strength-aware suppression, material-risk exception, `no-images` weight reduction.
 
-**Not included:** AI interpretation of plans, pricing, opportunities, proposals, public plans, outreach.
+**Not included:** pricing, opportunities, proposals, public plans, outreach.
+
+---
+
+## Commercial Sprint 2 — AI Implementation Strategy
+
+Status: 🟢 Implemented (internal)
+
+Canonical doc: `docs/development/implementation-plan-ai-strategy.md`
+
+Bounded OpenAI interpretation of an authoritative `ImplementationPlan`. Explains workstreams/sequencing; cannot change plan facts. Explicit Generate only; historical rows + staleness; max 1 repair.
+
+**Not included:** pricing, opportunities, proposals, public sharing, PDF, automatic approval.
 
 ---
 
@@ -125,11 +137,10 @@ Sprint 1.1: evidence dedupe, action provenance, strength-aware suppression, mate
 
 Prioritize based on business leverage with the **current** stack:
 
-1. Commercial Sprint 2 (optional): AI **explanation** of an approved Implementation Plan — facts stay Sprint 1
-2. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-3. Opportunity / proposal layer on top of approved Implementation Plans (still human-gated)
-4. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
-5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
+1. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
+2. Opportunity / proposal layer on top of approved Implementation Plans (still human-gated)
+3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
+4. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
 
 ## LATER / EXPLORATORY
 

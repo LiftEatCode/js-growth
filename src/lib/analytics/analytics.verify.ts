@@ -114,6 +114,8 @@ assert(isForbiddenAnalyticsParamKey("competitive_report"), "competitive_report k
 assert(isForbiddenAnalyticsParamKey("competitive_growth_analysis"), "competitive_growth_analysis key is forbidden");
 assert(isForbiddenAnalyticsParamKey("source_key"), "source_key key is forbidden");
 assert(isForbiddenAnalyticsParamKey("implementation_plan_id"), "implementation_plan_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("implementation_interpretation_id"), "implementation_interpretation_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("implementation_strategy_json"), "implementation_strategy_json key is forbidden");
 assert(isForbiddenAnalyticsParamKey("workstream_id"), "workstream_id key is forbidden");
 assert(isForbiddenAnalyticsParamKey("evidence_json"), "evidence_json key is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");
