@@ -1,8 +1,8 @@
 import type { CompetitiveComparison } from "@/lib/competitive-intelligence/comparison/types";
-import { resolveCompetitiveSourceEvidence } from "@/lib/competitive-intelligence/interpretation/evidence";
 import type { CompetitiveInterpretationContent } from "@/lib/competitive-intelligence/interpretation/types";
 import { siteConfig } from "@/config/site";
 
+import { resolveClientCompetitiveSourceEvidence } from "./client-evidence";
 import {
   COMPETITIVE_REPORT_VERSION,
   MAX_CLIENT_CATEGORY_ADVANTAGES,
@@ -79,18 +79,20 @@ function findAdvantageExplanation(
 }
 
 function sortCategories(
-  categories: CompetitiveReportCategoryRow[],
+  categories: Array<CompetitiveReportCategoryRow & { position: string }>,
 ): CompetitiveReportCategoryRow[] {
-  return [...categories].sort((left, right) => {
-    const leftOrder = POSITION_SORT_ORDER[left.position] ?? 50;
-    const rightOrder = POSITION_SORT_ORDER[right.position] ?? 50;
+  return [...categories]
+    .sort((left, right) => {
+      const leftOrder = POSITION_SORT_ORDER[left.position] ?? 50;
+      const rightOrder = POSITION_SORT_ORDER[right.position] ?? 50;
 
-    if (leftOrder !== rightOrder) {
-      return leftOrder - rightOrder;
-    }
+      if (leftOrder !== rightOrder) {
+        return leftOrder - rightOrder;
+      }
 
-    return left.gap - right.gap;
-  });
+      return left.gap - right.gap;
+    })
+    .map(({ position: _position, ...row }) => row);
 }
 
 function buildOpportunities(
@@ -207,7 +209,7 @@ function buildPriorities(
   content: CompetitiveInterpretationContent,
 ): CompetitiveReportPriorityCard[] {
   return content.priorities.slice(0, MAX_CLIENT_PRIORITIES).map((priority, index) => {
-    const evidence = resolveCompetitiveSourceEvidence(
+    const evidence = resolveClientCompetitiveSourceEvidence(
       comparison,
       priority.sourceKey,
     );
@@ -217,7 +219,7 @@ function buildPriorities(
       title: priority.title,
       explanation: priority.rationale,
       actions: priority.recommendedActions.slice(0, 4),
-      evidenceLabel: evidence.kind === "unknown" ? null : evidence.title,
+      evidenceLabel: evidence.lines.length > 0 ? evidence.title : null,
       evidenceLines: evidence.lines.slice(0, 4),
     };
   });

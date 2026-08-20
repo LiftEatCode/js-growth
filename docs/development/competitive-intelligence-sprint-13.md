@@ -65,6 +65,17 @@ existing Sprint 11/12 rows.
 - Contact discovery: 0
 - Resend / outbound: 0
 
+## Sprint 13.1 — Client language + presentation hardening
+
+- Interpretation validation rejects unexpected non-English script characters
+  (e.g. production failure `search-优化`) and can repair once.
+- Prompt requires English-only client prose and forbids enum/sourceKey leakage
+  in narrative fields.
+- Client report evidence uses polished labels (`Competitive gap`, `Major gap`)
+  rather than raw enums (`COMPETITIVE_GAP`, `MAJOR_GAP`).
+- Competitive set spacing: `Business Name (your website)`.
+- Raw position enums are not included in the client report view model.
+
 ## Print
 
 Browser print is supported for document testing. Navigation chrome is

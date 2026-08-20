@@ -8,6 +8,7 @@ export {
   MAX_COMPETITIVE_INTERPRETATION_REPAIR_ATTEMPTS,
   MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION,
 } from "./constants";
+export { detectUnexpectedNonEnglishScript } from "./language";
 export { detectUnsupportedCommercialClaims } from "./claims";
 export { buildCompetitiveAiInput, buildSourceKeyCatalog } from "./input";
 export { fingerprintCompetitiveAiInput } from "./fingerprint";

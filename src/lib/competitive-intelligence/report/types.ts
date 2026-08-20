@@ -1,5 +1,3 @@
-import type { CompetitivePosition } from "@/lib/competitive-intelligence/comparison/types";
-
 export type CompetitiveReportReadinessStatus =
   | "READY"
   | "MISSING_TARGET_AUDIT"
@@ -28,7 +26,6 @@ export interface CompetitiveReportCategoryRow {
   targetScore: number;
   competitorAverage: number;
   gap: number;
-  position: CompetitivePosition;
   positionLabel: string;
   targetRank: number;
   participantCount: number;

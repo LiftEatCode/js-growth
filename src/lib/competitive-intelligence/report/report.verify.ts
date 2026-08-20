@@ -499,6 +499,33 @@ assert(
 );
 assert(report.cta.primaryHref === "/contact", "safe existing contact href");
 
+const serializedReport = JSON.stringify(report);
+assert(!serializedReport.includes("COMPETITIVE_GAP"), "no COMPETITIVE_GAP enum on client report");
+assert(!serializedReport.includes("MAJOR_GAP"), "no MAJOR_GAP enum on client report");
+assert(!serializedReport.includes("MAJOR_ADVANTAGE"), "no MAJOR_ADVANTAGE enum on client report");
+assert(!serializedReport.includes("TARGET_ONLY_WEAKNESS"), "no finding enum leakage");
+assert(!serializedReport.includes("sourceKey"), "no sourceKey in report view model");
+assert(
+  !serializedReport.includes("supportingSourceKeys"),
+  "no supportingSourceKeys in report view model",
+);
+
+const viewSource = readFileSync(
+  join(
+    repoRoot,
+    "src/components/prospecting/competitive-growth-report-view.tsx",
+  ),
+  "utf8",
+);
+assert(viewSource.includes('(your website)'), "your website label present");
+assert(
+  viewSource.includes('{" "}') || viewSource.includes(" (your website)"),
+  "your website spacing includes leading space",
+);
+assert(!viewSource.includes("internalTalkingPoints"), "UI hides talking points");
+assert(!viewSource.includes("sourceKey"), "UI hides source keys");
+assert(viewSource.includes("print:"), "print-friendly classes present");
+
 const reportModuleFiles = collectTsFiles(here).filter(
   (file) => !file.endsWith(".verify.ts"),
 );
@@ -525,17 +552,6 @@ assert(
   "report route loads view model",
 );
 assert(!routeSource.includes("generateCompetitive"), "no generation on report route");
-
-const viewSource = readFileSync(
-  join(
-    repoRoot,
-    "src/components/prospecting/competitive-growth-report-view.tsx",
-  ),
-  "utf8",
-);
-assert(!viewSource.includes("internalTalkingPoints"), "UI hides talking points");
-assert(!viewSource.includes("sourceKey"), "UI hides source keys");
-assert(viewSource.includes("print:"), "print-friendly classes present");
 
 assert(
   isForbiddenAnalyticsParamKey("competitive_report"),

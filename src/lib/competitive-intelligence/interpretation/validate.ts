@@ -4,6 +4,10 @@ import {
   detectUnsupportedCommercialClaims,
   formatCommercialClaimUserMessage,
 } from "./claims";
+import {
+  detectUnexpectedNonEnglishScript,
+  formatLanguageScriptUserMessage,
+} from "./language";
 
 export interface CompetitiveInterpretationValidationViolation {
   rule: string;
@@ -267,6 +271,17 @@ export function validateCompetitiveInterpretationContent(
   ];
 
   for (const { section, text } of textSections) {
+    const languageCheck = detectUnexpectedNonEnglishScript(text);
+    if (!languageCheck.valid && languageCheck.violations[0]) {
+      const violation = languageCheck.violations[0];
+      return fail(
+        violation.rule,
+        section,
+        formatLanguageScriptUserMessage(violation),
+        violation.excerpt,
+      );
+    }
+
     const claimCheck = detectUnsupportedCommercialClaims(text);
     if (!claimCheck.valid && claimCheck.violations[0]) {
       const violation = claimCheck.violations[0];

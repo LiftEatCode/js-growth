@@ -27,7 +27,11 @@ import {
 import { detectUnsupportedCommercialClaims } from "./claims";
 import { fingerprintCompetitiveAiInput } from "./fingerprint";
 import { buildCompetitiveAiInput, buildSourceKeyCatalog } from "./input";
-import { COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT } from "./prompt";
+import { detectUnexpectedNonEnglishScript } from "./language";
+import {
+  COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT,
+  buildCompetitiveInterpretationRepairPrompt,
+} from "./prompt";
 import {
   assertOpenAiStructuredOutputSchemaHasNoOptionalProperties,
   competitiveInterpretationContentSchema,
@@ -69,8 +73,8 @@ const repoRoot = join(here, "../../../..");
 
 assert(COMPETITIVE_INTERPRETATION_VERSION === 1, "interpretation version is 1");
 assert(
-  COMPETITIVE_INTERPRETATION_PROMPT_VERSION === 3,
-  "prompt version is 3 after structured-output supportingSourceKeys hotfix",
+  COMPETITIVE_INTERPRETATION_PROMPT_VERSION === 4,
+  "prompt version is 4 after English-language client hardening",
 );
 assert(
   MAX_COMPETITIVE_INTERPRETATIONS_PER_ACTION === 1,
@@ -652,6 +656,86 @@ for (const text of mustAcceptClaims) {
   const result = detectUnsupportedCommercialClaims(text);
   assert(result.valid, `must accept: ${text}`);
 }
+
+assert(
+  !detectUnexpectedNonEnglishScript("search-优化").valid,
+  "production mixed-language fragment rejected",
+);
+assert(
+  detectUnexpectedNonEnglishScript("search optimization").valid,
+  "English search optimization accepted",
+);
+assert(
+  !detectUnexpectedNonEnglishScript(
+    "Rooftop Solutions has a strong performance foundation but trails the selected comparison group in content and search-优化",
+  ).valid,
+  "full production mixed-language sentence rejected",
+);
+
+const mixedLanguageContentRejected = validateCompetitiveInterpretationContent(
+  {
+    ...validContent,
+    executiveSummary: {
+      headline: "Behind the selected comparison group",
+      summary:
+        "Rooftop Solutions has a strong performance foundation but trails the selected comparison group in content and search-优化",
+    },
+  },
+  buildCompetitiveAiInput({
+    comparison,
+    comparisonSnapshotId: "snapshot-1",
+    targetBusinessName: "Target HVAC",
+  }),
+);
+assert(!mixedLanguageContentRejected.ok, "validator rejects mixed-language summary");
+assert(
+  !mixedLanguageContentRejected.ok &&
+    mixedLanguageContentRejected.rule === "UNEXPECTED_NON_ENGLISH_SCRIPT",
+  "UNEXPECTED_NON_ENGLISH_SCRIPT rule raised",
+);
+
+const englishSummaryAccepted = validateCompetitiveInterpretationContent(
+  {
+    ...validContent,
+    executiveSummary: {
+      headline: "Behind the selected comparison group",
+      summary:
+        "Rooftop Solutions has a strong performance foundation but trails the selected comparison group in content and search optimization.",
+    },
+  },
+  buildCompetitiveAiInput({
+    comparison,
+    comparisonSnapshotId: "snapshot-1",
+    targetBusinessName: "Target HVAC",
+  }),
+);
+assert(englishSummaryAccepted.ok, "corrected English summary accepted");
+
+const repairPrompt = buildCompetitiveInterpretationRepairPrompt({
+  inputJson: "{}",
+  previousOutputJson: "{}",
+  validationErrors: [
+    "UNEXPECTED_NON_ENGLISH_SCRIPT @ executiveSummary.summary: Validation failed: unexpected non-English script in client-facing text.",
+  ],
+});
+assert(
+  repairPrompt.toLowerCase().includes("english only"),
+  "repair prompt requires English-only prose",
+);
+assert(
+  repairPrompt.includes("search optimization"),
+  "repair prompt gives English correction example",
+);
+assert(
+  COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT.includes("English only") ||
+    COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT.includes("clear English"),
+  "system prompt requires English output",
+);
+assert(
+  COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT.includes("sourceKey values") ||
+    COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT.includes("enum constants"),
+  "system prompt forbids internal terminology in prose",
+);
 
 const productionTarget: ComparisonInputAudit = {
   overallScore: 74,

@@ -3,6 +3,13 @@ export const COMPETITIVE_INTERPRETATION_SYSTEM_PROMPT = `You are a competitive w
 The comparison facts were calculated by another system and are authoritative.
 Your job is to explain those facts clearly for a business owner.
 
+Language requirements:
+- Write all client-facing prose in clear English only.
+- Do not mix languages or insert non-English script fragments (for example Chinese, Japanese, Korean, Cyrillic, Arabic characters).
+- Do not invent hybrid terms such as "search-优化".
+- Do not put sourceKey values, supportingSourceKeys, database IDs, enum constants (COMPETITIVE_GAP, MAJOR_GAP, etc.), model names, prompt versions, or other implementation terminology into titles, summaries, explanations, or actions.
+- Use client-readable wording such as "competitive gap", "major gap", "selected competitor average", and "Website Growth Score".
+
 You must not recalculate, contradict, embellish, or invent competitive facts.
 You must not invent competitors, findings, scores, rankings, gaps, or audit failures.
 
@@ -57,6 +64,7 @@ export function buildCompetitiveInterpretationUserPrompt(
   return [
     "Interpret the following bounded competitive comparison facts.",
     "Use only allowedSourceKeys when citing evidence.",
+    "Write English-only client-facing prose. Do not include non-English script characters or internal enum/sourceKey terminology in prose.",
     "Emphasize major category gaps/advantages and high/critical opportunities.",
     "De-emphasize low-value technical trivia unless it is decisive.",
     "Provide a concise executive summary, position assessment, risks, advantages, priorities, a high-level 90-day direction, and optional internal talking points.",
@@ -82,6 +90,8 @@ export function buildCompetitiveInterpretationRepairPrompt(options: {
     "Primary priority sourceKeys must remain overall, an opportunity, or a GAP/MAJOR_GAP category.",
     "Advantages may appear in supportingSourceKeys or the advantages section, not as primary improvement priorities.",
     'Every priority must include supportingSourceKeys as an array. Use [] when empty — do not omit the field.',
+    "All client-facing prose must be English only. Replace any non-English script fragments with clear English wording (for example, write \"search optimization\" instead of mixed-language hybrids).",
+    "Do not place sourceKey values, enum constants, or implementation terminology into prose fields.",
     "Remove unsupported commercial, traffic, ranking, revenue, lead-volume, or guaranteed-outcome claims.",
     "Preserve safe recommendation language grounded in the supplied evidence.",
     "",

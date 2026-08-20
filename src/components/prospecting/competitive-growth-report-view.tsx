@@ -326,7 +326,8 @@ export function CompetitiveGrowthReportView(props: {
                 <p className="font-medium text-ink">
                   {row.businessName}
                   {row.isTarget ? (
-                    <span className="ml-2 text-xs font-normal text-muted">
+                    <span className="text-xs font-normal text-muted">
+                      {" "}
                       (your website)
                     </span>
                   ) : null}
