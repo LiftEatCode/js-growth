@@ -8,6 +8,7 @@ import type {
 } from "@/lib/website-audit/types";
 
 import { WEAK_CATEGORY_PERCENT_THRESHOLD } from "./constants";
+import { dedupeEvidenceItems } from "./dedupe";
 import type { PlanEvidenceItem } from "./types";
 
 function findingSourceKey(findingId: string): string {
@@ -163,31 +164,7 @@ export function mergeEvidence(
   auditItems: PlanEvidenceItem[],
   competitiveItems: PlanEvidenceItem[],
 ): PlanEvidenceItem[] {
-  const byKey = new Map<string, PlanEvidenceItem>();
-
-  for (const item of auditItems) {
-    byKey.set(`${item.type}:${item.sourceKey}`, item);
-  }
-
-  for (const item of competitiveItems) {
-    const key = `${item.type}:${item.sourceKey}`;
-    const existing = byKey.get(key);
-    if (!existing) {
-      byKey.set(key, item);
-      continue;
-    }
-
-    // Prefer richer competitive fields when same logical key type+source
-    byKey.set(key, {
-      ...existing,
-      ...item,
-      title: existing.title,
-      auditPriority: existing.auditPriority ?? item.auditPriority,
-      auditStatus: existing.auditStatus ?? item.auditStatus,
-    });
-  }
-
-  return Array.from(byKey.values());
+  return dedupeEvidenceItems([...auditItems, ...competitiveItems]);
 }
 
 export function collectIssueFindings(

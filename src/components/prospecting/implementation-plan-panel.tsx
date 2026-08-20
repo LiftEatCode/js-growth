@@ -284,7 +284,7 @@ export function ImplementationPlanPanel({
                         .filter((item) => item.type !== "COMPETITIVE_ADVANTAGE")
                         .slice(0, 8)
                         .map((item) => (
-                          <li key={`${item.type}:${item.sourceKey}`}>
+                          <li key={item.sourceKey}>
                             {formatEvidenceLine(item)}
                           </li>
                         ))}
@@ -316,11 +316,21 @@ export function ImplementationPlanPanel({
                   {row.preservationConstraints.length > 0 ? (
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted">
-                        Preservation
+                        Preservation / maintenance
                       </p>
-                      <ul className="mt-1 list-disc pl-5 text-sm">
+                      <ul className="mt-1 space-y-2 text-sm">
                         {row.preservationConstraints.map((constraint) => (
-                          <li key={constraint.id}>{constraint.statement}</li>
+                          <li key={constraint.id}>
+                            <p>{constraint.statement}</p>
+                            {constraint.maintenanceActions &&
+                            constraint.maintenanceActions.length > 0 ? (
+                              <ul className="mt-1 list-disc pl-5 text-muted">
+                                {constraint.maintenanceActions.map((action) => (
+                                  <li key={action.id}>{action.label}</li>
+                                ))}
+                              </ul>
+                            ) : null}
+                          </li>
                         ))}
                       </ul>
                     </div>

@@ -34,7 +34,11 @@ export interface PlanEvidenceItem {
 export interface RecommendedAction {
   id: string;
   label: string;
-  /** Evidence sourceKeys that justified this action */
+  /**
+   * Provenance: every key must exist in the same workstream's evidence
+   * (or plan-level preservation evidence for maintenance actions).
+   * Alias concept: supportingSourceKeys.
+   */
   evidenceSourceKeys: string[];
 }
 
@@ -43,6 +47,8 @@ export interface PreservationConstraint {
   category: AuditCategory;
   statement: string;
   evidenceSourceKeys: string[];
+  /** Optional minor-finding maintenance under a preserved strength. */
+  maintenanceActions?: RecommendedAction[];
 }
 
 export interface GeneratedWorkstream {

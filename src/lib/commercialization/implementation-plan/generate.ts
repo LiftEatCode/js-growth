@@ -2,7 +2,10 @@ import type { CompetitiveComparison } from "@/lib/competitive-intelligence/compa
 import type { WebsiteAuditResult } from "@/lib/website-audit/types";
 
 import { SERVICE_CAPABILITY_VERSION } from "../capabilities/types";
-import { buildRecommendedActions } from "./actions";
+import {
+  assertActionsHaveProvenance,
+  buildRecommendedActions,
+} from "./actions";
 import {
   IMPLEMENTATION_MAPPING_VERSION,
   IMPLEMENTATION_PLAN_VERSION,
@@ -13,21 +16,34 @@ import {
   type WorkstreamType,
 } from "./constants";
 import {
+  dedupeEvidenceItems,
+  isWeakSupportingFinding,
+  isWorkstreamCreatingEvidence,
+} from "./dedupe";
+import {
   buildAuditEvidence,
   buildCompetitiveEvidence,
   mergeEvidence,
 } from "./evidence";
-import { assignEvidenceToWorkstream } from "./mapping";
-import { buildPreservationConstraints } from "./preservation";
+import { assignEvidenceToWorkstreams } from "./mapping";
+import {
+  buildPreservationConstraints,
+  buildStrengthPreservationConstraint,
+} from "./preservation";
 import {
   applyCriticalCap,
   computeWorkstreamPriorityScore,
   priorityFromScore,
 } from "./priority";
+import {
+  primaryCategoryForWorkstream,
+  shouldSuppressStrengthWorkstream,
+} from "./strength";
 import type {
   GeneratedImplementationPlan,
   GeneratedWorkstream,
   PlanEvidenceItem,
+  PreservationConstraint,
 } from "./types";
 
 function summarizeWorkstream(
@@ -35,7 +51,10 @@ function summarizeWorkstream(
   evidence: PlanEvidenceItem[],
 ): string {
   const gaps = evidence.filter((item) => item.type === "COMPETITIVE_CATEGORY_GAP");
-  const findings = evidence.filter((item) => item.type === "AUDIT_FINDING");
+  const findings = evidence.filter(
+    (item) =>
+      item.type === "AUDIT_FINDING" && !isWeakSupportingFinding(item),
+  );
   const categories = evidence.filter((item) => item.type === "AUDIT_CATEGORY");
 
   const parts: string[] = [];
@@ -46,9 +65,7 @@ function summarizeWorkstream(
       `Competitive gap on ${g.category}: target ${g.targetScorePercent ?? "—"} vs competitor average ${g.competitorAverage ?? "—"} (${g.position ?? "GAP"}).`,
     );
   } else if (categories[0]) {
-    parts.push(
-      `Audit category weakness: ${categories[0].title}.`,
-    );
+    parts.push(`Audit category weakness: ${categories[0].title}.`);
   }
 
   if (findings.length > 0) {
@@ -64,12 +81,16 @@ function summarizeWorkstream(
   return parts.join(" ");
 }
 
+function priorityEvidence(evidence: PlanEvidenceItem[]): PlanEvidenceItem[] {
+  // Weak supporting findings (e.g. no-images) must not inflate priority
+  return evidence.filter((item) => !isWeakSupportingFinding(item));
+}
+
 export function generateImplementationPlanFromEvidence(options: {
   audit: WebsiteAuditResult;
   auditReportId: string;
   comparison: CompetitiveComparison | null;
   comparisonSnapshotId: string | null;
-  /** When false, competitive evidence is excluded even if comparison is passed. */
   useCompetitiveEvidence: boolean;
   now?: Date;
 }): GeneratedImplementationPlan {
@@ -84,41 +105,96 @@ export function generateImplementationPlanFromEvidence(options: {
   const bags = new Map<WorkstreamType, PlanEvidenceItem[]>();
 
   for (const item of allEvidence) {
-    const workstream = assignEvidenceToWorkstream(item);
-    if (!workstream) {
-      continue;
+    const targets = assignEvidenceToWorkstreams(item);
+    for (const workstream of targets) {
+      const list = bags.get(workstream) ?? [];
+      list.push(item);
+      bags.set(workstream, list);
     }
-    const list = bags.get(workstream) ?? [];
-    list.push(item);
-    bags.set(workstream, list);
   }
 
+  for (const [type, list] of bags) {
+    bags.set(type, dedupeEvidenceItems(list));
+  }
+
+  const suppressedPreservations: PreservationConstraint[] = [];
   let workstreams: GeneratedWorkstream[] = [];
 
   for (const type of WORKSTREAM_ORDER) {
-    const evidence = bags.get(type);
-    if (!evidence || evidence.length === 0) {
+    let evidence = bags.get(type) ?? [];
+    if (evidence.length === 0) {
       continue;
     }
 
-    const priorityScore = computeWorkstreamPriorityScore(evidence);
-    const priority = priorityFromScore(priorityScore);
-    const actions = buildRecommendedActions(type, evidence);
-    const preservationConstraints = buildPreservationConstraints({
-      workstreamType: type,
-      audit: options.audit,
-      evidence,
-      allEvidence,
-    });
+    evidence = dedupeEvidenceItems(evidence);
 
-    // Skip workstreams with zero actionable recommendations and only soft evidence
-    if (actions.length === 0 && evidence.every((e) => e.type === "AUDIT_CATEGORY")) {
-      // Still allow if category is weak — provide a generic action via rebuild of rules
-      // Prefer skipping empty action bags only when no findings either
-      if (!evidence.some((e) => e.type === "AUDIT_FINDING" || e.type === "COMPETITIVE_CATEGORY_GAP")) {
-        continue;
-      }
+    const creating = evidence.filter(isWorkstreamCreatingEvidence);
+    if (creating.length === 0) {
+      // Only weak supporting evidence (e.g. no-images alone) — skip workstream
+      continue;
     }
+
+    const primaryCategory = primaryCategoryForWorkstream(type);
+    if (
+      primaryCategory &&
+      shouldSuppressStrengthWorkstream({
+        primaryCategory,
+        workstreamEvidence: evidence,
+        allEvidence,
+      })
+    ) {
+      const advantage = allEvidence.find(
+        (item) =>
+          item.type === "COMPETITIVE_ADVANTAGE" &&
+          item.category === primaryCategory,
+      );
+      if (advantage) {
+        suppressedPreservations.push(
+          buildStrengthPreservationConstraint({
+            category: primaryCategory,
+            advantageSourceKey: advantage.sourceKey,
+            minorFindings: evidence.filter(
+              (item) =>
+                item.type === "AUDIT_FINDING" ||
+                item.type === "COMPETITIVE_FINDING",
+            ),
+          }),
+        );
+      }
+      continue;
+    }
+
+    const actions = buildRecommendedActions(type, evidence);
+    assertActionsHaveProvenance(actions, evidence);
+
+    if (
+      actions.length === 0 &&
+      !evidence.some(
+        (e) =>
+          e.type === "AUDIT_FINDING" ||
+          e.type === "COMPETITIVE_CATEGORY_GAP" ||
+          e.type === "AUDIT_CATEGORY",
+      )
+    ) {
+      continue;
+    }
+
+    const scoredEvidence = priorityEvidence(evidence);
+    const priorityScore = computeWorkstreamPriorityScore(scoredEvidence);
+    const priority = priorityFromScore(priorityScore);
+
+    const finalActions =
+      actions.length > 0
+        ? actions
+        : [
+            {
+              id: "review-evidence",
+              label: `Review ${WORKSTREAM_TITLES[type].toLowerCase()} evidence and define remediation scope`,
+              evidenceSourceKeys: creating.map((e) => e.sourceKey).slice(0, 8),
+            },
+          ];
+
+    assertActionsHaveProvenance(finalActions, evidence);
 
     workstreams.push({
       workstreamType: type,
@@ -129,19 +205,21 @@ export function generateImplementationPlanFromEvidence(options: {
       sortOrder: 0,
       capabilities: [...WORKSTREAM_DEFAULT_CAPABILITIES[type]],
       evidence,
-      actions:
-        actions.length > 0
-          ? actions
-          : [
-              {
-                id: "review-evidence",
-                label: `Review ${WORKSTREAM_TITLES[type].toLowerCase()} evidence and define remediation scope`,
-                evidenceSourceKeys: evidence.map((e) => e.sourceKey).slice(0, 8),
-              },
-            ],
-      preservationConstraints,
+      actions: finalActions,
+      preservationConstraints: [], // filled after suppressed list known
     });
   }
+
+  workstreams = workstreams.map((row) => ({
+    ...row,
+    preservationConstraints: buildPreservationConstraints({
+      workstreamType: row.workstreamType,
+      audit: options.audit,
+      evidence: row.evidence,
+      allEvidence,
+      suppressedPreservations,
+    }),
+  }));
 
   workstreams = applyCriticalCap(workstreams);
 

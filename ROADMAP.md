@@ -101,11 +101,13 @@ Earlier prospecting sprints 1–8 (contacts, sending, webhooks, outcomes) remain
 
 ## Commercial Sprint 1 — Implementation Plan Foundation
 
-Status: 🟢 Implemented (internal)
+Status: 🟢 Implemented (internal) · **1.1 quality hardening** (`IMPLEMENTATION_MAPPING_VERSION = 2`)
 
 Canonical doc: `docs/development/implementation-plan-engine.md`
 
 Deterministic evidence → capabilities → workstreams → priorities → persisted snapshot + human approve.
+
+Sprint 1.1: evidence dedupe, action provenance, strength-aware suppression, material-risk exception, `no-images` weight reduction.
 
 **Not included:** AI interpretation of plans, pricing, opportunities, proposals, public plans, outreach.
 

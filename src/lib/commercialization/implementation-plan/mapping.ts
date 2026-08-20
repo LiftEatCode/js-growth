@@ -5,7 +5,6 @@ import type { PlanEvidenceItem } from "./types";
 
 /**
  * Map an audit category to its primary workstream.
- * Accessibility maps to website experience (implementation), not SEO.
  */
 export function workstreamForCategory(
   category: AuditCategory,
@@ -32,81 +31,102 @@ export function workstreamForCategory(
   }
 }
 
+function isHeadingFinding(findingId: string): boolean {
+  const id = findingId.toLowerCase();
+  return (
+    id === "missing-h1" ||
+    id === "multiple-h1" ||
+    id === "skipped-heading-levels" ||
+    id.includes("duplicate-h1")
+  );
+}
+
 /**
- * Finding-id aware workstream routing for cross-cutting technical SEO
- * signals that live under seo/technical categories.
+ * Findings may map to one or more workstreams (cross-workstream evidence).
+ * Local bags still dedupe by identity.
  */
-export function workstreamForFinding(
+export function workstreamsForFinding(
   category: AuditCategory,
   findingId: string,
-): WorkstreamType {
+): WorkstreamType[] {
   const id = findingId.toLowerCase();
 
   if (
     id.startsWith("robots-") ||
     id.startsWith("sitemap-") ||
     id.startsWith("canonical-") ||
-    id.startsWith("structured-data-") ||
+    id === "missing-canonical" ||
+    id.startsWith("structured-data") ||
+    id === "missing-structured-data" ||
     id.startsWith("viewport-") ||
     id.includes("indexability") ||
     id.includes("broken-internal")
   ) {
-    return "TECHNICAL_SEO";
+    return ["TECHNICAL_SEO"];
+  }
+
+  if (isHeadingFinding(id)) {
+    return ["CONTENT_FOUNDATION", "SEARCH_OPTIMIZATION"];
   }
 
   if (
     id.startsWith("missing-title") ||
     id.startsWith("title-") ||
-    id.startsWith("meta-description") ||
+    id.includes("meta-description") ||
     id.startsWith("open-graph") ||
     id.includes("duplicate-title") ||
-    id.includes("duplicate-h1") ||
     id.includes("duplicate-description") ||
     id.includes("nosnippet")
   ) {
-    return "SEARCH_OPTIMIZATION";
+    return ["SEARCH_OPTIMIZATION"];
   }
 
   if (
-    id.startsWith("missing-h1") ||
-    id.startsWith("thin-content") ||
-    id.startsWith("content-") ||
-    id.startsWith("internal-links") ||
-    id.includes("similar-pages") ||
-    id.includes("thin-service") ||
+    id.includes("internal-links") ||
     id.includes("weak-internal-link")
   ) {
-    return "CONTENT_FOUNDATION";
+    return ["SEARCH_OPTIMIZATION", "CONTENT_FOUNDATION"];
   }
 
-  return workstreamForCategory(category);
+  if (
+    id.startsWith("thin-content") ||
+    id.startsWith("content-") ||
+    id.includes("similar-pages") ||
+    id.includes("thin-service") ||
+    id === "no-images"
+  ) {
+    return ["CONTENT_FOUNDATION"];
+  }
+
+  return [workstreamForCategory(category)];
 }
 
-export function assignEvidenceToWorkstream(
+/** @deprecated use workstreamsForFinding — kept for single-target helpers */
+export function workstreamForFinding(
+  category: AuditCategory,
+  findingId: string,
+): WorkstreamType {
+  return workstreamsForFinding(category, findingId)[0] ?? workstreamForCategory(category);
+}
+
+export function assignEvidenceToWorkstreams(
   item: PlanEvidenceItem,
-): WorkstreamType | null {
-  // Advantages are for preservation, not workstream creation
+): WorkstreamType[] {
   if (item.type === "COMPETITIVE_ADVANTAGE") {
-    return null;
+    return [];
   }
 
   if (item.findingId) {
-    return workstreamForFinding(
-      item.category ?? "seo",
-      item.findingId,
-    );
+    return workstreamsForFinding(item.category ?? "seo", item.findingId);
   }
 
   if (item.category) {
-    return workstreamForCategory(item.category);
+    return [workstreamForCategory(item.category)];
   }
 
-  return null;
+  return [];
 }
 
-/**
- * Whether technical structured-data actions are justified.
- */
 export function evidenceSupportsStructuredData(
   evidence: PlanEvidenceItem[],
 ): boolean {

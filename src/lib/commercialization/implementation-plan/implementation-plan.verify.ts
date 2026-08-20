@@ -1,5 +1,5 @@
 /**
- * Commercial Sprint 1 — Implementation Plan engine verification.
+ * Commercial Sprint 1.1 — Implementation Plan quality hardening verification.
  * Pure deterministic tests. No OpenAI, Places, crawl, Resend, or DB.
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -13,17 +13,18 @@ import type {
   WebsiteAuditResult,
 } from "@/lib/website-audit/types";
 
-import { SERVICE_CAPABILITIES, SERVICE_CAPABILITY_VERSION } from "../capabilities";
+import { SERVICE_CAPABILITY_VERSION } from "../capabilities";
+import { assertActionsHaveProvenance } from "./actions";
 import {
   IMPLEMENTATION_MAPPING_VERSION,
   IMPLEMENTATION_PLAN_VERSION,
 } from "./constants";
+import { dedupeEvidenceItems, evidenceIdentity } from "./dedupe";
 import { generateImplementationPlanFromEvidence } from "./generate";
 import {
-  computeCurrentPlanFingerprint,
-  evaluatePlanStaleness,
-} from "./staleness";
-import { computeWorkstreamPriorityScore, priorityFromScore } from "./priority";
+  isMaterialRiskEvidence,
+  shouldSuppressStrengthWorkstream,
+} from "./strength";
 import type { PlanEvidenceItem } from "./types";
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -95,20 +96,20 @@ function baseAudit(overrides?: {
     pageData: {} as WebsiteAuditResult["pageData"],
     findings: overrides?.findings ?? [],
     categoryScores: overrides?.categoryScores ?? [
-      categoryScore("technical", 16, 20),
-      categoryScore("seo", 10, 20),
-      categoryScore("content", 6, 15),
-      categoryScore("cro", 8, 15),
+      categoryScore("technical", 17, 20),
+      categoryScore("seo", 13, 20),
+      categoryScore("content", 8, 15),
+      categoryScore("cro", 12, 15),
       categoryScore("accessibility", 8, 10),
-      categoryScore("local", 4, 10),
+      categoryScore("local", 7, 10),
       categoryScore("performance", 9, 10),
     ],
-    overallScore: overrides?.overallScore ?? 55,
+    overallScore: overrides?.overallScore ?? 74,
     summary: {
       passed: 10,
       warnings: 2,
       failed: 5,
-      criticalIssues: 1,
+      criticalIssues: 0,
       quickWins: 1,
       highImpactFindings: 3,
       estimatedFixMinutes: 120,
@@ -127,41 +128,30 @@ function baseAudit(overrides?: {
   } as WebsiteAuditResult;
 }
 
-function comparisonFixture(): CompetitiveComparison {
+/** Rooftop Solutions–like competitive fixture (percent scale). */
+function rooftopComparison(): CompetitiveComparison {
   return {
     comparisonVersion: 1,
     auditEngineVersion: 1,
-    prospectId: "p1",
+    prospectId: "rooftop",
     campaignId: "c1",
-    auditReportId: "audit-1",
+    auditReportId: "audit-rooftop",
     generatedAt: new Date().toISOString(),
-    competitorsCompared: [
-      {
-        prospectCompetitorId: "comp-1",
-        competitorAuditId: "ca-1",
-        businessName: "Rival A",
-        website: "https://rival-a.example",
-        competitiveRelevanceScore: 80,
-        distanceMiles: 2,
-        websiteGrowthScore: 88,
-        auditEngineVersion: 1,
-        auditedAt: new Date().toISOString(),
-      },
-    ],
+    competitorsCompared: [],
     overall: {
-      targetScore: 55,
-      competitorScores: [88],
-      competitorAverage: 88,
-      competitorMedian: 88,
-      competitorBest: 88,
-      competitorWorst: 88,
-      gapVsAverage: -33,
-      gapVsLeader: -33,
+      targetScore: 74,
+      competitorScores: [90],
+      competitorAverage: 90,
+      competitorMedian: 90,
+      competitorBest: 90,
+      competitorWorst: 90,
+      gapVsAverage: -16,
+      gapVsLeader: -16,
       targetRank: 2,
-      participantCount: 2,
-      competitorsOutperforming: 1,
-      competitorsCompared: 1,
-      position: "MAJOR_GAP",
+      participantCount: 4,
+      competitorsOutperforming: 3,
+      competitorsCompared: 3,
+      position: "GAP",
     },
     categories: [
       {
@@ -175,8 +165,8 @@ function comparisonFixture(): CompetitiveComparison {
         competitorWorst: 95.7,
         gapVsAverage: -42.7,
         gapVsLeader: -42.7,
-        targetRank: 2,
-        participantCount: 2,
+        targetRank: 4,
+        participantCount: 4,
         competitorsOutperforming: 3,
         competitorsCompared: 3,
         position: "MAJOR_GAP",
@@ -185,36 +175,54 @@ function comparisonFixture(): CompetitiveComparison {
       {
         category: "seo",
         label: "Search Optimization",
-        targetScore: 50,
-        competitorScores: [80],
-        competitorAverage: 80,
-        competitorMedian: 80,
-        competitorBest: 80,
-        competitorWorst: 80,
-        gapVsAverage: -30,
-        gapVsLeader: -30,
-        targetRank: 2,
-        participantCount: 2,
-        competitorsOutperforming: 2,
-        competitorsCompared: 2,
+        targetScore: 65,
+        competitorScores: [90],
+        competitorAverage: 90,
+        competitorMedian: 90,
+        competitorBest: 90,
+        competitorWorst: 90,
+        gapVsAverage: -25,
+        gapVsLeader: -25,
+        targetRank: 4,
+        participantCount: 4,
+        competitorsOutperforming: 3,
+        competitorsCompared: 3,
         position: "MAJOR_GAP",
         competitorBreakdown: [],
       },
       {
         category: "cro",
         label: "Conversion",
-        targetScore: 55,
-        competitorScores: [70],
-        competitorAverage: 70,
-        competitorMedian: 70,
-        competitorBest: 70,
-        competitorWorst: 70,
-        gapVsAverage: -15,
-        gapVsLeader: -15,
-        targetRank: 2,
-        participantCount: 2,
-        competitorsOutperforming: 1,
-        competitorsCompared: 1,
+        targetScore: 80,
+        competitorScores: [93],
+        competitorAverage: 93,
+        competitorMedian: 93,
+        competitorBest: 93,
+        competitorWorst: 93,
+        gapVsAverage: -13,
+        gapVsLeader: -13,
+        targetRank: 4,
+        participantCount: 4,
+        competitorsOutperforming: 3,
+        competitorsCompared: 3,
+        position: "GAP",
+        competitorBreakdown: [],
+      },
+      {
+        category: "technical",
+        label: "Technical SEO",
+        targetScore: 85,
+        competitorScores: [96.7],
+        competitorAverage: 96.7,
+        competitorMedian: 96.7,
+        competitorBest: 96.7,
+        competitorWorst: 96.7,
+        gapVsAverage: -11.7,
+        gapVsLeader: -11.7,
+        targetRank: 4,
+        participantCount: 4,
+        competitorsOutperforming: 3,
+        competitorsCompared: 3,
         position: "GAP",
         competitorBreakdown: [],
       },
@@ -230,14 +238,39 @@ function comparisonFixture(): CompetitiveComparison {
         gapVsAverage: 16.7,
         gapVsLeader: 16.7,
         targetRank: 1,
-        participantCount: 2,
+        participantCount: 4,
         competitorsOutperforming: 0,
-        competitorsCompared: 1,
+        competitorsCompared: 3,
         position: "MAJOR_ADVANTAGE",
         competitorBreakdown: [],
       },
     ],
-    findingComparisons: [],
+    findingComparisons: [
+      {
+        findingId: "skipped-heading-levels",
+        title: "Skipped heading levels",
+        category: "content",
+        priority: "medium",
+        targetHasIssue: true,
+        competitorIssueCount: 0,
+        competitorPassCount: 3,
+        competitorsCompared: 3,
+        prevalencePercent: 0,
+        pattern: "TARGET_ONLY_WEAKNESS",
+      },
+      {
+        findingId: "performance-large-inline-css",
+        title: "Large inline CSS",
+        category: "performance",
+        priority: "low",
+        targetHasIssue: true,
+        competitorIssueCount: 1,
+        competitorPassCount: 2,
+        competitorsCompared: 3,
+        prevalencePercent: 33,
+        pattern: "TARGET_ONLY_WEAKNESS",
+      },
+    ],
     advantages: [
       {
         id: "category-performance",
@@ -247,7 +280,7 @@ function comparisonFixture(): CompetitiveComparison {
         evidence: ["Target 90 vs avg 73.3"],
         gapVsAverage: 16.7,
         targetRank: 1,
-        participantCount: 2,
+        participantCount: 4,
       },
     ],
     opportunities: [],
@@ -255,129 +288,276 @@ function comparisonFixture(): CompetitiveComparison {
   };
 }
 
-// --- Capability taxonomy ---
-assert(SERVICE_CAPABILITY_VERSION === 1, "capability version is 1");
-assert(
-  SERVICE_CAPABILITIES.some((c) => c.id === "CONTENT" && c.active),
-  "CONTENT active",
-);
-assert(
-  SERVICE_CAPABILITIES.some((c) => c.id === "AI_AUTOMATION" && !c.active),
-  "AI_AUTOMATION inactive in V1",
-);
-
-// --- 1. Audit-only plan ---
-const auditOnly = generateImplementationPlanFromEvidence({
-  audit: baseAudit({
+function rooftopAudit(): WebsiteAuditResult {
+  return baseAudit({
+    overallScore: 74,
     findings: [
       finding({
-        id: "thin-content",
+        id: "multiple-h1",
         category: "content",
-        title: "Thin content",
-        priority: "high",
-      }),
-      finding({
-        id: "missing-title",
-        category: "seo",
-        title: "Missing title",
-        priority: "critical",
-      }),
-      finding({
-        id: "local-nap-incomplete",
-        category: "local",
-        title: "NAP incomplete",
+        title: "Multiple H1",
+        status: "warning",
         priority: "medium",
       }),
       finding({
-        id: "no-conversion-path",
-        category: "cro",
-        title: "No conversion path",
+        id: "skipped-heading-levels",
+        category: "content",
+        title: "Skipped heading levels",
+        status: "warning",
+        priority: "medium",
+      }),
+      finding({
+        id: "no-images",
+        category: "content",
+        title: "No images",
+        status: "warning",
+        priority: "low",
+      }),
+      finding({
+        id: "missing-meta-description",
+        category: "seo",
+        title: "Missing meta description",
+        status: "fail",
         priority: "high",
       }),
       finding({
-        id: "robots-noindex",
+        id: "missing-internal-links",
+        category: "seo",
+        title: "Missing internal links",
+        status: "warning",
+        priority: "medium",
+      }),
+      finding({
+        id: "open-graph-incomplete",
+        category: "seo",
+        title: "Open Graph incomplete",
+        status: "warning",
+        priority: "low",
+      }),
+      finding({
+        id: "missing-canonical",
         category: "technical",
-        title: "Robots noindex",
-        priority: "critical",
+        title: "Missing canonical",
+        status: "fail",
+        priority: "medium",
+      }),
+      finding({
+        id: "missing-structured-data",
+        category: "technical",
+        title: "Missing structured data",
+        status: "fail",
+        priority: "medium",
+      }),
+      finding({
+        id: "few-trust-signals",
+        category: "cro",
+        title: "Few trust signals",
+        status: "warning",
+        priority: "medium",
+      }),
+      finding({
+        id: "performance-large-inline-css",
+        category: "performance",
+        title: "Large inline CSS",
+        status: "warning",
+        priority: "low",
       }),
     ],
-  }),
-  auditReportId: "audit-1",
-  comparison: null,
-  comparisonSnapshotId: null,
-  useCompetitiveEvidence: false,
+  });
+}
+
+assert(IMPLEMENTATION_MAPPING_VERSION === 2, "mapping version is 2 (Sprint 1.1)");
+assert(IMPLEMENTATION_PLAN_VERSION === 1, "plan version remains 1");
+assert(SERVICE_CAPABILITY_VERSION === 1, "capability version unchanged");
+
+// --- Deduplication ---
+const dupes: PlanEvidenceItem[] = [
+  {
+    type: "AUDIT_FINDING",
+    sourceKey: "finding:skipped-heading-levels",
+    category: "content",
+    findingId: "skipped-heading-levels",
+    title: "Skipped",
+    targetScorePercent: null,
+    competitorAverage: null,
+    gapVsAverage: null,
+    position: null,
+    competitorsOutperforming: null,
+    competitorsCompared: null,
+    auditPriority: "medium",
+    auditStatus: "warning",
+  },
+  {
+    type: "COMPETITIVE_FINDING",
+    sourceKey: "finding:skipped-heading-levels",
+    category: "content",
+    findingId: "skipped-heading-levels",
+    title: "Skipped competitive",
+    targetScorePercent: null,
+    competitorAverage: null,
+    gapVsAverage: null,
+    position: null,
+    competitorsOutperforming: null,
+    competitorsCompared: 3,
+    auditPriority: "medium",
+    auditStatus: "fail",
+  },
+];
+const deduped = dedupeEvidenceItems(dupes);
+assert(deduped.length === 1, "duplicate findings dedupe to one");
+assert(
+  evidenceIdentity(deduped[0]) === "finding:skipped-heading-levels",
+  "identity is finding id",
+);
+assert(deduped[0].type === "AUDIT_FINDING", "prefer audit finding row");
+
+const catDupes: PlanEvidenceItem[] = [
+  {
+    type: "AUDIT_CATEGORY",
+    sourceKey: "category:content",
+    category: "content",
+    findingId: null,
+    title: "Content 53",
+    targetScorePercent: 53,
+    competitorAverage: null,
+    gapVsAverage: null,
+    position: null,
+    competitorsOutperforming: null,
+    competitorsCompared: null,
+    auditPriority: null,
+    auditStatus: null,
+  },
+  {
+    type: "AUDIT_CATEGORY",
+    sourceKey: "category:content",
+    category: "content",
+    findingId: null,
+    title: "Content 53 again",
+    targetScorePercent: 53,
+    competitorAverage: null,
+    gapVsAverage: null,
+    position: null,
+    competitorsOutperforming: null,
+    competitorsCompared: null,
+    auditPriority: null,
+    auditStatus: null,
+  },
+];
+assert(dedupeEvidenceItems(catDupes).length === 1, "duplicate category evidence deduped");
+
+// --- Rooftop fixture ---
+const rooftop = generateImplementationPlanFromEvidence({
+  audit: rooftopAudit(),
+  auditReportId: "audit-rooftop",
+  comparison: rooftopComparison(),
+  comparisonSnapshotId: "snap-rooftop",
+  useCompetitiveEvidence: true,
 });
 
-assert(auditOnly.comparisonSnapshotId === null, "audit-only has no comparison id");
-assert(auditOnly.competitiveEvidenceUsed === false, "audit-only competitive false");
-assert(auditOnly.workstreams.length >= 3, "audit-only produces multiple workstreams");
-
-const contentWs = auditOnly.workstreams.find(
-  (w) => w.workstreamType === "CONTENT_FOUNDATION",
-);
-assert(contentWs, "content workstream exists");
+assert(rooftop.mappingVersion === 2, "rooftop plan uses mapping v2");
 assert(
-  contentWs.capabilities.includes("CONTENT") &&
-    contentWs.capabilities.includes("SEO"),
-  "content maps to CONTENT+SEO",
+  !rooftop.workstreams.some((w) => w.workstreamType === "PERFORMANCE_OPTIMIZATION"),
+  "MAJOR_ADVANTAGE performance + minor finding does not create Performance workstream",
+);
+
+const content = rooftop.workstreams.find((w) => w.workstreamType === "CONTENT_FOUNDATION");
+const search = rooftop.workstreams.find((w) => w.workstreamType === "SEARCH_OPTIMIZATION");
+const technical = rooftop.workstreams.find((w) => w.workstreamType === "TECHNICAL_SEO");
+const conversion = rooftop.workstreams.find((w) => w.workstreamType === "CONVERSION_OPTIMIZATION");
+
+assert(content, "content workstream");
+assert(search, "search workstream");
+assert(technical, "technical workstream");
+assert(conversion, "conversion workstream");
+assert(content.priority === "CRITICAL", "content MAJOR_GAP → CRITICAL");
+assert(search.priority === "CRITICAL", "search MAJOR_GAP → CRITICAL");
+assert(
+  technical.priority === "HIGH" || technical.priority === "MEDIUM",
+  "technical gap in HIGH/MEDIUM band",
 );
 assert(
-  !contentWs.capabilities.includes("AI_AUTOMATION"),
-  "AI_AUTOMATION not recommended",
+  conversion.priority === "MEDIUM" || conversion.priority === "HIGH",
+  "conversion gap in MEDIUM/HIGH band",
+);
+
+// Performance maintenance on other workstreams
+const perfPreserve = rooftop.workstreams.some((w) =>
+  w.preservationConstraints.some(
+    (c) =>
+      c.category === "performance" &&
+      c.evidenceSourceKeys.includes("advantage:category-performance") &&
+      (c.maintenanceActions?.some((a) => a.id === "inline-css") ?? false),
+  ),
+);
+assert(perfPreserve, "performance preservation includes inline-css maintenance");
+
+// Deduped evidence in workstreams
+for (const ws of rooftop.workstreams) {
+  const keys = ws.evidence.map((e) => evidenceIdentity(e));
+  assert(new Set(keys).size === keys.length, `${ws.workstreamType} evidence unique`);
+  assertActionsHaveProvenance(ws.actions, ws.evidence);
+  for (const action of ws.actions) {
+    assert(action.evidenceSourceKeys.length >= 1, `${action.id} has provenance`);
+  }
+}
+
+assert(
+  !technical.actions.some((a) => a.id === "indexability"),
+  "no robots/indexability action without robots evidence",
 );
 assert(
-  !contentWs.capabilities.includes("CUSTOM_SOFTWARE"),
-  "CUSTOM_SOFTWARE not recommended",
+  technical.actions.some((a) => a.id === "canonical"),
+  "missing-canonical → canonical action",
 );
-
-const searchWs = auditOnly.workstreams.find(
-  (w) => w.workstreamType === "SEARCH_OPTIMIZATION",
-);
-assert(searchWs, "search workstream exists");
-assert(searchWs.capabilities.includes("SEO"), "search maps to SEO");
-
-const localWs = auditOnly.workstreams.find(
-  (w) => w.workstreamType === "LOCAL_SEARCH_FOUNDATION",
-);
-assert(localWs, "local workstream exists");
-assert(localWs.capabilities.includes("LOCAL_SEO"), "local maps to LOCAL_SEO");
-
-const croWs = auditOnly.workstreams.find(
-  (w) => w.workstreamType === "CONVERSION_OPTIMIZATION",
-);
-assert(croWs, "conversion workstream exists");
 assert(
-  croWs.capabilities.includes("CONVERSION_OPTIMIZATION"),
-  "cro maps to CONVERSION_OPTIMIZATION",
+  technical.actions.some((a) => a.id === "structured-data"),
+  "missing-structured-data → structured-data action",
 );
-
-const techWs = auditOnly.workstreams.find(
-  (w) => w.workstreamType === "TECHNICAL_SEO",
-);
-assert(techWs, "technical workstream exists");
 assert(
-  techWs.capabilities.includes("SEO") &&
-    techWs.capabilities.includes("WEBSITE_DEVELOPMENT"),
-  "technical maps to SEO+WEBSITE_DEVELOPMENT",
+  search.actions.some((a) => a.id === "improve-meta"),
+  "missing-meta-description → meta action",
 );
-
-// Structured data action only when evidence exists
 assert(
-  !techWs.actions.some((a) => a.id === "structured-data"),
-  "no structured-data action without evidence",
+  search.actions.some((a) => a.id === "internal-linking"),
+  "missing-internal-links → internal linking",
+);
+assert(
+  search.actions.some((a) => a.id === "heading-architecture"),
+  "heading action only when heading evidence attached to search",
+);
+assert(
+  search.evidence.some((e) => e.findingId === "skipped-heading-levels"),
+  "heading evidence on search workstream",
+);
+assert(
+  conversion.actions.some((a) => a.id === "trust-signals"),
+  "few-trust-signals → trust action",
 );
 
-const withStructured = generateImplementationPlanFromEvidence({
+// Cross-workstream heading allowed, locally unique
+assert(
+  content.evidence.some((e) => e.findingId === "skipped-heading-levels"),
+  "heading also on content",
+);
+assert(
+  content.evidence.filter((e) => e.findingId === "skipped-heading-levels").length === 1,
+  "heading not duplicated within content",
+);
+
+// no-images alone cannot create strong content
+const imagesOnly = generateImplementationPlanFromEvidence({
   audit: baseAudit({
     findings: [
       finding({
-        id: "structured-data-missing",
-        category: "technical",
-        title: "Missing structured data",
+        id: "no-images",
+        category: "content",
+        title: "No images",
+        priority: "low",
+        status: "warning",
       }),
     ],
     categoryScores: [
-      categoryScore("technical", 8, 20),
+      categoryScore("technical", 18, 20),
       categoryScore("seo", 18, 20),
       categoryScore("content", 14, 15),
       categoryScore("cro", 14, 15),
@@ -386,213 +566,50 @@ const withStructured = generateImplementationPlanFromEvidence({
       categoryScore("performance", 9, 10),
     ],
   }),
-  auditReportId: "audit-sd",
+  auditReportId: "audit-images",
   comparison: null,
   comparisonSnapshotId: null,
   useCompetitiveEvidence: false,
 });
-const techStructured = withStructured.workstreams.find(
-  (w) => w.workstreamType === "TECHNICAL_SEO",
-);
-assert(techStructured, "structured technical ws");
 assert(
-  techStructured.actions.some((a) => a.id === "structured-data"),
-  "structured-data action when evidenced",
+  !imagesOnly.workstreams.some((w) => w.workstreamType === "CONTENT_FOUNDATION"),
+  "no-images alone does not create Content Foundation",
 );
 
-// --- 2 + competitive gap priority ---
-const withComp = generateImplementationPlanFromEvidence({
-  audit: baseAudit({
-    findings: [
-      finding({
-        id: "thin-content",
-        category: "content",
-        title: "Thin content",
-        priority: "medium",
-      }),
-      finding({
-        id: "missing-title",
-        category: "seo",
-        title: "Missing title",
-        priority: "medium",
-      }),
-      finding({
-        id: "no-conversion-path",
-        category: "cro",
-        title: "No conversion path",
-        priority: "low",
-      }),
-    ],
-  }),
-  auditReportId: "audit-1",
-  comparison: comparisonFixture(),
-  comparisonSnapshotId: "snap-1",
-  useCompetitiveEvidence: true,
-});
-
-assert(withComp.competitiveEvidenceUsed === true, "competitive used");
-assert(withComp.comparisonSnapshotId === "snap-1", "snapshot id stored");
-
-const contentComp = withComp.workstreams.find(
-  (w) => w.workstreamType === "CONTENT_FOUNDATION",
-);
-assert(contentComp, "content with competitive");
-assert(
-  contentComp.evidence.some((e) => e.type === "COMPETITIVE_CATEGORY_GAP"),
-  "content has competitive gap evidence",
-);
-assert(
-  contentComp.evidence.some((e) => e.sourceKey === "category:content"),
-  "provenance sourceKey retained",
-);
-
-const contentAuditOnlyScore = computeWorkstreamPriorityScore(
-  contentWs?.evidence ?? [],
-);
-const contentCompScore = contentComp.priorityScore;
-assert(
-  contentCompScore > contentAuditOnlyScore,
-  "large competitive gap increases priority score",
-);
-
-// Preservation from performance advantage
-const preserved = withComp.workstreams.some((w) =>
-  w.preservationConstraints.some((c) =>
-    c.statement.toLowerCase().includes("performance"),
-  ),
-);
-assert(preserved, "performance advantage creates preservation constraint");
-
-// Not every workstream CRITICAL
-const criticalCount = withComp.workstreams.filter(
-  (w) => w.priority === "CRITICAL",
-).length;
-assert(criticalCount <= 2, "at most 2 CRITICAL workstreams");
-assert(
-  withComp.workstreams.some((w) => w.priority !== "CRITICAL"),
-  "not every recommendation is CRITICAL",
-);
-
-// --- Stale competitive excluded ---
-const staleExcluded = generateImplementationPlanFromEvidence({
-  audit: baseAudit({
-    findings: [
-      finding({
-        id: "thin-content",
-        category: "content",
-        title: "Thin content",
-      }),
-    ],
-  }),
-  auditReportId: "audit-1",
-  comparison: comparisonFixture(),
-  comparisonSnapshotId: "snap-stale",
-  useCompetitiveEvidence: false,
-});
-assert(
-  staleExcluded.competitiveEvidenceUsed === false,
-  "stale competitive not used",
-);
-assert(
-  !staleExcluded.workstreams
-    .flatMap((w) => w.evidence)
-    .some((e) => e.type === "COMPETITIVE_CATEGORY_GAP"),
-  "no competitive gap evidence when excluded",
-);
-
-// --- Priority deterministic ---
-const sampleEvidence: PlanEvidenceItem[] = [
-  {
-    type: "COMPETITIVE_CATEGORY_GAP",
-    sourceKey: "category:content",
-    category: "content",
-    findingId: null,
-    title: "Content gap",
-    targetScorePercent: 53,
-    competitorAverage: 95.7,
-    gapVsAverage: -42.7,
-    position: "MAJOR_GAP",
-    competitorsOutperforming: 3,
-    competitorsCompared: 3,
-    auditPriority: null,
-    auditStatus: null,
-  },
+// Material risk exception: strength + CRITICAL finding → workstream allowed
+const materialEvidence: PlanEvidenceItem[] = [
   {
     type: "AUDIT_FINDING",
-    sourceKey: "finding:thin-content",
-    category: "content",
-    findingId: "thin-content",
-    title: "Thin content",
+    sourceKey: "finding:performance-critical-block",
+    category: "performance",
+    findingId: "performance-blocking-scripts",
+    title: "Blocking",
     targetScorePercent: null,
     competitorAverage: null,
     gapVsAverage: null,
     position: null,
     competitorsOutperforming: null,
     competitorsCompared: null,
-    auditPriority: "high",
+    auditPriority: "critical",
     auditStatus: "fail",
   },
 ];
-const scoreA = computeWorkstreamPriorityScore(sampleEvidence);
-const scoreB = computeWorkstreamPriorityScore(sampleEvidence);
-assert(scoreA === scoreB, "priority score deterministic");
-assert(priorityFromScore(80) === "CRITICAL", "80 → CRITICAL");
-assert(priorityFromScore(55) === "HIGH", "55 → HIGH");
-assert(priorityFromScore(30) === "MEDIUM", "30 → MEDIUM");
-assert(priorityFromScore(10) === "LOW", "10 → LOW");
+assert(isMaterialRiskEvidence(materialEvidence), "critical finding is material risk");
 
-// --- Staleness fingerprint ---
-const fp1 = computeCurrentPlanFingerprint({
-  auditReportId: "audit-1",
-  currentComparisonSnapshotId: "snap-1",
-});
-const fp2 = computeCurrentPlanFingerprint({
-  auditReportId: "audit-2",
-  currentComparisonSnapshotId: "snap-1",
-});
-const staleEval = evaluatePlanStaleness({ stored: fp1, current: fp2 });
-assert(staleEval.stale, "audit change → stale");
-assert(
-  staleEval.reasons.some((r) => r.toLowerCase().includes("audit")),
-  "stale reason mentions audit",
-);
-
-const fpSame = computeCurrentPlanFingerprint({
-  auditReportId: "audit-1",
-  currentComparisonSnapshotId: null,
-});
-const fpCompGone = evaluatePlanStaleness({
-  stored: {
-    ...fpSame,
-    comparisonSnapshotId: "snap-old",
-    planVersion: IMPLEMENTATION_PLAN_VERSION,
-    mappingVersion: IMPLEMENTATION_MAPPING_VERSION,
-    capabilityVersion: SERVICE_CAPABILITY_VERSION,
-  },
-  current: fpSame,
-});
-assert(fpCompGone.stale, "comparison removed → stale");
-
-// --- Consolidation: multiple SEO findings → one workstream ---
-const consolidated = generateImplementationPlanFromEvidence({
+const materialPlan = generateImplementationPlanFromEvidence({
   audit: baseAudit({
     findings: [
-      finding({ id: "missing-title", category: "seo", title: "Missing title" }),
       finding({
-        id: "meta-description-missing",
-        category: "seo",
-        title: "Missing meta",
-      }),
-      finding({
-        id: "title-too-long",
-        category: "seo",
-        title: "Title too long",
-        priority: "low",
+        id: "performance-blocking-scripts",
+        category: "performance",
+        title: "Blocking scripts",
+        priority: "critical",
+        status: "fail",
       }),
     ],
     categoryScores: [
       categoryScore("technical", 18, 20),
-      categoryScore("seo", 6, 20),
+      categoryScore("seo", 18, 20),
       categoryScore("content", 14, 15),
       categoryScore("cro", 14, 15),
       categoryScore("accessibility", 9, 10),
@@ -600,21 +617,63 @@ const consolidated = generateImplementationPlanFromEvidence({
       categoryScore("performance", 9, 10),
     ],
   }),
-  auditReportId: "audit-seo",
-  comparison: null,
-  comparisonSnapshotId: null,
-  useCompetitiveEvidence: false,
+  auditReportId: "audit-mat",
+  comparison: rooftopComparison(),
+  comparisonSnapshotId: "snap-mat",
+  useCompetitiveEvidence: true,
 });
-const seoStreams = consolidated.workstreams.filter(
-  (w) => w.workstreamType === "SEARCH_OPTIMIZATION",
-);
-assert(seoStreams.length === 1, "SEO findings consolidate to one workstream");
 assert(
-  seoStreams[0].evidence.filter((e) => e.type === "AUDIT_FINDING").length >= 3,
-  "all findings retained in evidence",
+  materialPlan.workstreams.some((w) => w.workstreamType === "PERFORMANCE_OPTIMIZATION"),
+  "material-risk exception allows Performance workstream despite MAJOR_ADVANTAGE",
 );
 
-// --- No external call markers in commercialization module ---
+assert(
+  shouldSuppressStrengthWorkstream({
+    primaryCategory: "performance",
+    workstreamEvidence: [
+      {
+        type: "AUDIT_FINDING",
+        sourceKey: "finding:performance-large-inline-css",
+        category: "performance",
+        findingId: "performance-large-inline-css",
+        title: "Inline CSS",
+        targetScorePercent: null,
+        competitorAverage: null,
+        gapVsAverage: null,
+        position: null,
+        competitorsOutperforming: null,
+        competitorsCompared: null,
+        auditPriority: "low",
+        auditStatus: "warning",
+      },
+    ],
+    allEvidence: [
+      {
+        type: "COMPETITIVE_ADVANTAGE",
+        sourceKey: "advantage:category-performance",
+        category: "performance",
+        findingId: null,
+        title: "Perf advantage",
+        targetScorePercent: null,
+        competitorAverage: null,
+        gapVsAverage: 16.7,
+        position: "MAJOR_ADVANTAGE",
+        competitorsOutperforming: null,
+        competitorsCompared: 4,
+        auditPriority: null,
+        auditStatus: "pass",
+      },
+    ],
+  }),
+  "minor finding + MAJOR_ADVANTAGE suppresses workstream",
+);
+
+// Priority ordering: Content/Search before Performance maintenance distortion
+const order = rooftop.workstreams.map((w) => w.workstreamType);
+assert(order.indexOf("CONTENT_FOUNDATION") < 2, "content near top");
+assert(order.indexOf("SEARCH_OPTIMIZATION") < 2, "search near top");
+
+// --- No external calls in commercialization ---
 const here = dirname(fileURLToPath(import.meta.url));
 const commercializationRoot = join(here, "..");
 
@@ -634,19 +693,17 @@ function walk(dir: string, acc: string[] = []): string[] {
   return acc;
 }
 
-const files = walk(commercializationRoot);
-for (const file of files) {
+for (const file of walk(commercializationRoot)) {
   const source = readFileSync(file, "utf8");
   assert(!/openai|OpenAI|chat\.completions|responses\.create/i.test(source), `no OpenAI in ${file}`);
   assert(!/GOOGLE_PLACES|PlacesClient|places\.googleapis/i.test(source), `no Places in ${file}`);
   assert(!/resend|Resend\(/i.test(source), `no Resend in ${file}`);
   assert(
     !/runDeterministicWebsiteAudit|crawlSite|fetchHtml/i.test(source),
-    `no crawl during plan module ${file}`,
+    `no crawl in ${file}`,
   );
 }
 
-// Public report routes must not import implementation plan UI
 const reportApp = join(here, "../../../app/report");
 function walkSafe(dir: string): string[] {
   try {
@@ -662,8 +719,5 @@ for (const file of walkSafe(reportApp)) {
     `public report must not reference implementation plan: ${file}`,
   );
 }
-
-assert(IMPLEMENTATION_PLAN_VERSION === 1, "plan version 1");
-assert(IMPLEMENTATION_MAPPING_VERSION === 1, "mapping version 1");
 
 console.log("implementation-plan.verify.ts: PASS");

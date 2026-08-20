@@ -3,8 +3,11 @@ import type { ServiceCapabilityId } from "../capabilities/types";
 /** Deterministic recommendation algorithm version. */
 export const IMPLEMENTATION_PLAN_VERSION = 1;
 
-/** Capability mapping / workstream rule version. */
-export const IMPLEMENTATION_MAPPING_VERSION = 1;
+/**
+ * Capability mapping / workstream rule version.
+ * Sprint 1.1: evidence dedupe, action provenance, strength suppression.
+ */
+export const IMPLEMENTATION_MAPPING_VERSION = 2;
 
 export const MAX_WORKSTREAMS = 8;
 export const MAX_ACTIONS_PER_WORKSTREAM = 8;
