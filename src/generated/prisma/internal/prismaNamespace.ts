@@ -416,6 +416,8 @@ export const ModelName = {
   ProspectOutreachDraftRun: 'ProspectOutreachDraftRun',
   OutreachOutcome: 'OutreachOutcome',
   ProspectCompetitor: 'ProspectCompetitor',
+  CompetitorAudit: 'CompetitorAudit',
+  CompetitorAuditRun: 'CompetitorAuditRun',
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
 } as const
 
@@ -432,7 +434,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorDiscoveryRun"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitorAuditRun" | "competitorDiscoveryRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1842,6 +1844,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CompetitorAudit: {
+      payload: Prisma.$CompetitorAuditPayload<ExtArgs>
+      fields: Prisma.CompetitorAuditFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompetitorAuditFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompetitorAuditFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>
+        }
+        findFirst: {
+          args: Prisma.CompetitorAuditFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompetitorAuditFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>
+        }
+        findMany: {
+          args: Prisma.CompetitorAuditFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>[]
+        }
+        create: {
+          args: Prisma.CompetitorAuditCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>
+        }
+        createMany: {
+          args: Prisma.CompetitorAuditCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompetitorAuditCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>[]
+        }
+        delete: {
+          args: Prisma.CompetitorAuditDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>
+        }
+        update: {
+          args: Prisma.CompetitorAuditUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompetitorAuditDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompetitorAuditUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompetitorAuditUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompetitorAuditUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditPayload>
+        }
+        aggregate: {
+          args: Prisma.CompetitorAuditAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompetitorAudit>
+        }
+        groupBy: {
+          args: Prisma.CompetitorAuditGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitorAuditGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompetitorAuditCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitorAuditCountAggregateOutputType> | number
+        }
+      }
+    }
+    CompetitorAuditRun: {
+      payload: Prisma.$CompetitorAuditRunPayload<ExtArgs>
+      fields: Prisma.CompetitorAuditRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompetitorAuditRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompetitorAuditRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>
+        }
+        findFirst: {
+          args: Prisma.CompetitorAuditRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompetitorAuditRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>
+        }
+        findMany: {
+          args: Prisma.CompetitorAuditRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>[]
+        }
+        create: {
+          args: Prisma.CompetitorAuditRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>
+        }
+        createMany: {
+          args: Prisma.CompetitorAuditRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompetitorAuditRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>[]
+        }
+        delete: {
+          args: Prisma.CompetitorAuditRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>
+        }
+        update: {
+          args: Prisma.CompetitorAuditRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompetitorAuditRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompetitorAuditRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompetitorAuditRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompetitorAuditRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetitorAuditRunPayload>
+        }
+        aggregate: {
+          args: Prisma.CompetitorAuditRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompetitorAuditRun>
+        }
+        groupBy: {
+          args: Prisma.CompetitorAuditRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitorAuditRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompetitorAuditRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetitorAuditRunCountAggregateOutputType> | number
+        }
+      }
+    }
     CompetitorDiscoveryRun: {
       payload: Prisma.$CompetitorDiscoveryRunPayload<ExtArgs>
       fields: Prisma.CompetitorDiscoveryRunFieldRefs
@@ -2370,6 +2520,63 @@ export const ProspectCompetitorScalarFieldEnum = {
 export type ProspectCompetitorScalarFieldEnum = (typeof ProspectCompetitorScalarFieldEnum)[keyof typeof ProspectCompetitorScalarFieldEnum]
 
 
+export const CompetitorAuditScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectCompetitorId: 'prospectCompetitorId',
+  targetProspectId: 'targetProspectId',
+  campaignId: 'campaignId',
+  runId: 'runId',
+  websiteUrl: 'websiteUrl',
+  normalizedHostname: 'normalizedHostname',
+  status: 'status',
+  overallScore: 'overallScore',
+  grade: 'grade',
+  technicalScore: 'technicalScore',
+  seoScore: 'seoScore',
+  contentScore: 'contentScore',
+  croScore: 'croScore',
+  accessibilityScore: 'accessibilityScore',
+  localScore: 'localScore',
+  performanceScore: 'performanceScore',
+  criticalIssues: 'criticalIssues',
+  quickWins: 'quickWins',
+  pagesScanned: 'pagesScanned',
+  auditResultJson: 'auditResultJson',
+  summaryJson: 'summaryJson',
+  auditEngineVersion: 'auditEngineVersion',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  failureReason: 'failureReason'
+} as const
+
+export type CompetitorAuditScalarFieldEnum = (typeof CompetitorAuditScalarFieldEnum)[keyof typeof CompetitorAuditScalarFieldEnum]
+
+
+export const CompetitorAuditRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  prospectId: 'prospectId',
+  status: 'status',
+  requestedAudits: 'requestedAudits',
+  processedAudits: 'processedAudits',
+  completedCount: 'completedCount',
+  reusedCount: 'reusedCount',
+  failedCount: 'failedCount',
+  skippedCount: 'skippedCount',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CompetitorAuditRunScalarFieldEnum = (typeof CompetitorAuditRunScalarFieldEnum)[keyof typeof CompetitorAuditRunScalarFieldEnum]
+
+
 export const CompetitorDiscoveryRunScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -2876,6 +3083,20 @@ export type EnumProspectCompetitorStatusFieldRefInput<$PrismaModel> = FieldRefIn
 export type ListEnumProspectCompetitorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectCompetitorStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'CompetitorAuditStatus'
+ */
+export type EnumCompetitorAuditStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompetitorAuditStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CompetitorAuditStatus[]'
+ */
+export type ListEnumCompetitorAuditStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompetitorAuditStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3046,6 +3267,8 @@ export type GlobalOmitConfig = {
   prospectOutreachDraftRun?: Prisma.ProspectOutreachDraftRunOmit
   outreachOutcome?: Prisma.OutreachOutcomeOmit
   prospectCompetitor?: Prisma.ProspectCompetitorOmit
+  competitorAudit?: Prisma.CompetitorAuditOmit
+  competitorAuditRun?: Prisma.CompetitorAuditRunOmit
   competitorDiscoveryRun?: Prisma.CompetitorDiscoveryRunOmit
 }
 

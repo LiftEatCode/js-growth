@@ -382,6 +382,7 @@ export type ProspectCompetitorWhereInput = {
   lastValidatedAt?: Prisma.DateTimeFilter<"ProspectCompetitor"> | Date | string
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
   competitorProspect?: Prisma.XOR<Prisma.ProspectNullableScalarRelationFilter, Prisma.ProspectWhereInput> | null
+  audits?: Prisma.CompetitorAuditListRelationFilter
 }
 
 export type ProspectCompetitorOrderByWithRelationInput = {
@@ -412,6 +413,7 @@ export type ProspectCompetitorOrderByWithRelationInput = {
   lastValidatedAt?: Prisma.SortOrder
   prospect?: Prisma.ProspectOrderByWithRelationInput
   competitorProspect?: Prisma.ProspectOrderByWithRelationInput
+  audits?: Prisma.CompetitorAuditOrderByRelationAggregateInput
 }
 
 export type ProspectCompetitorWhereUniqueInput = Prisma.AtLeast<{
@@ -446,6 +448,7 @@ export type ProspectCompetitorWhereUniqueInput = Prisma.AtLeast<{
   lastValidatedAt?: Prisma.DateTimeFilter<"ProspectCompetitor"> | Date | string
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
   competitorProspect?: Prisma.XOR<Prisma.ProspectNullableScalarRelationFilter, Prisma.ProspectWhereInput> | null
+  audits?: Prisma.CompetitorAuditListRelationFilter
 }, "id" | "prospectId_provider_providerBusinessId">
 
 export type ProspectCompetitorOrderByWithAggregationInput = {
@@ -538,6 +541,7 @@ export type ProspectCompetitorCreateInput = {
   lastValidatedAt?: Date | string
   prospect: Prisma.ProspectCreateNestedOneWithoutCompetitorsInput
   competitorProspect?: Prisma.ProspectCreateNestedOneWithoutCompetitorOfInput
+  audits?: Prisma.CompetitorAuditCreateNestedManyWithoutProspectCompetitorInput
 }
 
 export type ProspectCompetitorUncheckedCreateInput = {
@@ -566,6 +570,7 @@ export type ProspectCompetitorUncheckedCreateInput = {
   isRecommended?: boolean
   discoveredAt?: Date | string
   lastValidatedAt?: Date | string
+  audits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutProspectCompetitorInput
 }
 
 export type ProspectCompetitorUpdateInput = {
@@ -594,6 +599,7 @@ export type ProspectCompetitorUpdateInput = {
   lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitorsNestedInput
   competitorProspect?: Prisma.ProspectUpdateOneWithoutCompetitorOfNestedInput
+  audits?: Prisma.CompetitorAuditUpdateManyWithoutProspectCompetitorNestedInput
 }
 
 export type ProspectCompetitorUncheckedUpdateInput = {
@@ -622,6 +628,7 @@ export type ProspectCompetitorUncheckedUpdateInput = {
   isRecommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutProspectCompetitorNestedInput
 }
 
 export type ProspectCompetitorCreateManyInput = {
@@ -816,6 +823,11 @@ export type ProspectCompetitorSumOrderByAggregateInput = {
   validationScore?: Prisma.SortOrder
 }
 
+export type ProspectCompetitorScalarRelationFilter = {
+  is?: Prisma.ProspectCompetitorWhereInput
+  isNot?: Prisma.ProspectCompetitorWhereInput
+}
+
 export type ProspectCompetitorCreateNestedManyWithoutProspectInput = {
   create?: Prisma.XOR<Prisma.ProspectCompetitorCreateWithoutProspectInput, Prisma.ProspectCompetitorUncheckedCreateWithoutProspectInput> | Prisma.ProspectCompetitorCreateWithoutProspectInput[] | Prisma.ProspectCompetitorUncheckedCreateWithoutProspectInput[]
   connectOrCreate?: Prisma.ProspectCompetitorCreateOrConnectWithoutProspectInput | Prisma.ProspectCompetitorCreateOrConnectWithoutProspectInput[]
@@ -908,6 +920,20 @@ export type EnumProspectCompetitorStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProspectCompetitorStatus
 }
 
+export type ProspectCompetitorCreateNestedOneWithoutAuditsInput = {
+  create?: Prisma.XOR<Prisma.ProspectCompetitorCreateWithoutAuditsInput, Prisma.ProspectCompetitorUncheckedCreateWithoutAuditsInput>
+  connectOrCreate?: Prisma.ProspectCompetitorCreateOrConnectWithoutAuditsInput
+  connect?: Prisma.ProspectCompetitorWhereUniqueInput
+}
+
+export type ProspectCompetitorUpdateOneRequiredWithoutAuditsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProspectCompetitorCreateWithoutAuditsInput, Prisma.ProspectCompetitorUncheckedCreateWithoutAuditsInput>
+  connectOrCreate?: Prisma.ProspectCompetitorCreateOrConnectWithoutAuditsInput
+  upsert?: Prisma.ProspectCompetitorUpsertWithoutAuditsInput
+  connect?: Prisma.ProspectCompetitorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectCompetitorUpdateToOneWithWhereWithoutAuditsInput, Prisma.ProspectCompetitorUpdateWithoutAuditsInput>, Prisma.ProspectCompetitorUncheckedUpdateWithoutAuditsInput>
+}
+
 export type ProspectCompetitorCreateWithoutProspectInput = {
   id?: string
   createdAt?: Date | string
@@ -933,6 +959,7 @@ export type ProspectCompetitorCreateWithoutProspectInput = {
   discoveredAt?: Date | string
   lastValidatedAt?: Date | string
   competitorProspect?: Prisma.ProspectCreateNestedOneWithoutCompetitorOfInput
+  audits?: Prisma.CompetitorAuditCreateNestedManyWithoutProspectCompetitorInput
 }
 
 export type ProspectCompetitorUncheckedCreateWithoutProspectInput = {
@@ -960,6 +987,7 @@ export type ProspectCompetitorUncheckedCreateWithoutProspectInput = {
   isRecommended?: boolean
   discoveredAt?: Date | string
   lastValidatedAt?: Date | string
+  audits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutProspectCompetitorInput
 }
 
 export type ProspectCompetitorCreateOrConnectWithoutProspectInput = {
@@ -997,6 +1025,7 @@ export type ProspectCompetitorCreateWithoutCompetitorProspectInput = {
   discoveredAt?: Date | string
   lastValidatedAt?: Date | string
   prospect: Prisma.ProspectCreateNestedOneWithoutCompetitorsInput
+  audits?: Prisma.CompetitorAuditCreateNestedManyWithoutProspectCompetitorInput
 }
 
 export type ProspectCompetitorUncheckedCreateWithoutCompetitorProspectInput = {
@@ -1024,6 +1053,7 @@ export type ProspectCompetitorUncheckedCreateWithoutCompetitorProspectInput = {
   isRecommended?: boolean
   discoveredAt?: Date | string
   lastValidatedAt?: Date | string
+  audits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutProspectCompetitorInput
 }
 
 export type ProspectCompetitorCreateOrConnectWithoutCompetitorProspectInput = {
@@ -1097,6 +1127,134 @@ export type ProspectCompetitorUpdateWithWhereUniqueWithoutCompetitorProspectInpu
 export type ProspectCompetitorUpdateManyWithWhereWithoutCompetitorProspectInput = {
   where: Prisma.ProspectCompetitorScalarWhereInput
   data: Prisma.XOR<Prisma.ProspectCompetitorUpdateManyMutationInput, Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectInput>
+}
+
+export type ProspectCompetitorCreateWithoutAuditsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  provider: string
+  providerBusinessId: string
+  businessName: string
+  website?: string | null
+  normalizedHostname?: string | null
+  formattedAddress?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  primaryType?: string | null
+  normalizedVerticalsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  distanceMiles?: number | null
+  validationScore: number
+  validationLabel: $Enums.ProspectCompetitorValidationLabel
+  evidenceJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.ProspectCompetitorStatus
+  isRecommended?: boolean
+  discoveredAt?: Date | string
+  lastValidatedAt?: Date | string
+  prospect: Prisma.ProspectCreateNestedOneWithoutCompetitorsInput
+  competitorProspect?: Prisma.ProspectCreateNestedOneWithoutCompetitorOfInput
+}
+
+export type ProspectCompetitorUncheckedCreateWithoutAuditsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  competitorProspectId?: string | null
+  provider: string
+  providerBusinessId: string
+  businessName: string
+  website?: string | null
+  normalizedHostname?: string | null
+  formattedAddress?: string | null
+  city?: string | null
+  state?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  primaryType?: string | null
+  normalizedVerticalsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  distanceMiles?: number | null
+  validationScore: number
+  validationLabel: $Enums.ProspectCompetitorValidationLabel
+  evidenceJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.ProspectCompetitorStatus
+  isRecommended?: boolean
+  discoveredAt?: Date | string
+  lastValidatedAt?: Date | string
+}
+
+export type ProspectCompetitorCreateOrConnectWithoutAuditsInput = {
+  where: Prisma.ProspectCompetitorWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProspectCompetitorCreateWithoutAuditsInput, Prisma.ProspectCompetitorUncheckedCreateWithoutAuditsInput>
+}
+
+export type ProspectCompetitorUpsertWithoutAuditsInput = {
+  update: Prisma.XOR<Prisma.ProspectCompetitorUpdateWithoutAuditsInput, Prisma.ProspectCompetitorUncheckedUpdateWithoutAuditsInput>
+  create: Prisma.XOR<Prisma.ProspectCompetitorCreateWithoutAuditsInput, Prisma.ProspectCompetitorUncheckedCreateWithoutAuditsInput>
+  where?: Prisma.ProspectCompetitorWhereInput
+}
+
+export type ProspectCompetitorUpdateToOneWithWhereWithoutAuditsInput = {
+  where?: Prisma.ProspectCompetitorWhereInput
+  data: Prisma.XOR<Prisma.ProspectCompetitorUpdateWithoutAuditsInput, Prisma.ProspectCompetitorUncheckedUpdateWithoutAuditsInput>
+}
+
+export type ProspectCompetitorUpdateWithoutAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  providerBusinessId?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  normalizedHostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  formattedAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  primaryType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  normalizedVerticalsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  validationScore?: Prisma.IntFieldUpdateOperationsInput | number
+  validationLabel?: Prisma.EnumProspectCompetitorValidationLabelFieldUpdateOperationsInput | $Enums.ProspectCompetitorValidationLabel
+  evidenceJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumProspectCompetitorStatusFieldUpdateOperationsInput | $Enums.ProspectCompetitorStatus
+  isRecommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitorsNestedInput
+  competitorProspect?: Prisma.ProspectUpdateOneWithoutCompetitorOfNestedInput
+}
+
+export type ProspectCompetitorUncheckedUpdateWithoutAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  competitorProspectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  providerBusinessId?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  normalizedHostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  formattedAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  primaryType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  normalizedVerticalsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  distanceMiles?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  validationScore?: Prisma.IntFieldUpdateOperationsInput | number
+  validationLabel?: Prisma.EnumProspectCompetitorValidationLabelFieldUpdateOperationsInput | $Enums.ProspectCompetitorValidationLabel
+  evidenceJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumProspectCompetitorStatusFieldUpdateOperationsInput | $Enums.ProspectCompetitorStatus
+  isRecommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ProspectCompetitorCreateManyProspectInput = {
@@ -1178,6 +1336,7 @@ export type ProspectCompetitorUpdateWithoutProspectInput = {
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   competitorProspect?: Prisma.ProspectUpdateOneWithoutCompetitorOfNestedInput
+  audits?: Prisma.CompetitorAuditUpdateManyWithoutProspectCompetitorNestedInput
 }
 
 export type ProspectCompetitorUncheckedUpdateWithoutProspectInput = {
@@ -1205,6 +1364,7 @@ export type ProspectCompetitorUncheckedUpdateWithoutProspectInput = {
   isRecommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutProspectCompetitorNestedInput
 }
 
 export type ProspectCompetitorUncheckedUpdateManyWithoutProspectInput = {
@@ -1259,6 +1419,7 @@ export type ProspectCompetitorUpdateWithoutCompetitorProspectInput = {
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutCompetitorsNestedInput
+  audits?: Prisma.CompetitorAuditUpdateManyWithoutProspectCompetitorNestedInput
 }
 
 export type ProspectCompetitorUncheckedUpdateWithoutCompetitorProspectInput = {
@@ -1286,6 +1447,7 @@ export type ProspectCompetitorUncheckedUpdateWithoutCompetitorProspectInput = {
   isRecommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastValidatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutProspectCompetitorNestedInput
 }
 
 export type ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectInput = {
@@ -1316,6 +1478,35 @@ export type ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectInput 
 }
 
 
+/**
+ * Count Type ProspectCompetitorCountOutputType
+ */
+
+export type ProspectCompetitorCountOutputType = {
+  audits: number
+}
+
+export type ProspectCompetitorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  audits?: boolean | ProspectCompetitorCountOutputTypeCountAuditsArgs
+}
+
+/**
+ * ProspectCompetitorCountOutputType without action
+ */
+export type ProspectCompetitorCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProspectCompetitorCountOutputType
+   */
+  select?: Prisma.ProspectCompetitorCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProspectCompetitorCountOutputType without action
+ */
+export type ProspectCompetitorCountOutputTypeCountAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompetitorAuditWhereInput
+}
+
 
 export type ProspectCompetitorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1345,6 +1536,8 @@ export type ProspectCompetitorSelect<ExtArgs extends runtime.Types.Extensions.In
   lastValidatedAt?: boolean
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   competitorProspect?: boolean | Prisma.ProspectCompetitor$competitorProspectArgs<ExtArgs>
+  audits?: boolean | Prisma.ProspectCompetitor$auditsArgs<ExtArgs>
+  _count?: boolean | Prisma.ProspectCompetitorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prospectCompetitor"]>
 
 export type ProspectCompetitorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1439,6 +1632,8 @@ export type ProspectCompetitorOmit<ExtArgs extends runtime.Types.Extensions.Inte
 export type ProspectCompetitorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   competitorProspect?: boolean | Prisma.ProspectCompetitor$competitorProspectArgs<ExtArgs>
+  audits?: boolean | Prisma.ProspectCompetitor$auditsArgs<ExtArgs>
+  _count?: boolean | Prisma.ProspectCompetitorCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProspectCompetitorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
@@ -1454,6 +1649,7 @@ export type $ProspectCompetitorPayload<ExtArgs extends runtime.Types.Extensions.
   objects: {
     prospect: Prisma.$ProspectPayload<ExtArgs>
     competitorProspect: Prisma.$ProspectPayload<ExtArgs> | null
+    audits: Prisma.$CompetitorAuditPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1877,6 +2073,7 @@ export interface Prisma__ProspectCompetitorClient<T, Null = never, ExtArgs exten
   readonly [Symbol.toStringTag]: "PrismaPromise"
   prospect<T extends Prisma.ProspectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProspectClient<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   competitorProspect<T extends Prisma.ProspectCompetitor$competitorProspectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectCompetitor$competitorProspectArgs<ExtArgs>>): Prisma.Prisma__ProspectClient<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  audits<T extends Prisma.ProspectCompetitor$auditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectCompetitor$auditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitorAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2348,6 +2545,30 @@ export type ProspectCompetitor$competitorProspectArgs<ExtArgs extends runtime.Ty
    */
   include?: Prisma.ProspectInclude<ExtArgs> | null
   where?: Prisma.ProspectWhereInput
+}
+
+/**
+ * ProspectCompetitor.audits
+ */
+export type ProspectCompetitor$auditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompetitorAudit
+   */
+  select?: Prisma.CompetitorAuditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompetitorAudit
+   */
+  omit?: Prisma.CompetitorAuditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompetitorAuditInclude<ExtArgs> | null
+  where?: Prisma.CompetitorAuditWhereInput
+  orderBy?: Prisma.CompetitorAuditOrderByWithRelationInput | Prisma.CompetitorAuditOrderByWithRelationInput[]
+  cursor?: Prisma.CompetitorAuditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompetitorAuditScalarFieldEnum | Prisma.CompetitorAuditScalarFieldEnum[]
 }
 
 /**

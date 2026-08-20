@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 9.1 — Competitive Geography Hardening**
+Current status: **Sprint 10 — Competitor Website Auditing**
 
 ## Product principle
 
@@ -677,11 +677,11 @@ Operator workflow:
 2. Discover Competitors
 3. Review up to 10 validated/rejected candidates
 4. Select up to 3
-5. **Stop.** No competitor website audit. No outreach.
+5. **Stop.** Competitor website audits are Sprint 10 (internal only).
 
 Campaign **Find Competitors** processes at most 5 effectively selected qualified prospects.
 
-Sprint 9 does **not** add competitive claims to drafts, AI summaries, SERP scraping, or competitor audits.
+Sprint 9 does **not** add competitive claims to drafts, AI summaries, or SERP scraping.
 
 ## Sprint 9.1 — Competitive geography hardening
 
@@ -690,6 +690,20 @@ Fixes missing target coordinates that caused all same-vertical competitors to sc
 See `docs/development/competitive-intelligence-sprint-9-1.md`.
 
 After deploy + migration, use **Re-run Discovery** on affected prospects (e.g. Roa Electrical, Happy Plumbing) to refresh geography evidence.
+
+## Sprint 10 — Competitor website auditing
+
+Run the existing Website Growth Audit engine against **SELECTED** competitors only. Persist internal `CompetitorAudit` snapshots (not public `AuditReport` records).
+
+See `docs/development/competitive-intelligence-sprint-10.md`.
+
+Operator workflow:
+
+1. Select up to 3 competitors
+2. Audit Selected Competitors
+3. Review Website Growth Score separately from Competitive relevance
+4. View Audit / Re-run Audit as needed
+5. **Stop.** No prospect-vs-competitor comparison yet (Sprint 11)
 
 
 

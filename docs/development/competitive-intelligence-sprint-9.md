@@ -14,7 +14,7 @@ Pipeline:
 4. Validate with explainable scores.
 5. Recommend up to 3.
 6. Human review selects or rejects.
-7. Stop. No competitor website audits.
+7. Stop. Competitor website audits are Sprint 10 (`CompetitorAudit`), not public reports.
 
 `CANDIDATE` / `VALIDATED` remain separate from human `SELECTED`.
 
@@ -28,7 +28,7 @@ A discovered competitor is a research subject. Sprint 9 does **not**:
 - generate outreach
 - send email
 - submit a contact form
-- run a Website Growth Audit
+- run a Website Growth Audit (Sprint 10 adds **internal** CompetitorAudit snapshots only)
 
 If that company later enters prospecting independently, normal prospect workflows apply.
 

@@ -334,6 +334,8 @@ model Campaign {
   contactDiscoveryRuns   ProspectContactDiscoveryRun[]
   outreachDraftRuns      ProspectOutreachDraftRun[]
   competitorDiscoveryRuns CompetitorDiscoveryRun[]
+  competitorAuditRuns     CompetitorAuditRun[]
+  competitorAudits        CompetitorAudit[]
 
   @@index([status])
   @@index([createdAt])
@@ -387,6 +389,8 @@ model Prospect {
   competitors                 ProspectCompetitor[]         @relation("ProspectCompetitors")
   competitorOf                ProspectCompetitor[]         @relation("CompetitorProspectLink")
   competitorDiscoveryRuns     CompetitorDiscoveryRun[]
+  competitorAuditRuns         CompetitorAuditRun[]
+  competitorAudits            CompetitorAudit[]            @relation("TargetProspectCompetitorAudits")
 
   @@index([hostname])
   @@index([sourceRef])
@@ -852,11 +856,111 @@ model ProspectCompetitor {
   discoveredAt    DateTime @default(now())
   lastValidatedAt DateTime @default(now())
 
+  audits CompetitorAudit[]
+
   @@unique([prospectId, provider, providerBusinessId])
   @@index([prospectId, status])
   @@index([prospectId, isRecommended])
   @@index([normalizedHostname])
   @@index([competitorProspectId])
+}
+
+enum CompetitorAuditStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+/// Internal Website Growth Audit snapshot for a human-selected competitor.
+/// Not an AuditReport — never enters public /report/* surfaces.
+model CompetitorAudit {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prospectCompetitorId String
+  prospectCompetitor   ProspectCompetitor @relation(fields: [prospectCompetitorId], references: [id], onDelete: Cascade)
+
+  targetProspectId String
+  targetProspect   Prospect @relation("TargetProspectCompetitorAudits", fields: [targetProspectId], references: [id], onDelete: Cascade)
+
+  campaignId String?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  runId String?
+  run   CompetitorAuditRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  websiteUrl         String
+  normalizedHostname String
+
+  status CompetitorAuditStatus @default(PENDING)
+
+  overallScore Int?
+  grade        String?
+
+  technicalScore     Int?
+  seoScore           Int?
+  contentScore       Int?
+  croScore           Int?
+  accessibilityScore Int?
+  localScore         Int?
+  performanceScore   Int?
+
+  criticalIssues Int?
+  quickWins      Int?
+  pagesScanned   Int?
+
+  /// Full WebsiteAuditResult JSON from the shared deterministic engine.
+  auditResultJson Json?
+  summaryJson     Json?
+
+  /// Matches AuditReport.version / AUDIT_REPORT_VERSION for Sprint 11 compatibility.
+  auditEngineVersion Int
+
+  startedAt     DateTime?
+  completedAt   DateTime?
+  failedAt      DateTime?
+  failureReason String?
+
+  @@index([prospectCompetitorId, completedAt])
+  @@index([targetProspectId, status])
+  @@index([campaignId, createdAt])
+  @@index([status, completedAt])
+  @@index([runId])
+}
+
+model CompetitorAuditRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  campaignId String?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  prospectId String?
+  prospect   Prospect? @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  status DiscoveryRunStatus @default(RUNNING)
+
+  requestedAudits Int
+  processedAudits Int @default(0)
+  completedCount  Int @default(0)
+  reusedCount     Int @default(0)
+  failedCount     Int @default(0)
+  skippedCount    Int @default(0)
+
+  durationMs   Int     @default(0)
+  errorMessage String?
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdByEmail String
+
+  audits CompetitorAudit[]
+
+  @@index([campaignId, status])
+  @@index([prospectId, createdAt])
+  @@index([createdAt])
 }
 
 model CompetitorDiscoveryRun {

@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 9.1 — Competitive Geography Hardening
+Status: 🟢 Sprint 10 — Competitor Website Auditing
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,14 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 9.1 (current):
+Sprint 10 (current):
+
+- Human-selected competitor Website Growth Audits (max 3)
+- Reuses `runDeterministicWebsiteAudit` with dedicated `CompetitorAudit` snapshots
+- 30-day TTL reuse + explicit Re-run Audit
+- No public reports, OpenAI, Places, contacts, or outreach from competitor audits
+
+Sprint 9.1:
 
 - Target prospect coordinate resolution + backfill
 - Exact Haversine distance when both coordinate pairs exist
@@ -104,7 +111,7 @@ Sprint 9:
 - Google Places competitor *candidate* discovery (bounded)
 - Explainable validation, ranking, and human select/reject (max 3)
 - Prospect and campaign competitor discovery runs
-- No competitor website audits, OpenAI, or outreach
+- No competitor website audits, OpenAI, or outreach (audits added in Sprint 10)
 
 Sprint 8:
 

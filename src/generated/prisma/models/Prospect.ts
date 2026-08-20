@@ -383,6 +383,8 @@ export type ProspectWhereInput = {
   competitors?: Prisma.ProspectCompetitorListRelationFilter
   competitorOf?: Prisma.ProspectCompetitorListRelationFilter
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunListRelationFilter
+  competitorAuditRuns?: Prisma.CompetitorAuditRunListRelationFilter
+  competitorAudits?: Prisma.CompetitorAuditListRelationFilter
 }
 
 export type ProspectOrderByWithRelationInput = {
@@ -421,6 +423,8 @@ export type ProspectOrderByWithRelationInput = {
   competitors?: Prisma.ProspectCompetitorOrderByRelationAggregateInput
   competitorOf?: Prisma.ProspectCompetitorOrderByRelationAggregateInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunOrderByRelationAggregateInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunOrderByRelationAggregateInput
+  competitorAudits?: Prisma.CompetitorAuditOrderByRelationAggregateInput
 }
 
 export type ProspectWhereUniqueInput = Prisma.AtLeast<{
@@ -462,6 +466,8 @@ export type ProspectWhereUniqueInput = Prisma.AtLeast<{
   competitors?: Prisma.ProspectCompetitorListRelationFilter
   competitorOf?: Prisma.ProspectCompetitorListRelationFilter
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunListRelationFilter
+  competitorAuditRuns?: Prisma.CompetitorAuditRunListRelationFilter
+  competitorAudits?: Prisma.CompetitorAuditListRelationFilter
 }, "id">
 
 export type ProspectOrderByWithAggregationInput = {
@@ -560,6 +566,8 @@ export type ProspectCreateInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateInput = {
@@ -596,6 +604,8 @@ export type ProspectUncheckedCreateInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUpdateInput = {
@@ -632,6 +642,8 @@ export type ProspectUpdateInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateInput = {
@@ -668,6 +680,8 @@ export type ProspectUncheckedUpdateInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateManyInput = {
@@ -1080,6 +1094,36 @@ export type ProspectUpdateOneWithoutCompetitorOfNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutCompetitorOfInput, Prisma.ProspectUpdateWithoutCompetitorOfInput>, Prisma.ProspectUncheckedUpdateWithoutCompetitorOfInput>
 }
 
+export type ProspectCreateNestedOneWithoutCompetitorAuditsInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditsInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutCompetitorAuditsInput
+  connect?: Prisma.ProspectWhereUniqueInput
+}
+
+export type ProspectUpdateOneRequiredWithoutCompetitorAuditsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditsInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutCompetitorAuditsInput
+  upsert?: Prisma.ProspectUpsertWithoutCompetitorAuditsInput
+  connect?: Prisma.ProspectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutCompetitorAuditsInput, Prisma.ProspectUpdateWithoutCompetitorAuditsInput>, Prisma.ProspectUncheckedUpdateWithoutCompetitorAuditsInput>
+}
+
+export type ProspectCreateNestedOneWithoutCompetitorAuditRunsInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditRunsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditRunsInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutCompetitorAuditRunsInput
+  connect?: Prisma.ProspectWhereUniqueInput
+}
+
+export type ProspectUpdateOneWithoutCompetitorAuditRunsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditRunsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditRunsInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutCompetitorAuditRunsInput
+  upsert?: Prisma.ProspectUpsertWithoutCompetitorAuditRunsInput
+  disconnect?: Prisma.ProspectWhereInput | boolean
+  delete?: Prisma.ProspectWhereInput | boolean
+  connect?: Prisma.ProspectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutCompetitorAuditRunsInput, Prisma.ProspectUpdateWithoutCompetitorAuditRunsInput>, Prisma.ProspectUncheckedUpdateWithoutCompetitorAuditRunsInput>
+}
+
 export type ProspectCreateNestedOneWithoutCompetitorDiscoveryRunsInput = {
   create?: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorDiscoveryRunsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorDiscoveryRunsInput>
   connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutCompetitorDiscoveryRunsInput
@@ -1129,6 +1173,8 @@ export type ProspectCreateWithoutAuditReportInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutAuditReportInput = {
@@ -1164,6 +1210,8 @@ export type ProspectUncheckedCreateWithoutAuditReportInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutAuditReportInput = {
@@ -1255,6 +1303,8 @@ export type ProspectCreateWithoutLeadInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutLeadInput = {
@@ -1290,6 +1340,8 @@ export type ProspectUncheckedCreateWithoutLeadInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutLeadInput = {
@@ -1351,6 +1403,8 @@ export type ProspectCreateWithoutCampaignProspectsInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
@@ -1386,6 +1440,8 @@ export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCampaignProspectsInput = {
@@ -1437,6 +1493,8 @@ export type ProspectUpdateWithoutCampaignProspectsInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
@@ -1472,6 +1530,8 @@ export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutContactsInput = {
@@ -1507,6 +1567,8 @@ export type ProspectCreateWithoutContactsInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutContactsInput = {
@@ -1542,6 +1604,8 @@ export type ProspectUncheckedCreateWithoutContactsInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutContactsInput = {
@@ -1593,6 +1657,8 @@ export type ProspectUpdateWithoutContactsInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutContactsInput = {
@@ -1628,6 +1694,8 @@ export type ProspectUncheckedUpdateWithoutContactsInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutContactFormsInput = {
@@ -1663,6 +1731,8 @@ export type ProspectCreateWithoutContactFormsInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutContactFormsInput = {
@@ -1698,6 +1768,8 @@ export type ProspectUncheckedCreateWithoutContactFormsInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutContactFormsInput = {
@@ -1749,6 +1821,8 @@ export type ProspectUpdateWithoutContactFormsInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutContactFormsInput = {
@@ -1784,6 +1858,8 @@ export type ProspectUncheckedUpdateWithoutContactFormsInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutOutreachMessagesInput = {
@@ -1819,6 +1895,8 @@ export type ProspectCreateWithoutOutreachMessagesInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
@@ -1854,6 +1932,8 @@ export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutOutreachMessagesInput = {
@@ -1905,6 +1985,8 @@ export type ProspectUpdateWithoutOutreachMessagesInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
@@ -1940,6 +2022,8 @@ export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
@@ -1975,6 +2059,8 @@ export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
@@ -2010,6 +2096,8 @@ export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutImportedDiscoveryCandidatesInput = {
@@ -2061,6 +2149,8 @@ export type ProspectUpdateWithoutImportedDiscoveryCandidatesInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
@@ -2096,6 +2186,8 @@ export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutOutreachOutcomesInput = {
@@ -2131,6 +2223,8 @@ export type ProspectCreateWithoutOutreachOutcomesInput = {
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutOutreachOutcomesInput = {
@@ -2166,6 +2260,8 @@ export type ProspectUncheckedCreateWithoutOutreachOutcomesInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutOutreachOutcomesInput = {
@@ -2217,6 +2313,8 @@ export type ProspectUpdateWithoutOutreachOutcomesInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutOutreachOutcomesInput = {
@@ -2252,6 +2350,8 @@ export type ProspectUncheckedUpdateWithoutOutreachOutcomesInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitorsInput = {
@@ -2287,6 +2387,8 @@ export type ProspectCreateWithoutCompetitorsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorsInput = {
@@ -2322,6 +2424,8 @@ export type ProspectUncheckedCreateWithoutCompetitorsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorsInput = {
@@ -2362,6 +2466,8 @@ export type ProspectCreateWithoutCompetitorOfInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorOfInput = {
@@ -2397,6 +2503,8 @@ export type ProspectUncheckedCreateWithoutCompetitorOfInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorOfInput = {
@@ -2448,6 +2556,8 @@ export type ProspectUpdateWithoutCompetitorsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorsInput = {
@@ -2483,6 +2593,8 @@ export type ProspectUncheckedUpdateWithoutCompetitorsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUpsertWithoutCompetitorOfInput = {
@@ -2529,6 +2641,8 @@ export type ProspectUpdateWithoutCompetitorOfInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorOfInput = {
@@ -2564,6 +2678,336 @@ export type ProspectUncheckedUpdateWithoutCompetitorOfInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
+}
+
+export type ProspectCreateWithoutCompetitorAuditsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  lastCompetitorDiscoveryAt?: Date | string | null
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
+  lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
+  campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
+  competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
+  competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+}
+
+export type ProspectUncheckedCreateWithoutCompetitorAuditsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  lastCompetitorDiscoveryAt?: Date | string | null
+  auditReportId?: string | null
+  leadId?: string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
+  competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
+  competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+}
+
+export type ProspectCreateOrConnectWithoutCompetitorAuditsInput = {
+  where: Prisma.ProspectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditsInput>
+}
+
+export type ProspectUpsertWithoutCompetitorAuditsInput = {
+  update: Prisma.XOR<Prisma.ProspectUpdateWithoutCompetitorAuditsInput, Prisma.ProspectUncheckedUpdateWithoutCompetitorAuditsInput>
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditsInput>
+  where?: Prisma.ProspectWhereInput
+}
+
+export type ProspectUpdateToOneWithWhereWithoutCompetitorAuditsInput = {
+  where?: Prisma.ProspectWhereInput
+  data: Prisma.XOR<Prisma.ProspectUpdateWithoutCompetitorAuditsInput, Prisma.ProspectUncheckedUpdateWithoutCompetitorAuditsInput>
+}
+
+export type ProspectUpdateWithoutCompetitorAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCompetitorDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
+  campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
+  competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
+  competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+}
+
+export type ProspectUncheckedUpdateWithoutCompetitorAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCompetitorDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
+  competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
+  competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+}
+
+export type ProspectCreateWithoutCompetitorAuditRunsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  lastCompetitorDiscoveryAt?: Date | string | null
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
+  lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
+  campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
+  competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
+  competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
+}
+
+export type ProspectUncheckedCreateWithoutCompetitorAuditRunsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  lastCompetitorDiscoveryAt?: Date | string | null
+  auditReportId?: string | null
+  leadId?: string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
+  competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
+  competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
+}
+
+export type ProspectCreateOrConnectWithoutCompetitorAuditRunsInput = {
+  where: Prisma.ProspectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditRunsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditRunsInput>
+}
+
+export type ProspectUpsertWithoutCompetitorAuditRunsInput = {
+  update: Prisma.XOR<Prisma.ProspectUpdateWithoutCompetitorAuditRunsInput, Prisma.ProspectUncheckedUpdateWithoutCompetitorAuditRunsInput>
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutCompetitorAuditRunsInput, Prisma.ProspectUncheckedCreateWithoutCompetitorAuditRunsInput>
+  where?: Prisma.ProspectWhereInput
+}
+
+export type ProspectUpdateToOneWithWhereWithoutCompetitorAuditRunsInput = {
+  where?: Prisma.ProspectWhereInput
+  data: Prisma.XOR<Prisma.ProspectUpdateWithoutCompetitorAuditRunsInput, Prisma.ProspectUncheckedUpdateWithoutCompetitorAuditRunsInput>
+}
+
+export type ProspectUpdateWithoutCompetitorAuditRunsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCompetitorDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
+  campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
+  competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
+  competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
+}
+
+export type ProspectUncheckedUpdateWithoutCompetitorAuditRunsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCompetitorDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
+  competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
+  competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitorDiscoveryRunsInput = {
@@ -2599,6 +3043,8 @@ export type ProspectCreateWithoutCompetitorDiscoveryRunsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
   competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
@@ -2634,6 +3080,8 @@ export type ProspectUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
   competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorDiscoveryRunsInput = {
@@ -2685,6 +3133,8 @@ export type ProspectUpdateWithoutCompetitorDiscoveryRunsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
@@ -2720,6 +3170,8 @@ export type ProspectUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
   importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectCreateManyAuditReportInput = {
@@ -2781,6 +3233,8 @@ export type ProspectUpdateWithoutAuditReportInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutAuditReportInput = {
@@ -2816,6 +3270,8 @@ export type ProspectUncheckedUpdateWithoutAuditReportInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateManyWithoutAuditReportInput = {
@@ -2903,6 +3359,8 @@ export type ProspectUpdateWithoutLeadInput = {
   competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutLeadInput = {
@@ -2938,6 +3396,8 @@ export type ProspectUncheckedUpdateWithoutLeadInput = {
   competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
   competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
   competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateManyWithoutLeadInput = {
@@ -2981,6 +3441,8 @@ export type ProspectCountOutputType = {
   competitors: number
   competitorOf: number
   competitorDiscoveryRuns: number
+  competitorAuditRuns: number
+  competitorAudits: number
 }
 
 export type ProspectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2993,6 +3455,8 @@ export type ProspectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   competitors?: boolean | ProspectCountOutputTypeCountCompetitorsArgs
   competitorOf?: boolean | ProspectCountOutputTypeCountCompetitorOfArgs
   competitorDiscoveryRuns?: boolean | ProspectCountOutputTypeCountCompetitorDiscoveryRunsArgs
+  competitorAuditRuns?: boolean | ProspectCountOutputTypeCountCompetitorAuditRunsArgs
+  competitorAudits?: boolean | ProspectCountOutputTypeCountCompetitorAuditsArgs
 }
 
 /**
@@ -3068,6 +3532,20 @@ export type ProspectCountOutputTypeCountCompetitorDiscoveryRunsArgs<ExtArgs exte
   where?: Prisma.CompetitorDiscoveryRunWhereInput
 }
 
+/**
+ * ProspectCountOutputType without action
+ */
+export type ProspectCountOutputTypeCountCompetitorAuditRunsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompetitorAuditRunWhereInput
+}
+
+/**
+ * ProspectCountOutputType without action
+ */
+export type ProspectCountOutputTypeCountCompetitorAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompetitorAuditWhereInput
+}
+
 
 export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3105,6 +3583,8 @@ export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   competitors?: boolean | Prisma.Prospect$competitorsArgs<ExtArgs>
   competitorOf?: boolean | Prisma.Prospect$competitorOfArgs<ExtArgs>
   competitorDiscoveryRuns?: boolean | Prisma.Prospect$competitorDiscoveryRunsArgs<ExtArgs>
+  competitorAuditRuns?: boolean | Prisma.Prospect$competitorAuditRunsArgs<ExtArgs>
+  competitorAudits?: boolean | Prisma.Prospect$competitorAuditsArgs<ExtArgs>
   _count?: boolean | Prisma.ProspectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prospect"]>
 
@@ -3206,6 +3686,8 @@ export type ProspectInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   competitors?: boolean | Prisma.Prospect$competitorsArgs<ExtArgs>
   competitorOf?: boolean | Prisma.Prospect$competitorOfArgs<ExtArgs>
   competitorDiscoveryRuns?: boolean | Prisma.Prospect$competitorDiscoveryRunsArgs<ExtArgs>
+  competitorAuditRuns?: boolean | Prisma.Prospect$competitorAuditRunsArgs<ExtArgs>
+  competitorAudits?: boolean | Prisma.Prospect$competitorAuditsArgs<ExtArgs>
   _count?: boolean | Prisma.ProspectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProspectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3231,6 +3713,8 @@ export type $ProspectPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     competitors: Prisma.$ProspectCompetitorPayload<ExtArgs>[]
     competitorOf: Prisma.$ProspectCompetitorPayload<ExtArgs>[]
     competitorDiscoveryRuns: Prisma.$CompetitorDiscoveryRunPayload<ExtArgs>[]
+    competitorAuditRuns: Prisma.$CompetitorAuditRunPayload<ExtArgs>[]
+    competitorAudits: Prisma.$CompetitorAuditPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3662,6 +4146,8 @@ export interface Prisma__ProspectClient<T, Null = never, ExtArgs extends runtime
   competitors<T extends Prisma.Prospect$competitorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$competitorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectCompetitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   competitorOf<T extends Prisma.Prospect$competitorOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$competitorOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectCompetitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   competitorDiscoveryRuns<T extends Prisma.Prospect$competitorDiscoveryRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$competitorDiscoveryRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitorDiscoveryRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  competitorAuditRuns<T extends Prisma.Prospect$competitorAuditRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$competitorAuditRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitorAuditRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  competitorAudits<T extends Prisma.Prospect$competitorAuditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$competitorAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitorAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4367,6 +4853,54 @@ export type Prospect$competitorDiscoveryRunsArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.CompetitorDiscoveryRunScalarFieldEnum | Prisma.CompetitorDiscoveryRunScalarFieldEnum[]
+}
+
+/**
+ * Prospect.competitorAuditRuns
+ */
+export type Prospect$competitorAuditRunsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompetitorAuditRun
+   */
+  select?: Prisma.CompetitorAuditRunSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompetitorAuditRun
+   */
+  omit?: Prisma.CompetitorAuditRunOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompetitorAuditRunInclude<ExtArgs> | null
+  where?: Prisma.CompetitorAuditRunWhereInput
+  orderBy?: Prisma.CompetitorAuditRunOrderByWithRelationInput | Prisma.CompetitorAuditRunOrderByWithRelationInput[]
+  cursor?: Prisma.CompetitorAuditRunWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompetitorAuditRunScalarFieldEnum | Prisma.CompetitorAuditRunScalarFieldEnum[]
+}
+
+/**
+ * Prospect.competitorAudits
+ */
+export type Prospect$competitorAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompetitorAudit
+   */
+  select?: Prisma.CompetitorAuditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompetitorAudit
+   */
+  omit?: Prisma.CompetitorAuditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompetitorAuditInclude<ExtArgs> | null
+  where?: Prisma.CompetitorAuditWhereInput
+  orderBy?: Prisma.CompetitorAuditOrderByWithRelationInput | Prisma.CompetitorAuditOrderByWithRelationInput[]
+  cursor?: Prisma.CompetitorAuditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompetitorAuditScalarFieldEnum | Prisma.CompetitorAuditScalarFieldEnum[]
 }
 
 /**

@@ -288,3 +288,13 @@ export const ProspectCompetitorValidationLabel = {
 } as const
 
 export type ProspectCompetitorValidationLabel = (typeof ProspectCompetitorValidationLabel)[keyof typeof ProspectCompetitorValidationLabel]
+
+
+export const CompetitorAuditStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type CompetitorAuditStatus = (typeof CompetitorAuditStatus)[keyof typeof CompetitorAuditStatus]

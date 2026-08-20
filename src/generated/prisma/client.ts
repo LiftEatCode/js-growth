@@ -137,6 +137,17 @@ export type OutreachOutcome = Prisma.OutreachOutcomeModel
  */
 export type ProspectCompetitor = Prisma.ProspectCompetitorModel
 /**
+ * Model CompetitorAudit
+ * Internal Website Growth Audit snapshot for a human-selected competitor.
+ * Not an AuditReport — never enters public /report/* surfaces.
+ */
+export type CompetitorAudit = Prisma.CompetitorAuditModel
+/**
+ * Model CompetitorAuditRun
+ * 
+ */
+export type CompetitorAuditRun = Prisma.CompetitorAuditRunModel
+/**
  * Model CompetitorDiscoveryRun
  * 
  */

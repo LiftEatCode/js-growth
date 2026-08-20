@@ -70,6 +70,8 @@ export const ModelName = {
   ProspectOutreachDraftRun: 'ProspectOutreachDraftRun',
   OutreachOutcome: 'OutreachOutcome',
   ProspectCompetitor: 'ProspectCompetitor',
+  CompetitorAudit: 'CompetitorAudit',
+  CompetitorAuditRun: 'CompetitorAuditRun',
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun'
 } as const
 
@@ -502,6 +504,63 @@ export const ProspectCompetitorScalarFieldEnum = {
 } as const
 
 export type ProspectCompetitorScalarFieldEnum = (typeof ProspectCompetitorScalarFieldEnum)[keyof typeof ProspectCompetitorScalarFieldEnum]
+
+
+export const CompetitorAuditScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectCompetitorId: 'prospectCompetitorId',
+  targetProspectId: 'targetProspectId',
+  campaignId: 'campaignId',
+  runId: 'runId',
+  websiteUrl: 'websiteUrl',
+  normalizedHostname: 'normalizedHostname',
+  status: 'status',
+  overallScore: 'overallScore',
+  grade: 'grade',
+  technicalScore: 'technicalScore',
+  seoScore: 'seoScore',
+  contentScore: 'contentScore',
+  croScore: 'croScore',
+  accessibilityScore: 'accessibilityScore',
+  localScore: 'localScore',
+  performanceScore: 'performanceScore',
+  criticalIssues: 'criticalIssues',
+  quickWins: 'quickWins',
+  pagesScanned: 'pagesScanned',
+  auditResultJson: 'auditResultJson',
+  summaryJson: 'summaryJson',
+  auditEngineVersion: 'auditEngineVersion',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  failedAt: 'failedAt',
+  failureReason: 'failureReason'
+} as const
+
+export type CompetitorAuditScalarFieldEnum = (typeof CompetitorAuditScalarFieldEnum)[keyof typeof CompetitorAuditScalarFieldEnum]
+
+
+export const CompetitorAuditRunScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  campaignId: 'campaignId',
+  prospectId: 'prospectId',
+  status: 'status',
+  requestedAudits: 'requestedAudits',
+  processedAudits: 'processedAudits',
+  completedCount: 'completedCount',
+  reusedCount: 'reusedCount',
+  failedCount: 'failedCount',
+  skippedCount: 'skippedCount',
+  durationMs: 'durationMs',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CompetitorAuditRunScalarFieldEnum = (typeof CompetitorAuditRunScalarFieldEnum)[keyof typeof CompetitorAuditRunScalarFieldEnum]
 
 
 export const CompetitorDiscoveryRunScalarFieldEnum = {

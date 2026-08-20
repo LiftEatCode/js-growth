@@ -11,6 +11,7 @@ import { OutreachOutcomePanel } from "@/components/prospecting/outreach-outcome-
 import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-lead-conversion-panel";
 import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-landscape-panel";
+import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
@@ -122,6 +123,21 @@ export default async function CampaignProspectDetailPage({
               { validationScore: "desc" },
               { businessName: "asc" },
             ],
+            include: {
+              audits: {
+                orderBy: [{ createdAt: "desc" }],
+                take: 5,
+                select: {
+                  id: true,
+                  status: true,
+                  overallScore: true,
+                  grade: true,
+                  completedAt: true,
+                  createdAt: true,
+                  failureReason: true,
+                },
+              },
+            },
           },
         },
       },
@@ -484,6 +500,17 @@ export default async function CampaignProspectDetailPage({
                   rejectionReasons?: string[];
                 };
 
+                const latestCompleted = row.audits.find(
+                  (audit) => audit.status === "COMPLETED",
+                );
+                const latestAttempt = row.audits[0] ?? null;
+                const displayAudit =
+                  latestAttempt?.status === "FAILED" ||
+                  latestAttempt?.status === "RUNNING" ||
+                  latestAttempt?.status === "PENDING"
+                    ? latestAttempt
+                    : latestCompleted ?? latestAttempt;
+
                 return {
                   id: row.id,
                   businessName: row.businessName,
@@ -503,6 +530,22 @@ export default async function CampaignProspectDetailPage({
                   geographyBand: evidence.geography?.band ?? "unknown",
                   hasWebsite: evidence.hasWebsite ?? Boolean(row.website),
                   rejectionReasons: evidence.rejectionReasons ?? [],
+                  latestAudit: displayAudit
+                    ? {
+                        id: (latestCompleted ?? displayAudit).id,
+                        status: displayAudit.status as CompetitorAuditStatusValue,
+                        overallScore:
+                          latestCompleted?.overallScore ??
+                          displayAudit.overallScore,
+                        grade: latestCompleted?.grade ?? displayAudit.grade,
+                        completedAt: latestCompleted?.completedAt
+                          ? formatDate(latestCompleted.completedAt)
+                          : displayAudit.completedAt
+                            ? formatDate(displayAudit.completedAt)
+                            : null,
+                        failureReason: displayAudit.failureReason,
+                      }
+                    : null,
                 };
               })}
             />
