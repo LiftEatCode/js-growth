@@ -2061,6 +2061,8 @@ export const ProspectScalarFieldEnum = {
   state: 'state',
   address: 'address',
   phone: 'phone',
+  latitude: 'latitude',
+  longitude: 'longitude',
   sourceType: 'sourceType',
   sourceRef: 'sourceRef',
   discoveredAt: 'discoveredAt',
@@ -2596,6 +2598,20 @@ export type ListEnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'ProspectSourceType'
  */
 export type EnumProspectSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProspectSourceType'>
@@ -2788,20 +2804,6 @@ export type EnumDiscoveryRunStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'DiscoveryRunStatus[]'
  */
 export type ListEnumDiscoveryRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscoveryRunStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 

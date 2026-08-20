@@ -102,7 +102,7 @@ assert(
 
 const fieldMask = GOOGLE_PLACES_TEXT_SEARCH_FIELD_MASK;
 assert(fieldMask.includes("places.id"), "field mask includes Place ID");
-assert(fieldMask.includes("places.websiteUri"), "field mask includes website");
+assert(fieldMask.includes("places.location"), "field mask includes coordinates");
 assert(
   fieldMask.includes("places.nationalPhoneNumber"),
   "field mask includes national phone on the same Enterprise SKU",

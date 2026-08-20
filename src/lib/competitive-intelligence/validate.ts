@@ -1,5 +1,9 @@
-import { geographicBandForDistance } from "./distance";
+import {
+  geographyRejectionReason,
+  scoreGeography,
+} from "./geography";
 import { normalizeBusinessIdentity } from "./normalize";
+import { placeIdsMatch } from "./place-id";
 import type {
   CompetitiveProfile,
   CompetitorCandidate,
@@ -51,8 +55,9 @@ export function validateCompetitorCandidate(
       candidate.normalizedHostname &&
       profile.hostname === candidate.normalizedHostname,
   );
-  const samePlaceId = Boolean(
-    profile.sourceRef && candidate.providerBusinessId === profile.sourceRef,
+  const samePlaceId = placeIdsMatch(
+    profile.sourceRef,
+    candidate.providerBusinessId,
   );
 
   if (sameHostname) {
@@ -100,29 +105,11 @@ export function validateCompetitorCandidate(
     rejectionReasons.push("retailer");
   }
 
-  const band = geographicBandForDistance(
-    candidate.distanceMiles,
-    profile.radiusMiles,
-  );
+  const geography = scoreGeography(profile, candidate, candidate.distanceMiles);
+  const geographicRejection = geographyRejectionReason(geography);
 
-  let geographicScore = 0;
-
-  switch (band) {
-    case "very_near":
-      geographicScore = 25;
-      break;
-    case "near":
-      geographicScore = 20;
-      break;
-    case "regional":
-      geographicScore = 10;
-      break;
-    case "distant":
-      geographicScore = 0;
-      rejectionReasons.push("outside_market");
-      break;
-    default:
-      geographicScore = 8;
+  if (geographicRejection) {
+    rejectionReasons.push(geographicRejection);
   }
 
   const prospectName = normalizeBusinessIdentity(profile.businessName);
@@ -136,7 +123,7 @@ export function validateCompetitorCandidate(
   if (
     prospectName &&
     candidateName &&
-    (candidateName.includes(prospectName.split(" ")[0] ?? "") === false)
+    candidateName.includes(prospectName.split(" ")[0] ?? "") === false
   ) {
     serviceOverlapScore += matchedVerticals.length > 0 ? 3 : 0;
   }
@@ -154,7 +141,7 @@ export function validateCompetitorCandidate(
   const rawScore = rejected
     ? 0
     : verticalScore +
-      geographicScore +
+      geography.score +
       serviceOverlapScore +
       websiteScore +
       localServiceScore;
@@ -166,9 +153,10 @@ export function validateCompetitorCandidate(
     prospectVerticals: profile.normalizedVerticals,
     candidateVerticals: candidate.normalizedVerticals,
     verticalScore,
-    distanceMiles: candidate.distanceMiles,
-    geographicBand: band,
-    geographicScore,
+    distanceMiles: geography.distanceMiles,
+    geographicBand: geography.band,
+    geographicScore: geography.score,
+    geography,
     serviceOverlapScore,
     hasWebsite,
     websiteScore,
@@ -180,6 +168,7 @@ export function validateCompetitorCandidate(
 
   return {
     ...candidate,
+    distanceMiles: geography.distanceMiles,
     validationScore,
     validationLabel,
     evidence,

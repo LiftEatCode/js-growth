@@ -159,31 +159,3 @@ export async function loadExistingProspectIdentities(options: {
     },
   });
 }
-
-export async function loadProspectPlacesCategory(
-  prospectId: string,
-  sourceRef: string | null,
-  hostname: string | null,
-): Promise<{ category: string | null; latitude: number | null; longitude: number | null }> {
-  const candidate = await prisma.prospectDiscoveryCandidate.findFirst({
-    where: {
-      OR: [
-        sourceRef ? { providerBusinessId: sourceRef } : undefined,
-        hostname ? { hostname } : undefined,
-        { importedProspectId: prospectId },
-      ].filter(Boolean) as Prisma.ProspectDiscoveryCandidateWhereInput[],
-    },
-    orderBy: { createdAt: "desc" },
-    select: {
-      category: true,
-      latitude: true,
-      longitude: true,
-    },
-  });
-
-  return {
-    category: candidate?.category ?? null,
-    latitude: candidate?.latitude ?? null,
-    longitude: candidate?.longitude ?? null,
-  };
-}

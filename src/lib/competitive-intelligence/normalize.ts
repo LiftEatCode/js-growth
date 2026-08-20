@@ -2,7 +2,9 @@ import { normalizeBusinessVerticals } from "@/lib/business-intelligence/vertical
 import { tryNormalizeProspectHostname } from "@/lib/prospecting/hostname";
 import type { DiscoveredBusiness } from "@/lib/prospecting/discovery/types";
 
-import { haversineDistanceMiles } from "./distance";
+import {
+  resolveCandidateDistanceMiles,
+} from "./geography";
 import type { CompetitiveProfile, CompetitorCandidate } from "./types";
 
 export function normalizeCompetitorCandidate(
@@ -16,16 +18,12 @@ export function normalizeCompetitorCandidate(
     { source: "places_display", text: business.category ?? "" },
   ]);
 
-  const distanceMiles =
-    profile.latitude !== null &&
-    profile.longitude !== null &&
-    business.latitude !== null &&
-    business.longitude !== null
-      ? haversineDistanceMiles(
-          { latitude: profile.latitude, longitude: profile.longitude },
-          { latitude: business.latitude, longitude: business.longitude },
-        )
-      : null;
+  const distanceMiles = resolveCandidateDistanceMiles(profile, {
+    latitude: business.latitude,
+    longitude: business.longitude,
+    city: business.city,
+    state: business.state,
+  });
 
   return {
     provider: "GOOGLE_PLACES",

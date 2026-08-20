@@ -11,6 +11,7 @@ import {
 } from "@/app/reports/prospecting/competitor-actions";
 import { Button } from "@/components/ui";
 import {
+  competitorDistanceLabel,
   competitorMatchSummary,
   competitorStatusLabel,
   competitorValidationLabelText,
@@ -18,7 +19,7 @@ import {
 import type {
   CompetitorStatusValue,
   CompetitorValidationLabel,
-  GeographicBand,
+  GeographyMode,
 } from "@/lib/competitive-intelligence/types";
 
 export interface CompetitiveLandscapeRow {
@@ -34,7 +35,9 @@ export interface CompetitiveLandscapeRow {
   status: CompetitorStatusValue;
   isRecommended: boolean;
   matchedVerticals: string[];
-  geographicBand: GeographicBand;
+  geographyMode: GeographyMode;
+  geographyBand: string;
+  hasWebsite: boolean;
   rejectionReasons: string[];
 }
 
@@ -152,7 +155,11 @@ export function CompetitiveLandscapePanel({
                     {[row.city, row.state].filter(Boolean).join(", ") || "—"}
                   </td>
                   <td className="px-3 py-3 text-muted">
-                    {row.distanceMiles === null ? "—" : `${row.distanceMiles} mi`}
+                    {competitorDistanceLabel({
+                      distanceMiles: row.distanceMiles,
+                      geographyMode: row.geographyMode,
+                      geographyBand: row.geographyBand,
+                    })}
                   </td>
                   <td className="px-3 py-3 text-muted">
                     {row.verticals.join(", ") || "—"}
@@ -164,7 +171,9 @@ export function CompetitiveLandscapePanel({
                   <td className="px-3 py-3 text-xs text-muted">
                     {competitorMatchSummary({
                       matchedVerticals: row.matchedVerticals,
-                      geographicBand: row.geographicBand,
+                      geographyMode: row.geographyMode,
+                      distanceMiles: row.distanceMiles,
+                      hasWebsite: row.hasWebsite,
                       rejectionReasons: row.rejectionReasons,
                     })}
                   </td>

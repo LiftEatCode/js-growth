@@ -1,34 +1,24 @@
+import { compareGeographyForRanking } from "./geography";
 import { MAX_SELECTED_COMPETITORS_PER_PROSPECT } from "./constants";
 import type { ValidatedCompetitorCandidate } from "./types";
 
 export function compareCompetitorCandidates(
-  left: Pick<
-    ValidatedCompetitorCandidate,
-    "validationScore" | "distanceMiles" | "businessName" | "providerBusinessId"
-  >,
-  right: Pick<
-    ValidatedCompetitorCandidate,
-    "validationScore" | "distanceMiles" | "businessName" | "providerBusinessId"
-  >,
+  left: ValidatedCompetitorCandidate,
+  right: ValidatedCompetitorCandidate,
 ): number {
-  if (right.validationScore !== left.validationScore) {
-    return right.validationScore - left.validationScore;
-  }
-
-  const leftDistance = left.distanceMiles ?? Number.POSITIVE_INFINITY;
-  const rightDistance = right.distanceMiles ?? Number.POSITIVE_INFINITY;
-
-  if (leftDistance !== rightDistance) {
-    return leftDistance - rightDistance;
-  }
-
-  const name = left.businessName.localeCompare(right.businessName);
-
-  if (name !== 0) {
-    return name;
-  }
-
-  return left.providerBusinessId.localeCompare(right.providerBusinessId);
+  return compareGeographyForRanking({
+    validationScore: left.validationScore,
+    distanceMiles: left.distanceMiles,
+    geographyMode: left.evidence.geography.mode,
+    businessName: left.businessName,
+    providerBusinessId: left.providerBusinessId,
+  }, {
+    validationScore: right.validationScore,
+    distanceMiles: right.distanceMiles,
+    geographyMode: right.evidence.geography.mode,
+    businessName: right.businessName,
+    providerBusinessId: right.providerBusinessId,
+  });
 }
 
 export function rankCompetitorCandidates(

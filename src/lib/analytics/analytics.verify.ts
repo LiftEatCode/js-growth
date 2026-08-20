@@ -41,8 +41,16 @@ assert(
   "competitor ids are stripped from analytics",
 );
 assert(
-  isForbiddenAnalyticsParamKey("provider_business_id"),
-  "place ids are stripped from analytics",
+  isForbiddenAnalyticsParamKey("latitude"),
+  "latitude is stripped from analytics",
+);
+assert(
+  isForbiddenAnalyticsParamKey("longitude"),
+  "longitude is stripped from analytics",
+);
+assert(
+  isForbiddenAnalyticsParamKey("coordinates"),
+  "coordinates are stripped from analytics",
 );
 
 const auditCompleted = sanitizeCommercialEventParams({

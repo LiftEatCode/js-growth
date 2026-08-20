@@ -1,4 +1,5 @@
-import type { CompetitorStatusValue, CompetitorValidationLabel } from "./types";
+import type { CompetitorStatusValue, CompetitorValidationLabel, GeographyMode } from "./types";
+import { formatCompetitorDistanceDisplay } from "./geography";
 
 export function competitorStatusLabel(status: CompetitorStatusValue): string {
   switch (status) {
@@ -34,9 +35,30 @@ export function competitorValidationLabelText(
   }
 }
 
+export function competitorDistanceLabel(input: {
+  distanceMiles: number | null;
+  geographyMode: GeographyMode;
+  geographyBand: string;
+}): string {
+  return formatCompetitorDistanceDisplay({
+    distanceMiles: input.distanceMiles,
+    geographyMode: input.geographyMode,
+    geographyBand: input.geographyBand as
+      | "very_near"
+      | "near"
+      | "regional"
+      | "distant"
+      | "same_city"
+      | "same_region"
+      | "unknown",
+  });
+}
+
 export function competitorMatchSummary(input: {
   matchedVerticals: string[];
-  geographicBand: string;
+  geographyMode: GeographyMode;
+  distanceMiles: number | null;
+  hasWebsite: boolean;
   rejectionReasons: string[];
 }): string {
   if (input.rejectionReasons.includes("same_hostname")) {
@@ -65,15 +87,15 @@ export function competitorMatchSummary(input: {
       : "Limited vertical overlap";
 
   const geo =
-    input.geographicBand === "very_near"
-      ? "very close geography"
-      : input.geographicBand === "near"
-        ? "close geography"
-        : input.geographicBand === "regional"
-          ? "regional match"
-          : input.geographicBand === "distant"
-            ? "distant geography"
-            : "location unknown";
+    input.geographyMode === "EXACT_DISTANCE" && input.distanceMiles !== null
+      ? `${input.distanceMiles} mi away`
+      : input.geographyMode === "SAME_CITY_FALLBACK"
+        ? "same city"
+        : input.geographyMode === "SAME_REGION_FALLBACK"
+          ? "same region"
+          : "location unknown";
 
-  return `${vertical} + ${geo}`;
+  const website = input.hasWebsite ? "public website" : "no public website";
+
+  return `${vertical} + ${geo} + ${website}`;
 }

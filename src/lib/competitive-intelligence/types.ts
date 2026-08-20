@@ -18,7 +18,15 @@ export type GeographicBand =
   | "near"
   | "regional"
   | "distant"
+  | "same_city"
+  | "same_region"
   | "unknown";
+
+export type GeographyMode =
+  | "EXACT_DISTANCE"
+  | "SAME_CITY_FALLBACK"
+  | "SAME_REGION_FALLBACK"
+  | "UNKNOWN";
 
 export interface CompetitiveProfile {
   prospectId: string;
@@ -63,6 +71,13 @@ export interface CompetitorValidationEvidence {
   distanceMiles: number | null;
   geographicBand: GeographicBand;
   geographicScore: number;
+  geography: {
+    mode: GeographyMode;
+    distanceMiles: number | null;
+    radiusMiles: number;
+    band: GeographicBand;
+    score: number;
+  };
   serviceOverlapScore: number;
   hasWebsite: boolean;
   websiteScore: number;

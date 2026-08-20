@@ -81,7 +81,7 @@ Known product constraints that remain true at launch:
 
 ## Prospecting Engine V1
 
-Status: 🟢 Sprint 9 — Competitive Discovery Foundation
+Status: 🟢 Sprint 9.1 — Competitive Geography Hardening
 
 Priority: Internal acquisition workflow (does not replace Production Launch V1)
 
@@ -91,7 +91,14 @@ Product principle: produce **five credible, qualified prospects** per session, n
 
 **Prospect ≠ Lead.** A Prospect is a discovered business. It is not an inbound `AuditReport` without a Lead, and it is not converted into the CRM until a human later marks interest.
 
-Sprint 9 (current):
+Sprint 9.1 (current):
+
+- Target prospect coordinate resolution + backfill
+- Exact Haversine distance when both coordinate pairs exist
+- Conservative same-city / same-region fallback for historical prospects
+- Geography-aware ranking and UI labels (mi / Same city / —)
+
+Sprint 9:
 
 - Deterministic competitive profile + vertical normalization
 - Google Places competitor *candidate* discovery (bounded)

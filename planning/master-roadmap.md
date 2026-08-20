@@ -240,7 +240,7 @@ Projects:
 - Client Portal
 - Knowledge Base
 - Reporting System
-- Prospecting Engine (internal; V1 Sprint 9 — competitive discovery foundation)
+- Prospecting Engine (internal; V1 Sprint 9.1 — competitive geography hardening)
 
 ---
 

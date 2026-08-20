@@ -195,6 +195,8 @@ export const ProspectScalarFieldEnum = {
   state: 'state',
   address: 'address',
   phone: 'phone',
+  latitude: 'latitude',
+  longitude: 'longitude',
   sourceType: 'sourceType',
   sourceRef: 'sourceRef',
   discoveredAt: 'discoveredAt',

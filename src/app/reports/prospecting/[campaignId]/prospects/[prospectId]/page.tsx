@@ -11,6 +11,7 @@ import { OutreachOutcomePanel } from "@/components/prospecting/outreach-outcome-
 import { ProspectLeadConversionPanel } from "@/components/prospecting/prospect-lead-conversion-panel";
 import { ProspectOutreachSelectionControl } from "@/components/prospecting/prospect-outreach-selection-control";
 import { CompetitiveLandscapePanel } from "@/components/prospecting/competitive-landscape-panel";
+import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
@@ -474,7 +475,12 @@ export default async function CampaignProspectDetailPage({
               rows={prospect.competitors.map((row) => {
                 const evidence = (row.evidenceJson ?? {}) as {
                   matchedVerticals?: string[];
-                  geographicBand?: string;
+                  geography?: {
+                    mode?: GeographyMode;
+                    band?: string;
+                    distanceMiles?: number | null;
+                  };
+                  hasWebsite?: boolean;
                   rejectionReasons?: string[];
                 };
 
@@ -493,13 +499,9 @@ export default async function CampaignProspectDetailPage({
                   status: row.status,
                   isRecommended: row.isRecommended,
                   matchedVerticals: evidence.matchedVerticals ?? [],
-                  geographicBand:
-                    (evidence.geographicBand as
-                      | "very_near"
-                      | "near"
-                      | "regional"
-                      | "distant"
-                      | "unknown") ?? "unknown",
+                  geographyMode: evidence.geography?.mode ?? "UNKNOWN",
+                  geographyBand: evidence.geography?.band ?? "unknown",
+                  hasWebsite: evidence.hasWebsite ?? Boolean(row.website),
                   rejectionReasons: evidence.rejectionReasons ?? [],
                 };
               })}

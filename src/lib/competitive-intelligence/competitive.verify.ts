@@ -118,6 +118,8 @@ assert(nearby.validationLabel === "STRONG", "same vertical + nearby is strong");
 assert(nearby.status === "VALIDATED", "strong candidate is validated");
 assert(nearby.evidence.verticalScore >= 28, "vertical score persisted");
 assert(nearby.evidence.geographicBand === "very_near", "near band");
+assert(nearby.evidence.geography.mode === "EXACT_DISTANCE", "exact geography mode");
+assert(nearby.validationScore > 77, "nearby with coordinates scores above unknown-only baseline");
 
 const farther = validateCompetitorCandidate(
   candidate({
@@ -203,8 +205,17 @@ assert(
 
 assert(
   compareCompetitorCandidates(
-    { ...nearby, distanceMiles: 4.2 },
-    { ...nearby, businessName: "Closer Electric", distanceMiles: 2, providerBusinessId: "place-close" },
+    nearby,
+    validateCompetitorCandidate(
+      candidate({
+        providerBusinessId: "place-close",
+        businessName: "Closer Electric",
+        distanceMiles: 2,
+        latitude: 30.19,
+        longitude: -95.7,
+      }),
+      profile(),
+    ),
   ) > 0,
   "closer equivalent candidate ranks higher",
 );

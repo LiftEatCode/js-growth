@@ -2,7 +2,7 @@
 
 Internal notes for JS Solutions outbound prospecting. This is **not** a customer-facing product.
 
-Current status: **Sprint 9 — Competitive Discovery Foundation**
+Current status: **Sprint 9.1 — Competitive Geography Hardening**
 
 ## Product principle
 
@@ -682,6 +682,15 @@ Operator workflow:
 Campaign **Find Competitors** processes at most 5 effectively selected qualified prospects.
 
 Sprint 9 does **not** add competitive claims to drafts, AI summaries, SERP scraping, or competitor audits.
+
+## Sprint 9.1 — Competitive geography hardening
+
+Fixes missing target coordinates that caused all same-vertical competitors to score identically with “location unknown”.
+
+See `docs/development/competitive-intelligence-sprint-9-1.md`.
+
+After deploy + migration, use **Re-run Discovery** on affected prospects (e.g. Roa Electrical, Happy Plumbing) to refresh geography evidence.
+
 
 
 

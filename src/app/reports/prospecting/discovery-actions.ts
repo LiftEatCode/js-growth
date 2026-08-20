@@ -384,6 +384,8 @@ export async function importDiscoveryCandidates(
                   state: data.state,
                   address: data.address,
                   phone: data.phone,
+                  latitude: classified.business.latitude,
+                  longitude: classified.business.longitude,
                   sourceType: "GOOGLE_PLACES",
                   sourceRef: data.sourceRef,
                   qualificationStatus: "DISCOVERED",
@@ -392,6 +394,20 @@ export async function importDiscoveryCandidates(
                 select: { id: true },
               })
             ).id;
+
+        if (existing) {
+          await transaction.prospect.updateMany({
+            where: {
+              id: existing.id,
+              latitude: null,
+              longitude: null,
+            },
+            data: {
+              latitude: classified.business.latitude,
+              longitude: classified.business.longitude,
+            },
+          });
+        }
 
         const membership = await transaction.campaignProspect.findUnique({
           where: {

@@ -13,9 +13,9 @@ import { discoverCompetitorCandidates } from "@/lib/competitive-intelligence/dis
 import { isReusableCompetitorDiscovery } from "@/lib/competitive-intelligence/limit";
 import {
   loadExistingProspectIdentities,
-  loadProspectPlacesCategory,
   persistDiscoveredCompetitors,
 } from "@/lib/competitive-intelligence/persist";
+import { loadProspectGeography } from "@/lib/competitive-intelligence/resolve-target-geography";
 import { buildCompetitiveProfile } from "@/lib/competitive-intelligence/profile";
 import { prisma } from "@/lib/prisma";
 import {
@@ -112,11 +112,13 @@ async function discoverForProspect(options: {
     };
   }
 
-  const places = await loadProspectPlacesCategory(
-    prospect.id,
-    prospect.sourceRef,
-    prospect.hostname,
-  );
+  const places = await loadProspectGeography({
+    prospectId: prospect.id,
+    sourceRef: prospect.sourceRef,
+    hostname: prospect.hostname,
+    prospectLatitude: prospect.latitude,
+    prospectLongitude: prospect.longitude,
+  });
   const profile = buildCompetitiveProfile({
     prospectId: prospect.id,
     businessName: prospect.businessName,

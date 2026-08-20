@@ -20,8 +20,20 @@ export type ProspectModel = runtime.Types.Result.DefaultSelection<Prisma.$Prospe
 
 export type AggregateProspect = {
   _count: ProspectCountAggregateOutputType | null
+  _avg: ProspectAvgAggregateOutputType | null
+  _sum: ProspectSumAggregateOutputType | null
   _min: ProspectMinAggregateOutputType | null
   _max: ProspectMaxAggregateOutputType | null
+}
+
+export type ProspectAvgAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
+}
+
+export type ProspectSumAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
 }
 
 export type ProspectMinAggregateOutputType = {
@@ -36,6 +48,8 @@ export type ProspectMinAggregateOutputType = {
   state: string | null
   address: string | null
   phone: string | null
+  latitude: number | null
+  longitude: number | null
   sourceType: $Enums.ProspectSourceType | null
   sourceRef: string | null
   discoveredAt: Date | null
@@ -61,6 +75,8 @@ export type ProspectMaxAggregateOutputType = {
   state: string | null
   address: string | null
   phone: string | null
+  latitude: number | null
+  longitude: number | null
   sourceType: $Enums.ProspectSourceType | null
   sourceRef: string | null
   discoveredAt: Date | null
@@ -86,6 +102,8 @@ export type ProspectCountAggregateOutputType = {
   state: number
   address: number
   phone: number
+  latitude: number
+  longitude: number
   sourceType: number
   sourceRef: number
   discoveredAt: number
@@ -101,6 +119,16 @@ export type ProspectCountAggregateOutputType = {
 }
 
 
+export type ProspectAvgAggregateInputType = {
+  latitude?: true
+  longitude?: true
+}
+
+export type ProspectSumAggregateInputType = {
+  latitude?: true
+  longitude?: true
+}
+
 export type ProspectMinAggregateInputType = {
   id?: true
   createdAt?: true
@@ -113,6 +141,8 @@ export type ProspectMinAggregateInputType = {
   state?: true
   address?: true
   phone?: true
+  latitude?: true
+  longitude?: true
   sourceType?: true
   sourceRef?: true
   discoveredAt?: true
@@ -138,6 +168,8 @@ export type ProspectMaxAggregateInputType = {
   state?: true
   address?: true
   phone?: true
+  latitude?: true
+  longitude?: true
   sourceType?: true
   sourceRef?: true
   discoveredAt?: true
@@ -163,6 +195,8 @@ export type ProspectCountAggregateInputType = {
   state?: true
   address?: true
   phone?: true
+  latitude?: true
+  longitude?: true
   sourceType?: true
   sourceRef?: true
   discoveredAt?: true
@@ -215,6 +249,18 @@ export type ProspectAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ProspectAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ProspectSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ProspectMinAggregateInputType
@@ -245,6 +291,8 @@ export type ProspectGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: ProspectCountAggregateInputType | true
+  _avg?: ProspectAvgAggregateInputType
+  _sum?: ProspectSumAggregateInputType
   _min?: ProspectMinAggregateInputType
   _max?: ProspectMaxAggregateInputType
 }
@@ -261,6 +309,8 @@ export type ProspectGroupByOutputType = {
   state: string | null
   address: string | null
   phone: string | null
+  latitude: number | null
+  longitude: number | null
   sourceType: $Enums.ProspectSourceType
   sourceRef: string | null
   discoveredAt: Date
@@ -273,6 +323,8 @@ export type ProspectGroupByOutputType = {
   auditReportId: string | null
   leadId: string | null
   _count: ProspectCountAggregateOutputType | null
+  _avg: ProspectAvgAggregateOutputType | null
+  _sum: ProspectSumAggregateOutputType | null
   _min: ProspectMinAggregateOutputType | null
   _max: ProspectMaxAggregateOutputType | null
 }
@@ -307,6 +359,8 @@ export type ProspectWhereInput = {
   state?: Prisma.StringNullableFilter<"Prospect"> | string | null
   address?: Prisma.StringNullableFilter<"Prospect"> | string | null
   phone?: Prisma.StringNullableFilter<"Prospect"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Prospect"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Prospect"> | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFilter<"Prospect"> | $Enums.ProspectSourceType
   sourceRef?: Prisma.StringNullableFilter<"Prospect"> | string | null
   discoveredAt?: Prisma.DateTimeFilter<"Prospect"> | Date | string
@@ -343,6 +397,8 @@ export type ProspectOrderByWithRelationInput = {
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrderInput | Prisma.SortOrder
   discoveredAt?: Prisma.SortOrder
@@ -382,6 +438,8 @@ export type ProspectWhereUniqueInput = Prisma.AtLeast<{
   state?: Prisma.StringNullableFilter<"Prospect"> | string | null
   address?: Prisma.StringNullableFilter<"Prospect"> | string | null
   phone?: Prisma.StringNullableFilter<"Prospect"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Prospect"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Prospect"> | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFilter<"Prospect"> | $Enums.ProspectSourceType
   sourceRef?: Prisma.StringNullableFilter<"Prospect"> | string | null
   discoveredAt?: Prisma.DateTimeFilter<"Prospect"> | Date | string
@@ -418,6 +476,8 @@ export type ProspectOrderByWithAggregationInput = {
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrderInput | Prisma.SortOrder
   discoveredAt?: Prisma.SortOrder
@@ -430,8 +490,10 @@ export type ProspectOrderByWithAggregationInput = {
   auditReportId?: Prisma.SortOrderInput | Prisma.SortOrder
   leadId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProspectCountOrderByAggregateInput
+  _avg?: Prisma.ProspectAvgOrderByAggregateInput
   _max?: Prisma.ProspectMaxOrderByAggregateInput
   _min?: Prisma.ProspectMinOrderByAggregateInput
+  _sum?: Prisma.ProspectSumOrderByAggregateInput
 }
 
 export type ProspectScalarWhereWithAggregatesInput = {
@@ -449,6 +511,8 @@ export type ProspectScalarWhereWithAggregatesInput = {
   state?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Prospect"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Prospect"> | number | null
   sourceType?: Prisma.EnumProspectSourceTypeWithAggregatesFilter<"Prospect"> | $Enums.ProspectSourceType
   sourceRef?: Prisma.StringNullableWithAggregatesFilter<"Prospect"> | string | null
   discoveredAt?: Prisma.DateTimeWithAggregatesFilter<"Prospect"> | Date | string
@@ -474,6 +538,8 @@ export type ProspectCreateInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -508,6 +574,8 @@ export type ProspectUncheckedCreateInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -542,6 +610,8 @@ export type ProspectUpdateInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -576,6 +646,8 @@ export type ProspectUncheckedUpdateInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -610,6 +682,8 @@ export type ProspectCreateManyInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -635,6 +709,8 @@ export type ProspectUpdateManyMutationInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -658,6 +734,8 @@ export type ProspectUncheckedUpdateManyInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -693,6 +771,8 @@ export type ProspectCountOrderByAggregateInput = {
   state?: Prisma.SortOrder
   address?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrder
   discoveredAt?: Prisma.SortOrder
@@ -704,6 +784,11 @@ export type ProspectCountOrderByAggregateInput = {
   lastCompetitorDiscoveryAt?: Prisma.SortOrder
   auditReportId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
+}
+
+export type ProspectAvgOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type ProspectMaxOrderByAggregateInput = {
@@ -718,6 +803,8 @@ export type ProspectMaxOrderByAggregateInput = {
   state?: Prisma.SortOrder
   address?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrder
   discoveredAt?: Prisma.SortOrder
@@ -743,6 +830,8 @@ export type ProspectMinOrderByAggregateInput = {
   state?: Prisma.SortOrder
   address?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrder
   discoveredAt?: Prisma.SortOrder
@@ -754,6 +843,11 @@ export type ProspectMinOrderByAggregateInput = {
   lastCompetitorDiscoveryAt?: Prisma.SortOrder
   auditReportId?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
+}
+
+export type ProspectSumOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type ProspectScalarRelationFilter = {
@@ -848,6 +942,14 @@ export type ProspectUncheckedUpdateManyWithoutLeadNestedInput = {
   update?: Prisma.ProspectUpdateWithWhereUniqueWithoutLeadInput | Prisma.ProspectUpdateWithWhereUniqueWithoutLeadInput[]
   updateMany?: Prisma.ProspectUpdateManyWithWhereWithoutLeadInput | Prisma.ProspectUpdateManyWithWhereWithoutLeadInput[]
   deleteMany?: Prisma.ProspectScalarWhereInput | Prisma.ProspectScalarWhereInput[]
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type EnumProspectSourceTypeFieldUpdateOperationsInput = {
@@ -1006,6 +1108,8 @@ export type ProspectCreateWithoutAuditReportInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1039,6 +1143,8 @@ export type ProspectUncheckedCreateWithoutAuditReportInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1101,6 +1207,8 @@ export type ProspectScalarWhereInput = {
   state?: Prisma.StringNullableFilter<"Prospect"> | string | null
   address?: Prisma.StringNullableFilter<"Prospect"> | string | null
   phone?: Prisma.StringNullableFilter<"Prospect"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Prospect"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Prospect"> | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFilter<"Prospect"> | $Enums.ProspectSourceType
   sourceRef?: Prisma.StringNullableFilter<"Prospect"> | string | null
   discoveredAt?: Prisma.DateTimeFilter<"Prospect"> | Date | string
@@ -1126,6 +1234,8 @@ export type ProspectCreateWithoutLeadInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1159,6 +1269,8 @@ export type ProspectUncheckedCreateWithoutLeadInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1218,6 +1330,8 @@ export type ProspectCreateWithoutCampaignProspectsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1251,6 +1365,8 @@ export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1300,6 +1416,8 @@ export type ProspectUpdateWithoutCampaignProspectsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1333,6 +1451,8 @@ export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1366,6 +1486,8 @@ export type ProspectCreateWithoutContactsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1399,6 +1521,8 @@ export type ProspectUncheckedCreateWithoutContactsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1448,6 +1572,8 @@ export type ProspectUpdateWithoutContactsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1481,6 +1607,8 @@ export type ProspectUncheckedUpdateWithoutContactsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1514,6 +1642,8 @@ export type ProspectCreateWithoutContactFormsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1547,6 +1677,8 @@ export type ProspectUncheckedCreateWithoutContactFormsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1596,6 +1728,8 @@ export type ProspectUpdateWithoutContactFormsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1629,6 +1763,8 @@ export type ProspectUncheckedUpdateWithoutContactFormsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1662,6 +1798,8 @@ export type ProspectCreateWithoutOutreachMessagesInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1695,6 +1833,8 @@ export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1744,6 +1884,8 @@ export type ProspectUpdateWithoutOutreachMessagesInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1777,6 +1919,8 @@ export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1810,6 +1954,8 @@ export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1843,6 +1989,8 @@ export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1892,6 +2040,8 @@ export type ProspectUpdateWithoutImportedDiscoveryCandidatesInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1925,6 +2075,8 @@ export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1958,6 +2110,8 @@ export type ProspectCreateWithoutOutreachOutcomesInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -1991,6 +2145,8 @@ export type ProspectUncheckedCreateWithoutOutreachOutcomesInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2040,6 +2196,8 @@ export type ProspectUpdateWithoutOutreachOutcomesInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2073,6 +2231,8 @@ export type ProspectUncheckedUpdateWithoutOutreachOutcomesInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2106,6 +2266,8 @@ export type ProspectCreateWithoutCompetitorsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2139,6 +2301,8 @@ export type ProspectUncheckedCreateWithoutCompetitorsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2177,6 +2341,8 @@ export type ProspectCreateWithoutCompetitorOfInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2210,6 +2376,8 @@ export type ProspectUncheckedCreateWithoutCompetitorOfInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2259,6 +2427,8 @@ export type ProspectUpdateWithoutCompetitorsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2292,6 +2462,8 @@ export type ProspectUncheckedUpdateWithoutCompetitorsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2336,6 +2508,8 @@ export type ProspectUpdateWithoutCompetitorOfInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2369,6 +2543,8 @@ export type ProspectUncheckedUpdateWithoutCompetitorOfInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2402,6 +2578,8 @@ export type ProspectCreateWithoutCompetitorDiscoveryRunsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2435,6 +2613,8 @@ export type ProspectUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2484,6 +2664,8 @@ export type ProspectUpdateWithoutCompetitorDiscoveryRunsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2517,6 +2699,8 @@ export type ProspectUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2550,6 +2734,8 @@ export type ProspectCreateManyAuditReportInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2574,6 +2760,8 @@ export type ProspectUpdateWithoutAuditReportInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2607,6 +2795,8 @@ export type ProspectUncheckedUpdateWithoutAuditReportInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2640,6 +2830,8 @@ export type ProspectUncheckedUpdateManyWithoutAuditReportInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2664,6 +2856,8 @@ export type ProspectCreateManyLeadInput = {
   state?: string | null
   address?: string | null
   phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
   sourceType?: $Enums.ProspectSourceType
   sourceRef?: string | null
   discoveredAt?: Date | string
@@ -2688,6 +2882,8 @@ export type ProspectUpdateWithoutLeadInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2721,6 +2917,8 @@ export type ProspectUncheckedUpdateWithoutLeadInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2754,6 +2952,8 @@ export type ProspectUncheckedUpdateManyWithoutLeadInput = {
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2881,6 +3081,8 @@ export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   state?: boolean
   address?: boolean
   phone?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sourceType?: boolean
   sourceRef?: boolean
   discoveredAt?: boolean
@@ -2918,6 +3120,8 @@ export type ProspectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   state?: boolean
   address?: boolean
   phone?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sourceType?: boolean
   sourceRef?: boolean
   discoveredAt?: boolean
@@ -2945,6 +3149,8 @@ export type ProspectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   state?: boolean
   address?: boolean
   phone?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sourceType?: boolean
   sourceRef?: boolean
   discoveredAt?: boolean
@@ -2972,6 +3178,8 @@ export type ProspectSelectScalar = {
   state?: boolean
   address?: boolean
   phone?: boolean
+  latitude?: boolean
+  longitude?: boolean
   sourceType?: boolean
   sourceRef?: boolean
   discoveredAt?: boolean
@@ -2985,7 +3193,7 @@ export type ProspectSelectScalar = {
   leadId?: boolean
 }
 
-export type ProspectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "businessName" | "website" | "hostname" | "industry" | "city" | "state" | "address" | "phone" | "sourceType" | "sourceRef" | "discoveredAt" | "qualificationStatus" | "outreachStatus" | "skipReason" | "notes" | "lastContactDiscoveryAt" | "lastCompetitorDiscoveryAt" | "auditReportId" | "leadId", ExtArgs["result"]["prospect"]>
+export type ProspectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "businessName" | "website" | "hostname" | "industry" | "city" | "state" | "address" | "phone" | "latitude" | "longitude" | "sourceType" | "sourceRef" | "discoveredAt" | "qualificationStatus" | "outreachStatus" | "skipReason" | "notes" | "lastContactDiscoveryAt" | "lastCompetitorDiscoveryAt" | "auditReportId" | "leadId", ExtArgs["result"]["prospect"]>
 export type ProspectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditReport?: boolean | Prisma.Prospect$auditReportArgs<ExtArgs>
   lead?: boolean | Prisma.Prospect$leadArgs<ExtArgs>
@@ -3036,6 +3244,8 @@ export type $ProspectPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     state: string | null
     address: string | null
     phone: string | null
+    latitude: number | null
+    longitude: number | null
     sourceType: $Enums.ProspectSourceType
     sourceRef: string | null
     discoveredAt: Date
@@ -3492,6 +3702,8 @@ export interface ProspectFieldRefs {
   readonly state: Prisma.FieldRef<"Prospect", 'String'>
   readonly address: Prisma.FieldRef<"Prospect", 'String'>
   readonly phone: Prisma.FieldRef<"Prospect", 'String'>
+  readonly latitude: Prisma.FieldRef<"Prospect", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Prospect", 'Float'>
   readonly sourceType: Prisma.FieldRef<"Prospect", 'ProspectSourceType'>
   readonly sourceRef: Prisma.FieldRef<"Prospect", 'String'>
   readonly discoveredAt: Prisma.FieldRef<"Prospect", 'DateTime'>

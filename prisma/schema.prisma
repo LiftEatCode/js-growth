@@ -355,6 +355,9 @@ model Prospect {
   address  String?
   phone    String?
 
+  latitude  Float?
+  longitude Float?
+
   sourceType ProspectSourceType @default(MANUAL)
   sourceRef  String?
 
