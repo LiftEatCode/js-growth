@@ -20,11 +20,20 @@ export interface ScopeExclusion {
   templateKey?: string | null;
 }
 
+export interface ScopeConsiderationMaintenanceAction {
+  id: string;
+  text: string;
+}
+
 export interface ScopeConsideration {
   id: string;
+  /** Stable identity e.g. preserve:performance */
+  key: string;
   text: string;
   category: string | null;
   sortOrder: number;
+  sourceWorkstreamIds: string[];
+  maintenanceActions: ScopeConsiderationMaintenanceAction[];
 }
 
 export interface BuiltScopeDeliverable {
@@ -70,6 +79,7 @@ export interface ScopeSourceFingerprint {
   planVersion: number | null;
   mappingVersion: number | null;
   scopeVersion: number;
+  scopeMappingVersion: number;
 }
 
 export type { CommercialScopeStatus, ScopeDeliverableType, ScopeItemSource };

@@ -1,9 +1,13 @@
-import { COMMERCIAL_SCOPE_VERSION } from "./constants";
+import {
+  COMMERCIAL_SCOPE_MAPPING_VERSION,
+  COMMERCIAL_SCOPE_VERSION,
+} from "./constants";
 import type { ScopeSourceFingerprint } from "./types";
 
 export function buildScopeSourceFingerprint(
-  input: Omit<ScopeSourceFingerprint, "scopeVersion"> & {
+  input: Omit<ScopeSourceFingerprint, "scopeVersion" | "scopeMappingVersion"> & {
     scopeVersion?: number;
+    scopeMappingVersion?: number;
   },
 ): string {
   const payload: ScopeSourceFingerprint = {
@@ -12,6 +16,8 @@ export function buildScopeSourceFingerprint(
     planVersion: input.planVersion,
     mappingVersion: input.mappingVersion,
     scopeVersion: input.scopeVersion ?? COMMERCIAL_SCOPE_VERSION,
+    scopeMappingVersion:
+      input.scopeMappingVersion ?? COMMERCIAL_SCOPE_MAPPING_VERSION,
   };
   return JSON.stringify(payload);
 }
@@ -20,7 +26,7 @@ export function parseScopeSourceFingerprint(
   raw: string,
 ): ScopeSourceFingerprint | null {
   try {
-    const parsed = JSON.parse(raw) as ScopeSourceFingerprint;
+    const parsed = JSON.parse(raw) as Partial<ScopeSourceFingerprint>;
     if (typeof parsed.opportunityId !== "string") {
       return null;
     }
@@ -37,6 +43,10 @@ export function parseScopeSourceFingerprint(
         typeof parsed.scopeVersion === "number"
           ? parsed.scopeVersion
           : COMMERCIAL_SCOPE_VERSION,
+      scopeMappingVersion:
+        typeof parsed.scopeMappingVersion === "number"
+          ? parsed.scopeMappingVersion
+          : 1,
     };
   } catch {
     return null;

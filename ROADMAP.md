@@ -139,11 +139,13 @@ Human-created sales Opportunities with stages, capability snapshots, next action
 
 ## Commercial Sprint 4 — Scope Engine V1
 
-Status: 🟢 Implemented (internal)
+Status: 🟢 Implemented (internal) · Sprint 4.1 quality hardening
 
 Canonical doc: `docs/development/scope-engine.md`
 
 Human-controlled commercial Scope from Opportunity (+ optional Implementation Plan). Plan → sections/deliverables with evidence-only competitive-gap actions excluded. Approved scopes immutable; revise creates historical versions. No pricing / proposals / OpenAI.
+
+**Sprint 4.1:** Deduped considerations, polished client titles, exact capability inheritance, empty assumptions/exclusions defaults, preview hygiene. Mapping version `COMMERCIAL_SCOPE_MAPPING_VERSION = 2` (no schema migration).
 
 **Not included:** pricing, proposals, PDF, public scope links, automatic Opportunity stage changes.
 

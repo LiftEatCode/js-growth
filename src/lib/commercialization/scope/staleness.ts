@@ -1,4 +1,7 @@
-import { COMMERCIAL_SCOPE_VERSION } from "./constants";
+import {
+  COMMERCIAL_SCOPE_MAPPING_VERSION,
+  COMMERCIAL_SCOPE_VERSION,
+} from "./constants";
 import { parseScopeSourceFingerprint } from "./fingerprint";
 import type { ScopeSourceFingerprint } from "./types";
 
@@ -24,6 +27,12 @@ export function evaluateScopeStaleness(options: {
 
   if (stored.scopeVersion !== COMMERCIAL_SCOPE_VERSION) {
     reasons.push("Commercial Scope algorithm version has changed.");
+  }
+
+  if (stored.scopeMappingVersion !== COMMERCIAL_SCOPE_MAPPING_VERSION) {
+    reasons.push(
+      "Scope mapping quality version has changed. Revise to rebuild polished titles and deduped considerations.",
+    );
   }
 
   if (

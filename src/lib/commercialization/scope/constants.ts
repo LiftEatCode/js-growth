@@ -1,5 +1,12 @@
 export const COMMERCIAL_SCOPE_VERSION = 1;
 
+/**
+ * Mapping quality version for plan → scope derivation (Sprint 4.1+).
+ * Increment when consideration dedupe / title defaults / capability inheritance
+ * behavior changes. Does not rewrite historical approved scopes.
+ */
+export const COMMERCIAL_SCOPE_MAPPING_VERSION = 2;
+
 export const COMMERCIAL_SCOPE_STATUSES = [
   "DRAFT",
   "REVIEWED",

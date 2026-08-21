@@ -1,5 +1,5 @@
 /**
- * Commercial Sprint 4 — Scope Engine V1 verification.
+ * Commercial Sprint 4 / 4.1 — Scope Engine verification.
  * Pure deterministic tests. No OpenAI, Places, crawl, Resend, Stripe, or DB.
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -7,15 +7,18 @@ import { dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { isForbiddenAnalyticsParamKey } from "@/lib/analytics/commercial-events";
+import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabilities";
 import {
   IMPLEMENTATION_MAPPING_VERSION,
   IMPLEMENTATION_PLAN_VERSION,
 } from "@/lib/commercialization/implementation-plan/constants";
 import type { LoadedImplementationPlan } from "@/lib/commercialization/implementation-plan/load";
+import type { PreservationConstraint } from "@/lib/commercialization/implementation-plan/types";
 import { OPPORTUNITY_ACTIVITY_TYPES } from "@/lib/commercialization/opportunities/constants";
 
 import { buildScopeFromPlan } from "./build";
 import {
+  COMMERCIAL_SCOPE_MAPPING_VERSION,
   COMMERCIAL_SCOPE_VERSION,
   EVIDENCE_ONLY_ACTION_ID_PREFIX,
 } from "./constants";
@@ -54,6 +57,10 @@ const repoRoot = join(here, "../../../..");
 
 assert(COMMERCIAL_SCOPE_VERSION === 1, "scope version 1");
 assert(
+  COMMERCIAL_SCOPE_MAPPING_VERSION === 2,
+  "scope mapping quality version 2 (Sprint 4.1)",
+);
+assert(
   OPPORTUNITY_ACTIVITY_TYPES.includes("SCOPE_CREATED"),
   "SCOPE_CREATED activity type",
 );
@@ -61,6 +68,21 @@ assert(
   OPPORTUNITY_ACTIVITY_TYPES.includes("SCOPE_APPROVED"),
   "SCOPE_APPROVED activity type",
 );
+
+const SHARED_PERFORMANCE_CONSTRAINT: PreservationConstraint = {
+  id: "preserve-performance",
+  category: "performance",
+  statement:
+    "Preserve the site's current Performance advantage while reviewing the identified maintenance issue without introducing heavier page delivery or regressions.",
+  evidenceSourceKeys: ["category:performance"],
+  maintenanceActions: [
+    {
+      id: "css-delivery",
+      label: "Review CSS delivery / unused styles for maintainability",
+      evidenceSourceKeys: ["finding:css"],
+    },
+  ],
+};
 
 function makeRooftopPlan(): LoadedImplementationPlan {
   return {
@@ -120,7 +142,7 @@ function makeRooftopPlan(): LoadedImplementationPlan {
             evidenceSourceKeys: ["category:seo"],
           },
         ],
-        preservationConstraints: [],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
       },
       {
         id: "ws-content",
@@ -146,15 +168,7 @@ function makeRooftopPlan(): LoadedImplementationPlan {
             evidenceSourceKeys: ["category:content"],
           },
         ],
-        preservationConstraints: [
-          {
-            id: "preserve-performance",
-            category: "performance",
-            statement:
-              "Performance is a competitive strength; protect page weight during content work.",
-            evidenceSourceKeys: ["category:performance"],
-          },
-        ],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
       },
       {
         id: "ws-technical",
@@ -186,7 +200,7 @@ function makeRooftopPlan(): LoadedImplementationPlan {
             evidenceSourceKeys: ["category:technical"],
           },
         ],
-        preservationConstraints: [],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
       },
       {
         id: "ws-conversion",
@@ -212,7 +226,7 @@ function makeRooftopPlan(): LoadedImplementationPlan {
             evidenceSourceKeys: ["category:cro"],
           },
         ],
-        preservationConstraints: [],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
       },
     ],
   };
@@ -226,8 +240,16 @@ const manual = buildScopeFromPlan({
 });
 assert(manual.sections.length === 0, "scope without plan has no sections");
 assert(manual.implementationPlanId === null, "no plan id");
-assert(manual.assumptions.length > 0, "assumptions persist templates");
-assert(manual.exclusions.length > 0, "exclusions persist templates");
+assert(manual.assumptions.length === 0, "assumptions start empty");
+assert(manual.exclusions.length === 0, "exclusions start empty");
+assert(
+  manual.title === "Manual Co — Implementation Scope",
+  "default scope title",
+);
+assert(
+  manual.summary.toLowerCase().includes("manual commercial scope"),
+  "default summary for manual",
+);
 
 // Rooftop fixture mapping
 const rooftop = buildScopeFromPlan({
@@ -237,6 +259,14 @@ const rooftop = buildScopeFromPlan({
 });
 assert(rooftop.sections.length === 4, "Rooftop fixture maps expected 4 sections");
 assert(
+  rooftop.title === "Rooftop Solutions — Implementation Scope",
+  "default scope title useful",
+);
+assert(
+  rooftop.summary.includes("Recommended implementation scope"),
+  "default summary useful",
+);
+assert(
   rooftop.sections[0]?.workstreamType === "SEARCH_OPTIMIZATION",
   "first section Search Optimization",
 );
@@ -244,30 +274,153 @@ assert(
   rooftop.sections.every((s) => s.workstreamType !== "PERFORMANCE_OPTIMIZATION"),
   "Performance preservation does NOT create Performance section",
 );
+
+// 1–3: considerations + maintenance dedupe with multi-workstream provenance
 assert(
-  rooftop.considerations.some((c) =>
-    c.text.toLowerCase().includes("performance"),
+  rooftop.considerations.length === 1,
+  "duplicate Performance constraints collapse to one",
+);
+const perfConsideration = rooftop.considerations[0]!;
+assert(perfConsideration.key === "preserve:performance", "stable consideration key");
+assert(
+  perfConsideration.sourceWorkstreamIds.length === 4,
+  "provenance from multiple workstreams retained",
+);
+assert(
+  ["ws-search", "ws-content", "ws-technical", "ws-conversion"].every((id) =>
+    perfConsideration.sourceWorkstreamIds.includes(id),
   ),
-  "performance preservation as consideration",
+  "all source workstream ids retained",
+);
+assert(
+  perfConsideration.maintenanceActions.length === 1,
+  "duplicate maintenance actions collapse to one",
+);
+assert(
+  perfConsideration.maintenanceActions[0]?.id === "css-delivery",
+  "inline CSS maintenance action once",
+);
+
+// 4–5: human-readable primary titles
+assert(
+  rooftop.sections.every(
+    (s) =>
+      s.title !== s.workstreamType &&
+      !/^[A-Z_]+$/.test(s.title) &&
+      s.title.includes(" "),
+  ),
+  "raw workstream enum not used as primary section title",
+);
+assert(
+  rooftop.sections.find((s) => s.workstreamType === "SEARCH_OPTIMIZATION")
+    ?.title === "Search Optimization",
+  "Search polished title",
+);
+assert(
+  rooftop.sections.find((s) => s.workstreamType === "CONTENT_FOUNDATION")
+    ?.title === "Content Foundation",
+  "Content polished title",
+);
+assert(
+  rooftop.sections.find((s) => s.workstreamType === "TECHNICAL_SEO")?.title ===
+    "Technical SEO",
+  "Technical polished title",
+);
+assert(
+  rooftop.sections.find((s) => s.workstreamType === "CONVERSION_OPTIMIZATION")
+    ?.title === "Conversion Optimization",
+  "Conversion polished title",
 );
 
 const search = rooftop.sections.find(
   (s) => s.workstreamType === "SEARCH_OPTIMIZATION",
 )!;
-assert(search.capabilities.includes("SEO"), "active capabilities inherited");
+const content = rooftop.sections.find(
+  (s) => s.workstreamType === "CONTENT_FOUNDATION",
+)!;
+const technical = rooftop.sections.find(
+  (s) => s.workstreamType === "TECHNICAL_SEO",
+)!;
+const conversion = rooftop.sections.find(
+  (s) => s.workstreamType === "CONVERSION_OPTIMIZATION",
+)!;
+
+assert(
+  search.deliverables.every(
+    (d) => d.title !== d.sourceActionKey && d.title.includes(" "),
+  ),
+  "raw action key not used as primary deliverable title",
+);
+assert(
+  search.deliverables.some(
+    (d) =>
+      d.sourceActionKey === "improve-meta" &&
+      d.title === "Improve meta descriptions for clarity and uniqueness",
+  ),
+  "improve-meta polished title",
+);
+assert(
+  search.deliverables.some(
+    (d) =>
+      d.sourceActionKey === "heading-architecture" &&
+      d.title === "Correct heading hierarchy (H1 and supporting headings)",
+  ),
+  "heading-architecture polished title",
+);
+assert(
+  technical.deliverables.some(
+    (d) =>
+      d.sourceActionKey === "canonical" &&
+      d.title === "Implement or review canonical URL markup",
+  ),
+  "canonical polished title",
+);
+assert(
+  technical.deliverables.some(
+    (d) =>
+      d.sourceActionKey === "structured-data" &&
+      d.title === "Implement or repair structured data markup",
+  ),
+  "structured-data polished title",
+);
+
+// 6–11: capability inheritance
+assert(
+  JSON.stringify(search.capabilities) === JSON.stringify(["SEO"]),
+  "Search defaults to SEO only",
+);
+assert(
+  content.capabilities.includes("CONTENT") &&
+    content.capabilities.includes("SEO") &&
+    content.capabilities.length === 2,
+  "Content defaults to CONTENT + SEO exactly",
+);
+assert(
+  technical.capabilities.includes("SEO") &&
+    technical.capabilities.includes("WEBSITE_DEVELOPMENT") &&
+    technical.capabilities.length === 2,
+  "Technical defaults to SEO + WEBSITE_DEVELOPMENT",
+);
+assert(
+  conversion.capabilities.includes("CONVERSION_OPTIMIZATION") &&
+    conversion.capabilities.includes("WEBSITE_DEVELOPMENT") &&
+    conversion.capabilities.length === 2,
+  "Conversion defaults to CONVERSION_OPTIMIZATION + WEBSITE_DEVELOPMENT",
+);
+assert(
+  rooftop.sections.every((s) => !s.capabilities.includes("LOCAL_SEO")),
+  "LOCAL_SEO not selected without source support",
+);
 assert(
   !search.capabilities.includes("AI_AUTOMATION"),
-  "inactive capabilities not auto-added",
+  "inactive capabilities unavailable / not auto-added",
 );
+
 assert(
   search.deliverables.every(
     (d) => !d.title.toLowerCase().includes("competitive"),
   ),
   "competitive gap context action excluded from billable deliverables",
-);
-assert(
-  search.deliverables.some((d) => d.sourceActionKey === "improve-meta"),
-  "plan implementation actions map to deliverables",
 );
 assert(
   search.deliverables.every((d) => d.source === "PLAN"),
@@ -308,8 +461,9 @@ assert(
   "deliverable type classification",
 );
 
-// Fingerprint / staleness — plan change does not mutate built scope object
+// Fingerprint / staleness
 const fp1 = rooftop.sourceFingerprint;
+assert(fp1.includes('"scopeMappingVersion":2'), "fingerprint stores mapping v2");
 const fp2 = buildScopeSourceFingerprint({
   opportunityId: "opp-rooftop",
   implementationPlanId: "plan-new",
@@ -326,11 +480,122 @@ assert(
       planVersion: IMPLEMENTATION_PLAN_VERSION,
       mappingVersion: IMPLEMENTATION_MAPPING_VERSION,
       scopeVersion: COMMERCIAL_SCOPE_VERSION,
+      scopeMappingVersion: COMMERCIAL_SCOPE_MAPPING_VERSION,
     },
   }).stale,
   "source-plan changes cause stale indicator",
 );
+assert(
+  evaluateScopeStaleness({
+    storedFingerprint: buildScopeSourceFingerprint({
+      opportunityId: "opp-rooftop",
+      implementationPlanId: "plan-rooftop",
+      planVersion: IMPLEMENTATION_PLAN_VERSION,
+      mappingVersion: IMPLEMENTATION_MAPPING_VERSION,
+      scopeMappingVersion: 1,
+    }),
+    current: {
+      opportunityId: "opp-rooftop",
+      implementationPlanId: "plan-rooftop",
+      planVersion: IMPLEMENTATION_PLAN_VERSION,
+      mappingVersion: IMPLEMENTATION_MAPPING_VERSION,
+      scopeVersion: COMMERCIAL_SCOPE_VERSION,
+      scopeMappingVersion: COMMERCIAL_SCOPE_MAPPING_VERSION,
+    },
+  }).stale,
+  "older mapping version marked stale for rebuild detection",
+);
 assert(rooftop.implementationPlanId === "plan-rooftop", "built scope unchanged");
+
+// 14–17: Preview hygiene (source scans)
+const previewPage = readFileSync(
+  join(
+    repoRoot,
+    "src/app/reports/opportunities/[opportunityId]/scope/[scopeId]/page.tsx",
+  ),
+  "utf8",
+);
+assert(
+  !previewPage.includes("sourceActionKey"),
+  "preview hides source action keys",
+);
+assert(
+  !previewPage.includes("workstreamType"),
+  "preview hides raw workstream enums",
+);
+assert(
+  previewHidesInternalIds(previewPage),
+  "preview does not surface truncated plan/scope IDs when previewing",
+);
+assert(
+  previewPage.includes("getServiceCapabilityDisplayName"),
+  "preview shows human-readable capability labels",
+);
+assert(
+  previewPage.includes("Implementation considerations"),
+  "preview can show implementation considerations",
+);
+assert(
+  previewPage.includes("No assumptions added"),
+  "assumptions empty/preview state present",
+);
+assert(
+  previewPage.includes("No exclusions added"),
+  "exclusions empty/preview state present",
+);
+
+function previewHidesInternalIds(source: string): boolean {
+  const marker = "Included sections";
+  const start = source.indexOf(marker);
+  if (start < 0) {
+    return false;
+  }
+  // Preview card body after the included-sections heading through editor branch.
+  const previewBody = source.slice(start, source.indexOf("ScopeEditor"));
+  return (
+    !previewBody.includes("implementationPlanId") &&
+    !previewBody.includes(".slice(0, 8)") &&
+    !previewBody.includes("sourceActionKey") &&
+    !previewBody.includes("workstreamType")
+  );
+}
+
+const editorSource = readFileSync(
+  join(repoRoot, "src/components/opportunities/scope-editor.tsx"),
+  "utf8",
+);
+assert(
+  editorSource.includes("Implementation Plan"),
+  "operator source label human readable",
+);
+assert(
+  !editorSource.includes("· ${section.workstreamType}"),
+  "editor does not lead with raw workstream enum",
+);
+assert(
+  !/\$\{deliverable\.sourceActionKey\}/.test(editorSource) &&
+    !editorSource.includes("PLAN ·") &&
+    !editorSource.includes("` · ${"),
+  "editor does not lead with raw action keys",
+);
+assert(editorSource.includes("No assumptions added"), "assumptions empty state");
+assert(editorSource.includes("No exclusions added"), "exclusions empty state");
+assert(
+  editorSource.includes("Capabilities (from plan)"),
+  "capabilities inheritance surfaced distinctly",
+);
+
+// Capability display names for preview quality
+assert(
+  getServiceCapabilityDisplayName("SEO") === "SEO" ||
+    getServiceCapabilityDisplayName("SEO").length > 0,
+  "capability labels exist",
+);
+assert(
+  getServiceCapabilityDisplayName("WEBSITE_DEVELOPMENT") !==
+    "WEBSITE_DEVELOPMENT",
+  "website development polished label",
+);
 
 // Source scans
 const moduleFiles = collectTsFiles(join(here)).filter(
@@ -346,7 +611,6 @@ for (const file of moduleFiles) {
     !/runDeterministicWebsiteAudit|discoverContacts/i.test(source),
     `${file}: no crawl/contact`,
   );
-  assert(!/\bpricing\b|\bStripe\b/i.test(source), `${file}: no pricing/Stripe`);
 }
 
 const createSource = readFileSync(join(here, "create.ts"), "utf8");

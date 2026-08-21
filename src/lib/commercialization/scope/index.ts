@@ -1,5 +1,6 @@
 export {
   COMMERCIAL_SCOPE_VERSION,
+  COMMERCIAL_SCOPE_MAPPING_VERSION,
   COMMERCIAL_SCOPE_STATUSES,
   commercialScopeStatusLabel,
   EVIDENCE_ONLY_ACTION_ID_PREFIX,
@@ -14,5 +15,8 @@ export {
   isEvidenceOnlyPlanAction,
   classifyDeliverableType,
 } from "./map-actions";
-export { buildScopeSourceFingerprint, parseScopeSourceFingerprint } from "./fingerprint";
+export {
+  buildScopeSourceFingerprint,
+  parseScopeSourceFingerprint,
+} from "./fingerprint";
 export { evaluateScopeStaleness } from "./staleness";

@@ -9,6 +9,7 @@ import {
   type CommercialScopeStatus,
   type ScopeDeliverableType,
   type ScopeItemSource,
+  COMMERCIAL_SCOPE_MAPPING_VERSION,
 } from "./constants";
 import { buildScopeSourceFingerprint } from "./fingerprint";
 import { evaluateScopeStaleness } from "./staleness";
@@ -20,6 +21,47 @@ import type {
 
 function parseJsonArray<T>(raw: unknown): T[] {
   return Array.isArray(raw) ? (raw as T[]) : [];
+}
+
+function parseConsiderations(raw: unknown): ScopeConsideration[] {
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+
+  return raw.map((item, index) => {
+    const row = item as Partial<ScopeConsideration>;
+    return {
+      id: typeof row.id === "string" ? row.id : `consideration-${index}`,
+      key:
+        typeof row.key === "string"
+          ? row.key
+          : row.category
+            ? `preserve:${row.category}`
+            : `consideration:${index}`,
+      text: typeof row.text === "string" ? row.text : "",
+      category: typeof row.category === "string" ? row.category : null,
+      sortOrder: typeof row.sortOrder === "number" ? row.sortOrder : index,
+      sourceWorkstreamIds: Array.isArray(row.sourceWorkstreamIds)
+        ? row.sourceWorkstreamIds.filter(
+            (id): id is string => typeof id === "string",
+          )
+        : [],
+      maintenanceActions: Array.isArray(row.maintenanceActions)
+        ? row.maintenanceActions
+            .map((action) => {
+              const entry = action as { id?: unknown; text?: unknown };
+              if (typeof entry.id !== "string" || typeof entry.text !== "string") {
+                return null;
+              }
+              return { id: entry.id, text: entry.text };
+            })
+            .filter(
+              (action): action is { id: string; text: string } =>
+                action != null,
+            )
+        : [],
+    };
+  });
 }
 
 export async function loadCurrentScopeForOpportunity(options: {
@@ -165,6 +207,7 @@ export async function loadCommercialScopeDetail(options: {
     planVersion: planLoad.plan?.planVersion ?? null,
     mappingVersion: planLoad.plan?.mappingVersion ?? null,
     scopeVersion: row.scopeVersion,
+    scopeMappingVersion: COMMERCIAL_SCOPE_MAPPING_VERSION,
   };
 
   // Compare stored fingerprint against current plan identity (rebuild fingerprint input).
@@ -174,6 +217,7 @@ export async function loadCommercialScopeDetail(options: {
     planVersion: planLoad.plan?.planVersion ?? null,
     mappingVersion: planLoad.plan?.mappingVersion ?? null,
     scopeVersion: row.scopeVersion,
+    scopeMappingVersion: COMMERCIAL_SCOPE_MAPPING_VERSION,
   });
 
   const staleness =
@@ -198,9 +242,7 @@ export async function loadCommercialScopeDetail(options: {
       sourceFingerprint: row.sourceFingerprint,
       assumptions: parseJsonArray<ScopeAssumption>(row.assumptionsJson),
       exclusions: parseJsonArray<ScopeExclusion>(row.exclusionsJson),
-      considerations: parseJsonArray<ScopeConsideration>(
-        row.considerationsJson,
-      ),
+      considerations: parseConsiderations(row.considerationsJson),
       approvedAt: row.approvedAt,
       approvedByEmail: row.approvedByEmail,
       createdAt: row.createdAt,

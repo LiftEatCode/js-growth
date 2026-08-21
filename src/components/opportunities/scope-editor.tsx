@@ -243,37 +243,59 @@ export function ScopeEditor({
               }}
             />
 
-            <div className="flex flex-wrap gap-2 text-xs">
-              {activeCapabilities.map((cap) => {
-                const checked = section.capabilities.includes(cap.id);
-                return (
-                  <label
-                    key={cap.id}
-                    className="flex items-center gap-1 rounded-md border border-border px-2 py-1"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={(e) => {
-                        const next = e.target.checked
-                          ? [...section.capabilities, cap.id]
-                          : section.capabilities.filter((id) => id !== cap.id);
-                        run(() =>
-                          updateSectionAction(scopeId, section.id, {
-                            capabilities: next,
-                          }),
-                        );
-                      }}
-                    />
-                    {cap.displayName}
-                  </label>
-                );
-              })}
+            <div className="space-y-2">
+              <p className="text-xs font-medium text-brand">
+                Capabilities (from plan)
+              </p>
+              <div className="flex flex-wrap gap-2 text-xs">
+                {section.capabilities.length > 0 ? (
+                  section.capabilities.map((id) => (
+                    <span
+                      key={id}
+                      className="rounded-md border border-brand/30 bg-brand-blue/[0.06] px-2 py-1 font-medium text-ink"
+                    >
+                      {getServiceCapabilityDisplayName(id)}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-muted">None selected</span>
+                )}
+              </div>
+              <p className="text-xs text-muted">Add or remove active capabilities:</p>
+              <div className="flex flex-wrap gap-2 text-xs">
+                {activeCapabilities.map((cap) => {
+                  const checked = section.capabilities.includes(cap.id);
+                  return (
+                    <label
+                      key={cap.id}
+                      className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-muted"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) => {
+                          const next = e.target.checked
+                            ? [...section.capabilities, cap.id]
+                            : section.capabilities.filter((id) => id !== cap.id);
+                          run(() =>
+                            updateSectionAction(scopeId, section.id, {
+                              capabilities: next,
+                            }),
+                          );
+                        }}
+                      />
+                      {cap.displayName}
+                    </label>
+                  );
+                })}
+              </div>
             </div>
 
             <p className="text-xs text-muted">
-              Source: {section.source}
-              {section.workstreamType ? ` · ${section.workstreamType}` : ""}
+              Source:{" "}
+              {section.source === "PLAN"
+                ? "Implementation Plan"
+                : "Manual"}
             </p>
 
             <ul className="space-y-2">
@@ -325,10 +347,10 @@ export function ScopeEditor({
                       Optional
                     </label>
                     <span>
-                      {deliverable.source}
-                      {deliverable.sourceActionKey
-                        ? ` · ${deliverable.sourceActionKey}`
-                        : ""}
+                      Source:{" "}
+                      {deliverable.source === "PLAN"
+                        ? "Implementation Plan"
+                        : "Manual"}
                     </span>
                     <Button
                       type="button"
@@ -438,11 +460,14 @@ export function ScopeEditor({
         <h3 className="font-heading text-lg font-semibold text-brand">
           Assumptions
         </h3>
+        {assumptionsText.trim().length === 0 ? (
+          <p className="text-sm text-muted">No assumptions added.</p>
+        ) : null}
         <textarea
           className="min-h-28 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm"
           value={assumptionsText}
           onChange={(e) => setAssumptionsText(e.target.value)}
-          placeholder="One assumption per line"
+          placeholder="Add assumption (one per line)"
         />
         <Button
           type="button"
@@ -460,7 +485,9 @@ export function ScopeEditor({
             )
           }
         >
-          Save assumptions
+          {assumptionsText.trim().length === 0
+            ? "Add assumption"
+            : "Save assumptions"}
         </Button>
       </section>
 
@@ -468,11 +495,14 @@ export function ScopeEditor({
         <h3 className="font-heading text-lg font-semibold text-brand">
           Exclusions
         </h3>
+        {exclusionsText.trim().length === 0 ? (
+          <p className="text-sm text-muted">No exclusions added.</p>
+        ) : null}
         <textarea
           className="min-h-28 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm"
           value={exclusionsText}
           onChange={(e) => setExclusionsText(e.target.value)}
-          placeholder="One exclusion per line"
+          placeholder="Add exclusion (one per line)"
         />
         <Button
           type="button"
@@ -490,7 +520,9 @@ export function ScopeEditor({
             )
           }
         >
-          Save exclusions
+          {exclusionsText.trim().length === 0
+            ? "Add exclusion"
+            : "Save exclusions"}
         </Button>
       </section>
 

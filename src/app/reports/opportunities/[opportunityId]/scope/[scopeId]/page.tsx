@@ -85,23 +85,29 @@ export default async function ScopeDetailPage({
           <h1 className="mt-2 font-heading text-3xl font-semibold text-brand">
             {scope.title}
           </h1>
-          <p className="mt-2 text-sm text-muted">
-            {scope.businessName}
-            {scope.implementationPlanId
-              ? ` · Source plan ${scope.implementationPlanId.slice(0, 8)}…`
-              : " · Manual / no Implementation Plan"}
-          </p>
-          <p className="mt-1 text-xs text-muted">
-            Created {formatDateTime(scope.createdAt)}
-            {scope.approvedAt
-              ? ` · Approved ${formatDateTime(scope.approvedAt)}${
-                  scope.approvedByEmail ? ` by ${scope.approvedByEmail}` : ""
-                }`
-              : ""}
-          </p>
+          {!isPreview ? (
+            <>
+              <p className="mt-2 text-sm text-muted">
+                {scope.businessName}
+                {scope.implementationPlanId
+                  ? ` · Source plan ${scope.implementationPlanId.slice(0, 8)}…`
+                  : " · Manual / no Implementation Plan"}
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Created {formatDateTime(scope.createdAt)}
+                {scope.approvedAt
+                  ? ` · Approved ${formatDateTime(scope.approvedAt)}${
+                      scope.approvedByEmail ? ` by ${scope.approvedByEmail}` : ""
+                    }`
+                  : ""}
+              </p>
+            </>
+          ) : (
+            <p className="mt-2 text-sm text-muted">{scope.businessName}</p>
+          )}
         </Card>
 
-        {staleness.stale ? (
+        {!isPreview && staleness.stale ? (
           <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
             <p className="font-medium">Source Implementation Plan indicator: STALE</p>
             <ul className="mt-1 list-disc pl-5">
@@ -119,7 +125,7 @@ export default async function ScopeDetailPage({
         {isPreview ? (
           <Card variant="elevated" padding="lg">
             <h2 className="font-heading text-xl font-semibold text-brand">
-              Recommended Scope
+              {scope.title}
             </h2>
             <p className="mt-2 text-sm text-muted">
               Internal client-readable preview only — not a public link or
@@ -132,12 +138,15 @@ export default async function ScopeDetailPage({
             ) : null}
 
             <div className="mt-6 space-y-5">
+              <h3 className="font-heading text-base font-semibold text-brand">
+                Included sections
+              </h3>
               {includedSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="font-heading text-lg font-semibold text-ink">
+                  <h4 className="font-heading text-lg font-semibold text-ink">
                     {section.title}
                     {section.isOptional ? " (Optional)" : ""}
-                  </h3>
+                  </h4>
                   <p className="mt-1 text-xs text-muted">
                     {section.capabilities
                       .map((id) => getServiceCapabilityDisplayName(id))
@@ -159,35 +168,65 @@ export default async function ScopeDetailPage({
 
             {optionalSections.length > 0 ? (
               <p className="mt-4 text-xs text-muted">
-                Optional sections are marked above.
+                Optional work is marked above when applicable.
               </p>
             ) : null}
 
-            {scope.assumptions.length > 0 ? (
-              <div className="mt-6">
-                <h3 className="font-heading text-base font-semibold text-brand">
-                  Assumptions
-                </h3>
+            <div className="mt-6">
+              <h3 className="font-heading text-base font-semibold text-brand">
+                Implementation considerations
+              </h3>
+              {scope.considerations.length > 0 ? (
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/90">
+                  {scope.considerations.map((item) => (
+                    <li key={item.id}>
+                      {item.text}
+                      {item.maintenanceActions.length > 0 ? (
+                        <ul className="mt-1 list-disc pl-5 text-muted">
+                          {item.maintenanceActions.map((action) => (
+                            <li key={action.id}>{action.text}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-sm text-muted">
+                  No implementation considerations.
+                </p>
+              )}
+            </div>
+
+            <div className="mt-6">
+              <h3 className="font-heading text-base font-semibold text-brand">
+                Assumptions
+              </h3>
+              {scope.assumptions.length > 0 ? (
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/90">
                   {scope.assumptions.map((item) => (
                     <li key={item.id}>{item.text}</li>
                   ))}
                 </ul>
-              </div>
-            ) : null}
+              ) : (
+                <p className="mt-2 text-sm text-muted">No assumptions added.</p>
+              )}
+            </div>
 
-            {scope.exclusions.length > 0 ? (
-              <div className="mt-6">
-                <h3 className="font-heading text-base font-semibold text-brand">
-                  Exclusions
-                </h3>
+            <div className="mt-6">
+              <h3 className="font-heading text-base font-semibold text-brand">
+                Exclusions
+              </h3>
+              {scope.exclusions.length > 0 ? (
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/90">
                   {scope.exclusions.map((item) => (
                     <li key={item.id}>{item.text}</li>
                   ))}
                 </ul>
-              </div>
-            ) : null}
+              ) : (
+                <p className="mt-2 text-sm text-muted">No exclusions added.</p>
+              )}
+            </div>
           </Card>
         ) : (
           <>
@@ -200,9 +239,18 @@ export default async function ScopeDetailPage({
                   Preservation constraints from the Implementation Plan — not
                   billable Performance Optimization sections.
                 </p>
-                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-ink/90">
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-ink/90">
                   {scope.considerations.map((item) => (
-                    <li key={item.id}>{item.text}</li>
+                    <li key={item.id}>
+                      {item.text}
+                      {item.maintenanceActions.length > 0 ? (
+                        <ul className="mt-1 list-disc pl-5 text-muted">
+                          {item.maintenanceActions.map((action) => (
+                            <li key={action.id}>{action.text}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </li>
                   ))}
                 </ul>
               </Card>
