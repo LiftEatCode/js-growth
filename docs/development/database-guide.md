@@ -70,7 +70,10 @@ High-level data model for JS Growth. **Do not treat this as a full schema dump**
 | `ImplementationPlanWorkstream` | Workstream within a plan | Operator may reorder/priority/remove; evidence JSON not falsified |
 | `ImplementationPlanInterpretation` | AI strategy explanation of a plan | Historical COMPLETED/FAILED rows; bound to exact plan id |
 | `Opportunity` | Human-created sales pursuit | Capability snapshot; stages; next action; WON/LOST |
-| `OpportunityActivity` | Append-only commercial timeline | Created on state changes / notes |
+| `OpportunityActivity` | Append-only commercial timeline | Created on state changes / notes / scope milestones |
+| `CommercialScope` | Commercial offer definition | Historical revisions; approved immutable |
+| `CommercialScopeSection` | Scope workstream/section | Include/optional; capabilities |
+| `CommercialScopeDeliverable` | Billable/included work item | Plan or manual provenance |
 
 Snapshots and interpretations are designed so prior generations remain available for auditability.
 

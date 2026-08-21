@@ -1150,6 +1150,7 @@ model ImplementationPlan {
   interpretations ImplementationPlanInterpretation[]
 
   opportunities Opportunity[]
+  commercialScopes CommercialScope[]
 
   @@index([prospectId, campaignId, createdAt])
   @@index([auditReportId])
@@ -1233,6 +1234,7 @@ model ImplementationPlanInterpretation {
   createdByEmail String
 
   opportunities Opportunity[]
+  commercialScopes CommercialScope[]
 
   @@index([implementationPlanId, createdAt])
   @@index([prospectId, campaignId, createdAt])
@@ -1271,6 +1273,11 @@ enum OpportunityActivityType {
   MARKED_WON
   MARKED_LOST
   REOPENED
+  SCOPE_CREATED
+  SCOPE_REVIEWED
+  SCOPE_APPROVED
+  SCOPE_REVISED
+  SCOPE_SUPERSEDED
 }
 
 /// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
@@ -1318,6 +1325,7 @@ model Opportunity {
   createdByEmail String
 
   activities OpportunityActivity[]
+  scopes     CommercialScope[]
 
   @@index([prospectId, createdAt])
   @@index([campaignId, createdAt])
@@ -1347,4 +1355,119 @@ model OpportunityActivity {
 
   @@index([opportunityId, createdAt])
   @@index([type, createdAt])
+}
+
+enum CommercialScopeStatus {
+  DRAFT
+  REVIEWED
+  APPROVED
+  SUPERSEDED
+}
+
+/// Commercial Sprint 4 — human-controlled commercial Scope for an Opportunity.
+/// Recommendation → commercial offer definition. No pricing / proposals / OpenAI.
+model CommercialScope {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  /// Plan linked when scope was created/revised (nullable for manual scopes).
+  implementationPlanId String?
+  implementationPlan   ImplementationPlan? @relation(fields: [implementationPlanId], references: [id], onDelete: SetNull)
+
+  /// Provenance only — AI strategy is never authoritative for scope.
+  implementationInterpretationId String?
+  implementationInterpretation   ImplementationPlanInterpretation? @relation(fields: [implementationInterpretationId], references: [id], onDelete: SetNull)
+
+  status CommercialScopeStatus @default(DRAFT)
+
+  /// Operator-facing revision number within the Opportunity (1, 2, …).
+  revision Int @default(1)
+
+  title   String
+  summary String?
+
+  scopeVersion     Int
+  sourceFingerprint String
+
+  /// [{ id, text, sortOrder, templateKey? }]
+  assumptionsJson Json
+  /// [{ id, text, sortOrder, templateKey? }]
+  exclusionsJson Json
+  /// Preservation / implementation considerations copied from plan (not billable sections).
+  considerationsJson Json
+
+  approvedAt      DateTime?
+  approvedByEmail String?
+  supersededAt    DateTime?
+
+  createdByEmail String
+
+  sections CommercialScopeSection[]
+
+  @@index([opportunityId, createdAt])
+  @@index([opportunityId, status])
+  @@index([implementationPlanId])
+  @@index([status, createdAt])
+}
+
+model CommercialScopeSection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  scopeId String
+  scope   CommercialScope @relation(fields: [scopeId], references: [id], onDelete: Cascade)
+
+  sourceImplementationWorkstreamId String?
+  workstreamType                   String?
+
+  title       String
+  description String?
+
+  sortOrder  Int
+  isOptional Boolean @default(false)
+  isIncluded Boolean @default(true)
+
+  /// ServiceCapabilityId[] — active only on auto-map.
+  capabilitiesJson Json
+
+  /// PLAN | MANUAL
+  source String @default("PLAN")
+
+  deliverables CommercialScopeDeliverable[]
+
+  @@index([scopeId, sortOrder])
+  @@index([scopeId, isIncluded])
+}
+
+model CommercialScopeDeliverable {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sectionId String
+  section   CommercialScopeSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  /// RecommendedAction.id from Implementation Plan when plan-derived.
+  sourceActionKey String?
+
+  title       String
+  description String?
+
+  /// IMPLEMENTATION | REVIEW | CONFIGURATION | CONTENT | TECHNICAL | OPTIMIZATION | OTHER
+  deliverableType String @default("IMPLEMENTATION")
+
+  sortOrder  Int
+  isOptional Boolean @default(false)
+  isIncluded Boolean @default(true)
+
+  /// PLAN | MANUAL
+  source String @default("PLAN")
+
+  @@index([sectionId, sortOrder])
+  @@index([sectionId, isIncluded])
 }

@@ -133,7 +133,19 @@ Canonical doc: `docs/development/opportunity-management.md`
 
 Human-created sales Opportunities with stages, capability snapshots, next actions, notes, WON/LOST, and activity history. No OpenAI / Places / crawl / Resend. No pricing or proposals.
 
-**Not included:** scope engine, pricing, proposals, client conversion, automated follow-up.
+**Not included:** pricing, proposals, client conversion, automated follow-up.
+
+---
+
+## Commercial Sprint 4 — Scope Engine V1
+
+Status: 🟢 Implemented (internal)
+
+Canonical doc: `docs/development/scope-engine.md`
+
+Human-controlled commercial Scope from Opportunity (+ optional Implementation Plan). Plan → sections/deliverables with evidence-only competitive-gap actions excluded. Approved scopes immutable; revise creates historical versions. No pricing / proposals / OpenAI.
+
+**Not included:** pricing, proposals, PDF, public scope links, automatic Opportunity stage changes.
 
 ---
 
@@ -149,10 +161,11 @@ Human-created sales Opportunities with stages, capability snapshots, next action
 
 Prioritize based on business leverage with the **current** stack:
 
-1. Opportunity / proposal layer extensions: scope + pricing + proposal on approved Opportunities (still human-gated)
-2. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
-4. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
+1. Pricing engine on approved Scopes (Commercial Sprint 5)
+2. Proposal generation on priced scopes (Commercial Sprint 6) — still human-gated
+3. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
+4. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
+5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
 
 ## LATER / EXPLORATORY
 

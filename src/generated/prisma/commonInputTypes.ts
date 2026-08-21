@@ -875,6 +875,23 @@ export type EnumOpportunityActivityTypeWithAggregatesFilter<$PrismaModel = never
   _max?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
 }
 
+export type EnumCommercialScopeStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialScopeStatus | Prisma.EnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel> | $Enums.CommercialScopeStatus
+}
+
+export type EnumCommercialScopeStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialScopeStatus | Prisma.EnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialScopeStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialScopeStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1682,6 +1699,23 @@ export type NestedEnumOpportunityActivityTypeWithAggregatesFilter<$PrismaModel =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumCommercialScopeStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialScopeStatus | Prisma.EnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel> | $Enums.CommercialScopeStatus
+}
+
+export type NestedEnumCommercialScopeStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialScopeStatus | Prisma.EnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialScopeStatus[] | Prisma.ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialScopeStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialScopeStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
 }
 
 

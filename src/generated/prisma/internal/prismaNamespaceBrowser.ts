@@ -79,7 +79,10 @@ export const ModelName = {
   ImplementationPlanWorkstream: 'ImplementationPlanWorkstream',
   ImplementationPlanInterpretation: 'ImplementationPlanInterpretation',
   Opportunity: 'Opportunity',
-  OpportunityActivity: 'OpportunityActivity'
+  OpportunityActivity: 'OpportunityActivity',
+  CommercialScope: 'CommercialScope',
+  CommercialScopeSection: 'CommercialScopeSection',
+  CommercialScopeDeliverable: 'CommercialScopeDeliverable'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -750,6 +753,68 @@ export const OpportunityActivityScalarFieldEnum = {
 } as const
 
 export type OpportunityActivityScalarFieldEnum = (typeof OpportunityActivityScalarFieldEnum)[keyof typeof OpportunityActivityScalarFieldEnum]
+
+
+export const CommercialScopeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  implementationPlanId: 'implementationPlanId',
+  implementationInterpretationId: 'implementationInterpretationId',
+  status: 'status',
+  revision: 'revision',
+  title: 'title',
+  summary: 'summary',
+  scopeVersion: 'scopeVersion',
+  sourceFingerprint: 'sourceFingerprint',
+  assumptionsJson: 'assumptionsJson',
+  exclusionsJson: 'exclusionsJson',
+  considerationsJson: 'considerationsJson',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CommercialScopeScalarFieldEnum = (typeof CommercialScopeScalarFieldEnum)[keyof typeof CommercialScopeScalarFieldEnum]
+
+
+export const CommercialScopeSectionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  scopeId: 'scopeId',
+  sourceImplementationWorkstreamId: 'sourceImplementationWorkstreamId',
+  workstreamType: 'workstreamType',
+  title: 'title',
+  description: 'description',
+  sortOrder: 'sortOrder',
+  isOptional: 'isOptional',
+  isIncluded: 'isIncluded',
+  capabilitiesJson: 'capabilitiesJson',
+  source: 'source'
+} as const
+
+export type CommercialScopeSectionScalarFieldEnum = (typeof CommercialScopeSectionScalarFieldEnum)[keyof typeof CommercialScopeSectionScalarFieldEnum]
+
+
+export const CommercialScopeDeliverableScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sectionId: 'sectionId',
+  sourceActionKey: 'sourceActionKey',
+  title: 'title',
+  description: 'description',
+  deliverableType: 'deliverableType',
+  sortOrder: 'sortOrder',
+  isOptional: 'isOptional',
+  isIncluded: 'isIncluded',
+  source: 'source'
+} as const
+
+export type CommercialScopeDeliverableScalarFieldEnum = (typeof CommercialScopeDeliverableScalarFieldEnum)[keyof typeof CommercialScopeDeliverableScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -192,3 +192,19 @@ export type Opportunity = Prisma.OpportunityModel
  * Append-only sales timeline for an Opportunity.
  */
 export type OpportunityActivity = Prisma.OpportunityActivityModel
+/**
+ * Model CommercialScope
+ * Commercial Sprint 4 — human-controlled commercial Scope for an Opportunity.
+ * Recommendation → commercial offer definition. No pricing / proposals / OpenAI.
+ */
+export type CommercialScope = Prisma.CommercialScopeModel
+/**
+ * Model CommercialScopeSection
+ * 
+ */
+export type CommercialScopeSection = Prisma.CommercialScopeSectionModel
+/**
+ * Model CommercialScopeDeliverable
+ * 
+ */
+export type CommercialScopeDeliverable = Prisma.CommercialScopeDeliverableModel

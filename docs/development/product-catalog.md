@@ -58,6 +58,12 @@ Verified against implementation. Separates **public products**, **internal tools
 - Human-created commercial pursuits with stages, capability snapshots, next actions, WON/LOST
 - **No** pricing, proposals, automated outreach, or public exposure
 
+### Commercial Scope Engine V1 (Commercial Sprint 4)
+
+- Human-controlled Scope from Opportunity (+ optional Implementation Plan)
+- Approved scopes immutable; revise for new versions
+- **No** pricing, proposals, or OpenAI
+
 ---
 
 ## Planned / not implemented (examples)
@@ -69,7 +75,7 @@ Confirm against [ROADMAP.md](../../ROADMAP.md) before promising clients:
 - Lead capture from competitive reports
 - Competitive monitoring / scheduled re-audits / trend history productization
 - Follow-up outreach automation / reply ingestion
-- Scope / pricing / proposal engines on Opportunities
+- Scope / pricing / proposal engines beyond current Scope V1
 - Broader CRM / multi-location BI
 - Service recommendation generators as a productized SKU
 

@@ -297,6 +297,7 @@ export type OpportunityWhereInput = {
   implementationPlan?: Prisma.XOR<Prisma.ImplementationPlanNullableScalarRelationFilter, Prisma.ImplementationPlanWhereInput> | null
   implementationInterpretation?: Prisma.XOR<Prisma.ImplementationPlanInterpretationNullableScalarRelationFilter, Prisma.ImplementationPlanInterpretationWhereInput> | null
   activities?: Prisma.OpportunityActivityListRelationFilter
+  scopes?: Prisma.CommercialScopeListRelationFilter
 }
 
 export type OpportunityOrderByWithRelationInput = {
@@ -325,6 +326,7 @@ export type OpportunityOrderByWithRelationInput = {
   implementationPlan?: Prisma.ImplementationPlanOrderByWithRelationInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationOrderByWithRelationInput
   activities?: Prisma.OpportunityActivityOrderByRelationAggregateInput
+  scopes?: Prisma.CommercialScopeOrderByRelationAggregateInput
 }
 
 export type OpportunityWhereUniqueInput = Prisma.AtLeast<{
@@ -356,6 +358,7 @@ export type OpportunityWhereUniqueInput = Prisma.AtLeast<{
   implementationPlan?: Prisma.XOR<Prisma.ImplementationPlanNullableScalarRelationFilter, Prisma.ImplementationPlanWhereInput> | null
   implementationInterpretation?: Prisma.XOR<Prisma.ImplementationPlanInterpretationNullableScalarRelationFilter, Prisma.ImplementationPlanInterpretationWhereInput> | null
   activities?: Prisma.OpportunityActivityListRelationFilter
+  scopes?: Prisma.CommercialScopeListRelationFilter
 }, "id">
 
 export type OpportunityOrderByWithAggregationInput = {
@@ -429,6 +432,7 @@ export type OpportunityCreateInput = {
   implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
   activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateInput = {
@@ -452,6 +456,7 @@ export type OpportunityUncheckedCreateInput = {
   lostNote?: string | null
   createdByEmail: string
   activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUpdateInput = {
@@ -475,6 +480,7 @@ export type OpportunityUpdateInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
   activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateInput = {
@@ -498,6 +504,7 @@ export type OpportunityUncheckedUpdateInput = {
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityCreateManyInput = {
@@ -872,6 +879,20 @@ export type OpportunityUpdateOneRequiredWithoutActivitiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OpportunityUpdateToOneWithWhereWithoutActivitiesInput, Prisma.OpportunityUpdateWithoutActivitiesInput>, Prisma.OpportunityUncheckedUpdateWithoutActivitiesInput>
 }
 
+export type OpportunityCreateNestedOneWithoutScopesInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutScopesInput, Prisma.OpportunityUncheckedCreateWithoutScopesInput>
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutScopesInput
+  connect?: Prisma.OpportunityWhereUniqueInput
+}
+
+export type OpportunityUpdateOneRequiredWithoutScopesNestedInput = {
+  create?: Prisma.XOR<Prisma.OpportunityCreateWithoutScopesInput, Prisma.OpportunityUncheckedCreateWithoutScopesInput>
+  connectOrCreate?: Prisma.OpportunityCreateOrConnectWithoutScopesInput
+  upsert?: Prisma.OpportunityUpsertWithoutScopesInput
+  connect?: Prisma.OpportunityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OpportunityUpdateToOneWithWhereWithoutScopesInput, Prisma.OpportunityUpdateWithoutScopesInput>, Prisma.OpportunityUncheckedUpdateWithoutScopesInput>
+}
+
 export type OpportunityCreateWithoutLeadInput = {
   id?: string
   createdAt?: Date | string
@@ -892,6 +913,7 @@ export type OpportunityCreateWithoutLeadInput = {
   implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
   activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutLeadInput = {
@@ -914,6 +936,7 @@ export type OpportunityUncheckedCreateWithoutLeadInput = {
   lostNote?: string | null
   createdByEmail: string
   activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutLeadInput = {
@@ -987,6 +1010,7 @@ export type OpportunityCreateWithoutCampaignInput = {
   implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
   activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutCampaignInput = {
@@ -1009,6 +1033,7 @@ export type OpportunityUncheckedCreateWithoutCampaignInput = {
   lostNote?: string | null
   createdByEmail: string
   activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutCampaignInput = {
@@ -1057,6 +1082,7 @@ export type OpportunityCreateWithoutProspectInput = {
   implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
   activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutProspectInput = {
@@ -1079,6 +1105,7 @@ export type OpportunityUncheckedCreateWithoutProspectInput = {
   lostNote?: string | null
   createdByEmail: string
   activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutProspectInput = {
@@ -1127,6 +1154,7 @@ export type OpportunityCreateWithoutImplementationPlanInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutOpportunitiesInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
   activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutImplementationPlanInput = {
@@ -1149,6 +1177,7 @@ export type OpportunityUncheckedCreateWithoutImplementationPlanInput = {
   lostNote?: string | null
   createdByEmail: string
   activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutImplementationPlanInput = {
@@ -1197,6 +1226,7 @@ export type OpportunityCreateWithoutImplementationInterpretationInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutOpportunitiesInput
   implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
   activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutImplementationInterpretationInput = {
@@ -1219,6 +1249,7 @@ export type OpportunityUncheckedCreateWithoutImplementationInterpretationInput =
   lostNote?: string | null
   createdByEmail: string
   activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutImplementationInterpretationInput = {
@@ -1267,6 +1298,7 @@ export type OpportunityCreateWithoutActivitiesInput = {
   lead?: Prisma.LeadCreateNestedOneWithoutOpportunitiesInput
   implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
+  scopes?: Prisma.CommercialScopeCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityUncheckedCreateWithoutActivitiesInput = {
@@ -1289,6 +1321,7 @@ export type OpportunityUncheckedCreateWithoutActivitiesInput = {
   lostReason?: $Enums.OpportunityLostReason | null
   lostNote?: string | null
   createdByEmail: string
+  scopes?: Prisma.CommercialScopeUncheckedCreateNestedManyWithoutOpportunityInput
 }
 
 export type OpportunityCreateOrConnectWithoutActivitiesInput = {
@@ -1327,6 +1360,7 @@ export type OpportunityUpdateWithoutActivitiesInput = {
   lead?: Prisma.LeadUpdateOneWithoutOpportunitiesNestedInput
   implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutActivitiesInput = {
@@ -1349,6 +1383,115 @@ export type OpportunityUncheckedUpdateWithoutActivitiesInput = {
   lostReason?: Prisma.NullableEnumOpportunityLostReasonFieldUpdateOperationsInput | $Enums.OpportunityLostReason | null
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
+}
+
+export type OpportunityCreateWithoutScopesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  stage?: $Enums.OpportunityStage
+  ownerEmail: string
+  recommendedCapabilitiesJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  nextAction?: string | null
+  nextActionAt?: Date | string | null
+  wonAt?: Date | string | null
+  lostAt?: Date | string | null
+  lostReason?: $Enums.OpportunityLostReason | null
+  lostNote?: string | null
+  createdByEmail: string
+  prospect: Prisma.ProspectCreateNestedOneWithoutOpportunitiesInput
+  campaign: Prisma.CampaignCreateNestedOneWithoutOpportunitiesInput
+  lead?: Prisma.LeadCreateNestedOneWithoutOpportunitiesInput
+  implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutOpportunitiesInput
+  implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput
+  activities?: Prisma.OpportunityActivityCreateNestedManyWithoutOpportunityInput
+}
+
+export type OpportunityUncheckedCreateWithoutScopesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prospectId: string
+  campaignId: string
+  leadId?: string | null
+  implementationPlanId?: string | null
+  implementationInterpretationId?: string | null
+  name: string
+  stage?: $Enums.OpportunityStage
+  ownerEmail: string
+  recommendedCapabilitiesJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  nextAction?: string | null
+  nextActionAt?: Date | string | null
+  wonAt?: Date | string | null
+  lostAt?: Date | string | null
+  lostReason?: $Enums.OpportunityLostReason | null
+  lostNote?: string | null
+  createdByEmail: string
+  activities?: Prisma.OpportunityActivityUncheckedCreateNestedManyWithoutOpportunityInput
+}
+
+export type OpportunityCreateOrConnectWithoutScopesInput = {
+  where: Prisma.OpportunityWhereUniqueInput
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutScopesInput, Prisma.OpportunityUncheckedCreateWithoutScopesInput>
+}
+
+export type OpportunityUpsertWithoutScopesInput = {
+  update: Prisma.XOR<Prisma.OpportunityUpdateWithoutScopesInput, Prisma.OpportunityUncheckedUpdateWithoutScopesInput>
+  create: Prisma.XOR<Prisma.OpportunityCreateWithoutScopesInput, Prisma.OpportunityUncheckedCreateWithoutScopesInput>
+  where?: Prisma.OpportunityWhereInput
+}
+
+export type OpportunityUpdateToOneWithWhereWithoutScopesInput = {
+  where?: Prisma.OpportunityWhereInput
+  data: Prisma.XOR<Prisma.OpportunityUpdateWithoutScopesInput, Prisma.OpportunityUncheckedUpdateWithoutScopesInput>
+}
+
+export type OpportunityUpdateWithoutScopesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  stage?: Prisma.EnumOpportunityStageFieldUpdateOperationsInput | $Enums.OpportunityStage
+  ownerEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recommendedCapabilitiesJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  nextAction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  wonAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lostAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lostReason?: Prisma.NullableEnumOpportunityLostReasonFieldUpdateOperationsInput | $Enums.OpportunityLostReason | null
+  lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutOpportunitiesNestedInput
+  campaign?: Prisma.CampaignUpdateOneRequiredWithoutOpportunitiesNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutOpportunitiesNestedInput
+  implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
+  implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
+  activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+}
+
+export type OpportunityUncheckedUpdateWithoutScopesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  implementationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  implementationInterpretationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  stage?: Prisma.EnumOpportunityStageFieldUpdateOperationsInput | $Enums.OpportunityStage
+  ownerEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recommendedCapabilitiesJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  nextAction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  wonAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lostAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lostReason?: Prisma.NullableEnumOpportunityLostReasonFieldUpdateOperationsInput | $Enums.OpportunityLostReason | null
+  lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityCreateManyLeadInput = {
@@ -1392,6 +1535,7 @@ export type OpportunityUpdateWithoutLeadInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
   activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutLeadInput = {
@@ -1414,6 +1558,7 @@ export type OpportunityUncheckedUpdateWithoutLeadInput = {
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateManyWithoutLeadInput = {
@@ -1478,6 +1623,7 @@ export type OpportunityUpdateWithoutCampaignInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
   activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutCampaignInput = {
@@ -1500,6 +1646,7 @@ export type OpportunityUncheckedUpdateWithoutCampaignInput = {
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateManyWithoutCampaignInput = {
@@ -1564,6 +1711,7 @@ export type OpportunityUpdateWithoutProspectInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
   activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutProspectInput = {
@@ -1586,6 +1734,7 @@ export type OpportunityUncheckedUpdateWithoutProspectInput = {
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateManyWithoutProspectInput = {
@@ -1650,6 +1799,7 @@ export type OpportunityUpdateWithoutImplementationPlanInput = {
   lead?: Prisma.LeadUpdateOneWithoutOpportunitiesNestedInput
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput
   activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutImplementationPlanInput = {
@@ -1672,6 +1822,7 @@ export type OpportunityUncheckedUpdateWithoutImplementationPlanInput = {
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateManyWithoutImplementationPlanInput = {
@@ -1736,6 +1887,7 @@ export type OpportunityUpdateWithoutImplementationInterpretationInput = {
   lead?: Prisma.LeadUpdateOneWithoutOpportunitiesNestedInput
   implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutOpportunitiesNestedInput
   activities?: Prisma.OpportunityActivityUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateWithoutImplementationInterpretationInput = {
@@ -1758,6 +1910,7 @@ export type OpportunityUncheckedUpdateWithoutImplementationInterpretationInput =
   lostNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   activities?: Prisma.OpportunityActivityUncheckedUpdateManyWithoutOpportunityNestedInput
+  scopes?: Prisma.CommercialScopeUncheckedUpdateManyWithoutOpportunityNestedInput
 }
 
 export type OpportunityUncheckedUpdateManyWithoutImplementationInterpretationInput = {
@@ -1788,10 +1941,12 @@ export type OpportunityUncheckedUpdateManyWithoutImplementationInterpretationInp
 
 export type OpportunityCountOutputType = {
   activities: number
+  scopes: number
 }
 
 export type OpportunityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   activities?: boolean | OpportunityCountOutputTypeCountActivitiesArgs
+  scopes?: boolean | OpportunityCountOutputTypeCountScopesArgs
 }
 
 /**
@@ -1809,6 +1964,13 @@ export type OpportunityCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
  */
 export type OpportunityCountOutputTypeCountActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OpportunityActivityWhereInput
+}
+
+/**
+ * OpportunityCountOutputType without action
+ */
+export type OpportunityCountOutputTypeCountScopesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommercialScopeWhereInput
 }
 
 
@@ -1838,6 +2000,7 @@ export type OpportunitySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   implementationPlan?: boolean | Prisma.Opportunity$implementationPlanArgs<ExtArgs>
   implementationInterpretation?: boolean | Prisma.Opportunity$implementationInterpretationArgs<ExtArgs>
   activities?: boolean | Prisma.Opportunity$activitiesArgs<ExtArgs>
+  scopes?: boolean | Prisma.Opportunity$scopesArgs<ExtArgs>
   _count?: boolean | Prisma.OpportunityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["opportunity"]>
 
@@ -1925,6 +2088,7 @@ export type OpportunityInclude<ExtArgs extends runtime.Types.Extensions.Internal
   implementationPlan?: boolean | Prisma.Opportunity$implementationPlanArgs<ExtArgs>
   implementationInterpretation?: boolean | Prisma.Opportunity$implementationInterpretationArgs<ExtArgs>
   activities?: boolean | Prisma.Opportunity$activitiesArgs<ExtArgs>
+  scopes?: boolean | Prisma.Opportunity$scopesArgs<ExtArgs>
   _count?: boolean | Prisma.OpportunityCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OpportunityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1951,6 +2115,7 @@ export type $OpportunityPayload<ExtArgs extends runtime.Types.Extensions.Interna
     implementationPlan: Prisma.$ImplementationPlanPayload<ExtArgs> | null
     implementationInterpretation: Prisma.$ImplementationPlanInterpretationPayload<ExtArgs> | null
     activities: Prisma.$OpportunityActivityPayload<ExtArgs>[]
+    scopes: Prisma.$CommercialScopePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2381,6 +2546,7 @@ export interface Prisma__OpportunityClient<T, Null = never, ExtArgs extends runt
   implementationPlan<T extends Prisma.Opportunity$implementationPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$implementationPlanArgs<ExtArgs>>): Prisma.Prisma__ImplementationPlanClient<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   implementationInterpretation<T extends Prisma.Opportunity$implementationInterpretationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$implementationInterpretationArgs<ExtArgs>>): Prisma.Prisma__ImplementationPlanInterpretationClient<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   activities<T extends Prisma.Opportunity$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scopes<T extends Prisma.Opportunity$scopesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Opportunity$scopesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialScopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2908,6 +3074,30 @@ export type Opportunity$activitiesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.OpportunityActivityScalarFieldEnum | Prisma.OpportunityActivityScalarFieldEnum[]
+}
+
+/**
+ * Opportunity.scopes
+ */
+export type Opportunity$scopesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommercialScope
+   */
+  select?: Prisma.CommercialScopeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommercialScope
+   */
+  omit?: Prisma.CommercialScopeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommercialScopeInclude<ExtArgs> | null
+  where?: Prisma.CommercialScopeWhereInput
+  orderBy?: Prisma.CommercialScopeOrderByWithRelationInput | Prisma.CommercialScopeOrderByWithRelationInput[]
+  cursor?: Prisma.CommercialScopeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommercialScopeScalarFieldEnum | Prisma.CommercialScopeScalarFieldEnum[]
 }
 
 /**

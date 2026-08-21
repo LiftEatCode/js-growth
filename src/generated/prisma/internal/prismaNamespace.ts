@@ -425,7 +425,10 @@ export const ModelName = {
   ImplementationPlanWorkstream: 'ImplementationPlanWorkstream',
   ImplementationPlanInterpretation: 'ImplementationPlanInterpretation',
   Opportunity: 'Opportunity',
-  OpportunityActivity: 'OpportunityActivity'
+  OpportunityActivity: 'OpportunityActivity',
+  CommercialScope: 'CommercialScope',
+  CommercialScopeSection: 'CommercialScopeSection',
+  CommercialScopeDeliverable: 'CommercialScopeDeliverable'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -441,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2591,6 +2594,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CommercialScope: {
+      payload: Prisma.$CommercialScopePayload<ExtArgs>
+      fields: Prisma.CommercialScopeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommercialScopeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommercialScopeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>
+        }
+        findFirst: {
+          args: Prisma.CommercialScopeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommercialScopeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>
+        }
+        findMany: {
+          args: Prisma.CommercialScopeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>[]
+        }
+        create: {
+          args: Prisma.CommercialScopeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>
+        }
+        createMany: {
+          args: Prisma.CommercialScopeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommercialScopeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>[]
+        }
+        delete: {
+          args: Prisma.CommercialScopeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>
+        }
+        update: {
+          args: Prisma.CommercialScopeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>
+        }
+        deleteMany: {
+          args: Prisma.CommercialScopeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommercialScopeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommercialScopeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>[]
+        }
+        upsert: {
+          args: Prisma.CommercialScopeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopePayload>
+        }
+        aggregate: {
+          args: Prisma.CommercialScopeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommercialScope>
+        }
+        groupBy: {
+          args: Prisma.CommercialScopeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialScopeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommercialScopeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialScopeCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommercialScopeSection: {
+      payload: Prisma.$CommercialScopeSectionPayload<ExtArgs>
+      fields: Prisma.CommercialScopeSectionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommercialScopeSectionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommercialScopeSectionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>
+        }
+        findFirst: {
+          args: Prisma.CommercialScopeSectionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommercialScopeSectionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>
+        }
+        findMany: {
+          args: Prisma.CommercialScopeSectionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>[]
+        }
+        create: {
+          args: Prisma.CommercialScopeSectionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>
+        }
+        createMany: {
+          args: Prisma.CommercialScopeSectionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommercialScopeSectionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>[]
+        }
+        delete: {
+          args: Prisma.CommercialScopeSectionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>
+        }
+        update: {
+          args: Prisma.CommercialScopeSectionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommercialScopeSectionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommercialScopeSectionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommercialScopeSectionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommercialScopeSectionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeSectionPayload>
+        }
+        aggregate: {
+          args: Prisma.CommercialScopeSectionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommercialScopeSection>
+        }
+        groupBy: {
+          args: Prisma.CommercialScopeSectionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialScopeSectionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommercialScopeSectionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialScopeSectionCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommercialScopeDeliverable: {
+      payload: Prisma.$CommercialScopeDeliverablePayload<ExtArgs>
+      fields: Prisma.CommercialScopeDeliverableFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommercialScopeDeliverableFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommercialScopeDeliverableFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>
+        }
+        findFirst: {
+          args: Prisma.CommercialScopeDeliverableFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommercialScopeDeliverableFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>
+        }
+        findMany: {
+          args: Prisma.CommercialScopeDeliverableFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>[]
+        }
+        create: {
+          args: Prisma.CommercialScopeDeliverableCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>
+        }
+        createMany: {
+          args: Prisma.CommercialScopeDeliverableCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommercialScopeDeliverableCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>[]
+        }
+        delete: {
+          args: Prisma.CommercialScopeDeliverableDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>
+        }
+        update: {
+          args: Prisma.CommercialScopeDeliverableUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>
+        }
+        deleteMany: {
+          args: Prisma.CommercialScopeDeliverableDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommercialScopeDeliverableUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommercialScopeDeliverableUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>[]
+        }
+        upsert: {
+          args: Prisma.CommercialScopeDeliverableUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialScopeDeliverablePayload>
+        }
+        aggregate: {
+          args: Prisma.CommercialScopeDeliverableAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommercialScopeDeliverable>
+        }
+        groupBy: {
+          args: Prisma.CommercialScopeDeliverableGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialScopeDeliverableGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommercialScopeDeliverableCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialScopeDeliverableCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3284,6 +3509,68 @@ export const OpportunityActivityScalarFieldEnum = {
 export type OpportunityActivityScalarFieldEnum = (typeof OpportunityActivityScalarFieldEnum)[keyof typeof OpportunityActivityScalarFieldEnum]
 
 
+export const CommercialScopeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  implementationPlanId: 'implementationPlanId',
+  implementationInterpretationId: 'implementationInterpretationId',
+  status: 'status',
+  revision: 'revision',
+  title: 'title',
+  summary: 'summary',
+  scopeVersion: 'scopeVersion',
+  sourceFingerprint: 'sourceFingerprint',
+  assumptionsJson: 'assumptionsJson',
+  exclusionsJson: 'exclusionsJson',
+  considerationsJson: 'considerationsJson',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CommercialScopeScalarFieldEnum = (typeof CommercialScopeScalarFieldEnum)[keyof typeof CommercialScopeScalarFieldEnum]
+
+
+export const CommercialScopeSectionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  scopeId: 'scopeId',
+  sourceImplementationWorkstreamId: 'sourceImplementationWorkstreamId',
+  workstreamType: 'workstreamType',
+  title: 'title',
+  description: 'description',
+  sortOrder: 'sortOrder',
+  isOptional: 'isOptional',
+  isIncluded: 'isIncluded',
+  capabilitiesJson: 'capabilitiesJson',
+  source: 'source'
+} as const
+
+export type CommercialScopeSectionScalarFieldEnum = (typeof CommercialScopeSectionScalarFieldEnum)[keyof typeof CommercialScopeSectionScalarFieldEnum]
+
+
+export const CommercialScopeDeliverableScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sectionId: 'sectionId',
+  sourceActionKey: 'sourceActionKey',
+  title: 'title',
+  description: 'description',
+  deliverableType: 'deliverableType',
+  sortOrder: 'sortOrder',
+  isOptional: 'isOptional',
+  isIncluded: 'isIncluded',
+  source: 'source'
+} as const
+
+export type CommercialScopeDeliverableScalarFieldEnum = (typeof CommercialScopeDeliverableScalarFieldEnum)[keyof typeof CommercialScopeDeliverableScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3862,6 +4149,20 @@ export type EnumOpportunityActivityTypeFieldRefInput<$PrismaModel> = FieldRefInp
 export type ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityActivityType[]'>
     
 
+
+/**
+ * Reference to a field of type 'CommercialScopeStatus'
+ */
+export type EnumCommercialScopeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialScopeStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CommercialScopeStatus[]'
+ */
+export type ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialScopeStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -4042,6 +4343,9 @@ export type GlobalOmitConfig = {
   implementationPlanInterpretation?: Prisma.ImplementationPlanInterpretationOmit
   opportunity?: Prisma.OpportunityOmit
   opportunityActivity?: Prisma.OpportunityActivityOmit
+  commercialScope?: Prisma.CommercialScopeOmit
+  commercialScopeSection?: Prisma.CommercialScopeSectionOmit
+  commercialScopeDeliverable?: Prisma.CommercialScopeDeliverableOmit
 }
 
 /* Types for Logging */

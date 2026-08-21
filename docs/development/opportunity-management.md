@@ -110,7 +110,9 @@ Append-only `OpportunityActivity`:
 
 ## Not in scope
 
-Pricing, scope engine, proposals, contracts, invoices, Stripe checkout, automated email/follow-up, calendar, CRM sync, public opportunity pages, client portal.
+Pricing, proposals, contracts, invoices, Stripe checkout, automated email/follow-up, calendar, CRM sync, public opportunity pages, client portal.
+
+Scope definition: **Commercial Sprint 4** — see [scope-engine.md](scope-engine.md).
 
 Code: `src/lib/commercialization/opportunities/`  
 Verify: `opportunity.verify.ts`

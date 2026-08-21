@@ -247,6 +247,7 @@ Projects:
 - Implementation Plan Engine (Commercial Sprint 1 + **1.1** quality hardening — `IMPLEMENTATION_MAPPING_VERSION = 2`; see `docs/development/implementation-plan-engine.md`)
 - Implementation Plan AI Strategy (Commercial Sprint 2 — explanation only; see `docs/development/implementation-plan-ai-strategy.md`)
 - Opportunity Management V1 (Commercial Sprint 3 — human-created commercial pursuits; see `docs/development/opportunity-management.md`)
+- Commercial Scope Engine V1 (Commercial Sprint 4 — offer definition; see `docs/development/scope-engine.md`)
 
 ---
 

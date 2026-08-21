@@ -122,6 +122,13 @@ assert(isForbiddenAnalyticsParamKey("opportunity_owner"), "opportunity_owner key
 assert(isForbiddenAnalyticsParamKey("next_action"), "next_action key is forbidden");
 assert(isForbiddenAnalyticsParamKey("lost_reason"), "lost_reason key is forbidden");
 assert(isForbiddenAnalyticsParamKey("commercial_notes"), "commercial_notes key is forbidden");
+assert(isForbiddenAnalyticsParamKey("scope_id"), "scope_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("scope_status"), "scope_status key is forbidden");
+assert(isForbiddenAnalyticsParamKey("scope_summary"), "scope_summary key is forbidden");
+assert(isForbiddenAnalyticsParamKey("scope_deliverables"), "scope_deliverables key is forbidden");
+assert(isForbiddenAnalyticsParamKey("scope_assumptions"), "scope_assumptions key is forbidden");
+assert(isForbiddenAnalyticsParamKey("scope_exclusions"), "scope_exclusions key is forbidden");
+assert(isForbiddenAnalyticsParamKey("commercial_scope"), "commercial_scope key is forbidden");
 assert(isForbiddenAnalyticsParamKey("workstream_id"), "workstream_id key is forbidden");
 assert(isForbiddenAnalyticsParamKey("evidence_json"), "evidence_json key is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");

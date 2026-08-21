@@ -44,6 +44,11 @@ export const OPPORTUNITY_ACTIVITY_TYPES = [
   "MARKED_WON",
   "MARKED_LOST",
   "REOPENED",
+  "SCOPE_CREATED",
+  "SCOPE_REVIEWED",
+  "SCOPE_APPROVED",
+  "SCOPE_REVISED",
+  "SCOPE_SUPERSEDED",
 ] as const;
 
 export type OpportunityActivityType = (typeof OPPORTUNITY_ACTIVITY_TYPES)[number];

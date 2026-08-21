@@ -65,9 +65,9 @@ COMMERCIALIZATION (internal)
         ↓
   Opportunity (Commercial Sprint 3 — human-created commercial pursuit)
         ↓
-  Human review / approval
+  Commercial Scope (Commercial Sprint 4 — offer definition)
         ↓
-  (Future) Scope / Pricing / Proposal / Client — NOT implemented
+  (Future) Pricing / Proposal / Client — NOT implemented
        ↓
   Human review / approve
        ↓
@@ -128,6 +128,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 - [Implementation Plan Engine](implementation-plan-engine.md)
 - [Implementation Plan AI Strategy](implementation-plan-ai-strategy.md)
 - [Opportunity Management](opportunity-management.md)
+- [Scope Engine](scope-engine.md)
 - [AI architecture](ai-architecture.md)
 - [Database guide](database-guide.md)
 - [Security & privacy](security-privacy.md)

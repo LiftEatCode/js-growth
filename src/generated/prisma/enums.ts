@@ -365,7 +365,22 @@ export const OpportunityActivityType = {
   CAPABILITIES_UPDATED: 'CAPABILITIES_UPDATED',
   MARKED_WON: 'MARKED_WON',
   MARKED_LOST: 'MARKED_LOST',
-  REOPENED: 'REOPENED'
+  REOPENED: 'REOPENED',
+  SCOPE_CREATED: 'SCOPE_CREATED',
+  SCOPE_REVIEWED: 'SCOPE_REVIEWED',
+  SCOPE_APPROVED: 'SCOPE_APPROVED',
+  SCOPE_REVISED: 'SCOPE_REVISED',
+  SCOPE_SUPERSEDED: 'SCOPE_SUPERSEDED'
 } as const
 
 export type OpportunityActivityType = (typeof OpportunityActivityType)[keyof typeof OpportunityActivityType]
+
+
+export const CommercialScopeStatus = {
+  DRAFT: 'DRAFT',
+  REVIEWED: 'REVIEWED',
+  APPROVED: 'APPROVED',
+  SUPERSEDED: 'SUPERSEDED'
+} as const
+
+export type CommercialScopeStatus = (typeof CommercialScopeStatus)[keyof typeof CommercialScopeStatus]
