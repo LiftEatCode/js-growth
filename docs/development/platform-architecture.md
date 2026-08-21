@@ -67,7 +67,9 @@ COMMERCIALIZATION (internal)
         ↓
   Commercial Scope (Commercial Sprint 4 — offer definition)
         ↓
-  (Future) Pricing / Proposal / Client — NOT implemented
+  Commercial Pricing (Commercial Sprint 5 — recommendation + human approval)
+        ↓
+  (Future) Proposal / Client — NOT implemented
        ↓
   Human review / approve
        ↓
@@ -129,6 +131,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 - [Implementation Plan AI Strategy](implementation-plan-ai-strategy.md)
 - [Opportunity Management](opportunity-management.md)
 - [Scope Engine](scope-engine.md)
+- [Pricing Engine](pricing-engine.md)
 - [AI architecture](ai-architecture.md)
 - [Database guide](database-guide.md)
 - [Security & privacy](security-privacy.md)

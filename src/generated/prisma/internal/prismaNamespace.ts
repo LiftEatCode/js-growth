@@ -428,7 +428,9 @@ export const ModelName = {
   OpportunityActivity: 'OpportunityActivity',
   CommercialScope: 'CommercialScope',
   CommercialScopeSection: 'CommercialScopeSection',
-  CommercialScopeDeliverable: 'CommercialScopeDeliverable'
+  CommercialScopeDeliverable: 'CommercialScopeDeliverable',
+  CommercialPricing: 'CommercialPricing',
+  CommercialPricingLineItem: 'CommercialPricingLineItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -444,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2816,6 +2818,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CommercialPricing: {
+      payload: Prisma.$CommercialPricingPayload<ExtArgs>
+      fields: Prisma.CommercialPricingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommercialPricingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommercialPricingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>
+        }
+        findFirst: {
+          args: Prisma.CommercialPricingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommercialPricingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>
+        }
+        findMany: {
+          args: Prisma.CommercialPricingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>[]
+        }
+        create: {
+          args: Prisma.CommercialPricingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>
+        }
+        createMany: {
+          args: Prisma.CommercialPricingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommercialPricingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>[]
+        }
+        delete: {
+          args: Prisma.CommercialPricingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>
+        }
+        update: {
+          args: Prisma.CommercialPricingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommercialPricingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommercialPricingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommercialPricingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommercialPricingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingPayload>
+        }
+        aggregate: {
+          args: Prisma.CommercialPricingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommercialPricing>
+        }
+        groupBy: {
+          args: Prisma.CommercialPricingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialPricingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommercialPricingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialPricingCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommercialPricingLineItem: {
+      payload: Prisma.$CommercialPricingLineItemPayload<ExtArgs>
+      fields: Prisma.CommercialPricingLineItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommercialPricingLineItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommercialPricingLineItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>
+        }
+        findFirst: {
+          args: Prisma.CommercialPricingLineItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommercialPricingLineItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>
+        }
+        findMany: {
+          args: Prisma.CommercialPricingLineItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>[]
+        }
+        create: {
+          args: Prisma.CommercialPricingLineItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>
+        }
+        createMany: {
+          args: Prisma.CommercialPricingLineItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommercialPricingLineItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>[]
+        }
+        delete: {
+          args: Prisma.CommercialPricingLineItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>
+        }
+        update: {
+          args: Prisma.CommercialPricingLineItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommercialPricingLineItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommercialPricingLineItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommercialPricingLineItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommercialPricingLineItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialPricingLineItemPayload>
+        }
+        aggregate: {
+          args: Prisma.CommercialPricingLineItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommercialPricingLineItem>
+        }
+        groupBy: {
+          args: Prisma.CommercialPricingLineItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialPricingLineItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommercialPricingLineItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialPricingLineItemCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3571,6 +3721,64 @@ export const CommercialScopeDeliverableScalarFieldEnum = {
 export type CommercialScopeDeliverableScalarFieldEnum = (typeof CommercialScopeDeliverableScalarFieldEnum)[keyof typeof CommercialScopeDeliverableScalarFieldEnum]
 
 
+export const CommercialPricingScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  commercialScopeId: 'commercialScopeId',
+  status: 'status',
+  revision: 'revision',
+  currency: 'currency',
+  pricingVersion: 'pricingVersion',
+  pricingConfigVersion: 'pricingConfigVersion',
+  sourceFingerprint: 'sourceFingerprint',
+  recommendedIncludedCents: 'recommendedIncludedCents',
+  recommendedOptionalCents: 'recommendedOptionalCents',
+  recommendedTotalCents: 'recommendedTotalCents',
+  finalIncludedCents: 'finalIncludedCents',
+  finalOptionalCents: 'finalOptionalCents',
+  finalTotalCents: 'finalTotalCents',
+  minimumEngagementCents: 'minimumEngagementCents',
+  minimumApplied: 'minimumApplied',
+  assessmentOnly: 'assessmentOnly',
+  notes: 'notes',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CommercialPricingScalarFieldEnum = (typeof CommercialPricingScalarFieldEnum)[keyof typeof CommercialPricingScalarFieldEnum]
+
+
+export const CommercialPricingLineItemScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  pricingId: 'pricingId',
+  workUnitKey: 'workUnitKey',
+  title: 'title',
+  workType: 'workType',
+  effortBand: 'effortBand',
+  quantity: 'quantity',
+  recommendedUnitPriceCents: 'recommendedUnitPriceCents',
+  recommendedLineTotalCents: 'recommendedLineTotalCents',
+  finalUnitPriceCents: 'finalUnitPriceCents',
+  finalLineTotalCents: 'finalLineTotalCents',
+  isOptional: 'isOptional',
+  isIncluded: 'isIncluded',
+  isCustom: 'isCustom',
+  isOverridden: 'isOverridden',
+  overrideReason: 'overrideReason',
+  sourceDeliverableIdsJson: 'sourceDeliverableIdsJson',
+  sourceSectionTitlesJson: 'sourceSectionTitlesJson',
+  sortOrder: 'sortOrder'
+} as const
+
+export type CommercialPricingLineItemScalarFieldEnum = (typeof CommercialPricingLineItemScalarFieldEnum)[keyof typeof CommercialPricingLineItemScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4163,6 +4371,20 @@ export type EnumCommercialScopeStatusFieldRefInput<$PrismaModel> = FieldRefInput
 export type ListEnumCommercialScopeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialScopeStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'CommercialPricingStatus'
+ */
+export type EnumCommercialPricingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialPricingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CommercialPricingStatus[]'
+ */
+export type ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialPricingStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -4346,6 +4568,8 @@ export type GlobalOmitConfig = {
   commercialScope?: Prisma.CommercialScopeOmit
   commercialScopeSection?: Prisma.CommercialScopeSectionOmit
   commercialScopeDeliverable?: Prisma.CommercialScopeDeliverableOmit
+  commercialPricing?: Prisma.CommercialPricingOmit
+  commercialPricingLineItem?: Prisma.CommercialPricingLineItemOmit
 }
 
 /* Types for Logging */

@@ -184,3 +184,14 @@ export type CommercialScopeSection = Prisma.CommercialScopeSectionModel
  * 
  */
 export type CommercialScopeDeliverable = Prisma.CommercialScopeDeliverableModel
+/**
+ * Model CommercialPricing
+ * Commercial Sprint 5 — deterministic Pricing recommendation for an approved Scope.
+ * Human review/overrides → approved historical snapshot. No proposals / Stripe / OpenAI.
+ */
+export type CommercialPricing = Prisma.CommercialPricingModel
+/**
+ * Model CommercialPricingLineItem
+ * 
+ */
+export type CommercialPricingLineItem = Prisma.CommercialPricingLineItemModel

@@ -6,28 +6,30 @@ import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import {
-  createScopeAction,
-  reviseScopeAction,
-} from "@/app/reports/opportunities/scope-actions";
+  createPricingAction,
+  revisePricingAction,
+} from "@/app/reports/opportunities/pricing-actions";
 import { Button } from "@/components/ui";
 
-export interface OpportunityScopeCardProps {
+export interface OpportunityPricingCardProps {
   opportunityId: string;
-  scope: {
+  hasApprovedScope: boolean;
+  pricing: {
     id: string;
     statusLabel: string;
     status: string;
     revision: number;
-    sectionCount: number;
-    deliverableCount: number;
+    lineItemCount: number;
+    finalTotalLabel: string;
     approvedAtLabel: string | null;
   } | null;
 }
 
-export function OpportunityScopeCard({
+export function OpportunityPricingCard({
   opportunityId,
-  scope,
-}: OpportunityScopeCardProps) {
+  hasApprovedScope,
+  pricing,
+}: OpportunityPricingCardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -35,19 +37,19 @@ export function OpportunityScopeCard({
   function create() {
     setError(null);
     startTransition(async () => {
-      const result = await createScopeAction(opportunityId);
+      const result = await createPricingAction(opportunityId);
       if (!result.success) {
-        setError(result.message ?? "Could not create Scope.");
-        if (result.scopeId) {
+        setError(result.message ?? "Could not create Pricing.");
+        if (result.pricingId) {
           router.push(
-            `/reports/opportunities/${opportunityId}/scope/${result.scopeId}`,
+            `/reports/opportunities/${opportunityId}/pricing/${result.pricingId}`,
           );
         }
         return;
       }
-      if (result.scopeId) {
+      if (result.pricingId) {
         router.push(
-          `/reports/opportunities/${opportunityId}/scope/${result.scopeId}`,
+          `/reports/opportunities/${opportunityId}/pricing/${result.pricingId}`,
         );
       }
     });
@@ -56,14 +58,14 @@ export function OpportunityScopeCard({
   function revise() {
     setError(null);
     startTransition(async () => {
-      const result = await reviseScopeAction(opportunityId);
+      const result = await revisePricingAction(opportunityId);
       if (!result.success) {
-        setError(result.message ?? "Could not revise Scope.");
+        setError(result.message ?? "Could not revise Pricing.");
         return;
       }
-      if (result.scopeId) {
+      if (result.pricingId) {
         router.push(
-          `/reports/opportunities/${opportunityId}/scope/${result.scopeId}`,
+          `/reports/opportunities/${opportunityId}/pricing/${result.pricingId}`,
         );
       }
     });
@@ -72,24 +74,23 @@ export function OpportunityScopeCard({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted">
-        Scope is the commercial offer definition. The Implementation Plan remains
-        the recommendation.
+        Pricing is a deterministic recommendation from the approved Scope, then
+        human review. No proposals or payments in this step.
       </p>
 
-      {scope ? (
+      {pricing ? (
         <div className="space-y-3 rounded-xl border border-border/80 px-4 py-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-muted">
-                {scope.statusLabel} · Revision {scope.revision}
+                {pricing.statusLabel} · Revision {pricing.revision}
               </p>
               <p className="mt-1 text-sm text-ink">
-                {scope.sectionCount} sections · {scope.deliverableCount}{" "}
-                deliverables
+                {pricing.lineItemCount} work units · {pricing.finalTotalLabel}
               </p>
-              {scope.approvedAtLabel ? (
+              {pricing.approvedAtLabel ? (
                 <p className="mt-1 text-xs text-muted">
-                  Approved {scope.approvedAtLabel}
+                  Approved {pricing.approvedAtLabel}
                 </p>
               ) : null}
             </div>
@@ -100,13 +101,13 @@ export function OpportunityScopeCard({
                 nativeButton={false}
                 render={
                   <Link
-                    href={`/reports/opportunities/${opportunityId}/scope/${scope.id}`}
+                    href={`/reports/opportunities/${opportunityId}/pricing/${pricing.id}`}
                   />
                 }
               >
-                {scope.status === "APPROVED" ? "View Scope" : "Edit Scope"}
+                {pricing.status === "APPROVED" ? "View Pricing" : "Edit Pricing"}
               </Button>
-              {scope.status === "APPROVED" ? (
+              {pricing.status === "APPROVED" ? (
                 <Button type="button" disabled={isPending} onClick={revise}>
                   {isPending ? (
                     <LoaderCircle
@@ -121,13 +122,23 @@ export function OpportunityScopeCard({
           </div>
         </div>
       ) : (
-        <Button type="button" onClick={create} disabled={isPending}>
+        <Button
+          type="button"
+          onClick={create}
+          disabled={isPending || !hasApprovedScope}
+        >
           {isPending ? (
             <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
           ) : null}
-          Create Scope
+          Create Pricing
         </Button>
       )}
+
+      {!hasApprovedScope && !pricing ? (
+        <p className="text-xs text-muted">
+          Approve a Commercial Scope before creating Pricing.
+        </p>
+      ) : null}
 
       {error ? (
         <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">

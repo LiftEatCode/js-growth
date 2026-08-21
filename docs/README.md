@@ -30,6 +30,7 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Implementation Plan AI Strategy | [`development/implementation-plan-ai-strategy.md`](development/implementation-plan-ai-strategy.md) |
 | Opportunity Management | [`development/opportunity-management.md`](development/opportunity-management.md) |
 | Scope Engine | [`development/scope-engine.md`](development/scope-engine.md) |
+| Pricing Engine | [`development/pricing-engine.md`](development/pricing-engine.md) |
 | Public-audit competitor URLs (separate) | [`development/competitive-intelligence-v1.md`](development/competitive-intelligence-v1.md) |
 | AI architecture (all OpenAI paths) | [`development/ai-architecture.md`](development/ai-architecture.md) |
 | External services / APIs | [`development/external-services.md`](development/external-services.md) |

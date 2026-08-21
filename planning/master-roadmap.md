@@ -248,6 +248,7 @@ Projects:
 - Implementation Plan AI Strategy (Commercial Sprint 2 — explanation only; see `docs/development/implementation-plan-ai-strategy.md`)
 - Opportunity Management V1 (Commercial Sprint 3 — human-created commercial pursuits; see `docs/development/opportunity-management.md`)
 - Commercial Scope Engine V1 (Commercial Sprint 4 — offer definition; see `docs/development/scope-engine.md`)
+- Commercial Pricing Engine V1 (Commercial Sprint 5 — deterministic pricing + human approval; see `docs/development/pricing-engine.md`)
 
 ---
 

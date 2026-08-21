@@ -9,7 +9,7 @@ Implementation Plan   = recommendation (facts + workstreams)
         ↓
 Commercial Scope      = human-controlled commercial offer definition
         ↓
-(Future) Pricing
+Commercial Pricing    = deterministic recommendation + human approval
         ↓
 (Future) Proposal
 ```
@@ -25,6 +25,8 @@ AI Implementation Strategy is **not** an input to Scope generation.
 Migration: `20260821100000_add_commercial_scopes` (no Sprint 4.1 schema migration)
 
 Existing approved scopes remain historical. Drafts built before mapping v2 show a **stale** indicator so operators can **Revise** to rebuild polished titles and deduped considerations.
+
+Pricing: see [pricing-engine.md](pricing-engine.md) (Commercial Sprint 5).
 
 ---
 
@@ -88,7 +90,7 @@ Stale indicator only — Scope is never auto-mutated.
 
 ## Not in scope
 
-Pricing, proposals, PDF, public links, Stripe, e-sign, automatic Opportunity stage changes, AI scope generation, new service capabilities.
+Proposals, PDF, public links, Stripe, e-sign, automatic Opportunity stage changes, AI scope generation, new service capabilities.
 
 Code: `src/lib/commercialization/scope/`  
 Verify: `scope.verify.ts`

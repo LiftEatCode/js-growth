@@ -892,6 +892,23 @@ export type EnumCommercialScopeStatusWithAggregatesFilter<$PrismaModel = never> 
   _max?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
 }
 
+export type EnumCommercialPricingStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialPricingStatus | Prisma.EnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel> | $Enums.CommercialPricingStatus
+}
+
+export type EnumCommercialPricingStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialPricingStatus | Prisma.EnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialPricingStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialPricingStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1716,6 +1733,23 @@ export type NestedEnumCommercialScopeStatusWithAggregatesFilter<$PrismaModel = n
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCommercialScopeStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCommercialPricingStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialPricingStatus | Prisma.EnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel> | $Enums.CommercialPricingStatus
+}
+
+export type NestedEnumCommercialPricingStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialPricingStatus | Prisma.EnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialPricingStatus[] | Prisma.ListEnumCommercialPricingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialPricingStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialPricingStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
 }
 
 

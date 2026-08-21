@@ -1278,6 +1278,11 @@ enum OpportunityActivityType {
   SCOPE_APPROVED
   SCOPE_REVISED
   SCOPE_SUPERSEDED
+  PRICING_CREATED
+  PRICING_REVIEWED
+  PRICING_APPROVED
+  PRICING_REVISED
+  PRICING_SUPERSEDED
 }
 
 /// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
@@ -1326,6 +1331,7 @@ model Opportunity {
 
   activities OpportunityActivity[]
   scopes     CommercialScope[]
+  pricings   CommercialPricing[]
 
   @@index([prospectId, createdAt])
   @@index([campaignId, createdAt])
@@ -1407,6 +1413,7 @@ model CommercialScope {
   createdByEmail String
 
   sections CommercialScopeSection[]
+  pricings CommercialPricing[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
@@ -1470,4 +1477,111 @@ model CommercialScopeDeliverable {
 
   @@index([sectionId, sortOrder])
   @@index([sectionId, isIncluded])
+}
+
+enum CommercialPricingStatus {
+  DRAFT
+  REVIEWED
+  APPROVED
+  SUPERSEDED
+}
+
+/// Commercial Sprint 5 — deterministic Pricing recommendation for an approved Scope.
+/// Human review/overrides → approved historical snapshot. No proposals / Stripe / OpenAI.
+model CommercialPricing {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  commercialScopeId String
+  commercialScope   CommercialScope @relation(fields: [commercialScopeId], references: [id], onDelete: Cascade)
+
+  status CommercialPricingStatus @default(DRAFT)
+
+  /// Operator-facing revision number within the Opportunity (1, 2, …).
+  revision Int @default(1)
+
+  currency String @default("USD")
+
+  pricingVersion       Int
+  pricingConfigVersion Int
+  sourceFingerprint    String
+
+  recommendedIncludedCents Int
+  recommendedOptionalCents Int
+  recommendedTotalCents    Int
+
+  finalIncludedCents Int
+  finalOptionalCents Int
+  finalTotalCents    Int
+
+  minimumEngagementCents Int
+  minimumApplied         Boolean @default(false)
+  assessmentOnly         Boolean @default(false)
+
+  notes String?
+
+  approvedAt      DateTime?
+  approvedByEmail String?
+  supersededAt    DateTime?
+
+  createdByEmail String
+
+  lineItems CommercialPricingLineItem[]
+
+  @@index([opportunityId, createdAt])
+  @@index([opportunityId, status])
+  @@index([commercialScopeId])
+  @@index([status, createdAt])
+}
+
+model CommercialPricingLineItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pricingId String
+  pricing   CommercialPricing @relation(fields: [pricingId], references: [id], onDelete: Cascade)
+
+  /// Canonical commercial work-unit key (dedupe identity).
+  workUnitKey String
+
+  title String
+
+  /// IMPLEMENTATION | REVIEW | CONFIGURATION | CONTENT | TECHNICAL | OPTIMIZATION | ASSESSMENT | CUSTOM | OTHER
+  workType String
+
+  /// SMALL | MEDIUM | LARGE | ASSESSMENT | CUSTOM
+  effortBand String
+
+  quantity Int @default(1)
+
+  /// Deterministic recommendation (null when CUSTOM / no band price).
+  recommendedUnitPriceCents Int?
+  recommendedLineTotalCents Int?
+
+  /// Operator final price (null until set for CUSTOM or override).
+  finalUnitPriceCents Int?
+  finalLineTotalCents Int?
+
+  isOptional   Boolean @default(false)
+  isIncluded   Boolean @default(true)
+  isCustom     Boolean @default(false)
+  isOverridden Boolean @default(false)
+
+  overrideReason String?
+
+  /// Scope deliverable ids contributing to this work unit.
+  sourceDeliverableIdsJson Json
+  /// Section titles contributing to this work unit (multi-section provenance).
+  sourceSectionTitlesJson  Json
+
+  sortOrder Int
+
+  @@index([pricingId, sortOrder])
+  @@index([pricingId, workUnitKey])
+  @@index([pricingId, isIncluded])
 }

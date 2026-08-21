@@ -62,7 +62,13 @@ Verified against implementation. Separates **public products**, **internal tools
 
 - Human-controlled Scope from Opportunity (+ optional Implementation Plan)
 - Approved scopes immutable; revise for new versions
-- **No** pricing, proposals, or OpenAI
+- **No** proposals or OpenAI
+
+### Commercial Pricing Engine V1 (Commercial Sprint 5)
+
+- Deterministic work-unit pricing from approved Scope + human overrides
+- Approved pricing snapshots; revise for new versions
+- **No** proposals, Stripe checkout, or OpenAI
 
 ---
 
@@ -75,7 +81,7 @@ Confirm against [ROADMAP.md](../../ROADMAP.md) before promising clients:
 - Lead capture from competitive reports
 - Competitive monitoring / scheduled re-audits / trend history productization
 - Follow-up outreach automation / reply ingestion
-- Scope / pricing / proposal engines beyond current Scope V1
+- Proposal engine (Commercial Sprint 6)
 - Broader CRM / multi-location BI
 - Service recommendation generators as a productized SKU
 

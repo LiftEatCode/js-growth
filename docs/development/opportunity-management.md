@@ -112,7 +112,8 @@ Append-only `OpportunityActivity`:
 
 Pricing, proposals, contracts, invoices, Stripe checkout, automated email/follow-up, calendar, CRM sync, public opportunity pages, client portal.
 
-Scope definition: **Commercial Sprint 4** — see [scope-engine.md](scope-engine.md).
+Scope definition: **Commercial Sprint 4** — see [scope-engine.md](scope-engine.md).  
+Pricing: **Commercial Sprint 5** — see [pricing-engine.md](pricing-engine.md).
 
 Code: `src/lib/commercialization/opportunities/`  
 Verify: `opportunity.verify.ts`

@@ -147,7 +147,19 @@ Human-controlled commercial Scope from Opportunity (+ optional Implementation Pl
 
 **Sprint 4.1:** Deduped considerations, polished client titles, exact capability inheritance, empty assumptions/exclusions defaults, preview hygiene. Mapping version `COMMERCIAL_SCOPE_MAPPING_VERSION = 2` (no schema migration).
 
-**Not included:** pricing, proposals, PDF, public scope links, automatic Opportunity stage changes.
+**Not included:** proposals, PDF, public scope links, automatic Opportunity stage changes.
+
+---
+
+## Commercial Sprint 5 — Pricing Engine V1
+
+Status: 🟢 Implemented (internal)
+
+Canonical doc: `docs/development/pricing-engine.md`
+
+Deterministic pricing from approved Commercial Scope via canonical work-unit normalization (dedupe overlapping deliverables), effort bands, configurable minimum engagement, human overrides with reasons, and approved historical snapshots. No proposals / Stripe / OpenAI.
+
+**Not included:** proposals, PDFs, public links, retainers, automatic discounts, Stripe checkout, invoices, e-sign.
 
 ---
 
@@ -163,10 +175,9 @@ Human-controlled commercial Scope from Opportunity (+ optional Implementation Pl
 
 Prioritize based on business leverage with the **current** stack:
 
-1. Pricing engine on approved Scopes (Commercial Sprint 5)
-2. Proposal generation on priced scopes (Commercial Sprint 6) — still human-gated
-3. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-4. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
+1. Proposal generation on priced scopes (Commercial Sprint 6) — still human-gated
+2. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
+3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
 5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
 
 ## LATER / EXPLORATORY

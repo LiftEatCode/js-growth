@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { OpportunityDetailControls } from "@/components/opportunities/opportunity-detail-controls";
+import { OpportunityPricingCard } from "@/components/opportunities/opportunity-pricing-card";
 import { OpportunityScopeCard } from "@/components/opportunities/opportunity-scope-card";
 import { Button, Card, Container } from "@/components/ui";
 import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabilities";
 import { loadOpportunityDetail } from "@/lib/commercialization/opportunities/load";
+import { loadCurrentPricingForOpportunity } from "@/lib/commercialization/pricing/load";
 import { loadCurrentScopeForOpportunity } from "@/lib/commercialization/scope/load";
 
 interface OpportunityDetailPageProps {
@@ -48,6 +50,7 @@ export default async function OpportunityDetailPage({
   }
 
   const scopeLoad = await loadCurrentScopeForOpportunity({ opportunityId });
+  const pricingLoad = await loadCurrentPricingForOpportunity({ opportunityId });
   const { opportunity, activities, intelligence } = detail;
   const caps = opportunity.capabilitiesSnapshot;
 
@@ -213,6 +216,33 @@ export default async function OpportunityDetailPage({
                       deliverableCount: scopeLoad.scope.deliverableCount,
                       approvedAtLabel: scopeLoad.scope.approvedAt
                         ? formatDateTime(scopeLoad.scope.approvedAt)
+                        : null,
+                    }
+                  : null
+              }
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Pricing
+          </h2>
+          <div className="mt-4">
+            <OpportunityPricingCard
+              opportunityId={opportunity.id}
+              hasApprovedScope={scopeLoad.scope?.status === "APPROVED"}
+              pricing={
+                pricingLoad.pricing
+                  ? {
+                      id: pricingLoad.pricing.id,
+                      status: pricingLoad.pricing.status,
+                      statusLabel: pricingLoad.pricing.statusLabel,
+                      revision: pricingLoad.pricing.revision,
+                      lineItemCount: pricingLoad.pricing.lineItemCount,
+                      finalTotalLabel: pricingLoad.pricing.finalTotalLabel,
+                      approvedAtLabel: pricingLoad.pricing.approvedAt
+                        ? formatDateTime(pricingLoad.pricing.approvedAt)
                         : null,
                     }
                   : null

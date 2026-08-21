@@ -82,7 +82,9 @@ export const ModelName = {
   OpportunityActivity: 'OpportunityActivity',
   CommercialScope: 'CommercialScope',
   CommercialScopeSection: 'CommercialScopeSection',
-  CommercialScopeDeliverable: 'CommercialScopeDeliverable'
+  CommercialScopeDeliverable: 'CommercialScopeDeliverable',
+  CommercialPricing: 'CommercialPricing',
+  CommercialPricingLineItem: 'CommercialPricingLineItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -815,6 +817,64 @@ export const CommercialScopeDeliverableScalarFieldEnum = {
 } as const
 
 export type CommercialScopeDeliverableScalarFieldEnum = (typeof CommercialScopeDeliverableScalarFieldEnum)[keyof typeof CommercialScopeDeliverableScalarFieldEnum]
+
+
+export const CommercialPricingScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  commercialScopeId: 'commercialScopeId',
+  status: 'status',
+  revision: 'revision',
+  currency: 'currency',
+  pricingVersion: 'pricingVersion',
+  pricingConfigVersion: 'pricingConfigVersion',
+  sourceFingerprint: 'sourceFingerprint',
+  recommendedIncludedCents: 'recommendedIncludedCents',
+  recommendedOptionalCents: 'recommendedOptionalCents',
+  recommendedTotalCents: 'recommendedTotalCents',
+  finalIncludedCents: 'finalIncludedCents',
+  finalOptionalCents: 'finalOptionalCents',
+  finalTotalCents: 'finalTotalCents',
+  minimumEngagementCents: 'minimumEngagementCents',
+  minimumApplied: 'minimumApplied',
+  assessmentOnly: 'assessmentOnly',
+  notes: 'notes',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CommercialPricingScalarFieldEnum = (typeof CommercialPricingScalarFieldEnum)[keyof typeof CommercialPricingScalarFieldEnum]
+
+
+export const CommercialPricingLineItemScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  pricingId: 'pricingId',
+  workUnitKey: 'workUnitKey',
+  title: 'title',
+  workType: 'workType',
+  effortBand: 'effortBand',
+  quantity: 'quantity',
+  recommendedUnitPriceCents: 'recommendedUnitPriceCents',
+  recommendedLineTotalCents: 'recommendedLineTotalCents',
+  finalUnitPriceCents: 'finalUnitPriceCents',
+  finalLineTotalCents: 'finalLineTotalCents',
+  isOptional: 'isOptional',
+  isIncluded: 'isIncluded',
+  isCustom: 'isCustom',
+  isOverridden: 'isOverridden',
+  overrideReason: 'overrideReason',
+  sourceDeliverableIdsJson: 'sourceDeliverableIdsJson',
+  sourceSectionTitlesJson: 'sourceSectionTitlesJson',
+  sortOrder: 'sortOrder'
+} as const
+
+export type CommercialPricingLineItemScalarFieldEnum = (typeof CommercialPricingLineItemScalarFieldEnum)[keyof typeof CommercialPricingLineItemScalarFieldEnum]
 
 
 export const SortOrder = {

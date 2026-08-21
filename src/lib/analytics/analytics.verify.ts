@@ -129,6 +129,11 @@ assert(isForbiddenAnalyticsParamKey("scope_deliverables"), "scope_deliverables k
 assert(isForbiddenAnalyticsParamKey("scope_assumptions"), "scope_assumptions key is forbidden");
 assert(isForbiddenAnalyticsParamKey("scope_exclusions"), "scope_exclusions key is forbidden");
 assert(isForbiddenAnalyticsParamKey("commercial_scope"), "commercial_scope key is forbidden");
+assert(isForbiddenAnalyticsParamKey("pricing_id"), "pricing_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("pricing_status"), "pricing_status key is forbidden");
+assert(isForbiddenAnalyticsParamKey("pricing_total"), "pricing_total key is forbidden");
+assert(isForbiddenAnalyticsParamKey("commercial_pricing"), "commercial_pricing key is forbidden");
+assert(isForbiddenAnalyticsParamKey("override_reason"), "override_reason key is forbidden");
 assert(isForbiddenAnalyticsParamKey("workstream_id"), "workstream_id key is forbidden");
 assert(isForbiddenAnalyticsParamKey("evidence_json"), "evidence_json key is forbidden");
 assert(isForbiddenAnalyticsParamKey("email"), "email key is forbidden");

@@ -29,6 +29,7 @@ Variable cost surfaces and **code-enforced** caps. Values from `src/lib/**/const
 | Implementation AI strategy load | DB read / fingerprint reuse — **0** OpenAI unless Generate clicked |
 | Opportunity create / stage / notes | Pure DB — **0** OpenAI / Places / crawl / Resend / Stripe |
 | Commercial Scope create / edit / approve | Pure DB — **0** OpenAI / Places / crawl / Resend / Stripe |
+| Commercial Pricing create / edit / approve | Pure DB — **0** OpenAI / Places / crawl / Resend / Stripe |
 | Contact discovery | Fetch/parse HTML — capped pages/run |
 
 ---
