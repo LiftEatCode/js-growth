@@ -48,6 +48,16 @@ Verified against implementation. Separates **public products**, **internal tools
 - Human review / approve; historical snapshots
 - **No** AI, pricing, proposals, or public exposure
 
+### AI Implementation Strategy (Commercial Sprint 2)
+
+- Explains an Implementation Plan; does not change plan facts
+- Explicit Generate only; internal only
+
+### Opportunity Management V1 (Commercial Sprint 3)
+
+- Human-created commercial pursuits with stages, capability snapshots, next actions, WON/LOST
+- **No** pricing, proposals, automated outreach, or public exposure
+
 ---
 
 ## Planned / not implemented (examples)
@@ -59,6 +69,7 @@ Confirm against [ROADMAP.md](../../ROADMAP.md) before promising clients:
 - Lead capture from competitive reports
 - Competitive monitoring / scheduled re-audits / trend history productization
 - Follow-up outreach automation / reply ingestion
+- Scope / pricing / proposal engines on Opportunities
 - Broader CRM / multi-location BI
 - Service recommendation generators as a productized SKU
 

@@ -13,7 +13,7 @@ Based on **implemented** code. This is not a compliance certification.
 | Public marketing + free audit | Open |
 | Public report `/report/[id]` | Knowledge of UUID; no customer login |
 | Professional PDF / full Pro content | Entitlement via `ReportPurchase` |
-| Internal `/reports/**`, prospecting, CI report | `requireInternalSession()` / session cookie |
+| Internal `/reports/**`, prospecting, CI report, opportunities | `requireInternalSession()` / session cookie |
 | Stripe webhook | Stripe signature secret |
 | Resend webhook | Webhook secret verification |
 
@@ -31,6 +31,7 @@ Competitive Growth Analysis is **internal-only** (`noindex`). Not exposed on pub
 | Prospect / contact PII | Emails, phones, form URLs | Internal workspace; suppression list |
 | Outreach content | Draft/sent bodies | Internal; delivery events append-only |
 | Competitor business data | Places candidates, audits | Internal CI; not public product surface |
+| Opportunity commercial notes / stages | Pipeline + next actions | Internal only; analytics keys forbidden |
 | OpenAI prompts | Bounded audit/outreach/CI inputs | Server-only API; treat as confidential |
 
 ---

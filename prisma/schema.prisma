@@ -113,6 +113,8 @@ model Lead {
 
   implementationInterpretations ImplementationPlanInterpretation[]
 
+  opportunities Opportunity[]
+
   @@index([email])
   @@index([website])
   @@index([status])
@@ -348,6 +350,7 @@ model Campaign {
   competitiveInterpretations CompetitiveInterpretation[]
   implementationPlans     ImplementationPlan[]
   implementationInterpretations ImplementationPlanInterpretation[]
+  opportunities           Opportunity[]
 
   @@index([status])
   @@index([createdAt])
@@ -407,6 +410,7 @@ model Prospect {
   competitiveInterpretations  CompetitiveInterpretation[]
   implementationPlans         ImplementationPlan[]
   implementationInterpretations ImplementationPlanInterpretation[]
+  opportunities               Opportunity[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -1145,6 +1149,8 @@ model ImplementationPlan {
 
   interpretations ImplementationPlanInterpretation[]
 
+  opportunities Opportunity[]
+
   @@index([prospectId, campaignId, createdAt])
   @@index([auditReportId])
   @@index([comparisonSnapshotId])
@@ -1226,9 +1232,119 @@ model ImplementationPlanInterpretation {
 
   createdByEmail String
 
+  opportunities Opportunity[]
+
   @@index([implementationPlanId, createdAt])
   @@index([prospectId, campaignId, createdAt])
   @@index([status, createdAt])
   @@index([inputFingerprint])
   @@index([leadId])
+}
+
+enum OpportunityStage {
+  NEW
+  QUALIFIED
+  DISCOVERY
+  SOLUTION_FIT
+  PROPOSAL_READY
+  WON
+  LOST
+}
+
+enum OpportunityLostReason {
+  PRICE
+  NO_RESPONSE
+  NOT_READY
+  NO_FIT
+  COMPETITOR
+  DIY
+  TIMING
+  OTHER
+}
+
+enum OpportunityActivityType {
+  OPPORTUNITY_CREATED
+  STAGE_CHANGED
+  NEXT_ACTION_CHANGED
+  NOTE_ADDED
+  CAPABILITIES_UPDATED
+  MARKED_WON
+  MARKED_LOST
+  REOPENED
+}
+
+/// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
+/// Intelligence is referenced, not recalculated. No pricing / proposals / OpenAI.
+model Opportunity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  /// Linked Implementation Plan snapshot at create/refresh time (nullable).
+  implementationPlanId String?
+  implementationPlan   ImplementationPlan? @relation(fields: [implementationPlanId], references: [id], onDelete: SetNull)
+
+  /// Linked completed AI Implementation Strategy at create/refresh time (nullable).
+  implementationInterpretationId String?
+  implementationInterpretation   ImplementationPlanInterpretation? @relation(fields: [implementationInterpretationId], references: [id], onDelete: SetNull)
+
+  name String
+
+  stage OpportunityStage @default(NEW)
+
+  ownerEmail String
+
+  /// Snapshot of recommended ServiceCapabilityId values + provenance metadata.
+  recommendedCapabilitiesJson Json
+
+  nextAction   String?
+  nextActionAt DateTime?
+
+  wonAt  DateTime?
+  lostAt DateTime?
+
+  lostReason OpportunityLostReason?
+  lostNote   String?
+
+  createdByEmail String
+
+  activities OpportunityActivity[]
+
+  @@index([prospectId, createdAt])
+  @@index([campaignId, createdAt])
+  @@index([stage, createdAt])
+  @@index([ownerEmail, stage])
+  @@index([nextActionAt])
+  @@index([implementationPlanId])
+  @@index([leadId])
+}
+
+/// Append-only sales timeline for an Opportunity.
+model OpportunityActivity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  type OpportunityActivityType
+
+  actorEmail String
+
+  fromValueJson Json?
+  toValueJson   Json?
+
+  note String?
+
+  @@index([opportunityId, createdAt])
+  @@index([type, createdAt])
 }

@@ -16,12 +16,14 @@ import { CompetitiveInterpretationPanel } from "@/components/prospecting/competi
 import { CompetitiveReportPreviewLink } from "@/components/prospecting/competitive-report-preview-link";
 import { ImplementationPlanPanel } from "@/components/prospecting/implementation-plan-panel";
 import { ImplementationStrategyPanel } from "@/components/prospecting/implementation-strategy-panel";
+import { ProspectOpportunityCard } from "@/components/opportunities/prospect-opportunity-card";
 import type { CompetitorAuditStatusValue } from "@/lib/competitive-intelligence/audits/types";
 import { loadLatestCompetitiveComparison } from "@/lib/competitive-intelligence/comparison/load";
 import { loadLatestCompetitiveInterpretation } from "@/lib/competitive-intelligence/interpretation/load";
 import { getCompetitiveReportReadiness } from "@/lib/competitive-intelligence/report/readiness";
 import { loadLatestImplementationInterpretation } from "@/lib/commercialization/implementation-interpretation/load";
 import { loadLatestImplementationPlan } from "@/lib/commercialization/implementation-plan/load";
+import { loadOpportunityForProspect } from "@/lib/commercialization/opportunities/load";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
 import { Button, Card, Container } from "@/components/ui";
@@ -206,6 +208,7 @@ export default async function CampaignProspectDetailPage({
       businessName: prospect.businessName,
       location: prospectLocation,
     });
+  const opportunityLoad = await loadOpportunityForProspect({ prospectId });
   const audit = prospect.auditReport?.audit as WebsiteAuditResult | undefined;
   const qualification = parseStoredQualification(membership.qualificationJson);
   const highFindings =
@@ -769,6 +772,36 @@ export default async function CampaignProspectDetailPage({
                 }
               />
             </div>
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Opportunity
+          </h2>
+          <div className="mt-4">
+            <ProspectOpportunityCard
+              campaignId={membership.campaign.id}
+              prospectId={prospect.id}
+              active={
+                opportunityLoad.active
+                  ? {
+                      id: opportunityLoad.active.id,
+                      stageLabel: opportunityLoad.active.stageLabel,
+                      capabilities: opportunityLoad.active.capabilities,
+                      nextAction: opportunityLoad.active.nextAction,
+                      nextActionAtLabel: opportunityLoad.active.nextActionAt
+                        ? formatDate(opportunityLoad.active.nextActionAt)
+                        : null,
+                      nextActionState: opportunityLoad.active.nextActionState,
+                      lastActivityLabel: opportunityLoad.active.lastActivityAt
+                        ? formatDate(opportunityLoad.active.lastActivityAt)
+                        : null,
+                    }
+                  : null
+              }
+              latestTerminal={opportunityLoad.latestTerminal}
+            />
           </div>
         </Card>
 

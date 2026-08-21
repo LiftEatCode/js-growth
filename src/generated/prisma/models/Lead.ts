@@ -251,6 +251,7 @@ export type LeadWhereInput = {
   prospects?: Prisma.ProspectListRelationFilter
   implementationPlans?: Prisma.ImplementationPlanListRelationFilter
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
+  opportunities?: Prisma.OpportunityListRelationFilter
 }
 
 export type LeadOrderByWithRelationInput = {
@@ -272,6 +273,7 @@ export type LeadOrderByWithRelationInput = {
   prospects?: Prisma.ProspectOrderByRelationAggregateInput
   implementationPlans?: Prisma.ImplementationPlanOrderByRelationAggregateInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationOrderByRelationAggregateInput
+  opportunities?: Prisma.OpportunityOrderByRelationAggregateInput
 }
 
 export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -296,6 +298,7 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   prospects?: Prisma.ProspectListRelationFilter
   implementationPlans?: Prisma.ImplementationPlanListRelationFilter
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
+  opportunities?: Prisma.OpportunityListRelationFilter
 }, "id">
 
 export type LeadOrderByWithAggregationInput = {
@@ -355,6 +358,7 @@ export type LeadCreateInput = {
   prospects?: Prisma.ProspectCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateInput = {
@@ -376,6 +380,7 @@ export type LeadUncheckedCreateInput = {
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUpdateInput = {
@@ -397,6 +402,7 @@ export type LeadUpdateInput = {
   prospects?: Prisma.ProspectUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateInput = {
@@ -418,6 +424,7 @@ export type LeadUncheckedUpdateInput = {
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateManyInput = {
@@ -612,6 +619,22 @@ export type LeadUpdateOneWithoutImplementationInterpretationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutImplementationInterpretationsInput, Prisma.LeadUpdateWithoutImplementationInterpretationsInput>, Prisma.LeadUncheckedUpdateWithoutImplementationInterpretationsInput>
 }
 
+export type LeadCreateNestedOneWithoutOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutOpportunitiesInput, Prisma.LeadUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutOpportunitiesInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneWithoutOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutOpportunitiesInput, Prisma.LeadUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutOpportunitiesInput
+  upsert?: Prisma.LeadUpsertWithoutOpportunitiesInput
+  disconnect?: Prisma.LeadWhereInput | boolean
+  delete?: Prisma.LeadWhereInput | boolean
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutOpportunitiesInput, Prisma.LeadUpdateWithoutOpportunitiesInput>, Prisma.LeadUncheckedUpdateWithoutOpportunitiesInput>
+}
+
 export type LeadCreateWithoutReportsInput = {
   id?: string
   createdAt?: Date | string
@@ -630,6 +653,7 @@ export type LeadCreateWithoutReportsInput = {
   prospects?: Prisma.ProspectCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutReportsInput = {
@@ -650,6 +674,7 @@ export type LeadUncheckedCreateWithoutReportsInput = {
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutReportsInput = {
@@ -686,6 +711,7 @@ export type LeadUpdateWithoutReportsInput = {
   prospects?: Prisma.ProspectUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutReportsInput = {
@@ -706,6 +732,7 @@ export type LeadUncheckedUpdateWithoutReportsInput = {
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutActivitiesInput = {
@@ -726,6 +753,7 @@ export type LeadCreateWithoutActivitiesInput = {
   prospects?: Prisma.ProspectCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutActivitiesInput = {
@@ -746,6 +774,7 @@ export type LeadUncheckedCreateWithoutActivitiesInput = {
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutActivitiesInput = {
@@ -782,6 +811,7 @@ export type LeadUpdateWithoutActivitiesInput = {
   prospects?: Prisma.ProspectUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutActivitiesInput = {
@@ -802,6 +832,7 @@ export type LeadUncheckedUpdateWithoutActivitiesInput = {
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutProspectsInput = {
@@ -822,6 +853,7 @@ export type LeadCreateWithoutProspectsInput = {
   activities?: Prisma.LeadActivityCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutProspectsInput = {
@@ -842,6 +874,7 @@ export type LeadUncheckedCreateWithoutProspectsInput = {
   activities?: Prisma.LeadActivityUncheckedCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutProspectsInput = {
@@ -878,6 +911,7 @@ export type LeadUpdateWithoutProspectsInput = {
   activities?: Prisma.LeadActivityUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutProspectsInput = {
@@ -898,6 +932,7 @@ export type LeadUncheckedUpdateWithoutProspectsInput = {
   activities?: Prisma.LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutImplementationPlansInput = {
@@ -918,6 +953,7 @@ export type LeadCreateWithoutImplementationPlansInput = {
   activities?: Prisma.LeadActivityCreateNestedManyWithoutLeadInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutImplementationPlansInput = {
@@ -938,6 +974,7 @@ export type LeadUncheckedCreateWithoutImplementationPlansInput = {
   activities?: Prisma.LeadActivityUncheckedCreateNestedManyWithoutLeadInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutLeadInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutImplementationPlansInput = {
@@ -974,6 +1011,7 @@ export type LeadUpdateWithoutImplementationPlansInput = {
   activities?: Prisma.LeadActivityUpdateManyWithoutLeadNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutImplementationPlansInput = {
@@ -994,6 +1032,7 @@ export type LeadUncheckedUpdateWithoutImplementationPlansInput = {
   activities?: Prisma.LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutLeadNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutImplementationInterpretationsInput = {
@@ -1014,6 +1053,7 @@ export type LeadCreateWithoutImplementationInterpretationsInput = {
   activities?: Prisma.LeadActivityCreateNestedManyWithoutLeadInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutImplementationInterpretationsInput = {
@@ -1034,6 +1074,7 @@ export type LeadUncheckedCreateWithoutImplementationInterpretationsInput = {
   activities?: Prisma.LeadActivityUncheckedCreateNestedManyWithoutLeadInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutLeadInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutLeadInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutImplementationInterpretationsInput = {
@@ -1070,6 +1111,7 @@ export type LeadUpdateWithoutImplementationInterpretationsInput = {
   activities?: Prisma.LeadActivityUpdateManyWithoutLeadNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutImplementationInterpretationsInput = {
@@ -1090,6 +1132,107 @@ export type LeadUncheckedUpdateWithoutImplementationInterpretationsInput = {
   activities?: Prisma.LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutLeadNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutLeadNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  firstName: string
+  lastName: string
+  email: string
+  phone?: string | null
+  company?: string | null
+  website: string
+  contacted?: boolean
+  status?: $Enums.LeadStatus
+  followUpAt?: Date | string | null
+  notes?: string | null
+  reports?: Prisma.AuditReportCreateNestedManyWithoutLeadInput
+  activities?: Prisma.LeadActivityCreateNestedManyWithoutLeadInput
+  prospects?: Prisma.ProspectCreateNestedManyWithoutLeadInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutLeadInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  firstName: string
+  lastName: string
+  email: string
+  phone?: string | null
+  company?: string | null
+  website: string
+  contacted?: boolean
+  status?: $Enums.LeadStatus
+  followUpAt?: Date | string | null
+  notes?: string | null
+  reports?: Prisma.AuditReportUncheckedCreateNestedManyWithoutLeadInput
+  activities?: Prisma.LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+  prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutLeadInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutLeadInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutOpportunitiesInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutOpportunitiesInput, Prisma.LeadUncheckedCreateWithoutOpportunitiesInput>
+}
+
+export type LeadUpsertWithoutOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutOpportunitiesInput, Prisma.LeadUncheckedUpdateWithoutOpportunitiesInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutOpportunitiesInput, Prisma.LeadUncheckedCreateWithoutOpportunitiesInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutOpportunitiesInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutOpportunitiesInput, Prisma.LeadUncheckedUpdateWithoutOpportunitiesInput>
+}
+
+export type LeadUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.StringFieldUpdateOperationsInput | string
+  contacted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reports?: Prisma.AuditReportUpdateManyWithoutLeadNestedInput
+  activities?: Prisma.LeadActivityUpdateManyWithoutLeadNestedInput
+  prospects?: Prisma.ProspectUpdateManyWithoutLeadNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutLeadNestedInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.StringFieldUpdateOperationsInput | string
+  contacted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reports?: Prisma.AuditReportUncheckedUpdateManyWithoutLeadNestedInput
+  activities?: Prisma.LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+  prospects?: Prisma.ProspectUncheckedUpdateManyWithoutLeadNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutLeadNestedInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 
@@ -1103,6 +1246,7 @@ export type LeadCountOutputType = {
   prospects: number
   implementationPlans: number
   implementationInterpretations: number
+  opportunities: number
 }
 
 export type LeadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1111,6 +1255,7 @@ export type LeadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   prospects?: boolean | LeadCountOutputTypeCountProspectsArgs
   implementationPlans?: boolean | LeadCountOutputTypeCountImplementationPlansArgs
   implementationInterpretations?: boolean | LeadCountOutputTypeCountImplementationInterpretationsArgs
+  opportunities?: boolean | LeadCountOutputTypeCountOpportunitiesArgs
 }
 
 /**
@@ -1158,6 +1303,13 @@ export type LeadCountOutputTypeCountImplementationInterpretationsArgs<ExtArgs ex
   where?: Prisma.ImplementationPlanInterpretationWhereInput
 }
 
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
 
 export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1178,6 +1330,7 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   prospects?: boolean | Prisma.Lead$prospectsArgs<ExtArgs>
   implementationPlans?: boolean | Prisma.Lead$implementationPlansArgs<ExtArgs>
   implementationInterpretations?: boolean | Prisma.Lead$implementationInterpretationsArgs<ExtArgs>
+  opportunities?: boolean | Prisma.Lead$opportunitiesArgs<ExtArgs>
   _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lead"]>
 
@@ -1236,6 +1389,7 @@ export type LeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   prospects?: boolean | Prisma.Lead$prospectsArgs<ExtArgs>
   implementationPlans?: boolean | Prisma.Lead$implementationPlansArgs<ExtArgs>
   implementationInterpretations?: boolean | Prisma.Lead$implementationInterpretationsArgs<ExtArgs>
+  opportunities?: boolean | Prisma.Lead$opportunitiesArgs<ExtArgs>
   _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LeadIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1249,6 +1403,7 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     prospects: Prisma.$ProspectPayload<ExtArgs>[]
     implementationPlans: Prisma.$ImplementationPlanPayload<ExtArgs>[]
     implementationInterpretations: Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>[]
+    opportunities: Prisma.$OpportunityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1663,6 +1818,7 @@ export interface Prisma__LeadClient<T, Null = never, ExtArgs extends runtime.Typ
   prospects<T extends Prisma.Lead$prospectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$prospectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   implementationPlans<T extends Prisma.Lead$implementationPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$implementationPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   implementationInterpretations<T extends Prisma.Lead$implementationInterpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$implementationInterpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  opportunities<T extends Prisma.Lead$opportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$opportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2215,6 +2371,30 @@ export type Lead$implementationInterpretationsArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.ImplementationPlanInterpretationScalarFieldEnum | Prisma.ImplementationPlanInterpretationScalarFieldEnum[]
+}
+
+/**
+ * Lead.opportunities
+ */
+export type Lead$opportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
 }
 
 /**

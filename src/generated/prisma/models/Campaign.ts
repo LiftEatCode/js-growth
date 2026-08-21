@@ -297,6 +297,7 @@ export type CampaignWhereInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationListRelationFilter
   implementationPlans?: Prisma.ImplementationPlanListRelationFilter
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
+  opportunities?: Prisma.OpportunityListRelationFilter
 }
 
 export type CampaignOrderByWithRelationInput = {
@@ -327,6 +328,7 @@ export type CampaignOrderByWithRelationInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationOrderByRelationAggregateInput
   implementationPlans?: Prisma.ImplementationPlanOrderByRelationAggregateInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationOrderByRelationAggregateInput
+  opportunities?: Prisma.OpportunityOrderByRelationAggregateInput
 }
 
 export type CampaignWhereUniqueInput = Prisma.AtLeast<{
@@ -360,6 +362,7 @@ export type CampaignWhereUniqueInput = Prisma.AtLeast<{
   competitiveInterpretations?: Prisma.CompetitiveInterpretationListRelationFilter
   implementationPlans?: Prisma.ImplementationPlanListRelationFilter
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
+  opportunities?: Prisma.OpportunityListRelationFilter
 }, "id">
 
 export type CampaignOrderByWithAggregationInput = {
@@ -432,6 +435,7 @@ export type CampaignCreateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateInput = {
@@ -462,6 +466,7 @@ export type CampaignUncheckedCreateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUpdateInput = {
@@ -492,6 +497,7 @@ export type CampaignUpdateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateInput = {
@@ -522,6 +528,7 @@ export type CampaignUncheckedUpdateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateManyInput = {
@@ -853,6 +860,20 @@ export type CampaignUpdateOneRequiredWithoutImplementationInterpretationsNestedI
   update?: Prisma.XOR<Prisma.XOR<Prisma.CampaignUpdateToOneWithWhereWithoutImplementationInterpretationsInput, Prisma.CampaignUpdateWithoutImplementationInterpretationsInput>, Prisma.CampaignUncheckedUpdateWithoutImplementationInterpretationsInput>
 }
 
+export type CampaignCreateNestedOneWithoutOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutOpportunitiesInput, Prisma.CampaignUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutOpportunitiesInput
+  connect?: Prisma.CampaignWhereUniqueInput
+}
+
+export type CampaignUpdateOneRequiredWithoutOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutOpportunitiesInput, Prisma.CampaignUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutOpportunitiesInput
+  upsert?: Prisma.CampaignUpsertWithoutOpportunitiesInput
+  connect?: Prisma.CampaignWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CampaignUpdateToOneWithWhereWithoutOpportunitiesInput, Prisma.CampaignUpdateWithoutOpportunitiesInput>, Prisma.CampaignUncheckedUpdateWithoutOpportunitiesInput>
+}
+
 export type CampaignCreateWithoutCampaignProspectsInput = {
   id?: string
   createdAt?: Date | string
@@ -880,6 +901,7 @@ export type CampaignCreateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutCampaignProspectsInput = {
@@ -909,6 +931,7 @@ export type CampaignUncheckedCreateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutCampaignProspectsInput = {
@@ -954,6 +977,7 @@ export type CampaignUpdateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutCampaignProspectsInput = {
@@ -983,6 +1007,7 @@ export type CampaignUncheckedUpdateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutOutreachMessagesInput = {
@@ -1012,6 +1037,7 @@ export type CampaignCreateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutOutreachMessagesInput = {
@@ -1041,6 +1067,7 @@ export type CampaignUncheckedCreateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutOutreachMessagesInput = {
@@ -1086,6 +1113,7 @@ export type CampaignUpdateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutOutreachMessagesInput = {
@@ -1115,6 +1143,7 @@ export type CampaignUncheckedUpdateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutDiscoveryRunsInput = {
@@ -1144,6 +1173,7 @@ export type CampaignCreateWithoutDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutDiscoveryRunsInput = {
@@ -1173,6 +1203,7 @@ export type CampaignUncheckedCreateWithoutDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutDiscoveryRunsInput = {
@@ -1218,6 +1249,7 @@ export type CampaignUpdateWithoutDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutDiscoveryRunsInput = {
@@ -1247,6 +1279,7 @@ export type CampaignUncheckedUpdateWithoutDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutQualificationRunsInput = {
@@ -1276,6 +1309,7 @@ export type CampaignCreateWithoutQualificationRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutQualificationRunsInput = {
@@ -1305,6 +1339,7 @@ export type CampaignUncheckedCreateWithoutQualificationRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutQualificationRunsInput = {
@@ -1350,6 +1385,7 @@ export type CampaignUpdateWithoutQualificationRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutQualificationRunsInput = {
@@ -1379,6 +1415,7 @@ export type CampaignUncheckedUpdateWithoutQualificationRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutContactDiscoveryRunsInput = {
@@ -1408,6 +1445,7 @@ export type CampaignCreateWithoutContactDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutContactDiscoveryRunsInput = {
@@ -1437,6 +1475,7 @@ export type CampaignUncheckedCreateWithoutContactDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutContactDiscoveryRunsInput = {
@@ -1482,6 +1521,7 @@ export type CampaignUpdateWithoutContactDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutContactDiscoveryRunsInput = {
@@ -1511,6 +1551,7 @@ export type CampaignUncheckedUpdateWithoutContactDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutOutreachDraftRunsInput = {
@@ -1540,6 +1581,7 @@ export type CampaignCreateWithoutOutreachDraftRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutOutreachDraftRunsInput = {
@@ -1569,6 +1611,7 @@ export type CampaignUncheckedCreateWithoutOutreachDraftRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutOutreachDraftRunsInput = {
@@ -1614,6 +1657,7 @@ export type CampaignUpdateWithoutOutreachDraftRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutOutreachDraftRunsInput = {
@@ -1643,6 +1687,7 @@ export type CampaignUncheckedUpdateWithoutOutreachDraftRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutCompetitorAuditsInput = {
@@ -1672,6 +1717,7 @@ export type CampaignCreateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutCompetitorAuditsInput = {
@@ -1701,6 +1747,7 @@ export type CampaignUncheckedCreateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutCompetitorAuditsInput = {
@@ -1746,6 +1793,7 @@ export type CampaignUpdateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutCompetitorAuditsInput = {
@@ -1775,6 +1823,7 @@ export type CampaignUncheckedUpdateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutCompetitiveComparisonsInput = {
@@ -1804,6 +1853,7 @@ export type CampaignCreateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutCompetitiveComparisonsInput = {
@@ -1833,6 +1883,7 @@ export type CampaignUncheckedCreateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutCompetitiveComparisonsInput = {
@@ -1878,6 +1929,7 @@ export type CampaignUpdateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutCompetitiveComparisonsInput = {
@@ -1907,6 +1959,7 @@ export type CampaignUncheckedUpdateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutCompetitiveInterpretationsInput = {
@@ -1936,6 +1989,7 @@ export type CampaignCreateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutCompetitiveInterpretationsInput = {
@@ -1965,6 +2019,7 @@ export type CampaignUncheckedCreateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutCompetitiveInterpretationsInput = {
@@ -2010,6 +2065,7 @@ export type CampaignUpdateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutCompetitiveInterpretationsInput = {
@@ -2039,6 +2095,7 @@ export type CampaignUncheckedUpdateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutCompetitorAuditRunsInput = {
@@ -2068,6 +2125,7 @@ export type CampaignCreateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutCompetitorAuditRunsInput = {
@@ -2097,6 +2155,7 @@ export type CampaignUncheckedCreateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutCompetitorAuditRunsInput = {
@@ -2142,6 +2201,7 @@ export type CampaignUpdateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutCompetitorAuditRunsInput = {
@@ -2171,6 +2231,7 @@ export type CampaignUncheckedUpdateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutCompetitorDiscoveryRunsInput = {
@@ -2200,6 +2261,7 @@ export type CampaignCreateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
@@ -2229,6 +2291,7 @@ export type CampaignUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutCompetitorDiscoveryRunsInput = {
@@ -2274,6 +2337,7 @@ export type CampaignUpdateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
@@ -2303,6 +2367,7 @@ export type CampaignUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutImplementationPlansInput = {
@@ -2332,6 +2397,7 @@ export type CampaignCreateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutCampaignInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutImplementationPlansInput = {
@@ -2361,6 +2427,7 @@ export type CampaignUncheckedCreateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutCampaignInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutImplementationPlansInput = {
@@ -2406,6 +2473,7 @@ export type CampaignUpdateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutCampaignNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutImplementationPlansInput = {
@@ -2435,6 +2503,7 @@ export type CampaignUncheckedUpdateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutCampaignNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutImplementationInterpretationsInput = {
@@ -2464,6 +2533,7 @@ export type CampaignCreateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutCampaignInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutImplementationInterpretationsInput = {
@@ -2493,6 +2563,7 @@ export type CampaignUncheckedCreateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutCampaignInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutImplementationInterpretationsInput = {
@@ -2538,6 +2609,7 @@ export type CampaignUpdateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutCampaignNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutImplementationInterpretationsInput = {
@@ -2567,6 +2639,143 @@ export type CampaignUncheckedUpdateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutCampaignNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  status?: $Enums.CampaignStatus
+  locationLabel: string
+  city?: string | null
+  state?: string | null
+  radiusMiles?: number | null
+  industries?: Prisma.CampaignCreateindustriesInput | string[]
+  desiredQualifiedCount?: number
+  targeting?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notes?: string | null
+  createdByEmail: string
+  campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutCampaignInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutCampaignInput
+  discoveryRuns?: Prisma.ProspectDiscoveryRunCreateNestedManyWithoutCampaignInput
+  qualificationRuns?: Prisma.ProspectQualificationRunCreateNestedManyWithoutCampaignInput
+  contactDiscoveryRuns?: Prisma.ProspectContactDiscoveryRunCreateNestedManyWithoutCampaignInput
+  outreachDraftRuns?: Prisma.ProspectOutreachDraftRunCreateNestedManyWithoutCampaignInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutCampaignInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutCampaignInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutCampaignInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutCampaignInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutCampaignInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutCampaignInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignUncheckedCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  status?: $Enums.CampaignStatus
+  locationLabel: string
+  city?: string | null
+  state?: string | null
+  radiusMiles?: number | null
+  industries?: Prisma.CampaignCreateindustriesInput | string[]
+  desiredQualifiedCount?: number
+  targeting?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notes?: string | null
+  createdByEmail: string
+  campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutCampaignInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutCampaignInput
+  discoveryRuns?: Prisma.ProspectDiscoveryRunUncheckedCreateNestedManyWithoutCampaignInput
+  qualificationRuns?: Prisma.ProspectQualificationRunUncheckedCreateNestedManyWithoutCampaignInput
+  contactDiscoveryRuns?: Prisma.ProspectContactDiscoveryRunUncheckedCreateNestedManyWithoutCampaignInput
+  outreachDraftRuns?: Prisma.ProspectOutreachDraftRunUncheckedCreateNestedManyWithoutCampaignInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutCampaignInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutCampaignInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutCampaignInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutCampaignInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutCampaignInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignCreateOrConnectWithoutOpportunitiesInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutOpportunitiesInput, Prisma.CampaignUncheckedCreateWithoutOpportunitiesInput>
+}
+
+export type CampaignUpsertWithoutOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.CampaignUpdateWithoutOpportunitiesInput, Prisma.CampaignUncheckedUpdateWithoutOpportunitiesInput>
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutOpportunitiesInput, Prisma.CampaignUncheckedCreateWithoutOpportunitiesInput>
+  where?: Prisma.CampaignWhereInput
+}
+
+export type CampaignUpdateToOneWithWhereWithoutOpportunitiesInput = {
+  where?: Prisma.CampaignWhereInput
+  data: Prisma.XOR<Prisma.CampaignUpdateWithoutOpportunitiesInput, Prisma.CampaignUncheckedUpdateWithoutOpportunitiesInput>
+}
+
+export type CampaignUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  locationLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  radiusMiles?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industries?: Prisma.CampaignUpdateindustriesInput | string[]
+  desiredQualifiedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  targeting?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutCampaignNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutCampaignNestedInput
+  discoveryRuns?: Prisma.ProspectDiscoveryRunUpdateManyWithoutCampaignNestedInput
+  qualificationRuns?: Prisma.ProspectQualificationRunUpdateManyWithoutCampaignNestedInput
+  contactDiscoveryRuns?: Prisma.ProspectContactDiscoveryRunUpdateManyWithoutCampaignNestedInput
+  outreachDraftRuns?: Prisma.ProspectOutreachDraftRunUpdateManyWithoutCampaignNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutCampaignNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutCampaignNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutCampaignNestedInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutCampaignNestedInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutCampaignNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutCampaignNestedInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  locationLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  radiusMiles?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industries?: Prisma.CampaignUpdateindustriesInput | string[]
+  desiredQualifiedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  targeting?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutCampaignNestedInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutCampaignNestedInput
+  discoveryRuns?: Prisma.ProspectDiscoveryRunUncheckedUpdateManyWithoutCampaignNestedInput
+  qualificationRuns?: Prisma.ProspectQualificationRunUncheckedUpdateManyWithoutCampaignNestedInput
+  contactDiscoveryRuns?: Prisma.ProspectContactDiscoveryRunUncheckedUpdateManyWithoutCampaignNestedInput
+  outreachDraftRuns?: Prisma.ProspectOutreachDraftRunUncheckedUpdateManyWithoutCampaignNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutCampaignNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutCampaignNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutCampaignNestedInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutCampaignNestedInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutCampaignNestedInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 
@@ -2588,6 +2797,7 @@ export type CampaignCountOutputType = {
   competitiveInterpretations: number
   implementationPlans: number
   implementationInterpretations: number
+  opportunities: number
 }
 
 export type CampaignCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2604,6 +2814,7 @@ export type CampaignCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   competitiveInterpretations?: boolean | CampaignCountOutputTypeCountCompetitiveInterpretationsArgs
   implementationPlans?: boolean | CampaignCountOutputTypeCountImplementationPlansArgs
   implementationInterpretations?: boolean | CampaignCountOutputTypeCountImplementationInterpretationsArgs
+  opportunities?: boolean | CampaignCountOutputTypeCountOpportunitiesArgs
 }
 
 /**
@@ -2707,6 +2918,13 @@ export type CampaignCountOutputTypeCountImplementationInterpretationsArgs<ExtArg
   where?: Prisma.ImplementationPlanInterpretationWhereInput
 }
 
+/**
+ * CampaignCountOutputType without action
+ */
+export type CampaignCountOutputTypeCountOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
 
 export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2736,6 +2954,7 @@ export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   competitiveInterpretations?: boolean | Prisma.Campaign$competitiveInterpretationsArgs<ExtArgs>
   implementationPlans?: boolean | Prisma.Campaign$implementationPlansArgs<ExtArgs>
   implementationInterpretations?: boolean | Prisma.Campaign$implementationInterpretationsArgs<ExtArgs>
+  opportunities?: boolean | Prisma.Campaign$opportunitiesArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
@@ -2805,6 +3024,7 @@ export type CampaignInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   competitiveInterpretations?: boolean | Prisma.Campaign$competitiveInterpretationsArgs<ExtArgs>
   implementationPlans?: boolean | Prisma.Campaign$implementationPlansArgs<ExtArgs>
   implementationInterpretations?: boolean | Prisma.Campaign$implementationInterpretationsArgs<ExtArgs>
+  opportunities?: boolean | Prisma.Campaign$opportunitiesArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CampaignIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2826,6 +3046,7 @@ export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     competitiveInterpretations: Prisma.$CompetitiveInterpretationPayload<ExtArgs>[]
     implementationPlans: Prisma.$ImplementationPlanPayload<ExtArgs>[]
     implementationInterpretations: Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>[]
+    opportunities: Prisma.$OpportunityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3249,6 +3470,7 @@ export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends runtime
   competitiveInterpretations<T extends Prisma.Campaign$competitiveInterpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$competitiveInterpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitiveInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   implementationPlans<T extends Prisma.Campaign$implementationPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$implementationPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   implementationInterpretations<T extends Prisma.Campaign$implementationInterpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$implementationInterpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  opportunities<T extends Prisma.Campaign$opportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$opportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3994,6 +4216,30 @@ export type Campaign$implementationInterpretationsArgs<ExtArgs extends runtime.T
   take?: number
   skip?: number
   distinct?: Prisma.ImplementationPlanInterpretationScalarFieldEnum | Prisma.ImplementationPlanInterpretationScalarFieldEnum[]
+}
+
+/**
+ * Campaign.opportunities
+ */
+export type Campaign$opportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
 }
 
 /**

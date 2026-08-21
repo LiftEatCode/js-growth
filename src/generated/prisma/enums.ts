@@ -328,3 +328,44 @@ export const ImplementationInterpretationStatus = {
 } as const
 
 export type ImplementationInterpretationStatus = (typeof ImplementationInterpretationStatus)[keyof typeof ImplementationInterpretationStatus]
+
+
+export const OpportunityStage = {
+  NEW: 'NEW',
+  QUALIFIED: 'QUALIFIED',
+  DISCOVERY: 'DISCOVERY',
+  SOLUTION_FIT: 'SOLUTION_FIT',
+  PROPOSAL_READY: 'PROPOSAL_READY',
+  WON: 'WON',
+  LOST: 'LOST'
+} as const
+
+export type OpportunityStage = (typeof OpportunityStage)[keyof typeof OpportunityStage]
+
+
+export const OpportunityLostReason = {
+  PRICE: 'PRICE',
+  NO_RESPONSE: 'NO_RESPONSE',
+  NOT_READY: 'NOT_READY',
+  NO_FIT: 'NO_FIT',
+  COMPETITOR: 'COMPETITOR',
+  DIY: 'DIY',
+  TIMING: 'TIMING',
+  OTHER: 'OTHER'
+} as const
+
+export type OpportunityLostReason = (typeof OpportunityLostReason)[keyof typeof OpportunityLostReason]
+
+
+export const OpportunityActivityType = {
+  OPPORTUNITY_CREATED: 'OPPORTUNITY_CREATED',
+  STAGE_CHANGED: 'STAGE_CHANGED',
+  NEXT_ACTION_CHANGED: 'NEXT_ACTION_CHANGED',
+  NOTE_ADDED: 'NOTE_ADDED',
+  CAPABILITIES_UPDATED: 'CAPABILITIES_UPDATED',
+  MARKED_WON: 'MARKED_WON',
+  MARKED_LOST: 'MARKED_LOST',
+  REOPENED: 'REOPENED'
+} as const
+
+export type OpportunityActivityType = (typeof OpportunityActivityType)[keyof typeof OpportunityActivityType]

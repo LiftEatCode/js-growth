@@ -357,6 +357,7 @@ export type ImplementationPlanInterpretationWhereInput = {
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
+  opportunities?: Prisma.OpportunityListRelationFilter
 }
 
 export type ImplementationPlanInterpretationOrderByWithRelationInput = {
@@ -385,6 +386,7 @@ export type ImplementationPlanInterpretationOrderByWithRelationInput = {
   prospect?: Prisma.ProspectOrderByWithRelationInput
   campaign?: Prisma.CampaignOrderByWithRelationInput
   lead?: Prisma.LeadOrderByWithRelationInput
+  opportunities?: Prisma.OpportunityOrderByRelationAggregateInput
 }
 
 export type ImplementationPlanInterpretationWhereUniqueInput = Prisma.AtLeast<{
@@ -416,6 +418,7 @@ export type ImplementationPlanInterpretationWhereUniqueInput = Prisma.AtLeast<{
   prospect?: Prisma.XOR<Prisma.ProspectScalarRelationFilter, Prisma.ProspectWhereInput>
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
+  opportunities?: Prisma.OpportunityListRelationFilter
 }, "id">
 
 export type ImplementationPlanInterpretationOrderByWithAggregationInput = {
@@ -496,6 +499,7 @@ export type ImplementationPlanInterpretationCreateInput = {
   prospect: Prisma.ProspectCreateNestedOneWithoutImplementationInterpretationsInput
   campaign: Prisma.CampaignCreateNestedOneWithoutImplementationInterpretationsInput
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationInterpretationsInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationUncheckedCreateInput = {
@@ -520,6 +524,7 @@ export type ImplementationPlanInterpretationUncheckedCreateInput = {
   failureCode?: string | null
   failureMessage?: string | null
   createdByEmail: string
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationUpdateInput = {
@@ -544,6 +549,7 @@ export type ImplementationPlanInterpretationUpdateInput = {
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutImplementationInterpretationsNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateInput = {
@@ -568,6 +574,7 @@ export type ImplementationPlanInterpretationUncheckedUpdateInput = {
   failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationCreateManyInput = {
@@ -730,6 +737,11 @@ export type ImplementationPlanInterpretationSumOrderByAggregateInput = {
   interpretationVersion?: Prisma.SortOrder
   planVersion?: Prisma.SortOrder
   mappingVersion?: Prisma.SortOrder
+}
+
+export type ImplementationPlanInterpretationNullableScalarRelationFilter = {
+  is?: Prisma.ImplementationPlanInterpretationWhereInput | null
+  isNot?: Prisma.ImplementationPlanInterpretationWhereInput | null
 }
 
 export type ImplementationPlanInterpretationCreateNestedManyWithoutLeadInput = {
@@ -904,6 +916,22 @@ export type EnumImplementationInterpretationStatusFieldUpdateOperationsInput = {
   set?: $Enums.ImplementationInterpretationStatus
 }
 
+export type ImplementationPlanInterpretationCreateNestedOneWithoutOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.ImplementationPlanInterpretationCreateWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.ImplementationPlanInterpretationCreateOrConnectWithoutOpportunitiesInput
+  connect?: Prisma.ImplementationPlanInterpretationWhereUniqueInput
+}
+
+export type ImplementationPlanInterpretationUpdateOneWithoutOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.ImplementationPlanInterpretationCreateWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.ImplementationPlanInterpretationCreateOrConnectWithoutOpportunitiesInput
+  upsert?: Prisma.ImplementationPlanInterpretationUpsertWithoutOpportunitiesInput
+  disconnect?: Prisma.ImplementationPlanInterpretationWhereInput | boolean
+  delete?: Prisma.ImplementationPlanInterpretationWhereInput | boolean
+  connect?: Prisma.ImplementationPlanInterpretationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ImplementationPlanInterpretationUpdateToOneWithWhereWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUpdateWithoutOpportunitiesInput>, Prisma.ImplementationPlanInterpretationUncheckedUpdateWithoutOpportunitiesInput>
+}
+
 export type ImplementationPlanInterpretationCreateWithoutLeadInput = {
   id?: string
   createdAt?: Date | string
@@ -925,6 +953,7 @@ export type ImplementationPlanInterpretationCreateWithoutLeadInput = {
   implementationPlan: Prisma.ImplementationPlanCreateNestedOneWithoutInterpretationsInput
   prospect: Prisma.ProspectCreateNestedOneWithoutImplementationInterpretationsInput
   campaign: Prisma.CampaignCreateNestedOneWithoutImplementationInterpretationsInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationUncheckedCreateWithoutLeadInput = {
@@ -948,6 +977,7 @@ export type ImplementationPlanInterpretationUncheckedCreateWithoutLeadInput = {
   failureCode?: string | null
   failureMessage?: string | null
   createdByEmail: string
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationCreateOrConnectWithoutLeadInput = {
@@ -1024,6 +1054,7 @@ export type ImplementationPlanInterpretationCreateWithoutCampaignInput = {
   implementationPlan: Prisma.ImplementationPlanCreateNestedOneWithoutInterpretationsInput
   prospect: Prisma.ProspectCreateNestedOneWithoutImplementationInterpretationsInput
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationInterpretationsInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationUncheckedCreateWithoutCampaignInput = {
@@ -1047,6 +1078,7 @@ export type ImplementationPlanInterpretationUncheckedCreateWithoutCampaignInput 
   failureCode?: string | null
   failureMessage?: string | null
   createdByEmail: string
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationCreateOrConnectWithoutCampaignInput = {
@@ -1096,6 +1128,7 @@ export type ImplementationPlanInterpretationCreateWithoutProspectInput = {
   implementationPlan: Prisma.ImplementationPlanCreateNestedOneWithoutInterpretationsInput
   campaign: Prisma.CampaignCreateNestedOneWithoutImplementationInterpretationsInput
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationInterpretationsInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationUncheckedCreateWithoutProspectInput = {
@@ -1119,6 +1152,7 @@ export type ImplementationPlanInterpretationUncheckedCreateWithoutProspectInput 
   failureCode?: string | null
   failureMessage?: string | null
   createdByEmail: string
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationCreateOrConnectWithoutProspectInput = {
@@ -1168,6 +1202,7 @@ export type ImplementationPlanInterpretationCreateWithoutImplementationPlanInput
   prospect: Prisma.ProspectCreateNestedOneWithoutImplementationInterpretationsInput
   campaign: Prisma.CampaignCreateNestedOneWithoutImplementationInterpretationsInput
   lead?: Prisma.LeadCreateNestedOneWithoutImplementationInterpretationsInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationUncheckedCreateWithoutImplementationPlanInput = {
@@ -1191,6 +1226,7 @@ export type ImplementationPlanInterpretationUncheckedCreateWithoutImplementation
   failureCode?: string | null
   failureMessage?: string | null
   createdByEmail: string
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutImplementationInterpretationInput
 }
 
 export type ImplementationPlanInterpretationCreateOrConnectWithoutImplementationPlanInput = {
@@ -1217,6 +1253,118 @@ export type ImplementationPlanInterpretationUpdateWithWhereUniqueWithoutImplemen
 export type ImplementationPlanInterpretationUpdateManyWithWhereWithoutImplementationPlanInput = {
   where: Prisma.ImplementationPlanInterpretationScalarWhereInput
   data: Prisma.XOR<Prisma.ImplementationPlanInterpretationUpdateManyMutationInput, Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanInput>
+}
+
+export type ImplementationPlanInterpretationCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  status?: $Enums.ImplementationInterpretationStatus
+  model?: string | null
+  promptVersion: number
+  interpretationVersion: number
+  planVersion: number
+  mappingVersion: number
+  inputFingerprint: string
+  interpretationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  failedAt?: Date | string | null
+  failureCode?: string | null
+  failureMessage?: string | null
+  createdByEmail: string
+  implementationPlan: Prisma.ImplementationPlanCreateNestedOneWithoutInterpretationsInput
+  prospect: Prisma.ProspectCreateNestedOneWithoutImplementationInterpretationsInput
+  campaign: Prisma.CampaignCreateNestedOneWithoutImplementationInterpretationsInput
+  lead?: Prisma.LeadCreateNestedOneWithoutImplementationInterpretationsInput
+}
+
+export type ImplementationPlanInterpretationUncheckedCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  implementationPlanId: string
+  prospectId: string
+  campaignId: string
+  leadId?: string | null
+  status?: $Enums.ImplementationInterpretationStatus
+  model?: string | null
+  promptVersion: number
+  interpretationVersion: number
+  planVersion: number
+  mappingVersion: number
+  inputFingerprint: string
+  interpretationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  failedAt?: Date | string | null
+  failureCode?: string | null
+  failureMessage?: string | null
+  createdByEmail: string
+}
+
+export type ImplementationPlanInterpretationCreateOrConnectWithoutOpportunitiesInput = {
+  where: Prisma.ImplementationPlanInterpretationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ImplementationPlanInterpretationCreateWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUncheckedCreateWithoutOpportunitiesInput>
+}
+
+export type ImplementationPlanInterpretationUpsertWithoutOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.ImplementationPlanInterpretationUpdateWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUncheckedUpdateWithoutOpportunitiesInput>
+  create: Prisma.XOR<Prisma.ImplementationPlanInterpretationCreateWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUncheckedCreateWithoutOpportunitiesInput>
+  where?: Prisma.ImplementationPlanInterpretationWhereInput
+}
+
+export type ImplementationPlanInterpretationUpdateToOneWithWhereWithoutOpportunitiesInput = {
+  where?: Prisma.ImplementationPlanInterpretationWhereInput
+  data: Prisma.XOR<Prisma.ImplementationPlanInterpretationUpdateWithoutOpportunitiesInput, Prisma.ImplementationPlanInterpretationUncheckedUpdateWithoutOpportunitiesInput>
+}
+
+export type ImplementationPlanInterpretationUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumImplementationInterpretationStatusFieldUpdateOperationsInput | $Enums.ImplementationInterpretationStatus
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  interpretationVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  planVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  mappingVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  inputFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  interpretationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  implementationPlan?: Prisma.ImplementationPlanUpdateOneRequiredWithoutInterpretationsNestedInput
+  prospect?: Prisma.ProspectUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
+  campaign?: Prisma.CampaignUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutImplementationInterpretationsNestedInput
+}
+
+export type ImplementationPlanInterpretationUncheckedUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  implementationPlanId?: Prisma.StringFieldUpdateOperationsInput | string
+  prospectId?: Prisma.StringFieldUpdateOperationsInput | string
+  campaignId?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumImplementationInterpretationStatusFieldUpdateOperationsInput | $Enums.ImplementationInterpretationStatus
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  interpretationVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  planVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  mappingVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  inputFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  interpretationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ImplementationPlanInterpretationCreateManyLeadInput = {
@@ -1263,6 +1411,7 @@ export type ImplementationPlanInterpretationUpdateWithoutLeadInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneRequiredWithoutInterpretationsNestedInput
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateWithoutLeadInput = {
@@ -1286,6 +1435,7 @@ export type ImplementationPlanInterpretationUncheckedUpdateWithoutLeadInput = {
   failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateManyWithoutLeadInput = {
@@ -1355,6 +1505,7 @@ export type ImplementationPlanInterpretationUpdateWithoutCampaignInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneRequiredWithoutInterpretationsNestedInput
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutImplementationInterpretationsNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateWithoutCampaignInput = {
@@ -1378,6 +1529,7 @@ export type ImplementationPlanInterpretationUncheckedUpdateWithoutCampaignInput 
   failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateManyWithoutCampaignInput = {
@@ -1447,6 +1599,7 @@ export type ImplementationPlanInterpretationUpdateWithoutProspectInput = {
   implementationPlan?: Prisma.ImplementationPlanUpdateOneRequiredWithoutInterpretationsNestedInput
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutImplementationInterpretationsNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateWithoutProspectInput = {
@@ -1470,6 +1623,7 @@ export type ImplementationPlanInterpretationUncheckedUpdateWithoutProspectInput 
   failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectInput = {
@@ -1539,6 +1693,7 @@ export type ImplementationPlanInterpretationUpdateWithoutImplementationPlanInput
   prospect?: Prisma.ProspectUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutImplementationInterpretationsNestedInput
   lead?: Prisma.LeadUpdateOneWithoutImplementationInterpretationsNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateWithoutImplementationPlanInput = {
@@ -1562,6 +1717,7 @@ export type ImplementationPlanInterpretationUncheckedUpdateWithoutImplementation
   failureCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutImplementationInterpretationNestedInput
 }
 
 export type ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementationPlanInput = {
@@ -1587,6 +1743,35 @@ export type ImplementationPlanInterpretationUncheckedUpdateManyWithoutImplementa
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+
+/**
+ * Count Type ImplementationPlanInterpretationCountOutputType
+ */
+
+export type ImplementationPlanInterpretationCountOutputType = {
+  opportunities: number
+}
+
+export type ImplementationPlanInterpretationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  opportunities?: boolean | ImplementationPlanInterpretationCountOutputTypeCountOpportunitiesArgs
+}
+
+/**
+ * ImplementationPlanInterpretationCountOutputType without action
+ */
+export type ImplementationPlanInterpretationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImplementationPlanInterpretationCountOutputType
+   */
+  select?: Prisma.ImplementationPlanInterpretationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ImplementationPlanInterpretationCountOutputType without action
+ */
+export type ImplementationPlanInterpretationCountOutputTypeCountOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
 
 
 export type ImplementationPlanInterpretationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1615,6 +1800,8 @@ export type ImplementationPlanInterpretationSelect<ExtArgs extends runtime.Types
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.ImplementationPlanInterpretation$leadArgs<ExtArgs>
+  opportunities?: boolean | Prisma.ImplementationPlanInterpretation$opportunitiesArgs<ExtArgs>
+  _count?: boolean | Prisma.ImplementationPlanInterpretationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["implementationPlanInterpretation"]>
 
 export type ImplementationPlanInterpretationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1703,6 +1890,8 @@ export type ImplementationPlanInterpretationInclude<ExtArgs extends runtime.Type
   prospect?: boolean | Prisma.ProspectDefaultArgs<ExtArgs>
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   lead?: boolean | Prisma.ImplementationPlanInterpretation$leadArgs<ExtArgs>
+  opportunities?: boolean | Prisma.ImplementationPlanInterpretation$opportunitiesArgs<ExtArgs>
+  _count?: boolean | Prisma.ImplementationPlanInterpretationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ImplementationPlanInterpretationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   implementationPlan?: boolean | Prisma.ImplementationPlanDefaultArgs<ExtArgs>
@@ -1724,6 +1913,7 @@ export type $ImplementationPlanInterpretationPayload<ExtArgs extends runtime.Typ
     prospect: Prisma.$ProspectPayload<ExtArgs>
     campaign: Prisma.$CampaignPayload<ExtArgs>
     lead: Prisma.$LeadPayload<ExtArgs> | null
+    opportunities: Prisma.$OpportunityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2145,6 +2335,7 @@ export interface Prisma__ImplementationPlanInterpretationClient<T, Null = never,
   prospect<T extends Prisma.ProspectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProspectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProspectClient<runtime.Types.Result.GetResult<Prisma.$ProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   campaign<T extends Prisma.CampaignDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CampaignDefaultArgs<ExtArgs>>): Prisma.Prisma__CampaignClient<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   lead<T extends Prisma.ImplementationPlanInterpretation$leadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ImplementationPlanInterpretation$leadArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  opportunities<T extends Prisma.ImplementationPlanInterpretation$opportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ImplementationPlanInterpretation$opportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2612,6 +2803,30 @@ export type ImplementationPlanInterpretation$leadArgs<ExtArgs extends runtime.Ty
    */
   include?: Prisma.LeadInclude<ExtArgs> | null
   where?: Prisma.LeadWhereInput
+}
+
+/**
+ * ImplementationPlanInterpretation.opportunities
+ */
+export type ImplementationPlanInterpretation$opportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
 }
 
 /**

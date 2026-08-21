@@ -824,6 +824,57 @@ export type EnumImplementationInterpretationStatusWithAggregatesFilter<$PrismaMo
   _max?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
 }
 
+export type EnumOpportunityStageFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStage | Prisma.EnumOpportunityStageFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStageFilter<$PrismaModel> | $Enums.OpportunityStage
+}
+
+export type EnumOpportunityLostReasonNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityLostReason | Prisma.EnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel> | $Enums.OpportunityLostReason | null
+}
+
+export type EnumOpportunityStageWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStage | Prisma.EnumOpportunityStageFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStageWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityStage
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityStageFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityStageFilter<$PrismaModel>
+}
+
+export type EnumOpportunityLostReasonNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityLostReason | Prisma.EnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumOpportunityLostReasonNullableWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityLostReason | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel>
+}
+
+export type EnumOpportunityActivityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityActivityType | Prisma.EnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel> | $Enums.OpportunityActivityType
+}
+
+export type EnumOpportunityActivityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityActivityType | Prisma.EnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityActivityTypeWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityActivityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1580,6 +1631,57 @@ export type NestedEnumImplementationInterpretationStatusWithAggregatesFilter<$Pr
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumImplementationInterpretationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumOpportunityStageFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStage | Prisma.EnumOpportunityStageFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStageFilter<$PrismaModel> | $Enums.OpportunityStage
+}
+
+export type NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityLostReason | Prisma.EnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel> | $Enums.OpportunityLostReason | null
+}
+
+export type NestedEnumOpportunityStageWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStage | Prisma.EnumOpportunityStageFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStage[] | Prisma.ListEnumOpportunityStageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStageWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityStage
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityStageFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityStageFilter<$PrismaModel>
+}
+
+export type NestedEnumOpportunityLostReasonNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityLostReason | Prisma.EnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  in?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.OpportunityLostReason[] | Prisma.ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumOpportunityLostReasonNullableWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityLostReason | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityLostReasonNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumOpportunityActivityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityActivityType | Prisma.EnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel> | $Enums.OpportunityActivityType
+}
+
+export type NestedEnumOpportunityActivityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityActivityType | Prisma.EnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityActivityType[] | Prisma.ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityActivityTypeWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityActivityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityActivityTypeFilter<$PrismaModel>
 }
 
 

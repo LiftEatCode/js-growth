@@ -389,6 +389,7 @@ export type ProspectWhereInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationListRelationFilter
   implementationPlans?: Prisma.ImplementationPlanListRelationFilter
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
+  opportunities?: Prisma.OpportunityListRelationFilter
 }
 
 export type ProspectOrderByWithRelationInput = {
@@ -433,6 +434,7 @@ export type ProspectOrderByWithRelationInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationOrderByRelationAggregateInput
   implementationPlans?: Prisma.ImplementationPlanOrderByRelationAggregateInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationOrderByRelationAggregateInput
+  opportunities?: Prisma.OpportunityOrderByRelationAggregateInput
 }
 
 export type ProspectWhereUniqueInput = Prisma.AtLeast<{
@@ -480,6 +482,7 @@ export type ProspectWhereUniqueInput = Prisma.AtLeast<{
   competitiveInterpretations?: Prisma.CompetitiveInterpretationListRelationFilter
   implementationPlans?: Prisma.ImplementationPlanListRelationFilter
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationListRelationFilter
+  opportunities?: Prisma.OpportunityListRelationFilter
 }, "id">
 
 export type ProspectOrderByWithAggregationInput = {
@@ -584,6 +587,7 @@ export type ProspectCreateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateInput = {
@@ -626,6 +630,7 @@ export type ProspectUncheckedCreateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUpdateInput = {
@@ -668,6 +673,7 @@ export type ProspectUpdateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateInput = {
@@ -710,6 +716,7 @@ export type ProspectUncheckedUpdateInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateManyInput = {
@@ -1224,6 +1231,20 @@ export type ProspectUpdateOneRequiredWithoutImplementationInterpretationsNestedI
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutImplementationInterpretationsInput, Prisma.ProspectUpdateWithoutImplementationInterpretationsInput>, Prisma.ProspectUncheckedUpdateWithoutImplementationInterpretationsInput>
 }
 
+export type ProspectCreateNestedOneWithoutOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutOpportunitiesInput, Prisma.ProspectUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutOpportunitiesInput
+  connect?: Prisma.ProspectWhereUniqueInput
+}
+
+export type ProspectUpdateOneRequiredWithoutOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProspectCreateWithoutOpportunitiesInput, Prisma.ProspectUncheckedCreateWithoutOpportunitiesInput>
+  connectOrCreate?: Prisma.ProspectCreateOrConnectWithoutOpportunitiesInput
+  upsert?: Prisma.ProspectUpsertWithoutOpportunitiesInput
+  connect?: Prisma.ProspectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProspectUpdateToOneWithWhereWithoutOpportunitiesInput, Prisma.ProspectUpdateWithoutOpportunitiesInput>, Prisma.ProspectUncheckedUpdateWithoutOpportunitiesInput>
+}
+
 export type ProspectCreateWithoutAuditReportInput = {
   id?: string
   createdAt?: Date | string
@@ -1263,6 +1284,7 @@ export type ProspectCreateWithoutAuditReportInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutAuditReportInput = {
@@ -1304,6 +1326,7 @@ export type ProspectUncheckedCreateWithoutAuditReportInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutAuditReportInput = {
@@ -1401,6 +1424,7 @@ export type ProspectCreateWithoutLeadInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutLeadInput = {
@@ -1442,6 +1466,7 @@ export type ProspectUncheckedCreateWithoutLeadInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutLeadInput = {
@@ -1509,6 +1534,7 @@ export type ProspectCreateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
@@ -1550,6 +1576,7 @@ export type ProspectUncheckedCreateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCampaignProspectsInput = {
@@ -1607,6 +1634,7 @@ export type ProspectUpdateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
@@ -1648,6 +1676,7 @@ export type ProspectUncheckedUpdateWithoutCampaignProspectsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutContactsInput = {
@@ -1689,6 +1718,7 @@ export type ProspectCreateWithoutContactsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutContactsInput = {
@@ -1730,6 +1760,7 @@ export type ProspectUncheckedCreateWithoutContactsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutContactsInput = {
@@ -1787,6 +1818,7 @@ export type ProspectUpdateWithoutContactsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutContactsInput = {
@@ -1828,6 +1860,7 @@ export type ProspectUncheckedUpdateWithoutContactsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutContactFormsInput = {
@@ -1869,6 +1902,7 @@ export type ProspectCreateWithoutContactFormsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutContactFormsInput = {
@@ -1910,6 +1944,7 @@ export type ProspectUncheckedCreateWithoutContactFormsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutContactFormsInput = {
@@ -1967,6 +2002,7 @@ export type ProspectUpdateWithoutContactFormsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutContactFormsInput = {
@@ -2008,6 +2044,7 @@ export type ProspectUncheckedUpdateWithoutContactFormsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutOutreachMessagesInput = {
@@ -2049,6 +2086,7 @@ export type ProspectCreateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
@@ -2090,6 +2128,7 @@ export type ProspectUncheckedCreateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutOutreachMessagesInput = {
@@ -2147,6 +2186,7 @@ export type ProspectUpdateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
@@ -2188,6 +2228,7 @@ export type ProspectUncheckedUpdateWithoutOutreachMessagesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
@@ -2229,6 +2270,7 @@ export type ProspectCreateWithoutImportedDiscoveryCandidatesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
@@ -2270,6 +2312,7 @@ export type ProspectUncheckedCreateWithoutImportedDiscoveryCandidatesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutImportedDiscoveryCandidatesInput = {
@@ -2327,6 +2370,7 @@ export type ProspectUpdateWithoutImportedDiscoveryCandidatesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
@@ -2368,6 +2412,7 @@ export type ProspectUncheckedUpdateWithoutImportedDiscoveryCandidatesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutOutreachOutcomesInput = {
@@ -2409,6 +2454,7 @@ export type ProspectCreateWithoutOutreachOutcomesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutOutreachOutcomesInput = {
@@ -2450,6 +2496,7 @@ export type ProspectUncheckedCreateWithoutOutreachOutcomesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutOutreachOutcomesInput = {
@@ -2507,6 +2554,7 @@ export type ProspectUpdateWithoutOutreachOutcomesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutOutreachOutcomesInput = {
@@ -2548,6 +2596,7 @@ export type ProspectUncheckedUpdateWithoutOutreachOutcomesInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitorsInput = {
@@ -2589,6 +2638,7 @@ export type ProspectCreateWithoutCompetitorsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorsInput = {
@@ -2630,6 +2680,7 @@ export type ProspectUncheckedCreateWithoutCompetitorsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorsInput = {
@@ -2676,6 +2727,7 @@ export type ProspectCreateWithoutCompetitorOfInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorOfInput = {
@@ -2717,6 +2769,7 @@ export type ProspectUncheckedCreateWithoutCompetitorOfInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorOfInput = {
@@ -2774,6 +2827,7 @@ export type ProspectUpdateWithoutCompetitorsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorsInput = {
@@ -2815,6 +2869,7 @@ export type ProspectUncheckedUpdateWithoutCompetitorsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUpsertWithoutCompetitorOfInput = {
@@ -2867,6 +2922,7 @@ export type ProspectUpdateWithoutCompetitorOfInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorOfInput = {
@@ -2908,6 +2964,7 @@ export type ProspectUncheckedUpdateWithoutCompetitorOfInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitorAuditsInput = {
@@ -2949,6 +3006,7 @@ export type ProspectCreateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorAuditsInput = {
@@ -2990,6 +3048,7 @@ export type ProspectUncheckedCreateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorAuditsInput = {
@@ -3047,6 +3106,7 @@ export type ProspectUpdateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorAuditsInput = {
@@ -3088,6 +3148,7 @@ export type ProspectUncheckedUpdateWithoutCompetitorAuditsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitiveComparisonsInput = {
@@ -3129,6 +3190,7 @@ export type ProspectCreateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitiveComparisonsInput = {
@@ -3170,6 +3232,7 @@ export type ProspectUncheckedCreateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitiveComparisonsInput = {
@@ -3227,6 +3290,7 @@ export type ProspectUpdateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitiveComparisonsInput = {
@@ -3268,6 +3332,7 @@ export type ProspectUncheckedUpdateWithoutCompetitiveComparisonsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitiveInterpretationsInput = {
@@ -3309,6 +3374,7 @@ export type ProspectCreateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitiveInterpretationsInput = {
@@ -3350,6 +3416,7 @@ export type ProspectUncheckedCreateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitiveInterpretationsInput = {
@@ -3407,6 +3474,7 @@ export type ProspectUpdateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitiveInterpretationsInput = {
@@ -3448,6 +3516,7 @@ export type ProspectUncheckedUpdateWithoutCompetitiveInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitorAuditRunsInput = {
@@ -3489,6 +3558,7 @@ export type ProspectCreateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorAuditRunsInput = {
@@ -3530,6 +3600,7 @@ export type ProspectUncheckedCreateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorAuditRunsInput = {
@@ -3587,6 +3658,7 @@ export type ProspectUpdateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorAuditRunsInput = {
@@ -3628,6 +3700,7 @@ export type ProspectUncheckedUpdateWithoutCompetitorAuditRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutCompetitorDiscoveryRunsInput = {
@@ -3669,6 +3742,7 @@ export type ProspectCreateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
@@ -3710,6 +3784,7 @@ export type ProspectUncheckedCreateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutCompetitorDiscoveryRunsInput = {
@@ -3767,6 +3842,7 @@ export type ProspectUpdateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
@@ -3808,6 +3884,7 @@ export type ProspectUncheckedUpdateWithoutCompetitorDiscoveryRunsInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutImplementationPlansInput = {
@@ -3849,6 +3926,7 @@ export type ProspectCreateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutProspectInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutImplementationPlansInput = {
@@ -3890,6 +3968,7 @@ export type ProspectUncheckedCreateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutProspectInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutImplementationPlansInput = {
@@ -3947,6 +4026,7 @@ export type ProspectUpdateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutProspectNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutImplementationPlansInput = {
@@ -3988,6 +4068,7 @@ export type ProspectUncheckedUpdateWithoutImplementationPlansInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutProspectNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateWithoutImplementationInterpretationsInput = {
@@ -4029,6 +4110,7 @@ export type ProspectCreateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutProspectInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectUncheckedCreateWithoutImplementationInterpretationsInput = {
@@ -4070,6 +4152,7 @@ export type ProspectUncheckedCreateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutProspectInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
+  opportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutProspectInput
 }
 
 export type ProspectCreateOrConnectWithoutImplementationInterpretationsInput = {
@@ -4127,6 +4210,7 @@ export type ProspectUpdateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutProspectNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutImplementationInterpretationsInput = {
@@ -4168,6 +4252,191 @@ export type ProspectUncheckedUpdateWithoutImplementationInterpretationsInput = {
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutProspectNestedInput
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
+}
+
+export type ProspectCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  lastCompetitorDiscoveryAt?: Date | string | null
+  auditReport?: Prisma.AuditReportCreateNestedOneWithoutProspectsInput
+  lead?: Prisma.LeadCreateNestedOneWithoutProspectsInput
+  campaignProspects?: Prisma.CampaignProspectCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateCreateNestedManyWithoutImportedProspectInput
+  competitors?: Prisma.ProspectCompetitorCreateNestedManyWithoutProspectInput
+  competitorOf?: Prisma.ProspectCompetitorCreateNestedManyWithoutCompetitorProspectInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditCreateNestedManyWithoutTargetProspectInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotCreateNestedManyWithoutProspectInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationCreateNestedManyWithoutProspectInput
+  implementationPlans?: Prisma.ImplementationPlanCreateNestedManyWithoutProspectInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationCreateNestedManyWithoutProspectInput
+}
+
+export type ProspectUncheckedCreateWithoutOpportunitiesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName: string
+  website?: string | null
+  hostname?: string | null
+  industry?: string | null
+  city?: string | null
+  state?: string | null
+  address?: string | null
+  phone?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  sourceType?: $Enums.ProspectSourceType
+  sourceRef?: string | null
+  discoveredAt?: Date | string
+  qualificationStatus?: $Enums.ProspectQualificationStatus
+  outreachStatus?: $Enums.ProspectOutreachStatus
+  skipReason?: string | null
+  notes?: string | null
+  lastContactDiscoveryAt?: Date | string | null
+  lastCompetitorDiscoveryAt?: Date | string | null
+  auditReportId?: string | null
+  leadId?: string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedCreateNestedManyWithoutProspectInput
+  contacts?: Prisma.ProspectContactUncheckedCreateNestedManyWithoutProspectInput
+  contactForms?: Prisma.ProspectContactFormUncheckedCreateNestedManyWithoutProspectInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutProspectInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedCreateNestedManyWithoutProspectInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedCreateNestedManyWithoutImportedProspectInput
+  competitors?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutProspectInput
+  competitorOf?: Prisma.ProspectCompetitorUncheckedCreateNestedManyWithoutCompetitorProspectInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedCreateNestedManyWithoutProspectInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedCreateNestedManyWithoutTargetProspectInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutProspectInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedCreateNestedManyWithoutProspectInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedCreateNestedManyWithoutProspectInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedCreateNestedManyWithoutProspectInput
+}
+
+export type ProspectCreateOrConnectWithoutOpportunitiesInput = {
+  where: Prisma.ProspectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutOpportunitiesInput, Prisma.ProspectUncheckedCreateWithoutOpportunitiesInput>
+}
+
+export type ProspectUpsertWithoutOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.ProspectUpdateWithoutOpportunitiesInput, Prisma.ProspectUncheckedUpdateWithoutOpportunitiesInput>
+  create: Prisma.XOR<Prisma.ProspectCreateWithoutOpportunitiesInput, Prisma.ProspectUncheckedCreateWithoutOpportunitiesInput>
+  where?: Prisma.ProspectWhereInput
+}
+
+export type ProspectUpdateToOneWithWhereWithoutOpportunitiesInput = {
+  where?: Prisma.ProspectWhereInput
+  data: Prisma.XOR<Prisma.ProspectUpdateWithoutOpportunitiesInput, Prisma.ProspectUncheckedUpdateWithoutOpportunitiesInput>
+}
+
+export type ProspectUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCompetitorDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReport?: Prisma.AuditReportUpdateOneWithoutProspectsNestedInput
+  lead?: Prisma.LeadUpdateOneWithoutProspectsNestedInput
+  campaignProspects?: Prisma.CampaignProspectUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUpdateManyWithoutImportedProspectNestedInput
+  competitors?: Prisma.ProspectCompetitorUpdateManyWithoutProspectNestedInput
+  competitorOf?: Prisma.ProspectCompetitorUpdateManyWithoutCompetitorProspectNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUpdateManyWithoutTargetProspectNestedInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUpdateManyWithoutProspectNestedInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+}
+
+export type ProspectUncheckedUpdateWithoutOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sourceType?: Prisma.EnumProspectSourceTypeFieldUpdateOperationsInput | $Enums.ProspectSourceType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qualificationStatus?: Prisma.EnumProspectQualificationStatusFieldUpdateOperationsInput | $Enums.ProspectQualificationStatus
+  outreachStatus?: Prisma.EnumProspectOutreachStatusFieldUpdateOperationsInput | $Enums.ProspectOutreachStatus
+  skipReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastContactDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastCompetitorDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditReportId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  campaignProspects?: Prisma.CampaignProspectUncheckedUpdateManyWithoutProspectNestedInput
+  contacts?: Prisma.ProspectContactUncheckedUpdateManyWithoutProspectNestedInput
+  contactForms?: Prisma.ProspectContactFormUncheckedUpdateManyWithoutProspectNestedInput
+  outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutProspectNestedInput
+  outreachOutcomes?: Prisma.OutreachOutcomeUncheckedUpdateManyWithoutProspectNestedInput
+  importedDiscoveryCandidates?: Prisma.ProspectDiscoveryCandidateUncheckedUpdateManyWithoutImportedProspectNestedInput
+  competitors?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutProspectNestedInput
+  competitorOf?: Prisma.ProspectCompetitorUncheckedUpdateManyWithoutCompetitorProspectNestedInput
+  competitorDiscoveryRuns?: Prisma.CompetitorDiscoveryRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAuditRuns?: Prisma.CompetitorAuditRunUncheckedUpdateManyWithoutProspectNestedInput
+  competitorAudits?: Prisma.CompetitorAuditUncheckedUpdateManyWithoutTargetProspectNestedInput
+  competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutProspectNestedInput
+  competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
+  implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectCreateManyAuditReportInput = {
@@ -4235,6 +4504,7 @@ export type ProspectUpdateWithoutAuditReportInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutAuditReportInput = {
@@ -4276,6 +4546,7 @@ export type ProspectUncheckedUpdateWithoutAuditReportInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateManyWithoutAuditReportInput = {
@@ -4369,6 +4640,7 @@ export type ProspectUpdateWithoutLeadInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateWithoutLeadInput = {
@@ -4410,6 +4682,7 @@ export type ProspectUncheckedUpdateWithoutLeadInput = {
   competitiveInterpretations?: Prisma.CompetitiveInterpretationUncheckedUpdateManyWithoutProspectNestedInput
   implementationPlans?: Prisma.ImplementationPlanUncheckedUpdateManyWithoutProspectNestedInput
   implementationInterpretations?: Prisma.ImplementationPlanInterpretationUncheckedUpdateManyWithoutProspectNestedInput
+  opportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutProspectNestedInput
 }
 
 export type ProspectUncheckedUpdateManyWithoutLeadInput = {
@@ -4459,6 +4732,7 @@ export type ProspectCountOutputType = {
   competitiveInterpretations: number
   implementationPlans: number
   implementationInterpretations: number
+  opportunities: number
 }
 
 export type ProspectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4477,6 +4751,7 @@ export type ProspectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   competitiveInterpretations?: boolean | ProspectCountOutputTypeCountCompetitiveInterpretationsArgs
   implementationPlans?: boolean | ProspectCountOutputTypeCountImplementationPlansArgs
   implementationInterpretations?: boolean | ProspectCountOutputTypeCountImplementationInterpretationsArgs
+  opportunities?: boolean | ProspectCountOutputTypeCountOpportunitiesArgs
 }
 
 /**
@@ -4594,6 +4869,13 @@ export type ProspectCountOutputTypeCountImplementationInterpretationsArgs<ExtArg
   where?: Prisma.ImplementationPlanInterpretationWhereInput
 }
 
+/**
+ * ProspectCountOutputType without action
+ */
+export type ProspectCountOutputTypeCountOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
 
 export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4637,6 +4919,7 @@ export type ProspectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   competitiveInterpretations?: boolean | Prisma.Prospect$competitiveInterpretationsArgs<ExtArgs>
   implementationPlans?: boolean | Prisma.Prospect$implementationPlansArgs<ExtArgs>
   implementationInterpretations?: boolean | Prisma.Prospect$implementationInterpretationsArgs<ExtArgs>
+  opportunities?: boolean | Prisma.Prospect$opportunitiesArgs<ExtArgs>
   _count?: boolean | Prisma.ProspectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prospect"]>
 
@@ -4744,6 +5027,7 @@ export type ProspectInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   competitiveInterpretations?: boolean | Prisma.Prospect$competitiveInterpretationsArgs<ExtArgs>
   implementationPlans?: boolean | Prisma.Prospect$implementationPlansArgs<ExtArgs>
   implementationInterpretations?: boolean | Prisma.Prospect$implementationInterpretationsArgs<ExtArgs>
+  opportunities?: boolean | Prisma.Prospect$opportunitiesArgs<ExtArgs>
   _count?: boolean | Prisma.ProspectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProspectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4775,6 +5059,7 @@ export type $ProspectPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     competitiveInterpretations: Prisma.$CompetitiveInterpretationPayload<ExtArgs>[]
     implementationPlans: Prisma.$ImplementationPlanPayload<ExtArgs>[]
     implementationInterpretations: Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>[]
+    opportunities: Prisma.$OpportunityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5212,6 +5497,7 @@ export interface Prisma__ProspectClient<T, Null = never, ExtArgs extends runtime
   competitiveInterpretations<T extends Prisma.Prospect$competitiveInterpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$competitiveInterpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetitiveInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   implementationPlans<T extends Prisma.Prospect$implementationPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$implementationPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   implementationInterpretations<T extends Prisma.Prospect$implementationInterpretationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$implementationInterpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImplementationPlanInterpretationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  opportunities<T extends Prisma.Prospect$opportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prospect$opportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6061,6 +6347,30 @@ export type Prospect$implementationInterpretationsArgs<ExtArgs extends runtime.T
   take?: number
   skip?: number
   distinct?: Prisma.ImplementationPlanInterpretationScalarFieldEnum | Prisma.ImplementationPlanInterpretationScalarFieldEnum[]
+}
+
+/**
+ * Prospect.opportunities
+ */
+export type Prospect$opportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
 }
 
 /**

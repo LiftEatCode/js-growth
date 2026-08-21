@@ -77,7 +77,9 @@ export const ModelName = {
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun',
   ImplementationPlan: 'ImplementationPlan',
   ImplementationPlanWorkstream: 'ImplementationPlanWorkstream',
-  ImplementationPlanInterpretation: 'ImplementationPlanInterpretation'
+  ImplementationPlanInterpretation: 'ImplementationPlanInterpretation',
+  Opportunity: 'Opportunity',
+  OpportunityActivity: 'OpportunityActivity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -709,6 +711,45 @@ export const ImplementationPlanInterpretationScalarFieldEnum = {
 } as const
 
 export type ImplementationPlanInterpretationScalarFieldEnum = (typeof ImplementationPlanInterpretationScalarFieldEnum)[keyof typeof ImplementationPlanInterpretationScalarFieldEnum]
+
+
+export const OpportunityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  leadId: 'leadId',
+  implementationPlanId: 'implementationPlanId',
+  implementationInterpretationId: 'implementationInterpretationId',
+  name: 'name',
+  stage: 'stage',
+  ownerEmail: 'ownerEmail',
+  recommendedCapabilitiesJson: 'recommendedCapabilitiesJson',
+  nextAction: 'nextAction',
+  nextActionAt: 'nextActionAt',
+  wonAt: 'wonAt',
+  lostAt: 'lostAt',
+  lostReason: 'lostReason',
+  lostNote: 'lostNote',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
+
+
+export const OpportunityActivityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  opportunityId: 'opportunityId',
+  type: 'type',
+  actorEmail: 'actorEmail',
+  fromValueJson: 'fromValueJson',
+  toValueJson: 'toValueJson',
+  note: 'note'
+} as const
+
+export type OpportunityActivityScalarFieldEnum = (typeof OpportunityActivityScalarFieldEnum)[keyof typeof OpportunityActivityScalarFieldEnum]
 
 
 export const SortOrder = {

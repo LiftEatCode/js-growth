@@ -69,6 +69,8 @@ High-level data model for JS Growth. **Do not treat this as a full schema dump**
 | `ImplementationPlan` | Deterministic recommendation snapshot | New rows on rebuild; status lifecycle; SUPERSEDED retained |
 | `ImplementationPlanWorkstream` | Workstream within a plan | Operator may reorder/priority/remove; evidence JSON not falsified |
 | `ImplementationPlanInterpretation` | AI strategy explanation of a plan | Historical COMPLETED/FAILED rows; bound to exact plan id |
+| `Opportunity` | Human-created sales pursuit | Capability snapshot; stages; next action; WON/LOST |
+| `OpportunityActivity` | Append-only commercial timeline | Created on state changes / notes |
 
 Snapshots and interpretations are designed so prior generations remain available for auditability.
 

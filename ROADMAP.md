@@ -125,6 +125,18 @@ Bounded OpenAI interpretation of an authoritative `ImplementationPlan`. Explains
 
 ---
 
+## Commercial Sprint 3 — Opportunity Management V1
+
+Status: 🟢 Implemented (internal)
+
+Canonical doc: `docs/development/opportunity-management.md`
+
+Human-created sales Opportunities with stages, capability snapshots, next actions, notes, WON/LOST, and activity history. No OpenAI / Places / crawl / Resend. No pricing or proposals.
+
+**Not included:** scope engine, pricing, proposals, client conversion, automated follow-up.
+
+---
+
 ## HARDENING / OPERATIONS (not new features)
 
 - Stripe LIVE go-live checklist and controlled live transaction (if not already complete in your environment)
@@ -137,8 +149,8 @@ Bounded OpenAI interpretation of an authoritative `ImplementationPlan`. Explains
 
 Prioritize based on business leverage with the **current** stack:
 
-1. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-2. Opportunity / proposal layer on top of approved Implementation Plans (still human-gated)
+1. Opportunity / proposal layer extensions: scope + pricing + proposal on approved Opportunities (still human-gated)
+2. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
 3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
 4. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
 

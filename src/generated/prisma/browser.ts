@@ -157,3 +157,14 @@ export type ImplementationPlanWorkstream = Prisma.ImplementationPlanWorkstreamMo
  * Interpretation only — never alters plan facts, priorities, or capabilities.
  */
 export type ImplementationPlanInterpretation = Prisma.ImplementationPlanInterpretationModel
+/**
+ * Model Opportunity
+ * Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
+ * Intelligence is referenced, not recalculated. No pricing / proposals / OpenAI.
+ */
+export type Opportunity = Prisma.OpportunityModel
+/**
+ * Model OpportunityActivity
+ * Append-only sales timeline for an Opportunity.
+ */
+export type OpportunityActivity = Prisma.OpportunityActivityModel

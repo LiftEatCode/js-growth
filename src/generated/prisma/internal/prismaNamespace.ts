@@ -423,7 +423,9 @@ export const ModelName = {
   CompetitorDiscoveryRun: 'CompetitorDiscoveryRun',
   ImplementationPlan: 'ImplementationPlan',
   ImplementationPlanWorkstream: 'ImplementationPlanWorkstream',
-  ImplementationPlanInterpretation: 'ImplementationPlanInterpretation'
+  ImplementationPlanInterpretation: 'ImplementationPlanInterpretation',
+  Opportunity: 'Opportunity',
+  OpportunityActivity: 'OpportunityActivity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -439,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2441,6 +2443,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Opportunity: {
+      payload: Prisma.$OpportunityPayload<ExtArgs>
+      fields: Prisma.OpportunityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OpportunityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OpportunityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        findFirst: {
+          args: Prisma.OpportunityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OpportunityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        findMany: {
+          args: Prisma.OpportunityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>[]
+        }
+        create: {
+          args: Prisma.OpportunityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        createMany: {
+          args: Prisma.OpportunityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OpportunityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>[]
+        }
+        delete: {
+          args: Prisma.OpportunityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        update: {
+          args: Prisma.OpportunityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        deleteMany: {
+          args: Prisma.OpportunityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OpportunityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OpportunityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>[]
+        }
+        upsert: {
+          args: Prisma.OpportunityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        aggregate: {
+          args: Prisma.OpportunityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOpportunity>
+        }
+        groupBy: {
+          args: Prisma.OpportunityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OpportunityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityCountAggregateOutputType> | number
+        }
+      }
+    }
+    OpportunityActivity: {
+      payload: Prisma.$OpportunityActivityPayload<ExtArgs>
+      fields: Prisma.OpportunityActivityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OpportunityActivityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OpportunityActivityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>
+        }
+        findFirst: {
+          args: Prisma.OpportunityActivityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OpportunityActivityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>
+        }
+        findMany: {
+          args: Prisma.OpportunityActivityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>[]
+        }
+        create: {
+          args: Prisma.OpportunityActivityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>
+        }
+        createMany: {
+          args: Prisma.OpportunityActivityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OpportunityActivityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>[]
+        }
+        delete: {
+          args: Prisma.OpportunityActivityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>
+        }
+        update: {
+          args: Prisma.OpportunityActivityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>
+        }
+        deleteMany: {
+          args: Prisma.OpportunityActivityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OpportunityActivityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OpportunityActivityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>[]
+        }
+        upsert: {
+          args: Prisma.OpportunityActivityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityActivityPayload>
+        }
+        aggregate: {
+          args: Prisma.OpportunityActivityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOpportunityActivity>
+        }
+        groupBy: {
+          args: Prisma.OpportunityActivityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityActivityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OpportunityActivityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityActivityCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3095,6 +3245,45 @@ export const ImplementationPlanInterpretationScalarFieldEnum = {
 export type ImplementationPlanInterpretationScalarFieldEnum = (typeof ImplementationPlanInterpretationScalarFieldEnum)[keyof typeof ImplementationPlanInterpretationScalarFieldEnum]
 
 
+export const OpportunityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  prospectId: 'prospectId',
+  campaignId: 'campaignId',
+  leadId: 'leadId',
+  implementationPlanId: 'implementationPlanId',
+  implementationInterpretationId: 'implementationInterpretationId',
+  name: 'name',
+  stage: 'stage',
+  ownerEmail: 'ownerEmail',
+  recommendedCapabilitiesJson: 'recommendedCapabilitiesJson',
+  nextAction: 'nextAction',
+  nextActionAt: 'nextActionAt',
+  wonAt: 'wonAt',
+  lostAt: 'lostAt',
+  lostReason: 'lostReason',
+  lostNote: 'lostNote',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
+
+
+export const OpportunityActivityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  opportunityId: 'opportunityId',
+  type: 'type',
+  actorEmail: 'actorEmail',
+  fromValueJson: 'fromValueJson',
+  toValueJson: 'toValueJson',
+  note: 'note'
+} as const
+
+export type OpportunityActivityScalarFieldEnum = (typeof OpportunityActivityScalarFieldEnum)[keyof typeof OpportunityActivityScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3631,6 +3820,48 @@ export type EnumImplementationInterpretationStatusFieldRefInput<$PrismaModel> = 
 export type ListEnumImplementationInterpretationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImplementationInterpretationStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'OpportunityStage'
+ */
+export type EnumOpportunityStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityStage'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityStage[]'
+ */
+export type ListEnumOpportunityStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityStage[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityLostReason'
+ */
+export type EnumOpportunityLostReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityLostReason'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityLostReason[]'
+ */
+export type ListEnumOpportunityLostReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityLostReason[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityActivityType'
+ */
+export type EnumOpportunityActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityActivityType'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityActivityType[]'
+ */
+export type ListEnumOpportunityActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityActivityType[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3809,6 +4040,8 @@ export type GlobalOmitConfig = {
   implementationPlan?: Prisma.ImplementationPlanOmit
   implementationPlanWorkstream?: Prisma.ImplementationPlanWorkstreamOmit
   implementationPlanInterpretation?: Prisma.ImplementationPlanInterpretationOmit
+  opportunity?: Prisma.OpportunityOmit
+  opportunityActivity?: Prisma.OpportunityActivityOmit
 }
 
 /* Types for Logging */

@@ -12,12 +12,18 @@ const links = [
     match: (pathname: string) =>
       pathname === "/reports" ||
       (pathname.startsWith("/reports/") &&
-        !pathname.startsWith("/reports/prospecting")),
+        !pathname.startsWith("/reports/prospecting") &&
+        !pathname.startsWith("/reports/opportunities")),
   },
   {
     href: "/reports/prospecting",
     label: "Prospecting",
     match: (pathname: string) => pathname.startsWith("/reports/prospecting"),
+  },
+  {
+    href: "/reports/opportunities",
+    label: "Opportunities",
+    match: (pathname: string) => pathname.startsWith("/reports/opportunities"),
   },
 ] as const;
 
