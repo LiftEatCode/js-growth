@@ -9,6 +9,10 @@ import {
   MAX_QUANTITY,
 } from "./constants";
 import {
+  evaluatePricingCompleteness,
+  lineRequiresManualPrice,
+} from "./completeness";
+import {
   computePricingTotals,
   lineTotalCents,
 } from "./totals";
@@ -23,7 +27,8 @@ export type PricingMutationResult =
         | "IMMUTABLE"
         | "INVALID_INPUT"
         | "CUSTOM_PRICE_REQUIRED"
-        | "OVERRIDE_REASON_REQUIRED";
+        | "OVERRIDE_REASON_REQUIRED"
+        | "INCOMPLETE_CUSTOM_PRICING";
       message: string;
     };
 
@@ -446,19 +451,26 @@ export async function approvePricing(options: {
     return gate;
   }
 
-  const missingCustom = gate.pricing.lineItems.filter(
-    (l) =>
-      l.isIncluded &&
-      !l.isOptional &&
-      l.isCustom &&
-      (l.finalUnitPriceCents == null || l.finalLineTotalCents == null),
+  const missingCustom = gate.pricing.lineItems.filter((l) =>
+    lineRequiresManualPrice(l),
   );
   if (missingCustom.length > 0) {
     return {
       ok: false,
-      code: "CUSTOM_PRICE_REQUIRED",
+      code: "INCOMPLETE_CUSTOM_PRICING",
+      message: `Pricing is incomplete: ${missingCustom.length} included item(s) still need a price before approval.`,
+    };
+  }
+
+  const completeness = evaluatePricingCompleteness(
+    toBuiltLines(gate.pricing.lineItems),
+  );
+  if (!completeness.isComplete) {
+    return {
+      ok: false,
+      code: "INCOMPLETE_CUSTOM_PRICING",
       message:
-        "Included custom work requires a human-entered price before approval.",
+        "Pricing is incomplete. Enter prices for all included custom work before approval.",
     };
   }
 

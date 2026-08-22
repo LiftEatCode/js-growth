@@ -136,59 +136,71 @@ export default async function PricingDetailPage({
               link.
             </p>
 
-            <div className="mt-6 space-y-4">
-              <h3 className="font-heading text-base font-semibold text-brand">
-                Included work
-              </h3>
-              <ul className="list-disc space-y-2 pl-5 text-sm text-ink/90">
-                {included.map((line) => (
-                  <li key={line.id}>
-                    {line.title}
-                    {line.finalLineTotalCents != null
-                      ? ` — ${formatUsdCents(line.finalLineTotalCents)}`
-                      : ""}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {optional.length > 0 ? (
-              <div className="mt-6 space-y-4">
-                <h3 className="font-heading text-base font-semibold text-brand">
-                  Optional work
-                </h3>
-                <ul className="list-disc space-y-2 pl-5 text-sm text-ink/90">
-                  {optional.map((line) => (
-                    <li key={line.id}>
-                      {line.title}
-                      {line.finalLineTotalCents != null
-                        ? ` — ${formatUsdCents(line.finalLineTotalCents)}`
-                        : ""}
-                    </li>
-                  ))}
-                </ul>
+            {!pricing.isComplete ? (
+              <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                <p className="font-medium">Pricing is not complete.</p>
+                <p className="mt-1">
+                  Investment pending final scope pricing. A complete investment
+                  total is not available yet.
+                </p>
               </div>
-            ) : null}
+            ) : (
+              <>
+                <div className="mt-6 space-y-4">
+                  <h3 className="font-heading text-base font-semibold text-brand">
+                    Included work
+                  </h3>
+                  <ul className="list-disc space-y-2 pl-5 text-sm text-ink/90">
+                    {included.map((line) => (
+                      <li key={line.id}>
+                        {line.title}
+                        {line.finalLineTotalCents != null
+                          ? ` — ${formatUsdCents(line.finalLineTotalCents)}`
+                          : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-            <div className="mt-8 border-t border-border pt-4">
-              <p className="text-sm text-muted">Recommended investment</p>
-              <p className="mt-1 font-heading text-2xl font-semibold text-brand">
-                {formatUsdCents(pricing.finalTotalCents)}
-              </p>
-              {pricing.minimumApplied && !pricing.assessmentOnly ? (
-                <p className="mt-1 text-xs text-muted">
-                  Includes minimum engagement of{" "}
-                  {formatUsdCents(pricing.minimumEngagementCents)}.
-                </p>
-              ) : null}
-              {pricing.finalOptionalCents > 0 ? (
-                <p className="mt-1 text-xs text-muted">
-                  Optional add-ons:{" "}
-                  {formatUsdCents(pricing.finalOptionalCents)} (not in base
-                  total)
-                </p>
-              ) : null}
-            </div>
+                {optional.length > 0 ? (
+                  <div className="mt-6 space-y-4">
+                    <h3 className="font-heading text-base font-semibold text-brand">
+                      Optional work
+                    </h3>
+                    <ul className="list-disc space-y-2 pl-5 text-sm text-ink/90">
+                      {optional.map((line) => (
+                        <li key={line.id}>
+                          {line.title}
+                          {line.finalLineTotalCents != null
+                            ? ` — ${formatUsdCents(line.finalLineTotalCents)}`
+                            : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                <div className="mt-8 border-t border-border pt-4">
+                  <p className="text-sm text-muted">Recommended investment</p>
+                  <p className="mt-1 font-heading text-2xl font-semibold text-brand">
+                    {formatUsdCents(pricing.finalTotalCents)}
+                  </p>
+                  {pricing.minimumApplied && !pricing.assessmentOnly ? (
+                    <p className="mt-1 text-xs text-muted">
+                      Includes minimum engagement of{" "}
+                      {formatUsdCents(pricing.minimumEngagementCents)}.
+                    </p>
+                  ) : null}
+                  {pricing.finalOptionalCents > 0 ? (
+                    <p className="mt-1 text-xs text-muted">
+                      Optional add-ons:{" "}
+                      {formatUsdCents(pricing.finalOptionalCents)} (not in base
+                      total)
+                    </p>
+                  ) : null}
+                </div>
+              </>
+            )}
           </Card>
         ) : (
           <Card variant="elevated" padding="lg">

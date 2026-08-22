@@ -5,11 +5,13 @@ import { ArrowLeft } from "lucide-react";
 
 import { OpportunityDetailControls } from "@/components/opportunities/opportunity-detail-controls";
 import { OpportunityPricingCard } from "@/components/opportunities/opportunity-pricing-card";
+import { OpportunityProposalCard } from "@/components/opportunities/opportunity-proposal-card";
 import { OpportunityScopeCard } from "@/components/opportunities/opportunity-scope-card";
 import { Button, Card, Container } from "@/components/ui";
 import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabilities";
 import { loadOpportunityDetail } from "@/lib/commercialization/opportunities/load";
 import { loadCurrentPricingForOpportunity } from "@/lib/commercialization/pricing/load";
+import { loadCurrentProposalForOpportunity } from "@/lib/commercialization/proposal/load";
 import { loadCurrentScopeForOpportunity } from "@/lib/commercialization/scope/load";
 
 interface OpportunityDetailPageProps {
@@ -51,8 +53,44 @@ export default async function OpportunityDetailPage({
 
   const scopeLoad = await loadCurrentScopeForOpportunity({ opportunityId });
   const pricingLoad = await loadCurrentPricingForOpportunity({ opportunityId });
+  const proposalLoad = await loadCurrentProposalForOpportunity({
+    opportunityId,
+  });
   const { opportunity, activities, intelligence } = detail;
   const caps = opportunity.capabilitiesSnapshot;
+
+  const hasApprovedScope = scopeLoad.scope?.status === "APPROVED";
+  const hasApprovedPricing = pricingLoad.pricing?.status === "APPROVED";
+  const pricingComplete = pricingLoad.pricing?.isComplete === true;
+  const pricingMatchesScope =
+    !!pricingLoad.pricing &&
+    !!scopeLoad.scope &&
+    pricingLoad.pricing.commercialScopeId === scopeLoad.scope.id;
+  const pricingStale = pricingLoad.pricing?.isStale === true;
+
+  let proposalBlockedReason: string | null = null;
+  if (!hasApprovedScope) {
+    proposalBlockedReason = "Approve a Commercial Scope before creating a Proposal.";
+  } else if (!hasApprovedPricing) {
+    proposalBlockedReason =
+      "Approve Commercial Pricing before creating a Proposal.";
+  } else if (!pricingComplete) {
+    proposalBlockedReason =
+      "Pricing is incomplete. Enter prices for all included work first.";
+  } else if (!pricingMatchesScope) {
+    proposalBlockedReason =
+      "Approved Pricing does not match the approved Scope. Revise Pricing first.";
+  } else if (pricingStale) {
+    proposalBlockedReason =
+      "Approved Pricing is stale relative to Scope. Revise Pricing first.";
+  }
+
+  const canCreateProposal =
+    hasApprovedScope &&
+    hasApprovedPricing &&
+    pricingComplete &&
+    pricingMatchesScope &&
+    !pricingStale;
 
   return (
     <main className="min-h-screen bg-slate-50/60">
@@ -231,7 +269,7 @@ export default async function OpportunityDetailPage({
           <div className="mt-4">
             <OpportunityPricingCard
               opportunityId={opportunity.id}
-              hasApprovedScope={scopeLoad.scope?.status === "APPROVED"}
+              hasApprovedScope={hasApprovedScope}
               pricing={
                 pricingLoad.pricing
                   ? {
@@ -244,6 +282,36 @@ export default async function OpportunityDetailPage({
                       approvedAtLabel: pricingLoad.pricing.approvedAt
                         ? formatDateTime(pricingLoad.pricing.approvedAt)
                         : null,
+                    }
+                  : null
+              }
+            />
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Proposal
+          </h2>
+          <div className="mt-4">
+            <OpportunityProposalCard
+              opportunityId={opportunity.id}
+              canCreate={canCreateProposal}
+              blockedReason={proposalBlockedReason}
+              proposal={
+                proposalLoad.proposal
+                  ? {
+                      id: proposalLoad.proposal.id,
+                      status: proposalLoad.proposal.status,
+                      statusLabel: proposalLoad.proposal.statusLabel,
+                      revision: proposalLoad.proposal.revision,
+                      title: proposalLoad.proposal.title,
+                      totalInvestmentLabel:
+                        proposalLoad.proposal.totalInvestmentLabel,
+                      approvedAtLabel: proposalLoad.proposal.approvedAt
+                        ? formatDateTime(proposalLoad.proposal.approvedAt)
+                        : null,
+                      stale: proposalLoad.proposal.stale,
                     }
                   : null
               }

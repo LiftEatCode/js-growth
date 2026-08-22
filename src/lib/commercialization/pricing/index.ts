@@ -20,9 +20,18 @@ export {
   parsePricingSourceFingerprint,
 } from "./fingerprint";
 export { evaluatePricingStaleness } from "./staleness";
-export { WORK_UNIT_CATALOG, resolveWorkUnitFromDeliverable } from "./work-units";
+export {
+  WORK_UNIT_CATALOG,
+  resolveWorkUnitFromDeliverable,
+} from "./work-units";
 export {
   bandUnitPriceCents,
   computePricingTotals,
   lineTotalCents,
 } from "./totals";
+export {
+  evaluatePricingCompleteness,
+  lineRequiresManualPrice,
+  PRICING_COMPLETENESS,
+} from "./completeness";
+export type { PricingCompleteness } from "./completeness";

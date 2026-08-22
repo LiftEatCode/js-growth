@@ -909,6 +909,23 @@ export type EnumCommercialPricingStatusWithAggregatesFilter<$PrismaModel = never
   _max?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
 }
 
+export type EnumCommercialProposalStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialProposalStatus | Prisma.EnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel> | $Enums.CommercialProposalStatus
+}
+
+export type EnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialProposalStatus | Prisma.EnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialProposalStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1750,6 +1767,23 @@ export type NestedEnumCommercialPricingStatusWithAggregatesFilter<$PrismaModel =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCommercialPricingStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCommercialProposalStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialProposalStatus | Prisma.EnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel> | $Enums.CommercialProposalStatus
+}
+
+export type NestedEnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialProposalStatus | Prisma.EnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialProposalStatus[] | Prisma.ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialProposalStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
 }
 
 

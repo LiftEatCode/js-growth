@@ -1283,10 +1283,15 @@ enum OpportunityActivityType {
   PRICING_APPROVED
   PRICING_REVISED
   PRICING_SUPERSEDED
+  PROPOSAL_CREATED
+  PROPOSAL_REVIEWED
+  PROPOSAL_APPROVED
+  PROPOSAL_REVISED
+  PROPOSAL_SUPERSEDED
 }
 
 /// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
-/// Intelligence is referenced, not recalculated. No pricing / proposals / OpenAI.
+/// Intelligence is referenced, not recalculated. Scope / Pricing / Proposal are separate engines.
 model Opportunity {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -1332,6 +1337,7 @@ model Opportunity {
   activities OpportunityActivity[]
   scopes     CommercialScope[]
   pricings   CommercialPricing[]
+  proposals  CommercialProposal[]
 
   @@index([prospectId, createdAt])
   @@index([campaignId, createdAt])
@@ -1414,6 +1420,7 @@ model CommercialScope {
 
   sections CommercialScopeSection[]
   pricings CommercialPricing[]
+  proposals CommercialProposal[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
@@ -1531,6 +1538,7 @@ model CommercialPricing {
   createdByEmail String
 
   lineItems CommercialPricingLineItem[]
+  proposals CommercialProposal[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
@@ -1584,4 +1592,64 @@ model CommercialPricingLineItem {
   @@index([pricingId, sortOrder])
   @@index([pricingId, workUnitKey])
   @@index([pricingId, isIncluded])
+}
+
+enum CommercialProposalStatus {
+  DRAFT
+  REVIEWED
+  APPROVED
+  SUPERSEDED
+}
+
+/// Commercial Sprint 6 — client-readable presentation of approved Scope + Pricing.
+/// Snapshot only. Does not recalculate scope or pricing. No public links / PDF / Stripe / OpenAI.
+model CommercialProposal {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  commercialScopeId String
+  commercialScope   CommercialScope @relation(fields: [commercialScopeId], references: [id], onDelete: Cascade)
+
+  commercialPricingId String
+  commercialPricing   CommercialPricing @relation(fields: [commercialPricingId], references: [id], onDelete: Cascade)
+
+  status CommercialProposalStatus @default(DRAFT)
+
+  /// Operator-facing revision number within the Opportunity (1, 2, …).
+  revision Int @default(1)
+
+  title             String
+  executiveSummary  String
+  businessContext   String?
+  approachIntro     String?
+  timelineNote      String?
+  nextStepText      String?
+
+  currency                 String @default("USD")
+  includedInvestmentCents  Int
+  optionalInvestmentCents  Int
+  totalInvestmentCents     Int
+
+  /// Full client-presentation snapshot JSON (sections, investment lines, etc.).
+  snapshotJson Json
+
+  proposalVersion      Int
+  presentationVersion  Int
+  sourceFingerprint    String
+
+  approvedAt      DateTime?
+  approvedByEmail String?
+  supersededAt    DateTime?
+
+  createdByEmail String
+
+  @@index([opportunityId, createdAt])
+  @@index([opportunityId, status])
+  @@index([commercialScopeId])
+  @@index([commercialPricingId])
+  @@index([status, createdAt])
 }

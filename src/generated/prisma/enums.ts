@@ -375,7 +375,12 @@ export const OpportunityActivityType = {
   PRICING_REVIEWED: 'PRICING_REVIEWED',
   PRICING_APPROVED: 'PRICING_APPROVED',
   PRICING_REVISED: 'PRICING_REVISED',
-  PRICING_SUPERSEDED: 'PRICING_SUPERSEDED'
+  PRICING_SUPERSEDED: 'PRICING_SUPERSEDED',
+  PROPOSAL_CREATED: 'PROPOSAL_CREATED',
+  PROPOSAL_REVIEWED: 'PROPOSAL_REVIEWED',
+  PROPOSAL_APPROVED: 'PROPOSAL_APPROVED',
+  PROPOSAL_REVISED: 'PROPOSAL_REVISED',
+  PROPOSAL_SUPERSEDED: 'PROPOSAL_SUPERSEDED'
 } as const
 
 export type OpportunityActivityType = (typeof OpportunityActivityType)[keyof typeof OpportunityActivityType]
@@ -399,3 +404,13 @@ export const CommercialPricingStatus = {
 } as const
 
 export type CommercialPricingStatus = (typeof CommercialPricingStatus)[keyof typeof CommercialPricingStatus]
+
+
+export const CommercialProposalStatus = {
+  DRAFT: 'DRAFT',
+  REVIEWED: 'REVIEWED',
+  APPROVED: 'APPROVED',
+  SUPERSEDED: 'SUPERSEDED'
+} as const
+
+export type CommercialProposalStatus = (typeof CommercialProposalStatus)[keyof typeof CommercialProposalStatus]

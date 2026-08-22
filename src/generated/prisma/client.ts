@@ -219,3 +219,9 @@ export type CommercialPricing = Prisma.CommercialPricingModel
  * 
  */
 export type CommercialPricingLineItem = Prisma.CommercialPricingLineItemModel
+/**
+ * Model CommercialProposal
+ * Commercial Sprint 6 — client-readable presentation of approved Scope + Pricing.
+ * Snapshot only. Does not recalculate scope or pricing. No public links / PDF / Stripe / OpenAI.
+ */
+export type CommercialProposal = Prisma.CommercialProposalModel

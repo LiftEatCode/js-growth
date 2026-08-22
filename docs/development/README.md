@@ -15,6 +15,7 @@ Canonical index: [`../README.md`](../README.md).
 | [opportunity-management.md](opportunity-management.md) | Commercial Sprint 3 — Opportunity Management V1 |
 | [scope-engine.md](scope-engine.md) | Commercial Sprint 4 — Commercial Scope Engine V1 |
 | [pricing-engine.md](pricing-engine.md) | Commercial Sprint 5 — Pricing Engine V1 |
+| [proposal-engine.md](proposal-engine.md) | Commercial Sprint 6 — Proposal Engine V1 |
 | [competitive-intelligence-v1.md](competitive-intelligence-v1.md) | **Public audit** optional competitor URLs (different product) |
 | [ai-architecture.md](ai-architecture.md) | All OpenAI paths |
 | [external-services.md](external-services.md) | APIs / env categories |

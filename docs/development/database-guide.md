@@ -74,6 +74,9 @@ High-level data model for JS Growth. **Do not treat this as a full schema dump**
 | `CommercialScope` | Commercial offer definition | Historical revisions; approved immutable |
 | `CommercialScopeSection` | Scope workstream/section | Include/optional; capabilities |
 | `CommercialScopeDeliverable` | Billable/included work item | Plan or manual provenance |
+| `CommercialPricing` | Approved commercial money snapshot | Historical revisions; integer cents USD |
+| `CommercialPricingLineItem` | Priced work unit | Deduped; overrides with reasons |
+| `CommercialProposal` | Client-readable offer presentation | Snapshot of approved Scope + Pricing; internal only |
 
 Snapshots and interpretations are designed so prior generations remain available for auditability.
 

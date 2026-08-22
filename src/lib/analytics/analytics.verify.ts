@@ -133,6 +133,14 @@ assert(isForbiddenAnalyticsParamKey("pricing_id"), "pricing_id key is forbidden"
 assert(isForbiddenAnalyticsParamKey("pricing_status"), "pricing_status key is forbidden");
 assert(isForbiddenAnalyticsParamKey("pricing_total"), "pricing_total key is forbidden");
 assert(isForbiddenAnalyticsParamKey("commercial_pricing"), "commercial_pricing key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_id"), "proposal_id key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_status"), "proposal_status key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_revision"), "proposal_revision key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_total"), "proposal_total key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_scope"), "proposal_scope key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_pricing"), "proposal_pricing key is forbidden");
+assert(isForbiddenAnalyticsParamKey("proposal_summary"), "proposal_summary key is forbidden");
+assert(isForbiddenAnalyticsParamKey("commercial_proposal"), "commercial_proposal key is forbidden");
 assert(isForbiddenAnalyticsParamKey("override_reason"), "override_reason key is forbidden");
 assert(isForbiddenAnalyticsParamKey("workstream_id"), "workstream_id key is forbidden");
 assert(isForbiddenAnalyticsParamKey("evidence_json"), "evidence_json key is forbidden");

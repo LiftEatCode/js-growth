@@ -1,6 +1,6 @@
-# Commercial Pricing Engine V1 (Commercial Sprint 5)
+# Commercial Pricing Engine V1 (Commercial Sprint 5 / 5.1)
 
-**Status:** Implemented (internal)  
+**Status:** Implemented (internal) · Sprint 5.1 catalog + incomplete-price safety  
 **OpenAI / Places / crawl / Resend / Stripe:** **0**  
 **Audience:** Internal operators only
 
@@ -15,17 +15,19 @@ Human review / overrides
         ↓
 Approved historical pricing snapshot
         ↓
-(Future) Proposal
+Commercial Proposal (Sprint 6 — presentation only)
 ```
 
 ---
 
 ## Version
 
-`COMMERCIAL_PRICING_VERSION = 1`  
-`COMMERCIAL_PRICING_CONFIG_VERSION = 1`  
+`COMMERCIAL_PRICING_VERSION = 1` (persisted pricing document format)  
+`COMMERCIAL_PRICING_CONFIG_VERSION = 2` (Sprint 5.1 catalog + completeness)  
 Currency: **USD** · money stored as **integer cents**  
-Migration: `20260821120000_add_commercial_pricing`
+Migration: `20260821120000_add_commercial_pricing` (no Sprint 5.1 schema migration)
+
+Existing pricing snapshots remain historical. Drafts built under config v1 show **stale** when config version diverges — revise to rebuild.
 
 ---
 
@@ -44,12 +46,53 @@ Assessment-only exception: when every included base line is `ASSESSMENT`, minimu
 
 ---
 
+## Known deterministic vs CUSTOM
+
+**Known** Implementation Plan / Scope `sourceActionKey` values map through the versioned work-unit catalog (exact key match preferred).
+
+**Unknown / manual** deliverables remain:
+
+- work type `CUSTOM`
+- effort `CUSTOM`
+- no deterministic recommendation
+
+Do not fuzzy-match or AI-price unknown work.
+
+### Sprint 5.1 catalog additions (stable keys)
+
+| Key | Type | Band |
+|---|---|---|
+| `scanability` | OPTIMIZATION | MEDIUM |
+| `inline-css` | TECHNICAL | MEDIUM |
+| `script-weight` | TECHNICAL | MEDIUM |
+| `local-schema` | CONFIGURATION | MEDIUM |
+| `nap` | OPTIMIZATION | MEDIUM |
+
+---
+
 ## Work-unit normalization
 
-Scope deliverables map to canonical work-unit keys (e.g. `heading-architecture`, `internal-linking`).  
-Overlapping deliverables across sections **collapse to one priced line**, retaining multi-section provenance (`sourceSectionTitles`).
+Scope deliverables map to canonical work-unit keys. Overlapping deliverables across sections **collapse to one priced line**, retaining multi-section provenance (`sourceSectionTitles`).
 
 Vague Conversion Optimization wording maps to **ASSESSMENT**, not full conversion implementation.
+
+---
+
+## Pricing completeness
+
+| State | Meaning |
+|---|---|
+| `COMPLETE` | Every included non-optional line has a final price |
+| `INCOMPLETE_CUSTOM_PRICING` | ≥1 included non-optional line still needs a human-entered price |
+
+Optional custom work does **not** make base pricing incomplete.
+
+When incomplete:
+
+- Operator UI shows **Known priced work** subtotal + unpriced count
+- Primary **Recommended / Final investment** reads **Incomplete** (not a faux-complete dollar total)
+- Client preview (`?preview=1`) shows “Pricing is not complete.” / investment pending — never a partial total as the investment
+- **Approve** is blocked
 
 ---
 
@@ -91,7 +134,7 @@ Original deterministic recommendation is always preserved on the line.
 
 ## Not in scope
 
-Proposals, PDFs, public links, Stripe, invoices, retainers, automatic discounts, AI pricing, e-sign, outbound email.
+Proposals (see Proposal Engine V1), PDFs, public links, Stripe, invoices, retainers, automatic discounts, AI pricing, e-sign, outbound email.
 
 Code: `src/lib/commercialization/pricing/`  
 Verify: `pricing.verify.ts`

@@ -70,6 +70,12 @@ Verified against implementation. Separates **public products**, **internal tools
 - Approved pricing snapshots; revise for new versions
 - **No** proposals, Stripe checkout, or OpenAI
 
+### Commercial Proposal Engine V1 (Commercial Sprint 6)
+
+- Client-readable proposal snapshot from approved Scope + approved complete Pricing
+- Presentation-only; does not recalculate commercial facts
+- Internal preview only — **no** public URL, PDF, email, acceptance, e-sign, or Stripe
+
 ---
 
 ## Planned / not implemented (examples)
@@ -81,7 +87,7 @@ Confirm against [ROADMAP.md](../../ROADMAP.md) before promising clients:
 - Lead capture from competitive reports
 - Competitive monitoring / scheduled re-audits / trend history productization
 - Follow-up outreach automation / reply ingestion
-- Proposal engine (Commercial Sprint 6)
+- Public proposal delivery / PDF / acceptance / e-sign
 - Broader CRM / multi-location BI
 - Service recommendation generators as a productized SKU
 

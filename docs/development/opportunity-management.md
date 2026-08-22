@@ -110,7 +110,7 @@ Append-only `OpportunityActivity`:
 
 ## Not in scope
 
-Pricing, proposals, contracts, invoices, Stripe checkout, automated email/follow-up, calendar, CRM sync, public opportunity pages, client portal.
+Contracts, invoices, Stripe checkout, automated email/follow-up, calendar, CRM sync, public opportunity pages, client portal. (Scope / Pricing / Proposal are separate commercial sprints.)
 
 Scope definition: **Commercial Sprint 4** — see [scope-engine.md](scope-engine.md).  
 Pricing: **Commercial Sprint 5** — see [pricing-engine.md](pricing-engine.md).

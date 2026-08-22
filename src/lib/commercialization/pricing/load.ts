@@ -13,6 +13,10 @@ import {
   COMMERCIAL_PRICING_CONFIG_VERSION,
   COMMERCIAL_PRICING_VERSION,
 } from "./constants";
+import {
+  evaluatePricingCompleteness,
+  type PricingCompleteness,
+} from "./completeness";
 import { buildPricingSourceFingerprint } from "./fingerprint";
 import { evaluatePricingStaleness } from "./staleness";
 
@@ -38,6 +42,8 @@ export async function loadCurrentPricingForOpportunity(options: {
     approvedByEmail: string | null;
     updatedAt: Date;
     commercialScopeId: string;
+    isComplete: boolean;
+    isStale: boolean;
   } | null;
 }> {
   const pricing = await prisma.commercialPricing.findFirst({
@@ -47,13 +53,27 @@ export async function loadCurrentPricingForOpportunity(options: {
     },
     orderBy: { createdAt: "desc" },
     include: {
+      lineItems: true,
       _count: { select: { lineItems: true } },
+      commercialScope: {
+        select: { id: true, revision: true, status: true },
+      },
     },
   });
 
   if (!pricing) {
     return { pricing: null };
   }
+
+  const completeness = evaluatePricingCompleteness(pricing.lineItems);
+  const expectedFingerprint = buildPricingSourceFingerprint({
+    opportunityId: pricing.opportunityId,
+    commercialScopeId: pricing.commercialScope.id,
+    scopeRevision: pricing.commercialScope.revision,
+    scopeStatus: pricing.commercialScope.status,
+    pricingVersion: COMMERCIAL_PRICING_VERSION,
+    pricingConfigVersion: COMMERCIAL_PRICING_CONFIG_VERSION,
+  });
 
   return {
     pricing: {
@@ -62,13 +82,17 @@ export async function loadCurrentPricingForOpportunity(options: {
       statusLabel: commercialPricingStatusLabel(pricing.status),
       revision: pricing.revision,
       finalTotalCents: pricing.finalTotalCents,
-      finalTotalLabel: formatUsdCents(pricing.finalTotalCents),
+      finalTotalLabel: completeness.isComplete
+        ? formatUsdCents(pricing.finalTotalCents)
+        : "Incomplete",
       recommendedTotalCents: pricing.recommendedTotalCents,
       lineItemCount: pricing._count.lineItems,
       approvedAt: pricing.approvedAt,
       approvedByEmail: pricing.approvedByEmail,
       updatedAt: pricing.updatedAt,
       commercialScopeId: pricing.commercialScopeId,
+      isComplete: completeness.isComplete,
+      isStale: pricing.sourceFingerprint !== expectedFingerprint,
     },
   };
 }
@@ -106,6 +130,10 @@ export async function loadCommercialPricingDetail(options: {
     opportunityHref: string;
     scopeHref: string;
     editable: boolean;
+    completeness: PricingCompleteness;
+    unpricedIncludedCount: number;
+    knownPricedIncludedCents: number;
+    isComplete: boolean;
   };
   lineItems: Array<{
     id: string;
@@ -173,6 +201,8 @@ export async function loadCommercialPricingDetail(options: {
           current,
         });
 
+  const completeness = evaluatePricingCompleteness(row.lineItems);
+
   return {
     pricing: {
       id: row.id,
@@ -204,6 +234,10 @@ export async function loadCommercialPricingDetail(options: {
       opportunityHref: `/reports/opportunities/${row.opportunityId}`,
       scopeHref: `/reports/opportunities/${row.opportunityId}/scope/${row.commercialScopeId}`,
       editable: row.status === "DRAFT" || row.status === "REVIEWED",
+      completeness: completeness.completeness,
+      unpricedIncludedCount: completeness.unpricedIncludedCount,
+      knownPricedIncludedCents: completeness.knownPricedIncludedCents,
+      isComplete: completeness.isComplete,
     },
     lineItems: row.lineItems.map((line) => ({
       id: line.id,

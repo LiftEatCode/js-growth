@@ -1,5 +1,6 @@
 export const COMMERCIAL_PRICING_VERSION = 1;
-export const COMMERCIAL_PRICING_CONFIG_VERSION = 1;
+/** Sprint 5.1: expanded deterministic catalog + incomplete-price safety. */
+export const COMMERCIAL_PRICING_CONFIG_VERSION = 2;
 
 export const COMMERCIAL_PRICING_CURRENCY = "USD" as const;
 

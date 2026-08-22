@@ -84,7 +84,8 @@ export const ModelName = {
   CommercialScopeSection: 'CommercialScopeSection',
   CommercialScopeDeliverable: 'CommercialScopeDeliverable',
   CommercialPricing: 'CommercialPricing',
-  CommercialPricingLineItem: 'CommercialPricingLineItem'
+  CommercialPricingLineItem: 'CommercialPricingLineItem',
+  CommercialProposal: 'CommercialProposal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -875,6 +876,38 @@ export const CommercialPricingLineItemScalarFieldEnum = {
 } as const
 
 export type CommercialPricingLineItemScalarFieldEnum = (typeof CommercialPricingLineItemScalarFieldEnum)[keyof typeof CommercialPricingLineItemScalarFieldEnum]
+
+
+export const CommercialProposalScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  commercialScopeId: 'commercialScopeId',
+  commercialPricingId: 'commercialPricingId',
+  status: 'status',
+  revision: 'revision',
+  title: 'title',
+  executiveSummary: 'executiveSummary',
+  businessContext: 'businessContext',
+  approachIntro: 'approachIntro',
+  timelineNote: 'timelineNote',
+  nextStepText: 'nextStepText',
+  currency: 'currency',
+  includedInvestmentCents: 'includedInvestmentCents',
+  optionalInvestmentCents: 'optionalInvestmentCents',
+  totalInvestmentCents: 'totalInvestmentCents',
+  snapshotJson: 'snapshotJson',
+  proposalVersion: 'proposalVersion',
+  presentationVersion: 'presentationVersion',
+  sourceFingerprint: 'sourceFingerprint',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  supersededAt: 'supersededAt',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CommercialProposalScalarFieldEnum = (typeof CommercialProposalScalarFieldEnum)[keyof typeof CommercialProposalScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -91,6 +91,7 @@ Canonical doc: [implementation-plan-ai-strategy.md](implementation-plan-ai-strat
 | Stripe checkout / webhooks | Payments |
 | Report HTML / PDF rendering | Presentation |
 | Competitive report presentation | DB read only |
+| Commercial Scope / Pricing / Proposal | Deterministic DB + presentation; **0 OpenAI** |
 
 ---
 

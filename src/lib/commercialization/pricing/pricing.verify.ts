@@ -11,6 +11,10 @@ import { OPPORTUNITY_ACTIVITY_TYPES } from "@/lib/commercialization/opportunitie
 
 import { buildPricingFromScope } from "./build";
 import {
+  evaluatePricingCompleteness,
+  lineRequiresManualPrice,
+} from "./completeness";
+import {
   COMMERCIAL_PRICING_CONFIG_VERSION,
   COMMERCIAL_PRICING_CURRENCY,
   COMMERCIAL_PRICING_VERSION,
@@ -53,7 +57,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, "../../../..");
 
 assert(COMMERCIAL_PRICING_VERSION === 1, "pricing version 1");
-assert(COMMERCIAL_PRICING_CONFIG_VERSION === 1, "pricing config version 1");
+assert(COMMERCIAL_PRICING_CONFIG_VERSION === 2, "pricing config version 2 (5.1)");
 assert(COMMERCIAL_PRICING_CURRENCY === "USD", "USD V1");
 assert(EFFORT_BAND_PRICE_CENTS.SMALL === 15_000, "SMALL = $150");
 assert(EFFORT_BAND_PRICE_CENTS.MEDIUM === 35_000, "MEDIUM = $350");
@@ -103,9 +107,10 @@ function makeFirstChoiceScope() {
             sortOrder: 1,
           },
           {
-            id: "d-content-depth",
-            title: "Expand service page content depth",
-            sourceActionKey: "content-depth",
+            id: "d-scanability",
+            title:
+              "Improve content structure for scanability (headings, sections)",
+            sourceActionKey: "scanability",
             source: "PLAN",
             isIncluded: true,
             isOptional: false,
@@ -121,22 +126,13 @@ function makeFirstChoiceScope() {
         sortOrder: 1,
         deliverables: [
           {
-            id: "d-meta",
-            title: "Improve meta descriptions for clarity and uniqueness",
-            sourceActionKey: "improve-meta",
-            source: "PLAN",
-            isIncluded: true,
-            isOptional: false,
-            sortOrder: 0,
-          },
-          {
             id: "d-heading-search",
             title: "Correct heading hierarchy (H1 and supporting headings)",
             sourceActionKey: "heading-architecture",
             source: "PLAN",
             isIncluded: true,
             isOptional: false,
-            sortOrder: 1,
+            sortOrder: 0,
           },
           {
             id: "d-linking-search",
@@ -145,12 +141,49 @@ function makeFirstChoiceScope() {
             source: "PLAN",
             isIncluded: true,
             isOptional: false,
+            sortOrder: 1,
+          },
+        ],
+      },
+      {
+        id: "sec-technical",
+        title: "Technical SEO",
+        isIncluded: true,
+        isOptional: false,
+        sortOrder: 2,
+        deliverables: [
+          {
+            id: "d-canonical",
+            title: "Implement or review canonical URL markup",
+            sourceActionKey: "canonical",
+            source: "PLAN",
+            isIncluded: true,
+            isOptional: false,
+            sortOrder: 0,
+          },
+          {
+            id: "d-local-schema",
+            title: "Implement or correct LocalBusiness schema",
+            sourceActionKey: "local-schema",
+            source: "PLAN",
+            isIncluded: true,
+            isOptional: false,
+            sortOrder: 1,
+          },
+          {
+            id: "d-inline-css",
+            title: "Review and reduce excessive inline CSS in the document",
+            sourceActionKey: "inline-css",
+            source: "PLAN",
+            isIncluded: true,
+            isOptional: false,
             sortOrder: 2,
           },
           {
-            id: "d-og",
-            title: "Complete Open Graph metadata for shared pages",
-            sourceActionKey: "open-graph",
+            id: "d-script-weight",
+            title:
+              "Reduce blocking script and third-party weight where evidenced",
+            sourceActionKey: "script-weight",
             source: "PLAN",
             isIncluded: true,
             isOptional: false,
@@ -159,11 +192,29 @@ function makeFirstChoiceScope() {
         ],
       },
       {
+        id: "sec-local",
+        title: "Local Search Foundation",
+        isIncluded: true,
+        isOptional: false,
+        sortOrder: 3,
+        deliverables: [
+          {
+            id: "d-nap",
+            title: "Align NAP (name, address, phone) consistency on-site",
+            sourceActionKey: "nap",
+            source: "PLAN",
+            isIncluded: true,
+            isOptional: false,
+            sortOrder: 0,
+          },
+        ],
+      },
+      {
         id: "sec-conversion",
         title: "Conversion Optimization",
         isIncluded: true,
         isOptional: false,
-        sortOrder: 2,
+        sortOrder: 4,
         deliverables: [
           {
             id: "d-vague-conversion",
@@ -230,6 +281,114 @@ assert(
     "Add or strengthen trust signals near conversion points",
   ),
   "concrete trust signals not vague assessment",
+);
+
+// Sprint 5.1 catalog coverage for production unmapped actions
+const mappedKeys = [
+  ["scanability", "OPTIMIZATION"],
+  ["inline-css", "TECHNICAL"],
+  ["script-weight", "TECHNICAL"],
+  ["local-schema", "CONFIGURATION"],
+  ["nap", "OPTIMIZATION"],
+] as const;
+
+for (const [key, workType] of mappedKeys) {
+  const resolved = resolveWorkUnitFromDeliverable({
+    sourceActionKey: key,
+    title: "unused",
+    source: "PLAN",
+  });
+  assert(resolved.key === key, `${key} maps deterministically`);
+  assert(resolved.isCustom === false, `${key} not CUSTOM`);
+  assert(resolved.workType === workType, `${key} work type ${workType}`);
+  assert(resolved.effortBand === "MEDIUM", `${key} MEDIUM band`);
+  assert(
+    EFFORT_BAND_PRICE_CENTS[resolved.effortBand] === 35_000,
+    `${key} recommends 35000 cents`,
+  );
+  const line = firstChoice.lineItems.find((l) => l.workUnitKey === key);
+  assert(line != null, `${key} present in 1st Choice fixture`);
+  assert(line!.recommendedUnitPriceCents === 35_000, `${key} priced $350`);
+}
+
+assert(
+  firstChoice.recommendedIncludedCents === 300_000,
+  "1st Choice expected recommendation $3,000",
+);
+assert(
+  firstChoice.recommendedTotalCents === 300_000,
+  "1st Choice total $3,000 (no minimum lift)",
+);
+assert(firstChoice.minimumApplied === false, "1st Choice minimum adjustment $0");
+assert(
+  evaluatePricingCompleteness(firstChoice.lineItems).isComplete,
+  "all included priced work produces COMPLETE state",
+);
+
+// Completeness: included unpriced CUSTOM
+const incompleteLines = [
+  ...firstChoice.lineItems,
+  {
+    workUnitKey: "custom:rebuild-hero",
+    title: "Rebuild homepage hero",
+    workType: "CUSTOM" as const,
+    effortBand: "CUSTOM" as const,
+    quantity: 1,
+    recommendedUnitPriceCents: null,
+    recommendedLineTotalCents: null,
+    finalUnitPriceCents: null,
+    finalLineTotalCents: null,
+    isOptional: false,
+    isIncluded: true,
+    isCustom: true,
+    isOverridden: false,
+    overrideReason: null,
+    sourceDeliverableIds: [],
+    sourceSectionTitles: ["Manual"],
+    sortOrder: 99,
+  },
+];
+const incomplete = evaluatePricingCompleteness(incompleteLines);
+assert(
+  incomplete.completeness === "INCOMPLETE_CUSTOM_PRICING",
+  "included unpriced CUSTOM makes pricing incomplete",
+);
+assert(incomplete.unpricedIncludedCount === 1, "one unpriced included item");
+assert(
+  incomplete.knownPricedIncludedCents === 300_000,
+  "known subtotal remains mathematically available",
+);
+assert(incomplete.isComplete === false, "incomplete flag");
+assert(
+  lineRequiresManualPrice(incompleteLines[incompleteLines.length - 1]!),
+  "custom line requires manual price",
+);
+
+const optionalCustomOnly = evaluatePricingCompleteness([
+  ...firstChoice.lineItems,
+  {
+    workUnitKey: "custom:optional-addon",
+    title: "Optional redesign",
+    workType: "CUSTOM" as const,
+    effortBand: "CUSTOM" as const,
+    quantity: 1,
+    recommendedUnitPriceCents: null,
+    recommendedLineTotalCents: null,
+    finalUnitPriceCents: null,
+    finalLineTotalCents: null,
+    isOptional: true,
+    isIncluded: true,
+    isCustom: true,
+    isOverridden: false,
+    overrideReason: null,
+    sourceDeliverableIds: [],
+    sourceSectionTitles: ["Manual"],
+    sortOrder: 99,
+  },
+]);
+assert(
+  optionalCustomOnly.isComplete,
+  "optional unselected/custom optional does not make base incomplete",
 );
 
 // Work unit catalog coverage
@@ -496,8 +655,22 @@ assert(createSource.includes("SCOPE_NOT_APPROVED"), "requires approved scope");
 const mutateSource = readFileSync(join(here, "mutate.ts"), "utf8");
 assert(mutateSource.includes("IMMUTABLE"), "approved immutable");
 assert(mutateSource.includes("OVERRIDE_REASON_REQUIRED"), "override reason");
-assert(mutateSource.includes("CUSTOM_PRICE_REQUIRED"), "custom price gate");
+assert(
+  mutateSource.includes("INCOMPLETE_CUSTOM_PRICING"),
+  "approval blocked when incomplete",
+);
 assert(mutateSource.includes("PRICING_APPROVED"), "approve activity");
+
+const editorSource = readFileSync(
+  join(repoRoot, "src/components/opportunities/pricing-editor.tsx"),
+  "utf8",
+);
+assert(editorSource.includes("Incomplete"), "incomplete total not presented as complete");
+assert(editorSource.includes("Known priced work"), "known subtotal visible");
+assert(
+  editorSource.includes("Approval is blocked"),
+  "UI communicates approval gate",
+);
 
 const actionsSource = readFileSync(
   join(repoRoot, "src/app/reports/opportunities/pricing-actions.ts"),
@@ -514,7 +687,15 @@ const previewPage = readFileSync(
 );
 assert(previewPage.includes("preview"), "preview mode");
 assert(previewPage.includes("Investment summary"), "client-readable preview");
+assert(
+  previewPage.includes("Pricing is not complete"),
+  "client preview safe when incomplete",
+);
 assert(!previewPage.includes("workUnitKey"), "preview hides work unit keys");
+assert(
+  !previewPage.includes("INCOMPLETE_CUSTOM_PRICING"),
+  "preview hides internal completeness enum",
+);
 
 const publicFiles = collectTsFiles(join(repoRoot, "src/app/report"));
 for (const file of publicFiles) {

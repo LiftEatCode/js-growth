@@ -18,6 +18,7 @@ import {
   formatUsdCents,
   type PricingEffortBand,
 } from "@/lib/commercialization/pricing/constants";
+import { evaluatePricingCompleteness } from "@/lib/commercialization/pricing/completeness";
 
 export interface PricingEditorProps {
   pricingId: string;
@@ -64,10 +65,10 @@ export function PricingEditor({
   editable,
   status,
   initialNotes,
-  recommendedIncludedCents,
+  recommendedIncludedCents: _recommendedIncludedCents,
   recommendedOptionalCents,
   recommendedTotalCents,
-  finalIncludedCents,
+  finalIncludedCents: _finalIncludedCents,
   finalOptionalCents,
   finalTotalCents,
   minimumEngagementCents,
@@ -94,6 +95,8 @@ export function PricingEditor({
       router.refresh();
     });
   }
+
+  const completeness = evaluatePricingCompleteness(lineItems);
 
   if (!editable) {
     return (
@@ -323,40 +326,57 @@ export function PricingEditor({
         <h3 className="font-heading text-base font-semibold text-brand">
           Totals
         </h3>
+        {!completeness.isComplete ? (
+          <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+            Pricing is incomplete — {completeness.unpricedIncludedCount} included
+            item(s) still need a price. Primary investment totals stay Incomplete
+            until those are entered.
+          </p>
+        ) : null}
         <dl className="mt-3 grid gap-2 sm:grid-cols-2">
           <div>
-            <dt className="text-xs text-muted">Recommended included</dt>
-            <dd>{formatUsdCents(recommendedIncludedCents)}</dd>
+            <dt className="text-xs text-muted">Known priced work</dt>
+            <dd>{formatUsdCents(completeness.knownPricedIncludedCents)}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-muted">Unpriced included work</dt>
+            <dd>
+              {completeness.isComplete
+                ? "None"
+                : `${completeness.unpricedIncludedCount} item${
+                    completeness.unpricedIncludedCount === 1 ? "" : "s"
+                  }`}
+            </dd>
           </div>
           <div>
             <dt className="text-xs text-muted">Recommended optional</dt>
             <dd>{formatUsdCents(recommendedOptionalCents)}</dd>
           </div>
           <div>
-            <dt className="text-xs text-muted">Recommended total</dt>
+            <dt className="text-xs text-muted">Final optional</dt>
+            <dd>{formatUsdCents(finalOptionalCents)}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-muted">Recommended investment</dt>
             <dd className="font-medium">
-              {formatUsdCents(recommendedTotalCents)}
-              {minimumApplied && !assessmentOnly
+              {completeness.isComplete
+                ? formatUsdCents(recommendedTotalCents)
+                : "Incomplete"}
+              {completeness.isComplete && minimumApplied && !assessmentOnly
                 ? ` (min ${formatUsdCents(minimumEngagementCents)})`
                 : ""}
             </dd>
           </div>
           <div>
-            <dt className="text-xs text-muted">Final included</dt>
-            <dd>{formatUsdCents(finalIncludedCents)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted">Final optional</dt>
-            <dd>{formatUsdCents(finalOptionalCents)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted">Final total</dt>
+            <dt className="text-xs text-muted">Final investment</dt>
             <dd className="font-semibold text-brand">
-              {formatUsdCents(finalTotalCents)}
+              {completeness.isComplete
+                ? formatUsdCents(finalTotalCents)
+                : "Incomplete"}
             </dd>
           </div>
         </dl>
-        {assessmentOnly ? (
+        {assessmentOnly && completeness.isComplete ? (
           <p className="mt-2 text-xs text-muted">
             Assessment-only engagement — minimum engagement not applied.
           </p>
@@ -407,6 +427,11 @@ export function PricingEditor({
           ) : null}
           Approve pricing
         </Button>
+        {!completeness.isComplete ? (
+          <p className="w-full text-xs text-amber-800">
+            Approval is blocked until all included work is priced.
+          </p>
+        ) : null}
       </section>
     </div>
   );

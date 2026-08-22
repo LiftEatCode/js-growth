@@ -32,6 +32,7 @@ Competitive Growth Analysis is **internal-only** (`noindex`). Not exposed on pub
 | Outreach content | Draft/sent bodies | Internal; delivery events append-only |
 | Competitor business data | Places candidates, audits | Internal CI; not public product surface |
 | Opportunity commercial notes / stages | Pipeline + next actions | Internal only; analytics keys forbidden |
+| Commercial Scope / Pricing / Proposal | Offer, prices, proposal snapshots | Internal `/reports/**` only; analytics keys forbidden; not on `/report/*` |
 | OpenAI prompts | Bounded audit/outreach/CI inputs | Server-only API; treat as confidential |
 
 ---
