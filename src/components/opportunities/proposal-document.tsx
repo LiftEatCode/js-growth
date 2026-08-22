@@ -9,6 +9,7 @@ export interface ProposalDocumentProps {
   timelineNote: string | null;
   nextStepText: string | null;
   snapshot: ProposalSnapshot;
+  createdAtLabel?: string | null;
 }
 
 export function ProposalDocument({
@@ -19,28 +20,30 @@ export function ProposalDocument({
   timelineNote,
   nextStepText,
   snapshot,
+  createdAtLabel,
 }: ProposalDocumentProps) {
   return (
-    <article className="mx-auto max-w-3xl space-y-10 text-ink print:max-w-none">
-      <header className="space-y-3 border-b border-border pb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+    <article className="mx-auto max-w-3xl space-y-12 text-ink print:max-w-none">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
           JS Solutions
         </p>
         <h1 className="font-heading text-3xl font-semibold text-brand sm:text-4xl">
           {title}
         </h1>
-        {snapshot.locationLabel ? (
-          <p className="text-sm text-muted">{snapshot.locationLabel}</p>
-        ) : null}
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+          {snapshot.locationLabel ? <p>{snapshot.locationLabel}</p> : null}
+          {createdAtLabel ? <p>{createdAtLabel}</p> : null}
+        </div>
       </header>
 
       <section className="space-y-3">
         <h2 className="font-heading text-xl font-semibold text-brand">
           Executive Summary
         </h2>
-        <p className="text-sm leading-relaxed text-ink/90 whitespace-pre-wrap">
+        <div className="space-y-3 text-sm leading-relaxed text-ink/90 whitespace-pre-wrap">
           {executiveSummary}
-        </p>
+        </div>
       </section>
 
       {businessContext ? (
@@ -48,13 +51,13 @@ export function ProposalDocument({
           <h2 className="font-heading text-xl font-semibold text-brand">
             Business Context
           </h2>
-          <p className="text-sm leading-relaxed text-ink/90 whitespace-pre-wrap">
+          <div className="space-y-3 text-sm leading-relaxed text-ink/90 whitespace-pre-wrap">
             {businessContext}
-          </p>
+          </div>
         </section>
       ) : null}
 
-      <section className="space-y-5">
+      <section className="space-y-8">
         <div className="space-y-2">
           <h2 className="font-heading text-xl font-semibold text-brand">
             Recommended Approach
@@ -69,27 +72,31 @@ export function ProposalDocument({
         {snapshot.sections.map((section) => (
           <div
             key={section.title}
-            className="space-y-2 print:break-inside-avoid"
+            className="space-y-3 border-b border-border/70 pb-6 last:border-b-0 last:pb-0 print:break-inside-avoid"
           >
             <h3 className="font-heading text-lg font-semibold text-ink">
               {section.title}
             </h3>
-            {section.capabilities.length > 0 ? (
-              <p className="text-xs text-muted">
-                {section.capabilities.join(" · ")}
+            {section.clientValueExplanation ? (
+              <p className="text-sm leading-relaxed text-ink/85">
+                {section.clientValueExplanation}
               </p>
             ) : null}
-            {section.description ? (
-              <p className="text-sm text-ink/80">{section.description}</p>
+            {section.deliverables.length > 0 ? (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                  What we&apos;ll do
+                </p>
+                <ul className="list-disc space-y-1.5 pl-5 text-sm text-ink/90">
+                  {section.deliverables.map((d) => (
+                    <li key={`${section.title}-${d.sourceTitle}`}>
+                      {d.title}
+                      {d.isOptional ? " (optional)" : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ) : null}
-            <ul className="list-disc space-y-1 pl-5 text-sm text-ink/90">
-              {section.deliverables.map((d) => (
-                <li key={`${section.title}-${d.title}`}>
-                  {d.title}
-                  {d.isOptional ? " (optional)" : ""}
-                </li>
-              ))}
-            </ul>
           </div>
         ))}
       </section>
@@ -104,9 +111,14 @@ export function ProposalDocument({
               <h3 className="font-heading text-lg font-semibold text-ink">
                 {section.title}
               </h3>
+              {section.clientValueExplanation ? (
+                <p className="text-sm leading-relaxed text-ink/85">
+                  {section.clientValueExplanation}
+                </p>
+              ) : null}
               <ul className="list-disc space-y-1 pl-5 text-sm text-ink/90">
                 {section.deliverables.map((d) => (
-                  <li key={`opt-${section.title}-${d.title}`}>{d.title}</li>
+                  <li key={`opt-${section.title}-${d.sourceTitle}`}>{d.title}</li>
                 ))}
               </ul>
             </div>
@@ -119,7 +131,7 @@ export function ProposalDocument({
           <h2 className="font-heading text-xl font-semibold text-brand">
             Implementation Considerations
           </h2>
-          <ul className="list-disc space-y-1 pl-5 text-sm text-ink/90">
+          <ul className="list-disc space-y-1.5 pl-5 text-sm text-ink/90">
             {snapshot.considerations.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -153,39 +165,45 @@ export function ProposalDocument({
         </section>
       ) : null}
 
-      <section className="space-y-5">
-        <h2 className="font-heading text-xl font-semibold text-brand">
-          Investment
-        </h2>
+      <section className="space-y-6">
+        <div className="space-y-2">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Investment
+          </h2>
+          <p className="text-sm leading-relaxed text-ink/85">
+            {snapshot.investmentIntro}
+          </p>
+        </div>
 
-        {snapshot.includedInvestmentGroups.map((group) => (
-          <div key={group.title} className="space-y-2 print:break-inside-avoid">
-            <h3 className="font-heading text-base font-semibold text-ink">
-              {group.title}
-            </h3>
-            <ul className="space-y-2 text-sm text-ink/90">
-              {group.lines.map((line) => (
-                <li
-                  key={`${group.title}-${line.title}`}
-                  className="flex flex-wrap items-baseline justify-between gap-2"
-                >
-                  <span>
-                    {line.title}
-                    {line.quantity > 1 ? ` × ${line.quantity}` : ""}
-                    {line.alsoSupports.length > 0 ? (
-                      <span className="mt-0.5 block text-xs text-muted">
-                        Also supports: {line.alsoSupports.join(" · ")}
-                      </span>
-                    ) : null}
-                  </span>
-                  <span className="font-medium tabular-nums">
-                    {formatUsdCents(line.lineTotalCents)}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className="space-y-4">
+          {snapshot.includedInvestmentGroups.map((group) => (
+            <div
+              key={group.title}
+              className="rounded-xl border border-border/80 bg-surface/30 px-4 py-4 print:break-inside-avoid print:border-border"
+            >
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="font-heading text-base font-semibold text-ink">
+                  {group.title}
+                </h3>
+                <p className="font-heading text-lg font-semibold tabular-nums text-brand">
+                  {formatUsdCents(group.subtotalCents)}
+                </p>
+              </div>
+              {group.includeLabels.length > 0 ? (
+                <div className="mt-3 space-y-1">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    Includes
+                  </p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-ink/85">
+                    {group.includeLabels.map((label) => (
+                      <li key={`${group.title}-${label}`}>{label}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          ))}
+        </div>
 
         {snapshot.engagementAdjustmentCents > 0 ? (
           <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
@@ -196,7 +214,7 @@ export function ProposalDocument({
           </div>
         ) : null}
 
-        <div className="border-t border-border pt-4">
+        <div className="border-t border-border pt-5">
           <p className="text-sm text-muted">Base Implementation Investment</p>
           <p className="mt-1 font-heading text-3xl font-semibold text-brand tabular-nums">
             {formatUsdCents(snapshot.includedInvestmentCents)}
@@ -204,7 +222,7 @@ export function ProposalDocument({
         </div>
 
         {snapshot.optionalLines.length > 0 ? (
-          <div className="space-y-3 border-t border-border pt-4">
+          <div className="space-y-3 border-t border-border pt-5">
             <h3 className="font-heading text-base font-semibold text-ink">
               Optional Enhancements
             </h3>
@@ -248,7 +266,7 @@ export function ProposalDocument({
       ) : null}
 
       {nextStepText ? (
-        <section className="space-y-3 rounded-xl border border-border/80 bg-surface/40 px-5 py-4">
+        <section className="space-y-3 rounded-xl border border-border/80 bg-surface/40 px-5 py-5">
           <h2 className="font-heading text-xl font-semibold text-brand">
             Next Step
           </h2>
@@ -257,6 +275,10 @@ export function ProposalDocument({
           </p>
         </section>
       ) : null}
+
+      <footer className="border-t border-border pt-4 text-xs leading-relaxed text-muted">
+        {snapshot.methodologyFooter}
+      </footer>
     </article>
   );
 }

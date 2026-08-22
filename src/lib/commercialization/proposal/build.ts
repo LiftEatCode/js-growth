@@ -2,12 +2,29 @@ import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabil
 import type { ServiceCapabilityId } from "@/lib/commercialization/capabilities/types";
 import { evaluatePricingCompleteness } from "@/lib/commercialization/pricing/completeness";
 import { effectiveUnitPriceCents } from "@/lib/commercialization/pricing/totals";
+import { resolveWorkUnitFromDeliverable } from "@/lib/commercialization/pricing/work-units";
 
 import {
   COMMERCIAL_PROPOSAL_PRESENTATION_VERSION,
   COMMERCIAL_PROPOSAL_VERSION,
 } from "./constants";
 import { buildProposalSourceFingerprint } from "./fingerprint";
+import {
+  DEFAULT_APPROACH_INTRO,
+  DEFAULT_NEXT_STEP_TEXT,
+  DEFAULT_TIMELINE_NOTE,
+  getSectionClientValueExplanation,
+  getSectionContextLabel,
+  investmentIncludeLabel,
+  isInternalAuditFindingLanguage,
+  joinReadableList,
+  polishConsiderationText,
+  polishDeliverableLabel,
+  PROPOSAL_INVESTMENT_INTRO,
+  PROPOSAL_METHODOLOGY_FOOTER,
+  resolveFinancialGroup,
+  sectionLooksLikeAssessment,
+} from "./presentation";
 import type {
   BuiltCommercialProposal,
   ProposalSnapshot,
@@ -68,6 +85,7 @@ export interface ProposalPricingInput {
     effortBand: string;
     sortOrder: number;
     sourceSectionTitles: string[];
+    workUnitKey?: string | null;
   }>;
 }
 
@@ -85,20 +103,33 @@ function mapSections(
         s.isIncluded && (optionalOnly ? s.isOptional : !s.isOptional),
     )
     .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((section) => ({
-      title: section.title,
-      description: section.description,
-      capabilities: capabilityLabels(section.capabilities),
-      isOptional: section.isOptional,
-      deliverables: section.deliverables
+    .map((section) => {
+      const deliverables = section.deliverables
         .filter((d) => d.isIncluded)
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map((d) => ({
-          title: d.title,
+          title: polishDeliverableLabel(d.title),
+          sourceTitle: d.title,
           isOptional: d.isOptional || section.isOptional,
-        })),
-    }))
-    .filter((s) => s.deliverables.length > 0 || s.description);
+        }));
+
+      const assessmentSection = sectionLooksLikeAssessment(
+        deliverables.map((d) => d.sourceTitle),
+      );
+
+      return {
+        title: section.title,
+        clientValueExplanation: getSectionClientValueExplanation(
+          section.title,
+          { assessmentSection },
+        ),
+        // Capabilities retained for internal consumers; client document omits them.
+        capabilities: capabilityLabels(section.capabilities),
+        isOptional: section.isOptional,
+        deliverables,
+      };
+    })
+    .filter((s) => s.deliverables.length > 0 || s.clientValueExplanation);
 }
 
 function dedupeConsiderations(
@@ -112,44 +143,28 @@ function dedupeConsiderations(
       continue;
     }
     seen.add(key);
-    const text = item.text.trim();
-    if (text) {
-      out.push(text);
+    const polished = polishConsiderationText(item.text);
+    if (polished && !isInternalAuditFindingLanguage(polished)) {
+      out.push(polished);
     }
   }
   return out;
 }
 
-/**
- * Pick a deterministic primary Scope section for a priced work unit.
- * Prefer earliest section in Scope order among sourceSectionTitles.
- */
-function primaryGroupTitle(
-  sourceSectionTitles: string[],
-  sectionOrder: Map<string, number>,
-  fallback: string,
-): { groupTitle: string; alsoSupports: string[] } {
-  if (sourceSectionTitles.length === 0) {
-    return { groupTitle: fallback, alsoSupports: [] };
+function resolveLineWorkUnitKey(line: ProposalPricingInput["lineItems"][number]): string | null {
+  if (line.workUnitKey) {
+    return line.workUnitKey;
   }
-
-  const sorted = [...sourceSectionTitles].sort((a, b) => {
-    const ao = sectionOrder.get(a) ?? Number.MAX_SAFE_INTEGER;
-    const bo = sectionOrder.get(b) ?? Number.MAX_SAFE_INTEGER;
-    if (ao !== bo) {
-      return ao - bo;
-    }
-    return a.localeCompare(b);
+  const resolved = resolveWorkUnitFromDeliverable({
+    sourceActionKey: null,
+    title: line.title,
+    source: line.isCustom ? "MANUAL" : "PLAN",
   });
-
-  const groupTitle = sorted[0]!;
-  const alsoSupports = sorted.slice(1);
-  return { groupTitle, alsoSupports };
+  return resolved.isCustom ? null : resolved.key;
 }
 
 function buildInvestmentLines(
   pricing: ProposalPricingInput,
-  sectionOrder: Map<string, number>,
   optionalOnly: boolean,
 ): ProposalSnapshotInvestmentLine[] {
   return pricing.lineItems
@@ -165,18 +180,25 @@ function buildInvestmentLines(
         0;
       const lineTotal =
         line.finalLineTotalCents ?? unit * line.quantity;
-      const { groupTitle, alsoSupports } = primaryGroupTitle(
-        line.sourceSectionTitles,
-        sectionOrder,
-        "Implementation",
+      const workUnitKey = resolveLineWorkUnitKey(line);
+      const financial = resolveFinancialGroup({
+        lineTitle: line.title,
+        sourceSectionTitles: line.sourceSectionTitles,
+        workUnitKey,
+      });
+      const polished = polishDeliverableLabel(line.title);
+      const primaryScope = line.sourceSectionTitles[0] ?? null;
+      const alsoSupports = line.sourceSectionTitles.filter(
+        (t) => t !== primaryScope && t !== financial.title,
       );
       return {
-        title: line.title,
+        title: polished,
+        includeLabel: investmentIncludeLabel(line.title),
         quantity: line.quantity,
         unitPriceCents: unit,
         lineTotalCents: lineTotal,
         isOptional: line.isOptional,
-        groupTitle,
+        groupTitle: financial.title,
         alsoSupports,
       };
     });
@@ -184,7 +206,6 @@ function buildInvestmentLines(
 
 function groupInvestmentLines(
   lines: ProposalSnapshotInvestmentLine[],
-  sectionOrder: Map<string, number>,
 ): ProposalSnapshotInvestmentGroup[] {
   const byGroup = new Map<string, ProposalSnapshotInvestmentLine[]>();
   for (const line of lines) {
@@ -193,70 +214,103 @@ function groupInvestmentLines(
     byGroup.set(line.groupTitle, list);
   }
 
+  const order = new Map(
+    [
+      "Content & Search Foundation",
+      "Performance Optimization",
+      "Technical SEO",
+      "Local Search Foundation",
+      "Conversion Path Assessment",
+      "Additional Implementation Work",
+    ].map((title, i) => [title, i] as const),
+  );
+
   return Array.from(byGroup.entries())
     .sort(([a], [b]) => {
-      const ao = sectionOrder.get(a) ?? Number.MAX_SAFE_INTEGER;
-      const bo = sectionOrder.get(b) ?? Number.MAX_SAFE_INTEGER;
+      const ao = order.get(a) ?? 50;
+      const bo = order.get(b) ?? 50;
       if (ao !== bo) {
         return ao - bo;
       }
       return a.localeCompare(b);
     })
-    .map(([title, groupLines]) => ({
-      title,
-      lines: groupLines,
-      subtotalCents: groupLines.reduce((sum, l) => sum + l.lineTotalCents, 0),
-    }));
+    .map(([title, groupLines]) => {
+      const includeLabels: string[] = [];
+      const seen = new Set<string>();
+      for (const line of groupLines) {
+        const label = line.includeLabel;
+        const key = label.toLowerCase();
+        if (seen.has(key)) {
+          continue;
+        }
+        seen.add(key);
+        includeLabels.push(label);
+      }
+      return {
+        title,
+        includeLabels,
+        lines: groupLines,
+        subtotalCents: groupLines.reduce(
+          (sum, l) => sum + l.lineTotalCents,
+          0,
+        ),
+      };
+    });
 }
 
 function buildExecutiveSummary(
   businessName: string,
   sections: ProposalSnapshotSection[],
 ): string {
-  const areas = sections.map((s) => s.title);
-  const areaText =
-    areas.length === 0
-      ? "the highest-priority website growth opportunities identified"
-      : areas.length === 1
-        ? areas[0]
-        : areas.length === 2
-          ? `${areas[0]} and ${areas[1]}`
-          : `${areas.slice(0, -1).join(", ")}, and ${areas[areas.length - 1]}`;
+  const focusAreas = sections.map((s) => getSectionContextLabel(s.title));
+  const focusText = joinReadableList(focusAreas);
 
-  return `Based on our website growth analysis and implementation planning, JS Solutions recommends a focused implementation engagement addressing the highest-priority opportunities identified for ${businessName}. This proposal is designed to strengthen ${areaText} in a practical, sequenced way that improves the website foundation for discovery, clarity, and conversion.`;
+  return [
+    `JS Solutions recommends a focused website improvement engagement for ${businessName} based on the issues identified during our Website Growth Analysis.`,
+    `The work concentrates on strengthening the site's ${focusText}.`,
+    `Together, these improvements are designed to create a clearer, more search-friendly website foundation and make it easier for potential customers to understand the business and take the next step.`,
+  ].join("\n\n");
 }
 
 function buildBusinessContext(options: {
   businessName: string;
   locationLabel: string | null;
-  scopeSummary: string | null;
   overallScore: number | null;
   competitivePosition: string | null;
+  sections: ProposalSnapshotSection[];
 }): string | null {
-  const parts: string[] = [];
-  if (options.locationLabel) {
-    parts.push(
-      `${options.businessName} (${options.locationLabel}) is the focus of this implementation proposal.`,
-    );
-  } else {
-    parts.push(
-      `${options.businessName} is the focus of this implementation proposal.`,
-    );
-  }
+  const who = options.locationLabel
+    ? `${options.businessName}'s website`
+    : `${options.businessName}'s website`;
+
+  const areaLabels = options.sections.map((s) =>
+    getSectionContextLabel(s.title),
+  );
+  const areaText = joinReadableList(areaLabels);
+
+  const paragraphs: string[] = [];
+
+  paragraphs.push(
+    `Our analysis identified several opportunities to strengthen how ${who} communicates its services, supports local search visibility, and guides potential customers toward taking the next step.`,
+  );
+
   if (options.overallScore != null && Number.isFinite(options.overallScore)) {
-    parts.push(
-      `Current Website Growth Score: ${Math.round(options.overallScore)}.`,
+    paragraphs.push(
+      `The website currently has a Website Growth Score of ${Math.round(options.overallScore)}/100, with the largest opportunities concentrated in ${areaText}.`,
+    );
+  } else if (areaLabels.length > 0) {
+    paragraphs.push(
+      `The largest opportunities are concentrated in ${areaText}.`,
     );
   }
+
   if (options.competitivePosition?.trim()) {
-    parts.push(
-      `Competitive position (from available analysis): ${options.competitivePosition.trim()}.`,
+    paragraphs.push(
+      `Available competitive analysis places the business in a ${options.competitivePosition.trim()} position relative to compared local competitors.`,
     );
   }
-  if (options.scopeSummary?.trim()) {
-    parts.push(options.scopeSummary.trim());
-  }
-  return parts.join(" ");
+
+  return paragraphs.join("\n\n");
 }
 
 /**
@@ -287,24 +341,11 @@ export function buildProposalFromApprovedSources(options: {
     throw new Error("Proposal requires COMPLETE Pricing.");
   }
 
-  const sectionOrder = new Map<string, number>();
-  for (const section of options.scope.sections) {
-    sectionOrder.set(section.title, section.sortOrder);
-  }
-
   const sections = mapSections(options.scope.sections, false);
   const optionalSections = mapSections(options.scope.sections, true);
 
-  const includedLines = buildInvestmentLines(
-    options.pricing,
-    sectionOrder,
-    false,
-  );
-  const optionalLines = buildInvestmentLines(
-    options.pricing,
-    sectionOrder,
-    true,
-  );
+  const includedLines = buildInvestmentLines(options.pricing, false);
+  const optionalLines = buildInvestmentLines(options.pricing, true);
 
   const includedSum = includedLines.reduce(
     (sum, l) => sum + l.lineTotalCents,
@@ -315,9 +356,6 @@ export function buildProposalFromApprovedSources(options: {
     0,
   );
 
-  // Approved Pricing authority: totals come from persisted pricing, not catalog.
-  // Pricing.finalTotalCents is the base engagement (includes minimum when applied).
-  // Optional dollars stay separate and are never folded into base investment.
   const includedInvestmentCents = options.pricing.finalTotalCents;
   const optionalInvestmentCents = options.pricing.finalOptionalCents;
   const totalInvestmentCents =
@@ -339,6 +377,17 @@ export function buildProposalFromApprovedSources(options: {
     );
   }
 
+  const includedInvestmentGroups = groupInvestmentLines(includedLines);
+  const groupSum = includedInvestmentGroups.reduce(
+    (sum, g) => sum + g.subtotalCents,
+    0,
+  );
+  if (groupSum + engagementAdjustmentCents !== includedInvestmentCents) {
+    throw new Error(
+      "Client-visible financial groups do not reconcile to approved included investment.",
+    );
+  }
+
   const snapshot: ProposalSnapshot = {
     businessName: options.businessName,
     locationLabel: options.locationLabel,
@@ -347,17 +396,19 @@ export function buildProposalFromApprovedSources(options: {
     optionalInvestmentCents,
     totalInvestmentCents,
     engagementAdjustmentCents,
+    investmentIntro: PROPOSAL_INVESTMENT_INTRO,
+    methodologyFooter: PROPOSAL_METHODOLOGY_FOOTER,
     sections,
     optionalSections,
     assumptions: options.scope.assumptions
       .map((a) => a.text.trim())
-      .filter(Boolean),
+      .filter((t) => t && !isInternalAuditFindingLanguage(t)),
     exclusions: options.scope.exclusions
       .map((e) => e.text.trim())
-      .filter(Boolean),
+      .filter((t) => t && !isInternalAuditFindingLanguage(t)),
     considerations: dedupeConsiderations(options.scope.considerations),
-    includedInvestmentGroups: groupInvestmentLines(includedLines, sectionOrder),
-    optionalInvestmentGroups: groupInvestmentLines(optionalLines, sectionOrder),
+    includedInvestmentGroups,
+    optionalInvestmentGroups: groupInvestmentLines(optionalLines),
     includedLines,
     optionalLines,
   };
@@ -380,16 +431,13 @@ export function buildProposalFromApprovedSources(options: {
     businessContext: buildBusinessContext({
       businessName: options.businessName,
       locationLabel: options.locationLabel,
-      scopeSummary: options.scope.summary,
       overallScore: options.overallScore ?? null,
       competitivePosition: options.competitivePosition ?? null,
+      sections,
     }),
-    approachIntro:
-      "The recommended approach below reflects the approved implementation scope for this engagement.",
-    timelineNote:
-      "Implementation sequencing will be finalized after project kickoff.",
-    nextStepText:
-      "Review this proposed implementation scope with JS Solutions. Once scope and investment are confirmed, project scheduling and formal agreement can be prepared.",
+    approachIntro: DEFAULT_APPROACH_INTRO,
+    timelineNote: DEFAULT_TIMELINE_NOTE,
+    nextStepText: DEFAULT_NEXT_STEP_TEXT,
     currency: options.pricing.currency,
     includedInvestmentCents,
     optionalInvestmentCents,
@@ -401,9 +449,15 @@ export function buildProposalFromApprovedSources(options: {
   };
 }
 
-/** Verify client-visible priced lines sum to approved included (pre-minimum) line totals. */
+/** Verify client-visible priced lines sum to approved included line totals. */
 export function sumClientVisibleInvestmentCents(
   lines: ProposalSnapshotInvestmentLine[],
 ): number {
   return lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
+}
+
+export function sumClientVisibleGroupCents(
+  groups: ProposalSnapshotInvestmentGroup[],
+): number {
+  return groups.reduce((sum, group) => sum + group.subtotalCents, 0);
 }

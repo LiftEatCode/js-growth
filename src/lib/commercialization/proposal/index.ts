@@ -8,7 +8,14 @@ export type { CommercialProposalStatus } from "./constants";
 export {
   buildProposalFromApprovedSources,
   sumClientVisibleInvestmentCents,
+  sumClientVisibleGroupCents,
 } from "./build";
+export {
+  polishDeliverableLabel,
+  getSectionClientValueExplanation,
+  resolveFinancialGroup,
+  isInternalAuditFindingLanguage,
+} from "./presentation";
 export {
   buildProposalSourceFingerprint,
   parseProposalSourceFingerprint,

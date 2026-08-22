@@ -184,7 +184,7 @@ export type ImplementationPlanInterpretation = Prisma.ImplementationPlanInterpre
 /**
  * Model Opportunity
  * Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
- * Intelligence is referenced, not recalculated. No pricing / proposals / OpenAI.
+ * Intelligence is referenced, not recalculated. Scope / Pricing / Proposal are separate engines.
  */
 export type Opportunity = Prisma.OpportunityModel
 /**

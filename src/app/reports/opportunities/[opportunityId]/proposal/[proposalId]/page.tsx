@@ -147,6 +147,7 @@ export default async function ProposalDetailPage({
               timelineNote={proposal.timelineNote}
               nextStepText={proposal.nextStepText}
               snapshot={snapshot}
+              createdAtLabel={formatDateTime(proposal.createdAt)}
             />
           </Card>
         ) : (
@@ -182,6 +183,7 @@ export default async function ProposalDetailPage({
                 timelineNote={proposal.timelineNote}
                 nextStepText={proposal.nextStepText}
                 snapshot={snapshot}
+                createdAtLabel={formatDateTime(proposal.createdAt)}
               />
             </Card>
           </>

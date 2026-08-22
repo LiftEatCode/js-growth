@@ -10,6 +10,12 @@ import {
   type CommercialProposalStatus,
 } from "./constants";
 import { buildProposalSourceFingerprint } from "./fingerprint";
+import {
+  isInternalAuditFindingLanguage,
+  PROPOSAL_INVESTMENT_INTRO,
+  PROPOSAL_METHODOLOGY_FOOTER,
+  stripInternalAuditLanguage,
+} from "./presentation";
 import { evaluateProposalStaleness } from "./staleness";
 import type { ProposalSnapshot } from "./types";
 
@@ -17,7 +23,61 @@ function parseSnapshot(raw: unknown): ProposalSnapshot | null {
   if (!raw || typeof raw !== "object") {
     return null;
   }
-  return raw as ProposalSnapshot;
+  const snap = raw as ProposalSnapshot;
+
+  // Backward-compatible defaults for historical presentation v1 snapshots.
+  return {
+    ...snap,
+    investmentIntro: snap.investmentIntro ?? PROPOSAL_INVESTMENT_INTRO,
+    methodologyFooter: snap.methodologyFooter ?? PROPOSAL_METHODOLOGY_FOOTER,
+    sections: (snap.sections ?? []).map((section) => {
+      const legacyDescription =
+        "description" in section
+          ? ((section as { description?: string | null }).description ?? null)
+          : null;
+      const legacyClean = legacyDescription
+        ? stripInternalAuditLanguage(legacyDescription)
+        : null;
+      return {
+        ...section,
+        clientValueExplanation:
+          section.clientValueExplanation ??
+          (legacyClean && !isInternalAuditFindingLanguage(legacyClean)
+            ? legacyClean
+            : null),
+        deliverables: (section.deliverables ?? []).map((d) => ({
+          title: d.title,
+          sourceTitle: d.sourceTitle ?? d.title,
+          isOptional: d.isOptional,
+        })),
+      };
+    }),
+    optionalSections: (snap.optionalSections ?? []).map((section) => ({
+      ...section,
+      clientValueExplanation: section.clientValueExplanation ?? null,
+      deliverables: (section.deliverables ?? []).map((d) => ({
+        title: d.title,
+        sourceTitle: d.sourceTitle ?? d.title,
+        isOptional: d.isOptional,
+      })),
+    })),
+    includedInvestmentGroups: (snap.includedInvestmentGroups ?? []).map(
+      (group) => ({
+        ...group,
+        includeLabels:
+          group.includeLabels ??
+          (group.lines ?? []).map((line) => line.title),
+      }),
+    ),
+    optionalInvestmentGroups: (snap.optionalInvestmentGroups ?? []).map(
+      (group) => ({
+        ...group,
+        includeLabels:
+          group.includeLabels ??
+          (group.lines ?? []).map((line) => line.title),
+      }),
+    ),
+  };
 }
 
 export async function loadCurrentProposalForOpportunity(options: {

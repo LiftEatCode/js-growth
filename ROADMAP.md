@@ -167,11 +167,13 @@ Deterministic pricing from approved Commercial Scope via canonical work-unit nor
 
 ## Commercial Sprint 6 — Proposal Engine V1
 
-Status: 🟢 Implemented (internal)
+Status: 🟢 Implemented (internal) · Sprint 6.1 presentation hardening
 
 Canonical doc: `docs/development/proposal-engine.md`
 
 Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROVED COMPLETE** Commercial Pricing. Presentation-only; does not recalculate scope or pricing. Internal preview only — no public URL, PDF, email, acceptance, e-sign, or Stripe.
+
+**Sprint 6.1:** Client presentation hardening — why-it-matters taxonomy, polished deliverable labels, dedupe-safe financial grouping (Content & Search combined), no audit-finding counts, claim-safe copy. `COMMERCIAL_PROPOSAL_PRESENTATION_VERSION = 2` (no schema migration).
 
 **Not included:** AI proposal writing, public delivery, payment schedules, contracts, automatic Opportunity stage changes.
 

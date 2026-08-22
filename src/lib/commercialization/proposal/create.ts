@@ -361,6 +361,7 @@ export async function createProposalForOpportunity(options: {
         effortBand: line.effortBand,
         sortOrder: line.sortOrder,
         sourceSectionTitles: asStringArray(line.sourceSectionTitlesJson),
+        workUnitKey: line.workUnitKey,
       })),
     },
   });
@@ -496,6 +497,7 @@ export async function reviseProposalForOpportunity(options: {
         effortBand: line.effortBand,
         sortOrder: line.sortOrder,
         sourceSectionTitles: asStringArray(line.sourceSectionTitlesJson),
+        workUnitKey: line.workUnitKey,
       })),
     },
   });
