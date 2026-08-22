@@ -167,15 +167,19 @@ Deterministic pricing from approved Commercial Scope via canonical work-unit nor
 
 ## Commercial Sprint 6 — Proposal Engine V1
 
-Status: 🟢 Implemented (internal) · Sprint 6.1 presentation hardening
+Status: 🟢 Implemented (internal) · Sprint 6.2 financial provenance · **Sprint 7 delivery**
 
-Canonical doc: `docs/development/proposal-engine.md`
+Canonical docs: `docs/development/proposal-engine.md`, `docs/development/proposal-delivery.md`
 
 Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROVED COMPLETE** Commercial Pricing. Presentation-only; does not recalculate scope or pricing. Internal preview only — no public URL, PDF, email, acceptance, e-sign, or Stripe.
 
 **Sprint 6.1:** Client presentation hardening — why-it-matters taxonomy, polished deliverable labels, dedupe-safe financial grouping (Content & Search combined), no audit-finding counts, claim-safe copy. `COMMERCIAL_PROPOSAL_PRESENTATION_VERSION = 2` (no schema migration).
 
-**Not included:** AI proposal writing, public delivery, payment schedules, contracts, automatic Opportunity stage changes.
+**Sprint 6.2:** Financial provenance hardening — authoritative `workUnitKey` / `sourceActionKey` identity (no fuzzy semantic substitution), split Conversion Optimization vs Conversion Path Assessment groups, financial reconciliation invariant before snapshot creation, Rooftop + 1st Choice fixture regression. `COMMERCIAL_PROPOSAL_PRESENTATION_VERSION = 3` (no schema migration). Revise existing v1/v2 proposals to rebuild.
+
+**Sprint 7:** Human-controlled proposal delivery + client decision — token-gated `/proposal/{token}` public view (reuses ProposalDocument), Resend send (max 1 per explicit send), view tracking, revocation, decision states (ACCEPTED ≠ Won). `PROPOSAL_DELIVERY_VERSION = 1`. Migration `20260822120000_add_proposal_delivery`.
+
+**Not included:** AI sales email, automatic follow-up, e-sign, Stripe checkout, automatic Won/Lost on decision.
 
 ---
 
@@ -194,7 +198,7 @@ Prioritize based on business leverage with the **current** stack:
 1. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
 2. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
 3. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
-4. Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)
+4. ~~Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)~~ — **Sprint 7: token-gated delivery + decision (no PDF/e-sign/Stripe yet)**
 
 ## LATER / EXPLORATORY
 

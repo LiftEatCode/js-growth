@@ -6,10 +6,15 @@ import { ArrowLeft } from "lucide-react";
 import { OpportunityDetailControls } from "@/components/opportunities/opportunity-detail-controls";
 import { OpportunityPricingCard } from "@/components/opportunities/opportunity-pricing-card";
 import { OpportunityProposalCard } from "@/components/opportunities/opportunity-proposal-card";
+import { OpportunityProposalDeliveryCard } from "@/components/opportunities/opportunity-proposal-delivery-card";
 import { OpportunityScopeCard } from "@/components/opportunities/opportunity-scope-card";
 import { Button, Card, Container } from "@/components/ui";
 import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabilities";
 import { loadOpportunityDetail } from "@/lib/commercialization/opportunities/load";
+import {
+  loadProposalDeliveriesForOpportunity,
+  loadProposalDeliveryContactOptions,
+} from "@/lib/commercialization/proposal-delivery";
 import { loadCurrentPricingForOpportunity } from "@/lib/commercialization/pricing/load";
 import { loadCurrentProposalForOpportunity } from "@/lib/commercialization/proposal/load";
 import { loadCurrentScopeForOpportunity } from "@/lib/commercialization/scope/load";
@@ -56,6 +61,13 @@ export default async function OpportunityDetailPage({
   const proposalLoad = await loadCurrentProposalForOpportunity({
     opportunityId,
   });
+  const [deliveryContacts, deliveries] = await Promise.all([
+    loadProposalDeliveryContactOptions({ opportunityId }),
+    loadProposalDeliveriesForOpportunity({
+      opportunityId,
+      currentProposalId: proposalLoad.proposal?.id ?? null,
+    }),
+  ]);
   const { opportunity, activities, intelligence } = detail;
   const caps = opportunity.capabilitiesSnapshot;
 
@@ -318,6 +330,27 @@ export default async function OpportunityDetailPage({
             />
           </div>
         </Card>
+
+        {proposalLoad.proposal?.status === "APPROVED" ? (
+          <Card variant="elevated" padding="lg">
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              Proposal Delivery
+            </h2>
+            <div className="mt-4">
+              <OpportunityProposalDeliveryCard
+                opportunityId={opportunity.id}
+                proposal={{
+                  id: proposalLoad.proposal.id,
+                  status: proposalLoad.proposal.status,
+                  revision: proposalLoad.proposal.revision,
+                  stale: proposalLoad.proposal.stale,
+                }}
+                contactOptions={deliveryContacts}
+                deliveries={deliveries}
+              />
+            </div>
+          </Card>
+        ) : null}
 
         <Card variant="elevated" padding="lg">
           <OpportunityDetailControls

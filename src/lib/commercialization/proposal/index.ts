@@ -12,10 +12,18 @@ export {
 } from "./build";
 export {
   polishDeliverableLabel,
+  deliverablePresentationLabel,
+  investmentIncludeLabelForLine,
   getSectionClientValueExplanation,
   resolveFinancialGroup,
   isInternalAuditFindingLanguage,
+  WORK_UNIT_PRESENTATION_LABELS,
+  WORK_UNIT_INVESTMENT_INCLUDE_LABELS,
 } from "./presentation";
+export {
+  PROPOSAL_FINANCIAL_RECONCILIATION_FAILED,
+  ProposalFinancialReconciliationError,
+} from "./reconcile";
 export {
   buildProposalSourceFingerprint,
   parseProposalSourceFingerprint,

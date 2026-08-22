@@ -1,7 +1,10 @@
 /**
- * Commercial Sprint 6.1 — client presentation taxonomy (presentation version 2).
+ * Commercial Sprint 6.2 — client presentation taxonomy (presentation version 3).
  * Presentation only. Does not change Scope or Pricing authority.
+ * Known work-unit identity is keyed from authoritative provenance — not fuzzy titles.
  */
+
+import { resolveWorkUnitFromDeliverable } from "@/lib/commercialization/pricing/work-units";
 
 export const PROPOSAL_INVESTMENT_INTRO =
   "Investment below reflects the approved implementation scope described in this proposal. Each area is tied directly to the website improvements identified during our analysis.";
@@ -33,7 +36,7 @@ const SECTION_CLIENT_VALUE: Record<string, string> = {
   "local search foundation":
     "Improve the consistency and structured local-business information that supports the website's local search foundation.",
   "conversion optimization":
-    "Review how effectively the website guides visitors toward contacting the business and identify the highest-value conversion improvements.",
+    "Improve how effectively the website guides visitors toward contacting the business through clearer paths, stronger trust signals, and prioritized conversion improvements.",
 };
 
 const CONVERSION_ASSESSMENT_VALUE =
@@ -58,14 +61,23 @@ export interface FinancialGroupDefinition {
 
 /**
  * Financial presentation groups (may differ from Scope section titles).
- * Work-unit ownership is primary; unknown work falls back to Scope section mapping.
+ * Work-unit ownership is primary; manual/custom work falls back to Scope section mapping.
  */
 export const FINANCIAL_GROUPS: FinancialGroupDefinition[] = [
   { key: "content-search", title: "Content & Search Foundation", sortOrder: 0 },
   { key: "performance", title: "Performance Optimization", sortOrder: 1 },
   { key: "technical", title: "Technical SEO", sortOrder: 2 },
   { key: "local", title: "Local Search Foundation", sortOrder: 3 },
-  { key: "conversion", title: "Conversion Path Assessment", sortOrder: 4 },
+  {
+    key: "conversion-optimization",
+    title: "Conversion Optimization",
+    sortOrder: 4,
+  },
+  {
+    key: "conversion-assessment",
+    title: "Conversion Path Assessment",
+    sortOrder: 5,
+  },
   { key: "other", title: "Additional Implementation Work", sortOrder: 90 },
 ];
 
@@ -75,10 +87,10 @@ const FINANCIAL_GROUP_BY_KEY = new Map(
 
 /** Known work-unit keys → financial group key. */
 const WORK_UNIT_FINANCIAL_GROUP: Record<string, string> = {
+  "improve-meta": "content-search",
   "heading-architecture": "content-search",
   "internal-linking": "content-search",
   scanability: "content-search",
-  "improve-meta": "content-search",
   "open-graph": "content-search",
   "content-depth": "content-search",
   "inline-css": "performance",
@@ -88,12 +100,12 @@ const WORK_UNIT_FINANCIAL_GROUP: Record<string, string> = {
   "structured-data": "technical",
   "local-schema": "local",
   nap: "local",
-  "conversion-assessment": "conversion",
-  "trust-signals": "conversion",
-  "cta-clarity": "conversion",
+  "trust-signals": "conversion-optimization",
+  "cta-clarity": "conversion-optimization",
+  "conversion-assessment": "conversion-assessment",
 };
 
-/** Scope section title → financial group when work unit is unknown. */
+/** Scope section title → financial group when work unit is unknown (manual/custom). */
 const SECTION_FINANCIAL_GROUP: Record<string, string> = {
   "content foundation": "content-search",
   "search optimization": "content-search",
@@ -101,90 +113,50 @@ const SECTION_FINANCIAL_GROUP: Record<string, string> = {
   "performance / website experience": "performance",
   "technical seo": "technical",
   "local search foundation": "local",
-  "conversion optimization": "conversion",
+  "conversion optimization": "conversion-optimization",
 };
 
-/** Exact Scope deliverable titles → polished client presentation labels. */
-const DELIVERABLE_PRESENTATION_LABELS: Array<{
-  match: RegExp | string;
-  label: string;
-}> = [
-  {
-    match: /correct heading hierarchy/i,
-    label: "Improve page heading structure and hierarchy",
-  },
-  {
-    match: /contextual internal linking/i,
-    label: "Strengthen contextual internal linking between key pages",
-  },
-  {
-    match: /scanability/i,
-    label: "Improve content structure for easier scanning and understanding",
-  },
-  {
-    match: /excessive inline css/i,
-    label:
-      "Review and optimize CSS delivery where excessive inline styles were found",
-  },
-  {
-    match: /blocking script|third-party weight|third party weight/i,
-    label:
-      "Reduce unnecessary script and third-party page weight where identified",
-  },
-  {
-    match: /canonical/i,
-    label: "Implement or correct canonical page signals",
-  },
-  {
-    match: /localbusiness schema|local business schema/i,
-    label: "Implement or correct LocalBusiness structured data",
-  },
-  {
-    match: /\bnap\b|name, address, phone/i,
-    label: "Improve on-site business name, address, and phone consistency",
-  },
-  {
-    match: /conversion optimization assessment|^conversion optimization$/i,
-    label: "Conversion Path Assessment",
-  },
-];
+/** Authoritative work-unit keys with deterministic client presentation labels. */
+export const WORK_UNIT_PRESENTATION_LABELS: Record<string, string> = {
+  "improve-meta": "Improve meta descriptions",
+  "heading-architecture": "Improve page heading structure and hierarchy",
+  "open-graph": "Complete Open Graph metadata",
+  "internal-linking": "Strengthen contextual internal linking",
+  scanability:
+    "Improve content structure for easier scanning and understanding",
+  "content-depth": "Expand service page content depth",
+  "inline-css": "Optimize excessive inline CSS delivery",
+  "script-weight":
+    "Reduce unnecessary script and third-party page weight",
+  "css-delivery": "Review CSS delivery for maintainability",
+  canonical: "Implement or correct canonical page signals",
+  "structured-data": "Implement or repair structured data markup",
+  "local-schema": "Implement or correct LocalBusiness structured data",
+  nap: "Improve business name, address, and phone consistency",
+  "trust-signals": "Strengthen trust signals near conversion points",
+  "cta-clarity": "Clarify primary calls to action",
+  "conversion-assessment": "Conversion Path Assessment",
+};
 
-/** Brief include labels for investment groups (shorter than full deliverable labels). */
-const INVESTMENT_INCLUDE_LABELS: Array<{
-  match: RegExp | string;
-  label: string;
-}> = [
-  { match: /heading hierarchy|heading structure/i, label: "Page heading structure" },
-  {
-    match: /internal linking/i,
-    label: "Contextual internal linking",
-  },
-  {
-    match: /scanability|scanning/i,
-    label: "Content scanability improvements",
-  },
-  {
-    match: /inline css|css delivery/i,
-    label: "CSS delivery optimization",
-  },
-  {
-    match: /script|third-party|third party/i,
-    label: "Script and third-party weight reduction",
-  },
-  { match: /canonical/i, label: "Canonical page signals" },
-  {
-    match: /localbusiness|structured data/i,
-    label: "LocalBusiness structured data",
-  },
-  {
-    match: /\bnap\b|name, address, phone|business name, address/i,
-    label: "On-site NAP consistency",
-  },
-  {
-    match: /conversion/i,
-    label: "Conversion path assessment",
-  },
-];
+/** Shorter include labels for grouped investment lists. */
+export const WORK_UNIT_INVESTMENT_INCLUDE_LABELS: Record<string, string> = {
+  "improve-meta": "Improve meta descriptions",
+  "heading-architecture": "Page heading structure",
+  "open-graph": "Complete Open Graph metadata",
+  "internal-linking": "Contextual internal linking",
+  scanability: "Content scanability improvements",
+  "content-depth": "Service page content depth",
+  "inline-css": "CSS delivery optimization",
+  "script-weight": "Script and third-party weight reduction",
+  "css-delivery": "CSS delivery review",
+  canonical: "Canonical page signals",
+  "structured-data": "Structured data markup",
+  "local-schema": "LocalBusiness structured data",
+  nap: "On-site NAP consistency",
+  "trust-signals": "Trust signals near conversion points",
+  "cta-clarity": "Primary call-to-action clarity",
+  "conversion-assessment": "Conversion path assessment",
+};
 
 const CONSIDERATION_POLISH: Array<{ match: RegExp; replacement: string }> = [
   {
@@ -226,7 +198,6 @@ export function stripInternalAuditLanguage(text: string): string | null {
   if (!cleaned || isInternalAuditFindingLanguage(cleaned)) {
     return null;
   }
-  // Drop leftover mechanical plan summaries
   if (/recommended from deterministic audit evidence/i.test(cleaned)) {
     return null;
   }
@@ -254,32 +225,80 @@ export function getSectionContextLabel(sectionTitle: string): string {
   return SECTION_CONTEXT_LABELS[normalizeKey(sectionTitle)] ?? sectionTitle;
 }
 
-export function polishDeliverableLabel(sourceTitle: string): string {
-  const title = sourceTitle.trim();
-  for (const entry of DELIVERABLE_PRESENTATION_LABELS) {
-    if (typeof entry.match === "string") {
-      if (normalizeKey(title) === normalizeKey(entry.match)) {
-        return entry.label;
-      }
-    } else if (entry.match.test(title)) {
-      return entry.label;
-    }
-  }
-  return title;
+export interface DeliverableProvenance {
+  workUnitKey?: string | null;
+  sourceActionKey?: string | null;
+  sourceTitle: string;
+  isCustom?: boolean;
 }
 
-export function investmentIncludeLabel(sourceOrPolishedTitle: string): string {
-  const title = sourceOrPolishedTitle.trim();
-  for (const entry of INVESTMENT_INCLUDE_LABELS) {
-    if (typeof entry.match === "string") {
-      if (normalizeKey(title) === normalizeKey(entry.match)) {
-        return entry.label;
-      }
-    } else if (entry.match.test(title)) {
-      return entry.label;
-    }
+/**
+ * Resolve canonical work-unit key from stored provenance.
+ * Title inference is only used for manual/custom deliverables without action keys.
+ */
+export function resolveAuthoritativeWorkUnitKey(
+  options: DeliverableProvenance,
+): string | null {
+  if (options.workUnitKey?.trim()) {
+    return options.workUnitKey.trim();
   }
-  return polishDeliverableLabel(title);
+  if (options.isCustom) {
+    return null;
+  }
+  const resolved = resolveWorkUnitFromDeliverable({
+    sourceActionKey: options.sourceActionKey ?? null,
+    title: options.sourceTitle,
+    source: options.isCustom ? "MANUAL" : "PLAN",
+  });
+  return resolved.isCustom ? null : resolved.key;
+}
+
+export function isKnownWorkUnitKey(key: string | null | undefined): boolean {
+  return Boolean(key && key in WORK_UNIT_PRESENTATION_LABELS);
+}
+
+/** Client presentation label keyed from authoritative work-unit identity. */
+export function deliverablePresentationLabel(
+  options: DeliverableProvenance,
+): string {
+  const key = resolveAuthoritativeWorkUnitKey(options);
+  if (key && WORK_UNIT_PRESENTATION_LABELS[key]) {
+    return WORK_UNIT_PRESENTATION_LABELS[key]!;
+  }
+  return options.sourceTitle.trim();
+}
+
+/** Back-compat wrapper — prefer deliverablePresentationLabel with provenance. */
+export function polishDeliverableLabel(
+  sourceTitle: string,
+  provenance?: Omit<DeliverableProvenance, "sourceTitle">,
+): string {
+  return deliverablePresentationLabel({
+    sourceTitle,
+    ...provenance,
+  });
+}
+
+/** Brief investment include label keyed from authoritative work-unit identity. */
+export function investmentIncludeLabelForLine(
+  options: DeliverableProvenance,
+): string {
+  const key = resolveAuthoritativeWorkUnitKey(options);
+  if (key && WORK_UNIT_INVESTMENT_INCLUDE_LABELS[key]) {
+    return WORK_UNIT_INVESTMENT_INCLUDE_LABELS[key]!;
+  }
+  return deliverablePresentationLabel(options);
+}
+
+/** Back-compat wrapper — prefer investmentIncludeLabelForLine with provenance. */
+export function investmentIncludeLabel(
+  sourceOrPolishedTitle: string,
+  provenance?: Omit<DeliverableProvenance, "sourceTitle">,
+): string {
+  return investmentIncludeLabelForLine({
+    sourceTitle: sourceOrPolishedTitle,
+    ...provenance,
+  });
 }
 
 export function polishConsiderationText(text: string): string {
@@ -289,12 +308,14 @@ export function polishConsiderationText(text: string): string {
       return rule.replacement;
     }
   }
-  // Generic preserve → protect polish when possible
   if (/^preserve\b/i.test(trimmed)) {
     return trimmed
       .replace(/^Preserve\b/, "Protect")
       .replace(/^preserve\b/, "protect")
-      .replace(/\bwhile implementing changes\.?$/i, "while implementing the recommended improvements.");
+      .replace(
+        /\bwhile implementing changes\.?$/i,
+        "while implementing the recommended improvements.",
+      );
   }
   return trimmed;
 }
@@ -304,9 +325,9 @@ export function polishConsiderationText(text: string): string {
  * Scope section provenance. Does not recalculate prices.
  */
 export function resolveFinancialGroup(options: {
-  lineTitle: string;
   sourceSectionTitles: string[];
   workUnitKey?: string | null;
+  isCustom?: boolean;
 }): FinancialGroupDefinition {
   if (options.workUnitKey) {
     const mapped = WORK_UNIT_FINANCIAL_GROUP[options.workUnitKey];
@@ -315,28 +336,8 @@ export function resolveFinancialGroup(options: {
     }
   }
 
-  // Title-based work-unit inference for snapshots that lack keys
-  const titleLower = options.lineTitle.toLowerCase();
-  for (const [unitKey, groupKey] of Object.entries(WORK_UNIT_FINANCIAL_GROUP)) {
-    const fragments: Record<string, string[]> = {
-      "heading-architecture": ["heading hierarchy", "heading architecture"],
-      "internal-linking": ["internal linking"],
-      scanability: ["scanability"],
-      "inline-css": ["inline css"],
-      "script-weight": ["blocking script", "third-party weight", "third party"],
-      canonical: ["canonical"],
-      "local-schema": ["localbusiness", "local business schema"],
-      nap: ["nap (", "nap consistency", "name, address, phone"],
-      "conversion-assessment": [
-        "conversion optimization assessment",
-        "conversion optimization",
-        "conversion path assessment",
-      ],
-    };
-    const frags = fragments[unitKey] ?? [];
-    if (frags.some((f) => titleLower.includes(f))) {
-      return FINANCIAL_GROUP_BY_KEY.get(groupKey)!;
-    }
+  if (!options.isCustom) {
+    return FINANCIAL_GROUP_BY_KEY.get("other")!;
   }
 
   for (const sectionTitle of options.sourceSectionTitles) {
@@ -347,6 +348,11 @@ export function resolveFinancialGroup(options: {
   }
 
   return FINANCIAL_GROUP_BY_KEY.get("other")!;
+}
+
+export function financialGroupSortOrder(groupTitle: string): number {
+  const group = FINANCIAL_GROUPS.find((g) => g.title === groupTitle);
+  return group?.sortOrder ?? 50;
 }
 
 export function looksLikeConversionAssessmentTitle(title: string): boolean {
@@ -360,7 +366,11 @@ export function looksLikeConversionAssessmentTitle(title: string): boolean {
 
 export function sectionLooksLikeAssessment(
   deliverableTitles: string[],
+  deliverableKeys?: Array<string | null | undefined>,
 ): boolean {
+  if (deliverableKeys?.some((k) => k === "conversion-assessment")) {
+    return true;
+  }
   if (deliverableTitles.length === 0) {
     return false;
   }

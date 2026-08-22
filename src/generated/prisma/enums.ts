@@ -380,7 +380,13 @@ export const OpportunityActivityType = {
   PROPOSAL_REVIEWED: 'PROPOSAL_REVIEWED',
   PROPOSAL_APPROVED: 'PROPOSAL_APPROVED',
   PROPOSAL_REVISED: 'PROPOSAL_REVISED',
-  PROPOSAL_SUPERSEDED: 'PROPOSAL_SUPERSEDED'
+  PROPOSAL_SUPERSEDED: 'PROPOSAL_SUPERSEDED',
+  PROPOSAL_DELIVERY_PREPARED: 'PROPOSAL_DELIVERY_PREPARED',
+  PROPOSAL_SENT: 'PROPOSAL_SENT',
+  PROPOSAL_SEND_FAILED: 'PROPOSAL_SEND_FAILED',
+  PROPOSAL_LINK_VIEWED: 'PROPOSAL_LINK_VIEWED',
+  PROPOSAL_ACCESS_REVOKED: 'PROPOSAL_ACCESS_REVOKED',
+  PROPOSAL_DECISION_RECORDED: 'PROPOSAL_DECISION_RECORDED'
 } as const
 
 export type OpportunityActivityType = (typeof OpportunityActivityType)[keyof typeof OpportunityActivityType]
@@ -414,3 +420,25 @@ export const CommercialProposalStatus = {
 } as const
 
 export type CommercialProposalStatus = (typeof CommercialProposalStatus)[keyof typeof CommercialProposalStatus]
+
+
+export const ProposalDeliveryStatus = {
+  DRAFT: 'DRAFT',
+  READY: 'READY',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type ProposalDeliveryStatus = (typeof ProposalDeliveryStatus)[keyof typeof ProposalDeliveryStatus]
+
+
+export const ProposalDecision = {
+  PENDING: 'PENDING',
+  INTERESTED: 'INTERESTED',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  DECLINED: 'DECLINED',
+  ACCEPTED: 'ACCEPTED'
+} as const
+
+export type ProposalDecision = (typeof ProposalDecision)[keyof typeof ProposalDecision]

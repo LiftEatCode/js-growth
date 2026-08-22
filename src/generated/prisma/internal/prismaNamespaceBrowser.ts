@@ -85,7 +85,8 @@ export const ModelName = {
   CommercialScopeDeliverable: 'CommercialScopeDeliverable',
   CommercialPricing: 'CommercialPricing',
   CommercialPricingLineItem: 'CommercialPricingLineItem',
-  CommercialProposal: 'CommercialProposal'
+  CommercialProposal: 'CommercialProposal',
+  ProposalDelivery: 'ProposalDelivery'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -908,6 +909,41 @@ export const CommercialProposalScalarFieldEnum = {
 } as const
 
 export type CommercialProposalScalarFieldEnum = (typeof CommercialProposalScalarFieldEnum)[keyof typeof CommercialProposalScalarFieldEnum]
+
+
+export const ProposalDeliveryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  proposalId: 'proposalId',
+  recipientName: 'recipientName',
+  recipientEmail: 'recipientEmail',
+  status: 'status',
+  subjectSnapshot: 'subjectSnapshot',
+  messageSnapshot: 'messageSnapshot',
+  proposalVersion: 'proposalVersion',
+  proposalPresentationVersion: 'proposalPresentationVersion',
+  shareTokenHash: 'shareTokenHash',
+  sentAt: 'sentAt',
+  sentByEmail: 'sentByEmail',
+  preparedByEmail: 'preparedByEmail',
+  deliveryProvider: 'deliveryProvider',
+  providerMessageId: 'providerMessageId',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  revokedAt: 'revokedAt',
+  revokedByEmail: 'revokedByEmail',
+  firstViewedAt: 'firstViewedAt',
+  lastViewedAt: 'lastViewedAt',
+  viewCount: 'viewCount',
+  decision: 'decision',
+  decisionAt: 'decisionAt',
+  decisionRecordedByEmail: 'decisionRecordedByEmail',
+  decisionNote: 'decisionNote'
+} as const
+
+export type ProposalDeliveryScalarFieldEnum = (typeof ProposalDeliveryScalarFieldEnum)[keyof typeof ProposalDeliveryScalarFieldEnum]
 
 
 export const SortOrder = {

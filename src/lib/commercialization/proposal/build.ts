@@ -2,7 +2,6 @@ import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabil
 import type { ServiceCapabilityId } from "@/lib/commercialization/capabilities/types";
 import { evaluatePricingCompleteness } from "@/lib/commercialization/pricing/completeness";
 import { effectiveUnitPriceCents } from "@/lib/commercialization/pricing/totals";
-import { resolveWorkUnitFromDeliverable } from "@/lib/commercialization/pricing/work-units";
 
 import {
   COMMERCIAL_PROPOSAL_PRESENTATION_VERSION,
@@ -13,18 +12,24 @@ import {
   DEFAULT_APPROACH_INTRO,
   DEFAULT_NEXT_STEP_TEXT,
   DEFAULT_TIMELINE_NOTE,
+  deliverablePresentationLabel,
+  financialGroupSortOrder,
   getSectionClientValueExplanation,
   getSectionContextLabel,
-  investmentIncludeLabel,
+  investmentIncludeLabelForLine,
   isInternalAuditFindingLanguage,
   joinReadableList,
   polishConsiderationText,
-  polishDeliverableLabel,
   PROPOSAL_INVESTMENT_INTRO,
   PROPOSAL_METHODOLOGY_FOOTER,
+  resolveAuthoritativeWorkUnitKey,
   resolveFinancialGroup,
   sectionLooksLikeAssessment,
 } from "./presentation";
+import {
+  reconcileProposalFinancials,
+  type InternalInvestmentLine,
+} from "./reconcile";
 import type {
   BuiltCommercialProposal,
   ProposalSnapshot,
@@ -53,6 +58,8 @@ export interface ProposalScopeInput {
     deliverables: Array<{
       id: string;
       title: string;
+      sourceActionKey?: string | null;
+      isCustom?: boolean;
       isIncluded: boolean;
       isOptional: boolean;
       sortOrder: number;
@@ -104,17 +111,27 @@ function mapSections(
     )
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .map((section) => {
-      const deliverables = section.deliverables
+      const deliverableMeta = section.deliverables
         .filter((d) => d.isIncluded)
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map((d) => ({
-          title: polishDeliverableLabel(d.title),
           sourceTitle: d.title,
           isOptional: d.isOptional || section.isOptional,
+          workUnitKey: resolveAuthoritativeWorkUnitKey({
+            sourceActionKey: d.sourceActionKey ?? null,
+            sourceTitle: d.title,
+            isCustom: d.isCustom,
+          }),
+          title: deliverablePresentationLabel({
+            sourceActionKey: d.sourceActionKey ?? null,
+            sourceTitle: d.title,
+            isCustom: d.isCustom,
+          }),
         }));
 
       const assessmentSection = sectionLooksLikeAssessment(
-        deliverables.map((d) => d.sourceTitle),
+        deliverableMeta.map((d) => d.sourceTitle),
+        deliverableMeta.map((d) => d.workUnitKey),
       );
 
       return {
@@ -123,10 +140,13 @@ function mapSections(
           section.title,
           { assessmentSection },
         ),
-        // Capabilities retained for internal consumers; client document omits them.
         capabilities: capabilityLabels(section.capabilities),
         isOptional: section.isOptional,
-        deliverables,
+        deliverables: deliverableMeta.map(({ title, sourceTitle, isOptional }) => ({
+          title,
+          sourceTitle,
+          isOptional,
+        })),
       };
     })
     .filter((s) => s.deliverables.length > 0 || s.clientValueExplanation);
@@ -151,22 +171,22 @@ function dedupeConsiderations(
   return out;
 }
 
-function resolveLineWorkUnitKey(line: ProposalPricingInput["lineItems"][number]): string | null {
+function resolveLineWorkUnitKey(
+  line: ProposalPricingInput["lineItems"][number],
+): string | null {
+  if (line.isCustom) {
+    return null;
+  }
   if (line.workUnitKey) {
     return line.workUnitKey;
   }
-  const resolved = resolveWorkUnitFromDeliverable({
-    sourceActionKey: null,
-    title: line.title,
-    source: line.isCustom ? "MANUAL" : "PLAN",
-  });
-  return resolved.isCustom ? null : resolved.key;
+  return null;
 }
 
 function buildInvestmentLines(
   pricing: ProposalPricingInput,
   optionalOnly: boolean,
-): ProposalSnapshotInvestmentLine[] {
+): InternalInvestmentLine[] {
   return pricing.lineItems
     .filter(
       (l) =>
@@ -182,18 +202,26 @@ function buildInvestmentLines(
         line.finalLineTotalCents ?? unit * line.quantity;
       const workUnitKey = resolveLineWorkUnitKey(line);
       const financial = resolveFinancialGroup({
-        lineTitle: line.title,
         sourceSectionTitles: line.sourceSectionTitles,
         workUnitKey,
+        isCustom: line.isCustom,
       });
-      const polished = polishDeliverableLabel(line.title);
+      const provenance = {
+        workUnitKey,
+        sourceTitle: line.title,
+        isCustom: line.isCustom,
+      };
+      const polished = deliverablePresentationLabel(provenance);
       const primaryScope = line.sourceSectionTitles[0] ?? null;
       const alsoSupports = line.sourceSectionTitles.filter(
         (t) => t !== primaryScope && t !== financial.title,
       );
       return {
+        pricingLineId: line.id,
+        workUnitKey,
+        isCustom: line.isCustom,
         title: polished,
-        includeLabel: investmentIncludeLabel(line.title),
+        includeLabel: investmentIncludeLabelForLine(provenance),
         quantity: line.quantity,
         unitPriceCents: unit,
         lineTotalCents: lineTotal,
@@ -204,31 +232,35 @@ function buildInvestmentLines(
     });
 }
 
+function toPublicInvestmentLine(
+  line: InternalInvestmentLine,
+): ProposalSnapshotInvestmentLine {
+  return {
+    title: line.title,
+    includeLabel: line.includeLabel,
+    quantity: line.quantity,
+    unitPriceCents: line.unitPriceCents,
+    lineTotalCents: line.lineTotalCents,
+    isOptional: line.isOptional,
+    groupTitle: line.groupTitle,
+    alsoSupports: line.alsoSupports,
+  };
+}
+
 function groupInvestmentLines(
-  lines: ProposalSnapshotInvestmentLine[],
+  lines: InternalInvestmentLine[],
 ): ProposalSnapshotInvestmentGroup[] {
-  const byGroup = new Map<string, ProposalSnapshotInvestmentLine[]>();
+  const byGroup = new Map<string, InternalInvestmentLine[]>();
   for (const line of lines) {
     const list = byGroup.get(line.groupTitle) ?? [];
     list.push(line);
     byGroup.set(line.groupTitle, list);
   }
 
-  const order = new Map(
-    [
-      "Content & Search Foundation",
-      "Performance Optimization",
-      "Technical SEO",
-      "Local Search Foundation",
-      "Conversion Path Assessment",
-      "Additional Implementation Work",
-    ].map((title, i) => [title, i] as const),
-  );
-
   return Array.from(byGroup.entries())
     .sort(([a], [b]) => {
-      const ao = order.get(a) ?? 50;
-      const bo = order.get(b) ?? 50;
+      const ao = financialGroupSortOrder(a);
+      const bo = financialGroupSortOrder(b);
       if (ao !== bo) {
         return ao - bo;
       }
@@ -249,7 +281,7 @@ function groupInvestmentLines(
       return {
         title,
         includeLabels,
-        lines: groupLines,
+        lines: groupLines.map(toPublicInvestmentLine),
         subtotalCents: groupLines.reduce(
           (sum, l) => sum + l.lineTotalCents,
           0,
@@ -351,10 +383,6 @@ export function buildProposalFromApprovedSources(options: {
     (sum, l) => sum + l.lineTotalCents,
     0,
   );
-  const optionalSum = optionalLines.reduce(
-    (sum, l) => sum + l.lineTotalCents,
-    0,
-  );
 
   const includedInvestmentCents = options.pricing.finalTotalCents;
   const optionalInvestmentCents = options.pricing.finalOptionalCents;
@@ -365,28 +393,21 @@ export function buildProposalFromApprovedSources(options: {
     includedInvestmentCents - includedSum,
   );
 
-  if (includedSum + engagementAdjustmentCents !== includedInvestmentCents) {
-    throw new Error(
-      "Client-visible investment lines do not reconcile to approved Pricing total.",
-    );
-  }
-
-  if (optionalSum !== optionalInvestmentCents) {
-    throw new Error(
-      "Client-visible optional lines do not reconcile to approved optional Pricing.",
-    );
-  }
-
   const includedInvestmentGroups = groupInvestmentLines(includedLines);
-  const groupSum = includedInvestmentGroups.reduce(
-    (sum, g) => sum + g.subtotalCents,
-    0,
-  );
-  if (groupSum + engagementAdjustmentCents !== includedInvestmentCents) {
-    throw new Error(
-      "Client-visible financial groups do not reconcile to approved included investment.",
-    );
-  }
+  const optionalInvestmentGroups = groupInvestmentLines(optionalLines);
+
+  reconcileProposalFinancials({
+    scope: options.scope,
+    pricing: options.pricing,
+    sections,
+    includedLines,
+    optionalLines,
+    includedInvestmentGroups,
+    optionalInvestmentGroups,
+    includedInvestmentCents,
+    optionalInvestmentCents,
+    engagementAdjustmentCents,
+  });
 
   const snapshot: ProposalSnapshot = {
     businessName: options.businessName,
@@ -408,9 +429,9 @@ export function buildProposalFromApprovedSources(options: {
       .filter((t) => t && !isInternalAuditFindingLanguage(t)),
     considerations: dedupeConsiderations(options.scope.considerations),
     includedInvestmentGroups,
-    optionalInvestmentGroups: groupInvestmentLines(optionalLines),
-    includedLines,
-    optionalLines,
+    optionalInvestmentGroups,
+    includedLines: includedLines.map(toPublicInvestmentLine),
+    optionalLines: optionalLines.map(toPublicInvestmentLine),
   };
 
   const fingerprint = buildProposalSourceFingerprint({

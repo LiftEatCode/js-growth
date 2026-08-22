@@ -16,6 +16,7 @@ import {
   COMMERCIAL_PROPOSAL_PRESENTATION_VERSION,
   COMMERCIAL_PROPOSAL_VERSION,
 } from "./constants";
+import { ProposalFinancialReconciliationError } from "./reconcile";
 
 export type CreateProposalResult =
   | { ok: true; proposalId: string; revision: number; revised: boolean }
@@ -30,10 +31,35 @@ export type CreateProposalResult =
         | "PRICING_SCOPE_MISMATCH"
         | "PRICING_STALE"
         | "HAS_ACTIVE_DRAFT"
-        | "INVALID_INPUT";
+        | "INVALID_INPUT"
+        | "PROPOSAL_FINANCIAL_RECONCILIATION_FAILED"
       message: string;
       existingProposalId?: string;
     };
+
+function buildProposalSnapshot(
+  options: Parameters<typeof buildProposalFromApprovedSources>[0],
+):
+  | { ok: true; built: ReturnType<typeof buildProposalFromApprovedSources> }
+  | {
+      ok: false;
+      code: "PROPOSAL_FINANCIAL_RECONCILIATION_FAILED";
+      message: string;
+    } {
+  try {
+    return { ok: true, built: buildProposalFromApprovedSources(options) };
+  } catch (error) {
+    if (error instanceof ProposalFinancialReconciliationError) {
+      return {
+        ok: false,
+        code: "PROPOSAL_FINANCIAL_RECONCILIATION_FAILED",
+        message:
+          "Proposal financial presentation could not be reconciled to approved Scope and Pricing.",
+      };
+    }
+    throw error;
+  }
+}
 
 function asStringArray(raw: unknown): string[] {
   return Array.isArray(raw)
@@ -305,7 +331,7 @@ export async function createProposalForOpportunity(options: {
       )
     : [];
 
-  const built = buildProposalFromApprovedSources({
+  const buildResult = buildProposalSnapshot({
     opportunityId: options.opportunityId,
     businessName: scope!.opportunity.prospect.businessName,
     locationLabel: locationLabel(scope!.opportunity.prospect),
@@ -330,6 +356,8 @@ export async function createProposalForOpportunity(options: {
         deliverables: section.deliverables.map((d) => ({
           id: d.id,
           title: d.title,
+          sourceActionKey: d.sourceActionKey,
+          isCustom: d.source === "MANUAL",
           isIncluded: d.isIncluded,
           isOptional: d.isOptional,
           sortOrder: d.sortOrder,
@@ -365,6 +393,12 @@ export async function createProposalForOpportunity(options: {
       })),
     },
   });
+
+  if (!buildResult.ok) {
+    return buildResult;
+  }
+
+  const built = buildResult.built;
 
   const proposalId = await persistBuiltProposal({
     opportunityId: options.opportunityId,
@@ -441,7 +475,7 @@ export async function reviseProposalForOpportunity(options: {
       )
     : [];
 
-  const built = buildProposalFromApprovedSources({
+  const buildResult = buildProposalSnapshot({
     opportunityId: options.opportunityId,
     businessName: scope!.opportunity.prospect.businessName,
     locationLabel: locationLabel(scope!.opportunity.prospect),
@@ -466,6 +500,8 @@ export async function reviseProposalForOpportunity(options: {
         deliverables: section.deliverables.map((d) => ({
           id: d.id,
           title: d.title,
+          sourceActionKey: d.sourceActionKey,
+          isCustom: d.source === "MANUAL",
           isIncluded: d.isIncluded,
           isOptional: d.isOptional,
           sortOrder: d.sortOrder,
@@ -501,6 +537,12 @@ export async function reviseProposalForOpportunity(options: {
       })),
     },
   });
+
+  if (!buildResult.ok) {
+    return buildResult;
+  }
+
+  const built = buildResult.built;
 
   const proposalId = await persistBuiltProposal({
     opportunityId: options.opportunityId,

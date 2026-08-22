@@ -1,5 +1,5 @@
 /**
- * Commercial Sprint 6 / 6.1 — Proposal Engine verification.
+ * Commercial Sprint 6 / 6.1 / 6.2 — Proposal Engine verification.
  * Pure deterministic tests. No OpenAI, Places, crawl, Resend, Stripe, or DB.
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -7,8 +7,16 @@ import { dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { isForbiddenAnalyticsParamKey } from "@/lib/analytics/commercial-events";
+import {
+  IMPLEMENTATION_MAPPING_VERSION,
+  IMPLEMENTATION_PLAN_VERSION,
+} from "@/lib/commercialization/implementation-plan/constants";
+import type { LoadedImplementationPlan } from "@/lib/commercialization/implementation-plan/load";
 import { OPPORTUNITY_ACTIVITY_TYPES } from "@/lib/commercialization/opportunities/constants";
+import { buildPricingFromScope } from "@/lib/commercialization/pricing/build";
 import { EFFORT_BAND_PRICE_CENTS } from "@/lib/commercialization/pricing/constants";
+import { buildScopeFromPlan } from "@/lib/commercialization/scope/build";
+import type { PreservationConstraint } from "@/lib/commercialization/implementation-plan/types";
 
 import {
   buildProposalFromApprovedSources,
@@ -21,11 +29,18 @@ import {
 } from "./constants";
 import { buildProposalSourceFingerprint } from "./fingerprint";
 import {
+  deliverablePresentationLabel,
   getSectionClientValueExplanation,
+  investmentIncludeLabelForLine,
   isInternalAuditFindingLanguage,
   polishDeliverableLabel,
   resolveFinancialGroup,
+  WORK_UNIT_INVESTMENT_INCLUDE_LABELS,
 } from "./presentation";
+import {
+  __testLabelLooksLikeWrongAction,
+  ProposalFinancialReconciliationError,
+} from "./reconcile";
 import { evaluateProposalStaleness } from "./staleness";
 import type { ProposalPricingInput, ProposalScopeInput } from "./build";
 
@@ -57,8 +72,8 @@ const repoRoot = join(here, "../../../..");
 
 assert(COMMERCIAL_PROPOSAL_VERSION === 1, "proposal version 1");
 assert(
-  COMMERCIAL_PROPOSAL_PRESENTATION_VERSION === 2,
-  "presentation version 2",
+  COMMERCIAL_PROPOSAL_PRESENTATION_VERSION === 3,
+  "presentation version 3",
 );
 assert(
   OPPORTUNITY_ACTIVITY_TYPES.includes("PROPOSAL_CREATED"),
@@ -430,7 +445,7 @@ const built = buildProposalFromApprovedSources({
   pricing,
 });
 
-assert(built.presentationVersion === 2, "built presentation version 2");
+assert(built.presentationVersion === 3, "built presentation version 3");
 assert(built.totalInvestmentCents === 300_000, "1st Choice base $3,000");
 assert(built.includedInvestmentCents === 300_000, "included $3,000");
 assert(built.optionalInvestmentCents === 0, "no optional dollars");
@@ -548,11 +563,12 @@ assert(
 assert(
   polishDeliverableLabel(
     "Correct heading hierarchy (H1 and supporting headings)",
+    { workUnitKey: "heading-architecture" },
   ).includes("heading structure"),
   "heading label polished",
 );
 assert(
-  polishDeliverableLabel("Custom rebuild of booking flow") ===
+  polishDeliverableLabel("Custom rebuild of booking flow", { isCustom: true }) ===
     "Custom rebuild of booking flow",
   "unknown manual deliverable falls back",
 );
@@ -626,11 +642,24 @@ assert(!/accept|payment|checkout|sign/i.test(built.nextStepText), "next step no 
 
 assert(
   resolveFinancialGroup({
-    lineTitle: "Correct heading hierarchy (H1 and supporting headings)",
     sourceSectionTitles: ["Content Foundation", "Search Optimization"],
     workUnitKey: "heading-architecture",
   }).title === "Content & Search Foundation",
   "financial ownership content+search",
+);
+assert(
+  resolveFinancialGroup({
+    sourceSectionTitles: ["Conversion Optimization"],
+    workUnitKey: "trust-signals",
+  }).title === "Conversion Optimization",
+  "trust-signals maps to Conversion Optimization group",
+);
+assert(
+  resolveFinancialGroup({
+    sourceSectionTitles: ["Conversion Optimization"],
+    workUnitKey: "conversion-assessment",
+  }).title === "Conversion Path Assessment",
+  "conversion-assessment maps to assessment group",
 );
 
 // Historical presentation v1 fingerprint is stale vs current version
@@ -656,7 +685,32 @@ assert(
       presentationVersion: COMMERCIAL_PROPOSAL_PRESENTATION_VERSION,
     },
   }).stale,
-  "v1 proposal stale under presentation v2",
+  "v1 proposal stale under presentation v3",
+);
+
+const v2Fingerprint = buildProposalSourceFingerprint({
+  opportunityId: "opp-1st",
+  commercialScopeId: "scope-1st",
+  scopeRevision: 2,
+  commercialPricingId: "pricing-1st",
+  pricingRevision: 1,
+  proposalVersion: 1,
+  presentationVersion: 2,
+});
+assert(
+  evaluateProposalStaleness({
+    storedFingerprint: v2Fingerprint,
+    current: {
+      opportunityId: "opp-1st",
+      commercialScopeId: "scope-1st",
+      scopeRevision: 2,
+      commercialPricingId: "pricing-1st",
+      pricingRevision: 1,
+      proposalVersion: COMMERCIAL_PROPOSAL_VERSION,
+      presentationVersion: COMMERCIAL_PROPOSAL_PRESENTATION_VERSION,
+    },
+  }).stale,
+  "v2 proposal stale under presentation v3",
 );
 
 assert(
@@ -668,9 +722,9 @@ assert(
       commercialPricingId: "pricing-1st",
       pricingRevision: 1,
       proposalVersion: 1,
-      presentationVersion: 2,
+      presentationVersion: 3,
     }),
-  "fingerprint uses presentation v2",
+  "fingerprint uses presentation v3",
 );
 
 // Gates still enforced
@@ -762,6 +816,505 @@ const withOptional = buildProposalFromApprovedSources({
 assert(withOptional.includedInvestmentCents === 300_000, "optional not in base");
 assert(withOptional.optionalInvestmentCents === 35_000, "optional separated");
 
+// --- Sprint 6.2: authoritative work-unit provenance ---
+
+const SHARED_PERFORMANCE_CONSTRAINT: PreservationConstraint = {
+  id: "preserve-performance",
+  category: "performance",
+  statement:
+    "Preserve the site's current Performance advantage while reviewing the identified maintenance issue without introducing heavier page delivery or regressions.",
+  evidenceSourceKeys: ["category:performance"],
+  maintenanceActions: [
+    {
+      id: "css-delivery",
+      label: "Review CSS delivery / unused styles for maintainability",
+      evidenceSourceKeys: ["finding:css"],
+    },
+  ],
+};
+
+function makeRooftopPlan(): LoadedImplementationPlan {
+  return {
+    id: "plan-rooftop",
+    status: "APPROVED",
+    createdAt: new Date("2026-08-20T12:00:00.000Z"),
+    updatedAt: new Date("2026-08-20T12:00:00.000Z"),
+    auditReportId: "audit-1",
+    comparisonSnapshotId: "cmp-1",
+    competitiveEvidenceUsed: true,
+    planVersion: IMPLEMENTATION_PLAN_VERSION,
+    mappingVersion: IMPLEMENTATION_MAPPING_VERSION,
+    capabilityVersion: 1,
+    inputFingerprint: "fp",
+    approvedAt: new Date(),
+    approvedByEmail: "ops@example.com",
+    createdByEmail: "ops@example.com",
+    operatorNotes: null,
+    workstreams: [
+      {
+        id: "ws-search",
+        workstreamType: "SEARCH_OPTIMIZATION",
+        priority: "CRITICAL",
+        priorityScore: 90,
+        title: "Search Optimization",
+        summary: "SEO trails peers.",
+        sortOrder: 0,
+        removed: false,
+        operatorNote: null,
+        capabilities: ["SEO"],
+        evidence: [],
+        actions: [
+          {
+            id: "improve-meta",
+            label: "Improve meta descriptions for clarity and uniqueness",
+            evidenceSourceKeys: ["category:seo"],
+          },
+          {
+            id: "heading-architecture",
+            label: "Correct heading hierarchy (H1 and supporting headings)",
+            evidenceSourceKeys: ["category:seo"],
+          },
+          {
+            id: "open-graph",
+            label: "Complete Open Graph metadata for shared pages",
+            evidenceSourceKeys: ["category:seo"],
+          },
+          {
+            id: "internal-linking",
+            label: "Strengthen contextual internal linking between key pages",
+            evidenceSourceKeys: ["category:seo"],
+          },
+        ],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
+      },
+      {
+        id: "ws-content",
+        workstreamType: "CONTENT_FOUNDATION",
+        priority: "CRITICAL",
+        priorityScore: 88,
+        title: "Content Foundation",
+        summary: "Content trails peers.",
+        sortOrder: 1,
+        removed: false,
+        operatorNote: null,
+        capabilities: ["CONTENT", "SEO"],
+        evidence: [],
+        actions: [
+          {
+            id: "content-depth",
+            label: "Expand service page content depth",
+            evidenceSourceKeys: ["category:content"],
+          },
+        ],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
+      },
+      {
+        id: "ws-technical",
+        workstreamType: "TECHNICAL_SEO",
+        priority: "HIGH",
+        priorityScore: 70,
+        title: "Technical SEO",
+        summary: "Technical gaps.",
+        sortOrder: 2,
+        removed: false,
+        operatorNote: null,
+        capabilities: ["SEO", "WEBSITE_DEVELOPMENT"],
+        evidence: [],
+        actions: [
+          {
+            id: "canonical",
+            label: "Implement or review canonical URL markup",
+            evidenceSourceKeys: ["finding:canonical"],
+          },
+          {
+            id: "structured-data",
+            label: "Implement or repair structured data markup",
+            evidenceSourceKeys: ["finding:schema"],
+          },
+        ],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
+      },
+      {
+        id: "ws-conversion",
+        workstreamType: "CONVERSION_OPTIMIZATION",
+        priority: "MEDIUM",
+        priorityScore: 40,
+        title: "Conversion Optimization",
+        summary: "Trust signals.",
+        sortOrder: 3,
+        removed: false,
+        operatorNote: null,
+        capabilities: ["CONVERSION_OPTIMIZATION", "WEBSITE_DEVELOPMENT"],
+        evidence: [],
+        actions: [
+          {
+            id: "trust-signals",
+            label: "Strengthen trust signals near conversion points",
+            evidenceSourceKeys: ["finding:trust"],
+          },
+        ],
+        preservationConstraints: [SHARED_PERFORMANCE_CONSTRAINT],
+      },
+    ],
+  };
+}
+
+function makeRooftopInputs(): {
+  scope: ProposalScopeInput;
+  pricing: ProposalPricingInput;
+} {
+  const builtScope = buildScopeFromPlan({
+    opportunityId: "opp-rooftop",
+    businessName: "Rooftop Solutions",
+    plan: makeRooftopPlan(),
+  });
+  const builtPricing = buildPricingFromScope({
+    opportunityId: "opp-rooftop",
+    scope: {
+      id: "scope-rooftop",
+      revision: 1,
+      status: "APPROVED",
+      sections: builtScope.sections.map((section) => ({
+        id: section.sourceImplementationWorkstreamId ?? section.title,
+        title: section.title,
+        isIncluded: section.isIncluded,
+        isOptional: section.isOptional,
+        sortOrder: section.sortOrder,
+        deliverables: section.deliverables.map((d, index) => ({
+          id: `${section.sourceImplementationWorkstreamId}-${index}`,
+          title: d.title,
+          sourceActionKey: d.sourceActionKey,
+          source: d.source,
+          isIncluded: d.isIncluded,
+          isOptional: d.isOptional,
+          sortOrder: d.sortOrder,
+        })),
+      })),
+    },
+  });
+
+  return {
+    scope: {
+      id: "scope-rooftop",
+      revision: 1,
+      status: "APPROVED",
+      title: builtScope.title,
+      summary: builtScope.summary,
+      assumptions: [],
+      exclusions: [],
+      considerations: builtScope.considerations.map((c) => ({
+        text: c.text,
+        key: c.key,
+      })),
+      sections: builtScope.sections.map((section) => ({
+        id: section.sourceImplementationWorkstreamId ?? section.title,
+        title: section.title,
+        description: section.description,
+        sortOrder: section.sortOrder,
+        isIncluded: section.isIncluded,
+        isOptional: section.isOptional,
+        capabilities: section.capabilities,
+        deliverables: section.deliverables.map((d, index) => ({
+          id: `${section.sourceImplementationWorkstreamId}-${index}`,
+          title: d.title,
+          sourceActionKey: d.sourceActionKey,
+          isCustom: d.source === "MANUAL",
+          isIncluded: d.isIncluded,
+          isOptional: d.isOptional,
+          sortOrder: d.sortOrder,
+        })),
+      })),
+    },
+    pricing: {
+      id: "pricing-rooftop",
+      revision: 1,
+      status: "APPROVED",
+      currency: builtPricing.currency,
+      commercialScopeId: "scope-rooftop",
+      finalIncludedCents: builtPricing.finalTotalCents,
+      finalOptionalCents: builtPricing.finalOptionalCents,
+      finalTotalCents: builtPricing.finalTotalCents,
+      minimumApplied: builtPricing.minimumApplied,
+      minimumEngagementCents: builtPricing.minimumEngagementCents,
+      lineItems: builtPricing.lineItems.map((line, index) => ({
+        id: `line-rooftop-${line.workUnitKey}-${index}`,
+        title: line.title,
+        quantity: line.quantity,
+        recommendedUnitPriceCents: line.recommendedUnitPriceCents,
+        finalUnitPriceCents: line.finalUnitPriceCents,
+        finalLineTotalCents: line.finalLineTotalCents,
+        isIncluded: line.isIncluded,
+        isOptional: line.isOptional,
+        isCustom: line.isCustom,
+        isOverridden: line.isOverridden,
+        effortBand: line.effortBand,
+        sortOrder: line.sortOrder,
+        sourceSectionTitles: line.sourceSectionTitles,
+        workUnitKey: line.workUnitKey,
+      })),
+    },
+  };
+}
+
+const rooftopInputs = makeRooftopInputs();
+const rooftopBuilt = buildProposalFromApprovedSources({
+  opportunityId: "opp-rooftop",
+  businessName: "Rooftop Solutions",
+  locationLabel: "Austin, TX",
+  scope: rooftopInputs.scope,
+  pricing: rooftopInputs.pricing,
+});
+
+assert(
+  rooftopBuilt.includedInvestmentCents === rooftopInputs.pricing.finalTotalCents,
+  "Rooftop total matches approved Pricing",
+);
+assert(
+  rooftopBuilt.totalInvestmentCents === rooftopInputs.pricing.finalTotalCents,
+  "Rooftop total unchanged",
+);
+
+const rooftopGroups = rooftopBuilt.snapshot.includedInvestmentGroups;
+const rooftopByTitle = (title: string) =>
+  rooftopGroups.find((g) => g.title === title);
+
+assert(
+  !rooftopByTitle("Performance Optimization"),
+  "Rooftop has no Performance financial group",
+);
+assert(
+  rooftopByTitle("Conversion Optimization") != null,
+  "Rooftop trust-signals under Conversion Optimization",
+);
+assert(
+  !rooftopByTitle("Conversion Path Assessment"),
+  "Rooftop has no Conversion Path Assessment group",
+);
+
+const rooftopIncludes = rooftopGroups.flatMap((g) => g.includeLabels);
+assert(
+  !rooftopIncludes.some((l) =>
+    /script and third-party|blocking script|third-party weight/i.test(l),
+  ),
+  "Rooftop has no unauthorized script-weight",
+);
+assert(
+  rooftopIncludes.some((l) => l.includes("Structured data markup")),
+  "Rooftop structured-data stays generic",
+);
+assert(
+  !rooftopIncludes.some((l) => /localbusiness/i.test(l)),
+  "Rooftop has no LocalBusiness schema label",
+);
+assert(
+  rooftopIncludes.some((l) => /trust signals/i.test(l)),
+  "Rooftop trust-signals stays implementation",
+);
+
+const rooftopTechnical = rooftopBuilt.snapshot.sections.find(
+  (s) => s.title === "Technical SEO",
+)!;
+assert(
+  rooftopTechnical.deliverables.some((d) =>
+    d.title.includes("structured data markup"),
+  ),
+  "Rooftop approach structured-data generic",
+);
+assert(
+  !rooftopTechnical.deliverables.some((d) =>
+    /localbusiness/i.test(d.title),
+  ),
+  "Rooftop approach has no LocalBusiness wording",
+);
+
+const rooftopConversion = rooftopBuilt.snapshot.sections.find(
+  (s) => s.title === "Conversion Optimization",
+)!;
+assert(
+  rooftopConversion.deliverables.some((d) =>
+    d.title.includes("trust signals"),
+  ),
+  "Rooftop approach trust-signals implementation",
+);
+
+// Known action identity matrix (tests 1–12)
+assert(
+  investmentIncludeLabelForLine({
+    workUnitKey: "trust-signals",
+    sourceTitle: "ignored",
+  }) !== WORK_UNIT_INVESTMENT_INCLUDE_LABELS["conversion-assessment"],
+  "trust-signals never maps to conversion-assessment",
+);
+assert(
+  investmentIncludeLabelForLine({
+    workUnitKey: "conversion-assessment",
+    sourceTitle: "ignored",
+  }).includes("assessment"),
+  "conversion-assessment remains assessment",
+);
+assert(
+  !investmentIncludeLabelForLine({
+    workUnitKey: "structured-data",
+    sourceTitle: "ignored",
+  }).includes("LocalBusiness"),
+  "structured-data never maps to local-schema",
+);
+assert(
+  investmentIncludeLabelForLine({
+    workUnitKey: "local-schema",
+    sourceTitle: "ignored",
+  }).includes("LocalBusiness"),
+  "local-schema remains LocalBusiness structured data",
+);
+assert(
+  investmentIncludeLabelForLine({
+    workUnitKey: "script-weight",
+    sourceTitle: "ignored",
+  }).includes("Script"),
+  "script-weight label preserved when authorized",
+);
+assert(
+  investmentIncludeLabelForLine({
+    workUnitKey: "inline-css",
+    sourceTitle: "ignored",
+  }).includes("CSS"),
+  "inline-css label preserved when authorized",
+);
+assert(
+  deliverablePresentationLabel({
+    workUnitKey: "canonical",
+    sourceTitle: "ignored",
+  }).includes("canonical"),
+  "canonical identity preserved",
+);
+assert(
+  deliverablePresentationLabel({
+    workUnitKey: "heading-architecture",
+    sourceTitle: "ignored",
+  }).includes("heading"),
+  "heading identity preserved",
+);
+assert(
+  deliverablePresentationLabel({
+    workUnitKey: "internal-linking",
+    sourceTitle: "ignored",
+  }).includes("internal linking"),
+  "internal-linking identity preserved",
+);
+assert(
+  deliverablePresentationLabel({
+    workUnitKey: "improve-meta",
+    sourceTitle: "ignored",
+  }).includes("meta"),
+  "improve-meta identity preserved",
+);
+assert(
+  deliverablePresentationLabel({
+    workUnitKey: "open-graph",
+    sourceTitle: "ignored",
+  }).includes("Open Graph"),
+  "Open Graph identity preserved",
+);
+assert(
+  deliverablePresentationLabel({
+    sourceTitle: "Custom operator deliverable",
+    isCustom: true,
+  }) === "Custom operator deliverable",
+  "manual work title preserved",
+);
+assert(
+  deliverablePresentationLabel({
+    sourceTitle: "Custom trust signal refresh",
+    isCustom: true,
+  }) === "Custom trust signal refresh",
+  "manual work does not fuzzy-map into known deterministic action",
+);
+
+// Reconciliation invariants on 1st Choice (tests 14–18)
+assert(
+  built.snapshot.includedLines.length === pricing.lineItems.length,
+  "every included pricing line represented once",
+);
+assert(
+  built.snapshot.includedLines.length ===
+    new Set(
+      pricing.lineItems
+        .filter((l) => l.isIncluded && !l.isOptional)
+        .map((l) => l.workUnitKey),
+    ).size,
+  "no duplicate financial line by work unit",
+);
+assert(
+  sumClientVisibleGroupCents(groups) === built.includedInvestmentCents,
+  "financial group subtotal reconciliation",
+);
+assert(
+  sumClientVisibleInvestmentCents(built.snapshot.includedLines) ===
+    built.includedInvestmentCents,
+  "total reconciliation",
+);
+assert(withOptional.optionalInvestmentCents === 35_000, "optional reconciliation");
+
+// 1st Choice regression (tests 25–27)
+const firstChoiceIncludes = groups.flatMap((g) => g.includeLabels);
+assert(
+  firstChoiceIncludes.some((l) => l.includes("Script and third-party")),
+  "1st Choice script-weight remains Performance when authorized",
+);
+assert(
+  firstChoiceIncludes.some((l) => l.includes("LocalBusiness")),
+  "1st Choice local-schema still renders LocalBusiness correctly",
+);
+assert(
+  byTitle("Conversion Path Assessment")?.includeLabels.some((l) =>
+    l.includes("assessment"),
+  ),
+  "1st Choice conversion-assessment still renders assessment correctly",
+);
+
+// Semantic substitution guard unit tests
+assert(
+  __testLabelLooksLikeWrongAction({
+    workUnitKey: "trust-signals",
+    includeLabel: "Conversion path assessment",
+    title: "Conversion Path Assessment",
+  }) != null,
+  "trust-signals assessment substitution detected",
+);
+assert(
+  __testLabelLooksLikeWrongAction({
+    workUnitKey: "structured-data",
+    includeLabel: "LocalBusiness structured data",
+    title: "LocalBusiness structured data",
+  }) != null,
+  "structured-data local substitution detected",
+);
+
+// Reconciliation failure path
+let reconcileThrew = false;
+try {
+  buildProposalFromApprovedSources({
+    opportunityId: "opp-bad",
+    businessName: "Bad Co",
+    locationLabel: null,
+    scope: rooftopInputs.scope,
+    pricing: {
+      ...rooftopInputs.pricing,
+      lineItems: rooftopInputs.pricing.lineItems.map((line) =>
+        line.workUnitKey === "trust-signals"
+          ? { ...line, workUnitKey: "conversion-assessment" }
+          : line,
+      ),
+    },
+  });
+} catch (error) {
+  reconcileThrew =
+    error instanceof ProposalFinancialReconciliationError ||
+    (error instanceof Error &&
+      error.message.includes("PROPOSAL_FINANCIAL_RECONCILIATION_FAILED"));
+}
+assert(reconcileThrew, "semantic pricing mismatch fails reconciliation");
+
 // Source scans
 const moduleFiles = collectTsFiles(join(here)).filter(
   (f) => !f.endsWith(".verify.ts"),
@@ -780,6 +1333,10 @@ for (const file of moduleFiles) {
 
 const createSource = readFileSync(join(here, "create.ts"), "utf8");
 assert(createSource.includes("PRICING_STALE"), "stale pricing gate");
+assert(
+  createSource.includes("PROPOSAL_FINANCIAL_RECONCILIATION_FAILED"),
+  "reconciliation gate in create",
+);
 
 const mutateSource = readFileSync(join(here, "mutate.ts"), "utf8");
 assert(mutateSource.includes("IMMUTABLE"), "approved immutable");

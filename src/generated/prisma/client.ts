@@ -225,3 +225,9 @@ export type CommercialPricingLineItem = Prisma.CommercialPricingLineItemModel
  * Snapshot only. Does not recalculate scope or pricing. No public links / PDF / Stripe / OpenAI.
  */
 export type CommercialProposal = Prisma.CommercialProposalModel
+/**
+ * Model ProposalDelivery
+ * Commercial Sprint 7 — human-controlled proposal delivery to a specific recipient.
+ * Snapshots recipient + message. Share token authorizes client read-only access.
+ */
+export type ProposalDelivery = Prisma.ProposalDeliveryModel

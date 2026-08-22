@@ -926,6 +926,40 @@ export type EnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
 }
 
+export type EnumProposalDeliveryStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDeliveryStatus | Prisma.EnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDeliveryStatusFilter<$PrismaModel> | $Enums.ProposalDeliveryStatus
+}
+
+export type EnumProposalDecisionFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDecision | Prisma.EnumProposalDecisionFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDecisionFilter<$PrismaModel> | $Enums.ProposalDecision
+}
+
+export type EnumProposalDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDeliveryStatus | Prisma.EnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDeliveryStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProposalDeliveryStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProposalDeliveryStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProposalDeliveryStatusFilter<$PrismaModel>
+}
+
+export type EnumProposalDecisionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDecision | Prisma.EnumProposalDecisionFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDecisionWithAggregatesFilter<$PrismaModel> | $Enums.ProposalDecision
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProposalDecisionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProposalDecisionFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1784,6 +1818,40 @@ export type NestedEnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumProposalDeliveryStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDeliveryStatus | Prisma.EnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDeliveryStatusFilter<$PrismaModel> | $Enums.ProposalDeliveryStatus
+}
+
+export type NestedEnumProposalDecisionFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDecision | Prisma.EnumProposalDecisionFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDecisionFilter<$PrismaModel> | $Enums.ProposalDecision
+}
+
+export type NestedEnumProposalDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDeliveryStatus | Prisma.EnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDeliveryStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProposalDeliveryStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProposalDeliveryStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProposalDeliveryStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumProposalDecisionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProposalDecision | Prisma.EnumProposalDecisionFieldRefInput<$PrismaModel>
+  in?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProposalDecision[] | Prisma.ListEnumProposalDecisionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProposalDecisionWithAggregatesFilter<$PrismaModel> | $Enums.ProposalDecision
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProposalDecisionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProposalDecisionFilter<$PrismaModel>
 }
 
 

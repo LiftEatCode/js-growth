@@ -431,7 +431,8 @@ export const ModelName = {
   CommercialScopeDeliverable: 'CommercialScopeDeliverable',
   CommercialPricing: 'CommercialPricing',
   CommercialPricingLineItem: 'CommercialPricingLineItem',
-  CommercialProposal: 'CommercialProposal'
+  CommercialProposal: 'CommercialProposal',
+  ProposalDelivery: 'ProposalDelivery'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -447,7 +448,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "proposalDelivery"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3041,6 +3042,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProposalDelivery: {
+      payload: Prisma.$ProposalDeliveryPayload<ExtArgs>
+      fields: Prisma.ProposalDeliveryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProposalDeliveryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProposalDeliveryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>
+        }
+        findFirst: {
+          args: Prisma.ProposalDeliveryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProposalDeliveryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>
+        }
+        findMany: {
+          args: Prisma.ProposalDeliveryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>[]
+        }
+        create: {
+          args: Prisma.ProposalDeliveryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>
+        }
+        createMany: {
+          args: Prisma.ProposalDeliveryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProposalDeliveryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>[]
+        }
+        delete: {
+          args: Prisma.ProposalDeliveryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>
+        }
+        update: {
+          args: Prisma.ProposalDeliveryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProposalDeliveryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProposalDeliveryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProposalDeliveryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProposalDeliveryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalDeliveryPayload>
+        }
+        aggregate: {
+          args: Prisma.ProposalDeliveryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProposalDelivery>
+        }
+        groupBy: {
+          args: Prisma.ProposalDeliveryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProposalDeliveryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProposalDeliveryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProposalDeliveryCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3886,6 +3961,41 @@ export const CommercialProposalScalarFieldEnum = {
 export type CommercialProposalScalarFieldEnum = (typeof CommercialProposalScalarFieldEnum)[keyof typeof CommercialProposalScalarFieldEnum]
 
 
+export const ProposalDeliveryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  proposalId: 'proposalId',
+  recipientName: 'recipientName',
+  recipientEmail: 'recipientEmail',
+  status: 'status',
+  subjectSnapshot: 'subjectSnapshot',
+  messageSnapshot: 'messageSnapshot',
+  proposalVersion: 'proposalVersion',
+  proposalPresentationVersion: 'proposalPresentationVersion',
+  shareTokenHash: 'shareTokenHash',
+  sentAt: 'sentAt',
+  sentByEmail: 'sentByEmail',
+  preparedByEmail: 'preparedByEmail',
+  deliveryProvider: 'deliveryProvider',
+  providerMessageId: 'providerMessageId',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  revokedAt: 'revokedAt',
+  revokedByEmail: 'revokedByEmail',
+  firstViewedAt: 'firstViewedAt',
+  lastViewedAt: 'lastViewedAt',
+  viewCount: 'viewCount',
+  decision: 'decision',
+  decisionAt: 'decisionAt',
+  decisionRecordedByEmail: 'decisionRecordedByEmail',
+  decisionNote: 'decisionNote'
+} as const
+
+export type ProposalDeliveryScalarFieldEnum = (typeof ProposalDeliveryScalarFieldEnum)[keyof typeof ProposalDeliveryScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4506,6 +4616,34 @@ export type EnumCommercialProposalStatusFieldRefInput<$PrismaModel> = FieldRefIn
 export type ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialProposalStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'ProposalDeliveryStatus'
+ */
+export type EnumProposalDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalDeliveryStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProposalDeliveryStatus[]'
+ */
+export type ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalDeliveryStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ProposalDecision'
+ */
+export type EnumProposalDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalDecision'>
+    
+
+
+/**
+ * Reference to a field of type 'ProposalDecision[]'
+ */
+export type ListEnumProposalDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalDecision[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -4692,6 +4830,7 @@ export type GlobalOmitConfig = {
   commercialPricing?: Prisma.CommercialPricingOmit
   commercialPricingLineItem?: Prisma.CommercialPricingLineItemOmit
   commercialProposal?: Prisma.CommercialProposalOmit
+  proposalDelivery?: Prisma.ProposalDeliveryOmit
 }
 
 /* Types for Logging */

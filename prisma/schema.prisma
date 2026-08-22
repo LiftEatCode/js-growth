@@ -1288,6 +1288,12 @@ enum OpportunityActivityType {
   PROPOSAL_APPROVED
   PROPOSAL_REVISED
   PROPOSAL_SUPERSEDED
+  PROPOSAL_DELIVERY_PREPARED
+  PROPOSAL_SENT
+  PROPOSAL_SEND_FAILED
+  PROPOSAL_LINK_VIEWED
+  PROPOSAL_ACCESS_REVOKED
+  PROPOSAL_DECISION_RECORDED
 }
 
 /// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
@@ -1338,6 +1344,7 @@ model Opportunity {
   scopes     CommercialScope[]
   pricings   CommercialPricing[]
   proposals  CommercialProposal[]
+  proposalDeliveries ProposalDelivery[]
 
   @@index([prospectId, createdAt])
   @@index([campaignId, createdAt])
@@ -1647,9 +1654,81 @@ model CommercialProposal {
 
   createdByEmail String
 
+  deliveries ProposalDelivery[]
+
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
   @@index([commercialScopeId])
   @@index([commercialPricingId])
+  @@index([status, createdAt])
+}
+
+enum ProposalDeliveryStatus {
+  DRAFT
+  READY
+  SENDING
+  SENT
+  FAILED
+}
+
+enum ProposalDecision {
+  PENDING
+  INTERESTED
+  CHANGES_REQUESTED
+  DECLINED
+  ACCEPTED
+}
+
+/// Commercial Sprint 7 — human-controlled proposal delivery to a specific recipient.
+/// Snapshots recipient + message. Share token authorizes client read-only access.
+model ProposalDelivery {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  proposalId String
+  proposal   CommercialProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  recipientName  String
+  recipientEmail String
+
+  status ProposalDeliveryStatus @default(DRAFT)
+
+  subjectSnapshot String
+  messageSnapshot String
+
+  proposalVersion             Int
+  proposalPresentationVersion Int
+
+  /// SHA-256 hex digest of the share token. Raw token is never persisted.
+  shareTokenHash String @unique
+
+  sentAt          DateTime?
+  sentByEmail     String?
+  preparedByEmail String
+
+  deliveryProvider  String?
+  providerMessageId String?
+
+  failureCode    String?
+  failureMessage String?
+
+  revokedAt      DateTime?
+  revokedByEmail String?
+
+  firstViewedAt DateTime?
+  lastViewedAt  DateTime?
+  viewCount     Int       @default(0)
+
+  decision                ProposalDecision @default(PENDING)
+  decisionAt              DateTime?
+  decisionRecordedByEmail String?
+  decisionNote            String?
+
+  @@index([opportunityId, createdAt])
+  @@index([proposalId, createdAt])
   @@index([status, createdAt])
 }
