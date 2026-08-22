@@ -179,6 +179,8 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 
 **Sprint 7:** Human-controlled proposal delivery + client decision — token-gated `/proposal/{token}` public view (reuses ProposalDocument), Resend send (max 1 per explicit send), view tracking, revocation, decision states (ACCEPTED ≠ Won). `PROPOSAL_DELIVERY_VERSION = 1`. Migration `20260822120000_add_proposal_delivery`.
 
+**Sprint 8:** Formal Agreement + client acceptance — token-gated `/agreement/{token}`, immutable snapshot + SHA-256 acceptance hash, payment terms on Agreement (no Stripe), human approve + explicit send. `COMMERCIAL_AGREEMENT_VERSION = 1`. Migration `20260823120000_add_commercial_agreements`. See `docs/development/agreement-engine.md`.
+
 **Not included:** AI sales email, automatic follow-up, e-sign, Stripe checkout, automatic Won/Lost on decision.
 
 ---

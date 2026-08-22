@@ -86,6 +86,9 @@ export const ModelName = {
   CommercialPricing: 'CommercialPricing',
   CommercialPricingLineItem: 'CommercialPricingLineItem',
   CommercialProposal: 'CommercialProposal',
+  CommercialAgreement: 'CommercialAgreement',
+  AgreementAcceptance: 'AgreementAcceptance',
+  AgreementDelivery: 'AgreementDelivery',
   ProposalDelivery: 'ProposalDelivery'
 } as const
 
@@ -909,6 +912,106 @@ export const CommercialProposalScalarFieldEnum = {
 } as const
 
 export type CommercialProposalScalarFieldEnum = (typeof CommercialProposalScalarFieldEnum)[keyof typeof CommercialProposalScalarFieldEnum]
+
+
+export const CommercialAgreementScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  proposalId: 'proposalId',
+  commercialScopeId: 'commercialScopeId',
+  commercialPricingId: 'commercialPricingId',
+  status: 'status',
+  revision: 'revision',
+  agreementVersion: 'agreementVersion',
+  agreementPresentationVersion: 'agreementPresentationVersion',
+  termsVersion: 'termsVersion',
+  title: 'title',
+  sourceFingerprint: 'sourceFingerprint',
+  snapshotJson: 'snapshotJson',
+  engagementOverview: 'engagementOverview',
+  clientResponsibilitiesJson: 'clientResponsibilitiesJson',
+  jsResponsibilitiesJson: 'jsResponsibilitiesJson',
+  timelineTerms: 'timelineTerms',
+  changeRequestTerms: 'changeRequestTerms',
+  thirdPartyCostTerms: 'thirdPartyCostTerms',
+  resultsDisclaimer: 'resultsDisclaimer',
+  acceptanceLanguage: 'acceptanceLanguage',
+  paymentTermType: 'paymentTermType',
+  paymentCustomText: 'paymentCustomText',
+  depositPercent: 'depositPercent',
+  currency: 'currency',
+  includedInvestmentCents: 'includedInvestmentCents',
+  optionalInvestmentCents: 'optionalInvestmentCents',
+  totalInvestmentCents: 'totalInvestmentCents',
+  depositCents: 'depositCents',
+  balanceCents: 'balanceCents',
+  proposalReference: 'proposalReference',
+  createOverrideReason: 'createOverrideReason',
+  createdByEmail: 'createdByEmail',
+  reviewedAt: 'reviewedAt',
+  reviewedByEmail: 'reviewedByEmail',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  acceptedAt: 'acceptedAt',
+  supersededAt: 'supersededAt',
+  supersededByAgreementId: 'supersededByAgreementId',
+  voidedAt: 'voidedAt',
+  voidedByEmail: 'voidedByEmail'
+} as const
+
+export type CommercialAgreementScalarFieldEnum = (typeof CommercialAgreementScalarFieldEnum)[keyof typeof CommercialAgreementScalarFieldEnum]
+
+
+export const AgreementAcceptanceScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  agreementId: 'agreementId',
+  signerName: 'signerName',
+  signerEmail: 'signerEmail',
+  signerTitle: 'signerTitle',
+  acceptedAt: 'acceptedAt',
+  agreementVersion: 'agreementVersion',
+  agreementPresentationVersion: 'agreementPresentationVersion',
+  termsVersion: 'termsVersion',
+  agreementSnapshotHash: 'agreementSnapshotHash',
+  acceptanceTextSnapshot: 'acceptanceTextSnapshot'
+} as const
+
+export type AgreementAcceptanceScalarFieldEnum = (typeof AgreementAcceptanceScalarFieldEnum)[keyof typeof AgreementAcceptanceScalarFieldEnum]
+
+
+export const AgreementDeliveryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  agreementId: 'agreementId',
+  recipientName: 'recipientName',
+  recipientEmail: 'recipientEmail',
+  status: 'status',
+  subjectSnapshot: 'subjectSnapshot',
+  messageSnapshot: 'messageSnapshot',
+  agreementVersion: 'agreementVersion',
+  agreementPresentationVersion: 'agreementPresentationVersion',
+  termsVersion: 'termsVersion',
+  shareTokenHash: 'shareTokenHash',
+  sentAt: 'sentAt',
+  sentByEmail: 'sentByEmail',
+  preparedByEmail: 'preparedByEmail',
+  deliveryProvider: 'deliveryProvider',
+  providerMessageId: 'providerMessageId',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  revokedAt: 'revokedAt',
+  revokedByEmail: 'revokedByEmail',
+  firstViewedAt: 'firstViewedAt',
+  lastViewedAt: 'lastViewedAt',
+  viewCount: 'viewCount'
+} as const
+
+export type AgreementDeliveryScalarFieldEnum = (typeof AgreementDeliveryScalarFieldEnum)[keyof typeof AgreementDeliveryScalarFieldEnum]
 
 
 export const ProposalDeliveryScalarFieldEnum = {

@@ -327,6 +327,7 @@ export type CommercialScopeWhereInput = {
   sections?: Prisma.CommercialScopeSectionListRelationFilter
   pricings?: Prisma.CommercialPricingListRelationFilter
   proposals?: Prisma.CommercialProposalListRelationFilter
+  agreements?: Prisma.CommercialAgreementListRelationFilter
 }
 
 export type CommercialScopeOrderByWithRelationInput = {
@@ -355,6 +356,7 @@ export type CommercialScopeOrderByWithRelationInput = {
   sections?: Prisma.CommercialScopeSectionOrderByRelationAggregateInput
   pricings?: Prisma.CommercialPricingOrderByRelationAggregateInput
   proposals?: Prisma.CommercialProposalOrderByRelationAggregateInput
+  agreements?: Prisma.CommercialAgreementOrderByRelationAggregateInput
 }
 
 export type CommercialScopeWhereUniqueInput = Prisma.AtLeast<{
@@ -386,6 +388,7 @@ export type CommercialScopeWhereUniqueInput = Prisma.AtLeast<{
   sections?: Prisma.CommercialScopeSectionListRelationFilter
   pricings?: Prisma.CommercialPricingListRelationFilter
   proposals?: Prisma.CommercialProposalListRelationFilter
+  agreements?: Prisma.CommercialAgreementListRelationFilter
 }, "id">
 
 export type CommercialScopeOrderByWithAggregationInput = {
@@ -463,6 +466,7 @@ export type CommercialScopeCreateInput = {
   sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateInput = {
@@ -488,6 +492,7 @@ export type CommercialScopeUncheckedCreateInput = {
   sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUpdateInput = {
@@ -513,6 +518,7 @@ export type CommercialScopeUpdateInput = {
   sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateInput = {
@@ -538,6 +544,7 @@ export type CommercialScopeUncheckedUpdateInput = {
   sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeCreateManyInput = {
@@ -860,6 +867,20 @@ export type CommercialScopeUpdateOneRequiredWithoutProposalsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CommercialScopeUpdateToOneWithWhereWithoutProposalsInput, Prisma.CommercialScopeUpdateWithoutProposalsInput>, Prisma.CommercialScopeUncheckedUpdateWithoutProposalsInput>
 }
 
+export type CommercialScopeCreateNestedOneWithoutAgreementsInput = {
+  create?: Prisma.XOR<Prisma.CommercialScopeCreateWithoutAgreementsInput, Prisma.CommercialScopeUncheckedCreateWithoutAgreementsInput>
+  connectOrCreate?: Prisma.CommercialScopeCreateOrConnectWithoutAgreementsInput
+  connect?: Prisma.CommercialScopeWhereUniqueInput
+}
+
+export type CommercialScopeUpdateOneRequiredWithoutAgreementsNestedInput = {
+  create?: Prisma.XOR<Prisma.CommercialScopeCreateWithoutAgreementsInput, Prisma.CommercialScopeUncheckedCreateWithoutAgreementsInput>
+  connectOrCreate?: Prisma.CommercialScopeCreateOrConnectWithoutAgreementsInput
+  upsert?: Prisma.CommercialScopeUpsertWithoutAgreementsInput
+  connect?: Prisma.CommercialScopeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommercialScopeUpdateToOneWithWhereWithoutAgreementsInput, Prisma.CommercialScopeUpdateWithoutAgreementsInput>, Prisma.CommercialScopeUncheckedUpdateWithoutAgreementsInput>
+}
+
 export type CommercialScopeCreateWithoutImplementationPlanInput = {
   id?: string
   createdAt?: Date | string
@@ -882,6 +903,7 @@ export type CommercialScopeCreateWithoutImplementationPlanInput = {
   sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateWithoutImplementationPlanInput = {
@@ -906,6 +928,7 @@ export type CommercialScopeUncheckedCreateWithoutImplementationPlanInput = {
   sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeCreateOrConnectWithoutImplementationPlanInput = {
@@ -981,6 +1004,7 @@ export type CommercialScopeCreateWithoutImplementationInterpretationInput = {
   sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateWithoutImplementationInterpretationInput = {
@@ -1005,6 +1029,7 @@ export type CommercialScopeUncheckedCreateWithoutImplementationInterpretationInp
   sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeCreateOrConnectWithoutImplementationInterpretationInput = {
@@ -1055,6 +1080,7 @@ export type CommercialScopeCreateWithoutOpportunityInput = {
   sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateWithoutOpportunityInput = {
@@ -1079,6 +1105,7 @@ export type CommercialScopeUncheckedCreateWithoutOpportunityInput = {
   sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeCreateOrConnectWithoutOpportunityInput = {
@@ -1129,6 +1156,7 @@ export type CommercialScopeCreateWithoutSectionsInput = {
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutCommercialScopesInput
   pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateWithoutSectionsInput = {
@@ -1153,6 +1181,7 @@ export type CommercialScopeUncheckedCreateWithoutSectionsInput = {
   createdByEmail: string
   pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeCreateOrConnectWithoutSectionsInput = {
@@ -1193,6 +1222,7 @@ export type CommercialScopeUpdateWithoutSectionsInput = {
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutCommercialScopesNestedInput
   pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateWithoutSectionsInput = {
@@ -1217,6 +1247,7 @@ export type CommercialScopeUncheckedUpdateWithoutSectionsInput = {
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeCreateWithoutPricingsInput = {
@@ -1241,6 +1272,7 @@ export type CommercialScopeCreateWithoutPricingsInput = {
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutCommercialScopesInput
   sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateWithoutPricingsInput = {
@@ -1265,6 +1297,7 @@ export type CommercialScopeUncheckedCreateWithoutPricingsInput = {
   createdByEmail: string
   sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeCreateOrConnectWithoutPricingsInput = {
@@ -1305,6 +1338,7 @@ export type CommercialScopeUpdateWithoutPricingsInput = {
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutCommercialScopesNestedInput
   sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateWithoutPricingsInput = {
@@ -1329,6 +1363,7 @@ export type CommercialScopeUncheckedUpdateWithoutPricingsInput = {
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeCreateWithoutProposalsInput = {
@@ -1353,6 +1388,7 @@ export type CommercialScopeCreateWithoutProposalsInput = {
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutCommercialScopesInput
   sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeUncheckedCreateWithoutProposalsInput = {
@@ -1377,6 +1413,7 @@ export type CommercialScopeUncheckedCreateWithoutProposalsInput = {
   createdByEmail: string
   sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
   pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutCommercialScopeInput
 }
 
 export type CommercialScopeCreateOrConnectWithoutProposalsInput = {
@@ -1417,6 +1454,7 @@ export type CommercialScopeUpdateWithoutProposalsInput = {
   implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutCommercialScopesNestedInput
   sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateWithoutProposalsInput = {
@@ -1441,6 +1479,123 @@ export type CommercialScopeUncheckedUpdateWithoutProposalsInput = {
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
+}
+
+export type CommercialScopeCreateWithoutAgreementsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  status?: $Enums.CommercialScopeStatus
+  revision?: number
+  title: string
+  summary?: string | null
+  scopeVersion: number
+  sourceFingerprint: string
+  assumptionsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  exclusionsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  considerationsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  supersededAt?: Date | string | null
+  createdByEmail: string
+  opportunity: Prisma.OpportunityCreateNestedOneWithoutScopesInput
+  implementationPlan?: Prisma.ImplementationPlanCreateNestedOneWithoutCommercialScopesInput
+  implementationInterpretation?: Prisma.ImplementationPlanInterpretationCreateNestedOneWithoutCommercialScopesInput
+  sections?: Prisma.CommercialScopeSectionCreateNestedManyWithoutScopeInput
+  pricings?: Prisma.CommercialPricingCreateNestedManyWithoutCommercialScopeInput
+  proposals?: Prisma.CommercialProposalCreateNestedManyWithoutCommercialScopeInput
+}
+
+export type CommercialScopeUncheckedCreateWithoutAgreementsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  opportunityId: string
+  implementationPlanId?: string | null
+  implementationInterpretationId?: string | null
+  status?: $Enums.CommercialScopeStatus
+  revision?: number
+  title: string
+  summary?: string | null
+  scopeVersion: number
+  sourceFingerprint: string
+  assumptionsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  exclusionsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  considerationsJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  supersededAt?: Date | string | null
+  createdByEmail: string
+  sections?: Prisma.CommercialScopeSectionUncheckedCreateNestedManyWithoutScopeInput
+  pricings?: Prisma.CommercialPricingUncheckedCreateNestedManyWithoutCommercialScopeInput
+  proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCommercialScopeInput
+}
+
+export type CommercialScopeCreateOrConnectWithoutAgreementsInput = {
+  where: Prisma.CommercialScopeWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommercialScopeCreateWithoutAgreementsInput, Prisma.CommercialScopeUncheckedCreateWithoutAgreementsInput>
+}
+
+export type CommercialScopeUpsertWithoutAgreementsInput = {
+  update: Prisma.XOR<Prisma.CommercialScopeUpdateWithoutAgreementsInput, Prisma.CommercialScopeUncheckedUpdateWithoutAgreementsInput>
+  create: Prisma.XOR<Prisma.CommercialScopeCreateWithoutAgreementsInput, Prisma.CommercialScopeUncheckedCreateWithoutAgreementsInput>
+  where?: Prisma.CommercialScopeWhereInput
+}
+
+export type CommercialScopeUpdateToOneWithWhereWithoutAgreementsInput = {
+  where?: Prisma.CommercialScopeWhereInput
+  data: Prisma.XOR<Prisma.CommercialScopeUpdateWithoutAgreementsInput, Prisma.CommercialScopeUncheckedUpdateWithoutAgreementsInput>
+}
+
+export type CommercialScopeUpdateWithoutAgreementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumCommercialScopeStatusFieldUpdateOperationsInput | $Enums.CommercialScopeStatus
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scopeVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  assumptionsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  exclusionsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  considerationsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunity?: Prisma.OpportunityUpdateOneRequiredWithoutScopesNestedInput
+  implementationPlan?: Prisma.ImplementationPlanUpdateOneWithoutCommercialScopesNestedInput
+  implementationInterpretation?: Prisma.ImplementationPlanInterpretationUpdateOneWithoutCommercialScopesNestedInput
+  sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
+  pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
+  proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+}
+
+export type CommercialScopeUncheckedUpdateWithoutAgreementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  opportunityId?: Prisma.StringFieldUpdateOperationsInput | string
+  implementationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  implementationInterpretationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCommercialScopeStatusFieldUpdateOperationsInput | $Enums.CommercialScopeStatus
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scopeVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  assumptionsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  exclusionsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  considerationsJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
+  pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeCreateManyImplementationPlanInput = {
@@ -1486,6 +1641,7 @@ export type CommercialScopeUpdateWithoutImplementationPlanInput = {
   sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateWithoutImplementationPlanInput = {
@@ -1510,6 +1666,7 @@ export type CommercialScopeUncheckedUpdateWithoutImplementationPlanInput = {
   sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateManyWithoutImplementationPlanInput = {
@@ -1576,6 +1733,7 @@ export type CommercialScopeUpdateWithoutImplementationInterpretationInput = {
   sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateWithoutImplementationInterpretationInput = {
@@ -1600,6 +1758,7 @@ export type CommercialScopeUncheckedUpdateWithoutImplementationInterpretationInp
   sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateManyWithoutImplementationInterpretationInput = {
@@ -1666,6 +1825,7 @@ export type CommercialScopeUpdateWithoutOpportunityInput = {
   sections?: Prisma.CommercialScopeSectionUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateWithoutOpportunityInput = {
@@ -1690,6 +1850,7 @@ export type CommercialScopeUncheckedUpdateWithoutOpportunityInput = {
   sections?: Prisma.CommercialScopeSectionUncheckedUpdateManyWithoutScopeNestedInput
   pricings?: Prisma.CommercialPricingUncheckedUpdateManyWithoutCommercialScopeNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialScopeNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeNestedInput
 }
 
 export type CommercialScopeUncheckedUpdateManyWithoutOpportunityInput = {
@@ -1722,12 +1883,14 @@ export type CommercialScopeCountOutputType = {
   sections: number
   pricings: number
   proposals: number
+  agreements: number
 }
 
 export type CommercialScopeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sections?: boolean | CommercialScopeCountOutputTypeCountSectionsArgs
   pricings?: boolean | CommercialScopeCountOutputTypeCountPricingsArgs
   proposals?: boolean | CommercialScopeCountOutputTypeCountProposalsArgs
+  agreements?: boolean | CommercialScopeCountOutputTypeCountAgreementsArgs
 }
 
 /**
@@ -1761,6 +1924,13 @@ export type CommercialScopeCountOutputTypeCountProposalsArgs<ExtArgs extends run
   where?: Prisma.CommercialProposalWhereInput
 }
 
+/**
+ * CommercialScopeCountOutputType without action
+ */
+export type CommercialScopeCountOutputTypeCountAgreementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommercialAgreementWhereInput
+}
+
 
 export type CommercialScopeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1788,6 +1958,7 @@ export type CommercialScopeSelect<ExtArgs extends runtime.Types.Extensions.Inter
   sections?: boolean | Prisma.CommercialScope$sectionsArgs<ExtArgs>
   pricings?: boolean | Prisma.CommercialScope$pricingsArgs<ExtArgs>
   proposals?: boolean | Prisma.CommercialScope$proposalsArgs<ExtArgs>
+  agreements?: boolean | Prisma.CommercialScope$agreementsArgs<ExtArgs>
   _count?: boolean | Prisma.CommercialScopeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["commercialScope"]>
 
@@ -1871,6 +2042,7 @@ export type CommercialScopeInclude<ExtArgs extends runtime.Types.Extensions.Inte
   sections?: boolean | Prisma.CommercialScope$sectionsArgs<ExtArgs>
   pricings?: boolean | Prisma.CommercialScope$pricingsArgs<ExtArgs>
   proposals?: boolean | Prisma.CommercialScope$proposalsArgs<ExtArgs>
+  agreements?: boolean | Prisma.CommercialScope$agreementsArgs<ExtArgs>
   _count?: boolean | Prisma.CommercialScopeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CommercialScopeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1893,6 +2065,7 @@ export type $CommercialScopePayload<ExtArgs extends runtime.Types.Extensions.Int
     sections: Prisma.$CommercialScopeSectionPayload<ExtArgs>[]
     pricings: Prisma.$CommercialPricingPayload<ExtArgs>[]
     proposals: Prisma.$CommercialProposalPayload<ExtArgs>[]
+    agreements: Prisma.$CommercialAgreementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2332,6 +2505,7 @@ export interface Prisma__CommercialScopeClient<T, Null = never, ExtArgs extends 
   sections<T extends Prisma.CommercialScope$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialScope$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialScopeSectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pricings<T extends Prisma.CommercialScope$pricingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialScope$pricingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialPricingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   proposals<T extends Prisma.CommercialScope$proposalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialScope$proposalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialProposalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  agreements<T extends Prisma.CommercialScope$agreementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialScope$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2888,6 +3062,30 @@ export type CommercialScope$proposalsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.CommercialProposalScalarFieldEnum | Prisma.CommercialProposalScalarFieldEnum[]
+}
+
+/**
+ * CommercialScope.agreements
+ */
+export type CommercialScope$agreementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommercialAgreement
+   */
+  select?: Prisma.CommercialAgreementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommercialAgreement
+   */
+  omit?: Prisma.CommercialAgreementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommercialAgreementInclude<ExtArgs> | null
+  where?: Prisma.CommercialAgreementWhereInput
+  orderBy?: Prisma.CommercialAgreementOrderByWithRelationInput | Prisma.CommercialAgreementOrderByWithRelationInput[]
+  cursor?: Prisma.CommercialAgreementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommercialAgreementScalarFieldEnum | Prisma.CommercialAgreementScalarFieldEnum[]
 }
 
 /**

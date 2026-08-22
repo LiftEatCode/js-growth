@@ -90,3 +90,5 @@ Forbidden keys include: `proposal_delivery_id`, `share_token`, `recipient_email`
 Verify: `proposal-delivery.verify.ts`  
 UI: `opportunity-proposal-delivery-card.tsx`  
 Public: `src/app/proposal/[token]/page.tsx`
+
+**Sprint 8 handoff:** Proposal `ACCEPTED` decision is preferred before Agreement creation; Agreement acceptance is separate and does not collect payment (see `agreement-engine.md`).

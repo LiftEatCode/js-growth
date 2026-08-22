@@ -405,6 +405,7 @@ export type CommercialProposalWhereInput = {
   commercialScope?: Prisma.XOR<Prisma.CommercialScopeScalarRelationFilter, Prisma.CommercialScopeWhereInput>
   commercialPricing?: Prisma.XOR<Prisma.CommercialPricingScalarRelationFilter, Prisma.CommercialPricingWhereInput>
   deliveries?: Prisma.ProposalDeliveryListRelationFilter
+  agreements?: Prisma.CommercialAgreementListRelationFilter
 }
 
 export type CommercialProposalOrderByWithRelationInput = {
@@ -438,6 +439,7 @@ export type CommercialProposalOrderByWithRelationInput = {
   commercialScope?: Prisma.CommercialScopeOrderByWithRelationInput
   commercialPricing?: Prisma.CommercialPricingOrderByWithRelationInput
   deliveries?: Prisma.ProposalDeliveryOrderByRelationAggregateInput
+  agreements?: Prisma.CommercialAgreementOrderByRelationAggregateInput
 }
 
 export type CommercialProposalWhereUniqueInput = Prisma.AtLeast<{
@@ -474,6 +476,7 @@ export type CommercialProposalWhereUniqueInput = Prisma.AtLeast<{
   commercialScope?: Prisma.XOR<Prisma.CommercialScopeScalarRelationFilter, Prisma.CommercialScopeWhereInput>
   commercialPricing?: Prisma.XOR<Prisma.CommercialPricingScalarRelationFilter, Prisma.CommercialPricingWhereInput>
   deliveries?: Prisma.ProposalDeliveryListRelationFilter
+  agreements?: Prisma.CommercialAgreementListRelationFilter
 }, "id">
 
 export type CommercialProposalOrderByWithAggregationInput = {
@@ -570,6 +573,7 @@ export type CommercialProposalCreateInput = {
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutProposalsInput
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutProposalsInput
   deliveries?: Prisma.ProposalDeliveryCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalUncheckedCreateInput = {
@@ -600,6 +604,7 @@ export type CommercialProposalUncheckedCreateInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   deliveries?: Prisma.ProposalDeliveryUncheckedCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalUpdateInput = {
@@ -630,6 +635,7 @@ export type CommercialProposalUpdateInput = {
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutProposalsNestedInput
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutProposalsNestedInput
   deliveries?: Prisma.ProposalDeliveryUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateInput = {
@@ -660,6 +666,7 @@ export type CommercialProposalUncheckedUpdateInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   deliveries?: Prisma.ProposalDeliveryUncheckedUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalCreateManyInput = {
@@ -994,6 +1001,20 @@ export type EnumCommercialProposalStatusFieldUpdateOperationsInput = {
   set?: $Enums.CommercialProposalStatus
 }
 
+export type CommercialProposalCreateNestedOneWithoutAgreementsInput = {
+  create?: Prisma.XOR<Prisma.CommercialProposalCreateWithoutAgreementsInput, Prisma.CommercialProposalUncheckedCreateWithoutAgreementsInput>
+  connectOrCreate?: Prisma.CommercialProposalCreateOrConnectWithoutAgreementsInput
+  connect?: Prisma.CommercialProposalWhereUniqueInput
+}
+
+export type CommercialProposalUpdateOneRequiredWithoutAgreementsNestedInput = {
+  create?: Prisma.XOR<Prisma.CommercialProposalCreateWithoutAgreementsInput, Prisma.CommercialProposalUncheckedCreateWithoutAgreementsInput>
+  connectOrCreate?: Prisma.CommercialProposalCreateOrConnectWithoutAgreementsInput
+  upsert?: Prisma.CommercialProposalUpsertWithoutAgreementsInput
+  connect?: Prisma.CommercialProposalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommercialProposalUpdateToOneWithWhereWithoutAgreementsInput, Prisma.CommercialProposalUpdateWithoutAgreementsInput>, Prisma.CommercialProposalUncheckedUpdateWithoutAgreementsInput>
+}
+
 export type CommercialProposalCreateNestedOneWithoutDeliveriesInput = {
   create?: Prisma.XOR<Prisma.CommercialProposalCreateWithoutDeliveriesInput, Prisma.CommercialProposalUncheckedCreateWithoutDeliveriesInput>
   connectOrCreate?: Prisma.CommercialProposalCreateOrConnectWithoutDeliveriesInput
@@ -1035,6 +1056,7 @@ export type CommercialProposalCreateWithoutOpportunityInput = {
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutProposalsInput
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutProposalsInput
   deliveries?: Prisma.ProposalDeliveryCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalUncheckedCreateWithoutOpportunityInput = {
@@ -1064,6 +1086,7 @@ export type CommercialProposalUncheckedCreateWithoutOpportunityInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   deliveries?: Prisma.ProposalDeliveryUncheckedCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalCreateOrConnectWithoutOpportunityInput = {
@@ -1151,6 +1174,7 @@ export type CommercialProposalCreateWithoutCommercialScopeInput = {
   opportunity: Prisma.OpportunityCreateNestedOneWithoutProposalsInput
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutProposalsInput
   deliveries?: Prisma.ProposalDeliveryCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalUncheckedCreateWithoutCommercialScopeInput = {
@@ -1180,6 +1204,7 @@ export type CommercialProposalUncheckedCreateWithoutCommercialScopeInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   deliveries?: Prisma.ProposalDeliveryUncheckedCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalCreateOrConnectWithoutCommercialScopeInput = {
@@ -1235,6 +1260,7 @@ export type CommercialProposalCreateWithoutCommercialPricingInput = {
   opportunity: Prisma.OpportunityCreateNestedOneWithoutProposalsInput
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutProposalsInput
   deliveries?: Prisma.ProposalDeliveryCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalUncheckedCreateWithoutCommercialPricingInput = {
@@ -1264,6 +1290,7 @@ export type CommercialProposalUncheckedCreateWithoutCommercialPricingInput = {
   supersededAt?: Date | string | null
   createdByEmail: string
   deliveries?: Prisma.ProposalDeliveryUncheckedCreateNestedManyWithoutProposalInput
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalCreateOrConnectWithoutCommercialPricingInput = {
@@ -1290,6 +1317,142 @@ export type CommercialProposalUpdateWithWhereUniqueWithoutCommercialPricingInput
 export type CommercialProposalUpdateManyWithWhereWithoutCommercialPricingInput = {
   where: Prisma.CommercialProposalScalarWhereInput
   data: Prisma.XOR<Prisma.CommercialProposalUpdateManyMutationInput, Prisma.CommercialProposalUncheckedUpdateManyWithoutCommercialPricingInput>
+}
+
+export type CommercialProposalCreateWithoutAgreementsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  status?: $Enums.CommercialProposalStatus
+  revision?: number
+  title: string
+  executiveSummary: string
+  businessContext?: string | null
+  approachIntro?: string | null
+  timelineNote?: string | null
+  nextStepText?: string | null
+  currency?: string
+  includedInvestmentCents: number
+  optionalInvestmentCents: number
+  totalInvestmentCents: number
+  snapshotJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  proposalVersion: number
+  presentationVersion: number
+  sourceFingerprint: string
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  supersededAt?: Date | string | null
+  createdByEmail: string
+  opportunity: Prisma.OpportunityCreateNestedOneWithoutProposalsInput
+  commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutProposalsInput
+  commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutProposalsInput
+  deliveries?: Prisma.ProposalDeliveryCreateNestedManyWithoutProposalInput
+}
+
+export type CommercialProposalUncheckedCreateWithoutAgreementsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  opportunityId: string
+  commercialScopeId: string
+  commercialPricingId: string
+  status?: $Enums.CommercialProposalStatus
+  revision?: number
+  title: string
+  executiveSummary: string
+  businessContext?: string | null
+  approachIntro?: string | null
+  timelineNote?: string | null
+  nextStepText?: string | null
+  currency?: string
+  includedInvestmentCents: number
+  optionalInvestmentCents: number
+  totalInvestmentCents: number
+  snapshotJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  proposalVersion: number
+  presentationVersion: number
+  sourceFingerprint: string
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  supersededAt?: Date | string | null
+  createdByEmail: string
+  deliveries?: Prisma.ProposalDeliveryUncheckedCreateNestedManyWithoutProposalInput
+}
+
+export type CommercialProposalCreateOrConnectWithoutAgreementsInput = {
+  where: Prisma.CommercialProposalWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommercialProposalCreateWithoutAgreementsInput, Prisma.CommercialProposalUncheckedCreateWithoutAgreementsInput>
+}
+
+export type CommercialProposalUpsertWithoutAgreementsInput = {
+  update: Prisma.XOR<Prisma.CommercialProposalUpdateWithoutAgreementsInput, Prisma.CommercialProposalUncheckedUpdateWithoutAgreementsInput>
+  create: Prisma.XOR<Prisma.CommercialProposalCreateWithoutAgreementsInput, Prisma.CommercialProposalUncheckedCreateWithoutAgreementsInput>
+  where?: Prisma.CommercialProposalWhereInput
+}
+
+export type CommercialProposalUpdateToOneWithWhereWithoutAgreementsInput = {
+  where?: Prisma.CommercialProposalWhereInput
+  data: Prisma.XOR<Prisma.CommercialProposalUpdateWithoutAgreementsInput, Prisma.CommercialProposalUncheckedUpdateWithoutAgreementsInput>
+}
+
+export type CommercialProposalUpdateWithoutAgreementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumCommercialProposalStatusFieldUpdateOperationsInput | $Enums.CommercialProposalStatus
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  executiveSummary?: Prisma.StringFieldUpdateOperationsInput | string
+  businessContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approachIntro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timelineNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  includedInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  optionalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  totalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  snapshotJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  proposalVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  presentationVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  opportunity?: Prisma.OpportunityUpdateOneRequiredWithoutProposalsNestedInput
+  commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutProposalsNestedInput
+  commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutProposalsNestedInput
+  deliveries?: Prisma.ProposalDeliveryUpdateManyWithoutProposalNestedInput
+}
+
+export type CommercialProposalUncheckedUpdateWithoutAgreementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  opportunityId?: Prisma.StringFieldUpdateOperationsInput | string
+  commercialScopeId?: Prisma.StringFieldUpdateOperationsInput | string
+  commercialPricingId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommercialProposalStatusFieldUpdateOperationsInput | $Enums.CommercialProposalStatus
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  executiveSummary?: Prisma.StringFieldUpdateOperationsInput | string
+  businessContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approachIntro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timelineNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  includedInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  optionalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  totalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  snapshotJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  proposalVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  presentationVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveries?: Prisma.ProposalDeliveryUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalCreateWithoutDeliveriesInput = {
@@ -1319,6 +1482,7 @@ export type CommercialProposalCreateWithoutDeliveriesInput = {
   opportunity: Prisma.OpportunityCreateNestedOneWithoutProposalsInput
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutProposalsInput
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutProposalsInput
+  agreements?: Prisma.CommercialAgreementCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalUncheckedCreateWithoutDeliveriesInput = {
@@ -1348,6 +1512,7 @@ export type CommercialProposalUncheckedCreateWithoutDeliveriesInput = {
   approvedByEmail?: string | null
   supersededAt?: Date | string | null
   createdByEmail: string
+  agreements?: Prisma.CommercialAgreementUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type CommercialProposalCreateOrConnectWithoutDeliveriesInput = {
@@ -1393,6 +1558,7 @@ export type CommercialProposalUpdateWithoutDeliveriesInput = {
   opportunity?: Prisma.OpportunityUpdateOneRequiredWithoutProposalsNestedInput
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutProposalsNestedInput
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutProposalsNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateWithoutDeliveriesInput = {
@@ -1422,6 +1588,7 @@ export type CommercialProposalUncheckedUpdateWithoutDeliveriesInput = {
   approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalCreateManyOpportunityInput = {
@@ -1479,6 +1646,7 @@ export type CommercialProposalUpdateWithoutOpportunityInput = {
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutProposalsNestedInput
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutProposalsNestedInput
   deliveries?: Prisma.ProposalDeliveryUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateWithoutOpportunityInput = {
@@ -1508,6 +1676,7 @@ export type CommercialProposalUncheckedUpdateWithoutOpportunityInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   deliveries?: Prisma.ProposalDeliveryUncheckedUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateManyWithoutOpportunityInput = {
@@ -1593,6 +1762,7 @@ export type CommercialProposalUpdateWithoutCommercialScopeInput = {
   opportunity?: Prisma.OpportunityUpdateOneRequiredWithoutProposalsNestedInput
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutProposalsNestedInput
   deliveries?: Prisma.ProposalDeliveryUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateWithoutCommercialScopeInput = {
@@ -1622,6 +1792,7 @@ export type CommercialProposalUncheckedUpdateWithoutCommercialScopeInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   deliveries?: Prisma.ProposalDeliveryUncheckedUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateManyWithoutCommercialScopeInput = {
@@ -1707,6 +1878,7 @@ export type CommercialProposalUpdateWithoutCommercialPricingInput = {
   opportunity?: Prisma.OpportunityUpdateOneRequiredWithoutProposalsNestedInput
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutProposalsNestedInput
   deliveries?: Prisma.ProposalDeliveryUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateWithoutCommercialPricingInput = {
@@ -1736,6 +1908,7 @@ export type CommercialProposalUncheckedUpdateWithoutCommercialPricingInput = {
   supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
   deliveries?: Prisma.ProposalDeliveryUncheckedUpdateManyWithoutProposalNestedInput
+  agreements?: Prisma.CommercialAgreementUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type CommercialProposalUncheckedUpdateManyWithoutCommercialPricingInput = {
@@ -1773,10 +1946,12 @@ export type CommercialProposalUncheckedUpdateManyWithoutCommercialPricingInput =
 
 export type CommercialProposalCountOutputType = {
   deliveries: number
+  agreements: number
 }
 
 export type CommercialProposalCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   deliveries?: boolean | CommercialProposalCountOutputTypeCountDeliveriesArgs
+  agreements?: boolean | CommercialProposalCountOutputTypeCountAgreementsArgs
 }
 
 /**
@@ -1794,6 +1969,13 @@ export type CommercialProposalCountOutputTypeDefaultArgs<ExtArgs extends runtime
  */
 export type CommercialProposalCountOutputTypeCountDeliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProposalDeliveryWhereInput
+}
+
+/**
+ * CommercialProposalCountOutputType without action
+ */
+export type CommercialProposalCountOutputTypeCountAgreementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommercialAgreementWhereInput
 }
 
 
@@ -1828,6 +2010,7 @@ export type CommercialProposalSelect<ExtArgs extends runtime.Types.Extensions.In
   commercialScope?: boolean | Prisma.CommercialScopeDefaultArgs<ExtArgs>
   commercialPricing?: boolean | Prisma.CommercialPricingDefaultArgs<ExtArgs>
   deliveries?: boolean | Prisma.CommercialProposal$deliveriesArgs<ExtArgs>
+  agreements?: boolean | Prisma.CommercialProposal$agreementsArgs<ExtArgs>
   _count?: boolean | Prisma.CommercialProposalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["commercialProposal"]>
 
@@ -1930,6 +2113,7 @@ export type CommercialProposalInclude<ExtArgs extends runtime.Types.Extensions.I
   commercialScope?: boolean | Prisma.CommercialScopeDefaultArgs<ExtArgs>
   commercialPricing?: boolean | Prisma.CommercialPricingDefaultArgs<ExtArgs>
   deliveries?: boolean | Prisma.CommercialProposal$deliveriesArgs<ExtArgs>
+  agreements?: boolean | Prisma.CommercialProposal$agreementsArgs<ExtArgs>
   _count?: boolean | Prisma.CommercialProposalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CommercialProposalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1950,6 +2134,7 @@ export type $CommercialProposalPayload<ExtArgs extends runtime.Types.Extensions.
     commercialScope: Prisma.$CommercialScopePayload<ExtArgs>
     commercialPricing: Prisma.$CommercialPricingPayload<ExtArgs>
     deliveries: Prisma.$ProposalDeliveryPayload<ExtArgs>[]
+    agreements: Prisma.$CommercialAgreementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2382,6 +2567,7 @@ export interface Prisma__CommercialProposalClient<T, Null = never, ExtArgs exten
   commercialScope<T extends Prisma.CommercialScopeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialScopeDefaultArgs<ExtArgs>>): Prisma.Prisma__CommercialScopeClient<runtime.Types.Result.GetResult<Prisma.$CommercialScopePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   commercialPricing<T extends Prisma.CommercialPricingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialPricingDefaultArgs<ExtArgs>>): Prisma.Prisma__CommercialPricingClient<runtime.Types.Result.GetResult<Prisma.$CommercialPricingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   deliveries<T extends Prisma.CommercialProposal$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialProposal$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProposalDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  agreements<T extends Prisma.CommercialProposal$agreementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialProposal$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2859,6 +3045,30 @@ export type CommercialProposal$deliveriesArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.ProposalDeliveryScalarFieldEnum | Prisma.ProposalDeliveryScalarFieldEnum[]
+}
+
+/**
+ * CommercialProposal.agreements
+ */
+export type CommercialProposal$agreementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommercialAgreement
+   */
+  select?: Prisma.CommercialAgreementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommercialAgreement
+   */
+  omit?: Prisma.CommercialAgreementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommercialAgreementInclude<ExtArgs> | null
+  where?: Prisma.CommercialAgreementWhereInput
+  orderBy?: Prisma.CommercialAgreementOrderByWithRelationInput | Prisma.CommercialAgreementOrderByWithRelationInput[]
+  cursor?: Prisma.CommercialAgreementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommercialAgreementScalarFieldEnum | Prisma.CommercialAgreementScalarFieldEnum[]
 }
 
 /**

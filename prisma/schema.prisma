@@ -1294,6 +1294,18 @@ enum OpportunityActivityType {
   PROPOSAL_LINK_VIEWED
   PROPOSAL_ACCESS_REVOKED
   PROPOSAL_DECISION_RECORDED
+  AGREEMENT_CREATED
+  AGREEMENT_REVIEWED
+  AGREEMENT_APPROVED
+  AGREEMENT_REVISED
+  AGREEMENT_SUPERSEDED
+  AGREEMENT_DELIVERY_PREPARED
+  AGREEMENT_SENT
+  AGREEMENT_SEND_FAILED
+  AGREEMENT_LINK_VIEWED
+  AGREEMENT_ACCESS_REVOKED
+  AGREEMENT_ACCEPTED
+  AGREEMENT_VOIDED
 }
 
 /// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
@@ -1345,6 +1357,8 @@ model Opportunity {
   pricings   CommercialPricing[]
   proposals  CommercialProposal[]
   proposalDeliveries ProposalDelivery[]
+  agreements CommercialAgreement[]
+  agreementDeliveries AgreementDelivery[]
 
   @@index([prospectId, createdAt])
   @@index([campaignId, createdAt])
@@ -1428,6 +1442,7 @@ model CommercialScope {
   sections CommercialScopeSection[]
   pricings CommercialPricing[]
   proposals CommercialProposal[]
+  agreements CommercialAgreement[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
@@ -1546,6 +1561,7 @@ model CommercialPricing {
 
   lineItems CommercialPricingLineItem[]
   proposals CommercialProposal[]
+  agreements CommercialAgreement[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
@@ -1655,11 +1671,199 @@ model CommercialProposal {
   createdByEmail String
 
   deliveries ProposalDelivery[]
+  agreements CommercialAgreement[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
   @@index([commercialScopeId])
   @@index([commercialPricingId])
+  @@index([status, createdAt])
+}
+
+enum CommercialAgreementStatus {
+  DRAFT
+  REVIEWED
+  APPROVED
+  ACCEPTED
+  SUPERSEDED
+  VOIDED
+}
+
+enum AgreementPaymentTermType {
+  FULL_UPFRONT
+  DEPOSIT_AND_BALANCE
+  CUSTOM
+}
+
+/// Commercial Sprint 8 — formal commercial agreement tied to approved Proposal/Scope/Pricing.
+model CommercialAgreement {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  proposalId String
+  proposal   CommercialProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  commercialScopeId String
+  commercialScope   CommercialScope @relation(fields: [commercialScopeId], references: [id], onDelete: Cascade)
+
+  commercialPricingId String
+  commercialPricing   CommercialPricing @relation(fields: [commercialPricingId], references: [id], onDelete: Cascade)
+
+  status CommercialAgreementStatus @default(DRAFT)
+
+  revision Int @default(1)
+
+  agreementVersion             Int
+  agreementPresentationVersion Int
+  termsVersion                 Int
+
+  title String
+
+  /// Deterministic fingerprint of upstream authority + agreement versions + payment terms.
+  sourceFingerprint String
+
+  /// Client-visible commercial facts snapshotted at approval.
+  snapshotJson Json
+
+  engagementOverview String
+
+  /// [string]
+  clientResponsibilitiesJson Json
+  /// [string]
+  jsResponsibilitiesJson Json
+
+  timelineTerms        String
+  changeRequestTerms   String
+  thirdPartyCostTerms  String
+  resultsDisclaimer    String
+  acceptanceLanguage   String
+
+  paymentTermType   AgreementPaymentTermType @default(DEPOSIT_AND_BALANCE)
+  paymentCustomText String?
+  /// Percent of total for DEPOSIT_AND_BALANCE (default 50).
+  depositPercent    Int                      @default(50)
+
+  currency                String
+  includedInvestmentCents Int
+  optionalInvestmentCents Int
+  totalInvestmentCents    Int
+  depositCents            Int?
+  balanceCents            Int?
+
+  proposalReference String
+
+  /// When Agreement is created without Proposal decision ACCEPTED.
+  createOverrideReason String?
+
+  createdByEmail String
+
+  reviewedAt      DateTime?
+  reviewedByEmail String?
+
+  approvedAt      DateTime?
+  approvedByEmail String?
+
+  acceptedAt DateTime?
+
+  supersededAt            DateTime?
+  supersededByAgreementId String?
+
+  voidedAt      DateTime?
+  voidedByEmail String?
+
+  deliveries AgreementDelivery[]
+  acceptance AgreementAcceptance?
+
+  @@index([opportunityId, createdAt])
+  @@index([opportunityId, status])
+  @@index([proposalId, createdAt])
+  @@index([commercialScopeId])
+  @@index([commercialPricingId])
+  @@index([status, createdAt])
+}
+
+/// Immutable client acceptance evidence for an Agreement.
+model AgreementAcceptance {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  agreementId String            @unique
+  agreement   CommercialAgreement @relation(fields: [agreementId], references: [id], onDelete: Cascade)
+
+  signerName  String
+  signerEmail String
+  signerTitle String?
+
+  acceptedAt DateTime
+
+  agreementVersion             Int
+  agreementPresentationVersion Int
+  termsVersion                 Int
+
+  agreementSnapshotHash  String
+  acceptanceTextSnapshot String
+
+  @@index([agreementId])
+}
+
+enum AgreementDeliveryStatus {
+  DRAFT
+  READY
+  SENDING
+  SENT
+  FAILED
+}
+
+/// Commercial Sprint 8 — human-controlled agreement delivery to a specific recipient.
+model AgreementDelivery {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  agreementId String
+  agreement   CommercialAgreement @relation(fields: [agreementId], references: [id], onDelete: Cascade)
+
+  recipientName  String
+  recipientEmail String
+
+  status AgreementDeliveryStatus @default(DRAFT)
+
+  subjectSnapshot String
+  messageSnapshot String
+
+  agreementVersion             Int
+  agreementPresentationVersion Int
+  termsVersion                 Int
+
+  /// SHA-256 hex digest of the share token. Raw token is never persisted.
+  shareTokenHash String @unique
+
+  sentAt          DateTime?
+  sentByEmail     String?
+  preparedByEmail String
+
+  deliveryProvider  String?
+  providerMessageId String?
+
+  failureCode    String?
+  failureMessage String?
+
+  revokedAt      DateTime?
+  revokedByEmail String?
+
+  firstViewedAt DateTime?
+  lastViewedAt  DateTime?
+  viewCount     Int       @default(0)
+
+  @@index([opportunityId, createdAt])
+  @@index([agreementId, createdAt])
   @@index([status, createdAt])
 }
 

@@ -226,6 +226,21 @@ export type CommercialPricingLineItem = Prisma.CommercialPricingLineItemModel
  */
 export type CommercialProposal = Prisma.CommercialProposalModel
 /**
+ * Model CommercialAgreement
+ * Commercial Sprint 8 — formal commercial agreement tied to approved Proposal/Scope/Pricing.
+ */
+export type CommercialAgreement = Prisma.CommercialAgreementModel
+/**
+ * Model AgreementAcceptance
+ * Immutable client acceptance evidence for an Agreement.
+ */
+export type AgreementAcceptance = Prisma.AgreementAcceptanceModel
+/**
+ * Model AgreementDelivery
+ * Commercial Sprint 8 — human-controlled agreement delivery to a specific recipient.
+ */
+export type AgreementDelivery = Prisma.AgreementDeliveryModel
+/**
  * Model ProposalDelivery
  * Commercial Sprint 7 — human-controlled proposal delivery to a specific recipient.
  * Snapshots recipient + message. Share token authorizes client read-only access.

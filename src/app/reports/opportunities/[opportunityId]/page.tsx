@@ -7,9 +7,14 @@ import { OpportunityDetailControls } from "@/components/opportunities/opportunit
 import { OpportunityPricingCard } from "@/components/opportunities/opportunity-pricing-card";
 import { OpportunityProposalCard } from "@/components/opportunities/opportunity-proposal-card";
 import { OpportunityProposalDeliveryCard } from "@/components/opportunities/opportunity-proposal-delivery-card";
+import { OpportunityAgreementCard } from "@/components/opportunities/opportunity-agreement-card";
 import { OpportunityScopeCard } from "@/components/opportunities/opportunity-scope-card";
 import { Button, Card, Container } from "@/components/ui";
 import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabilities";
+import { loadCurrentAgreementForOpportunity } from "@/lib/commercialization/agreement";
+import {
+  loadAgreementDeliveriesForOpportunity,
+} from "@/lib/commercialization/agreement-delivery";
 import { loadOpportunityDetail } from "@/lib/commercialization/opportunities/load";
 import {
   loadProposalDeliveriesForOpportunity,
@@ -61,13 +66,21 @@ export default async function OpportunityDetailPage({
   const proposalLoad = await loadCurrentProposalForOpportunity({
     opportunityId,
   });
-  const [deliveryContacts, deliveries] = await Promise.all([
-    loadProposalDeliveryContactOptions({ opportunityId }),
-    loadProposalDeliveriesForOpportunity({
-      opportunityId,
-      currentProposalId: proposalLoad.proposal?.id ?? null,
-    }),
-  ]);
+  const agreementLoad = await loadCurrentAgreementForOpportunity({
+    opportunityId,
+  });
+  const [deliveryContacts, deliveries, agreementDeliveries] =
+    await Promise.all([
+      loadProposalDeliveryContactOptions({ opportunityId }),
+      loadProposalDeliveriesForOpportunity({
+        opportunityId,
+        currentProposalId: proposalLoad.proposal?.id ?? null,
+      }),
+      loadAgreementDeliveriesForOpportunity({
+        opportunityId,
+        currentAgreementId: agreementLoad.agreement?.id ?? null,
+      }),
+    ]);
   const { opportunity, activities, intelligence } = detail;
   const caps = opportunity.capabilitiesSnapshot;
 
@@ -96,6 +109,26 @@ export default async function OpportunityDetailPage({
     proposalBlockedReason =
       "Approved Pricing is stale relative to Scope. Revise Pricing first.";
   }
+
+  const canCreateAgreement =
+    proposalLoad.proposal?.status === "APPROVED" &&
+    !proposalLoad.proposal.stale;
+
+  let agreementBlockedReason: string | null = null;
+  if (!proposalLoad.proposal || proposalLoad.proposal.status !== "APPROVED") {
+    agreementBlockedReason =
+      "Approve the current Proposal before creating an Agreement.";
+  } else if (proposalLoad.proposal.stale) {
+    agreementBlockedReason =
+      "Proposal is stale. Revise the Proposal before creating an Agreement.";
+  }
+
+  const proposalAccepted = deliveries.some(
+    (d) =>
+      d.isCurrentProposal &&
+      d.decision === "ACCEPTED" &&
+      !d.revokedAt,
+  );
 
   const canCreateProposal =
     hasApprovedScope &&
@@ -347,6 +380,26 @@ export default async function OpportunityDetailPage({
                 }}
                 contactOptions={deliveryContacts}
                 deliveries={deliveries}
+              />
+            </div>
+          </Card>
+        ) : null}
+
+        {proposalLoad.proposal?.status === "APPROVED" ? (
+          <Card variant="elevated" padding="lg">
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              Commercial Agreement
+            </h2>
+            <div className="mt-4">
+              <OpportunityAgreementCard
+                opportunityId={opportunity.id}
+                proposalId={proposalLoad.proposal.id}
+                canCreate={canCreateAgreement}
+                blockedReason={agreementBlockedReason}
+                proposalAccepted={proposalAccepted}
+                agreement={agreementLoad.agreement}
+                contactOptions={deliveryContacts}
+                deliveries={agreementDeliveries}
               />
             </div>
           </Card>

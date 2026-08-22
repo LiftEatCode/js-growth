@@ -386,7 +386,19 @@ export const OpportunityActivityType = {
   PROPOSAL_SEND_FAILED: 'PROPOSAL_SEND_FAILED',
   PROPOSAL_LINK_VIEWED: 'PROPOSAL_LINK_VIEWED',
   PROPOSAL_ACCESS_REVOKED: 'PROPOSAL_ACCESS_REVOKED',
-  PROPOSAL_DECISION_RECORDED: 'PROPOSAL_DECISION_RECORDED'
+  PROPOSAL_DECISION_RECORDED: 'PROPOSAL_DECISION_RECORDED',
+  AGREEMENT_CREATED: 'AGREEMENT_CREATED',
+  AGREEMENT_REVIEWED: 'AGREEMENT_REVIEWED',
+  AGREEMENT_APPROVED: 'AGREEMENT_APPROVED',
+  AGREEMENT_REVISED: 'AGREEMENT_REVISED',
+  AGREEMENT_SUPERSEDED: 'AGREEMENT_SUPERSEDED',
+  AGREEMENT_DELIVERY_PREPARED: 'AGREEMENT_DELIVERY_PREPARED',
+  AGREEMENT_SENT: 'AGREEMENT_SENT',
+  AGREEMENT_SEND_FAILED: 'AGREEMENT_SEND_FAILED',
+  AGREEMENT_LINK_VIEWED: 'AGREEMENT_LINK_VIEWED',
+  AGREEMENT_ACCESS_REVOKED: 'AGREEMENT_ACCESS_REVOKED',
+  AGREEMENT_ACCEPTED: 'AGREEMENT_ACCEPTED',
+  AGREEMENT_VOIDED: 'AGREEMENT_VOIDED'
 } as const
 
 export type OpportunityActivityType = (typeof OpportunityActivityType)[keyof typeof OpportunityActivityType]
@@ -420,6 +432,38 @@ export const CommercialProposalStatus = {
 } as const
 
 export type CommercialProposalStatus = (typeof CommercialProposalStatus)[keyof typeof CommercialProposalStatus]
+
+
+export const CommercialAgreementStatus = {
+  DRAFT: 'DRAFT',
+  REVIEWED: 'REVIEWED',
+  APPROVED: 'APPROVED',
+  ACCEPTED: 'ACCEPTED',
+  SUPERSEDED: 'SUPERSEDED',
+  VOIDED: 'VOIDED'
+} as const
+
+export type CommercialAgreementStatus = (typeof CommercialAgreementStatus)[keyof typeof CommercialAgreementStatus]
+
+
+export const AgreementPaymentTermType = {
+  FULL_UPFRONT: 'FULL_UPFRONT',
+  DEPOSIT_AND_BALANCE: 'DEPOSIT_AND_BALANCE',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type AgreementPaymentTermType = (typeof AgreementPaymentTermType)[keyof typeof AgreementPaymentTermType]
+
+
+export const AgreementDeliveryStatus = {
+  DRAFT: 'DRAFT',
+  READY: 'READY',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type AgreementDeliveryStatus = (typeof AgreementDeliveryStatus)[keyof typeof AgreementDeliveryStatus]
 
 
 export const ProposalDeliveryStatus = {

@@ -432,6 +432,9 @@ export const ModelName = {
   CommercialPricing: 'CommercialPricing',
   CommercialPricingLineItem: 'CommercialPricingLineItem',
   CommercialProposal: 'CommercialProposal',
+  CommercialAgreement: 'CommercialAgreement',
+  AgreementAcceptance: 'AgreementAcceptance',
+  AgreementDelivery: 'AgreementDelivery',
   ProposalDelivery: 'ProposalDelivery'
 } as const
 
@@ -448,7 +451,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "proposalDelivery"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3042,6 +3045,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CommercialAgreement: {
+      payload: Prisma.$CommercialAgreementPayload<ExtArgs>
+      fields: Prisma.CommercialAgreementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommercialAgreementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommercialAgreementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>
+        }
+        findFirst: {
+          args: Prisma.CommercialAgreementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommercialAgreementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>
+        }
+        findMany: {
+          args: Prisma.CommercialAgreementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>[]
+        }
+        create: {
+          args: Prisma.CommercialAgreementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>
+        }
+        createMany: {
+          args: Prisma.CommercialAgreementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommercialAgreementCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>[]
+        }
+        delete: {
+          args: Prisma.CommercialAgreementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>
+        }
+        update: {
+          args: Prisma.CommercialAgreementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommercialAgreementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommercialAgreementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommercialAgreementUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommercialAgreementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommercialAgreementPayload>
+        }
+        aggregate: {
+          args: Prisma.CommercialAgreementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommercialAgreement>
+        }
+        groupBy: {
+          args: Prisma.CommercialAgreementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialAgreementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommercialAgreementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommercialAgreementCountAggregateOutputType> | number
+        }
+      }
+    }
+    AgreementAcceptance: {
+      payload: Prisma.$AgreementAcceptancePayload<ExtArgs>
+      fields: Prisma.AgreementAcceptanceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgreementAcceptanceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgreementAcceptanceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>
+        }
+        findFirst: {
+          args: Prisma.AgreementAcceptanceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgreementAcceptanceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>
+        }
+        findMany: {
+          args: Prisma.AgreementAcceptanceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>[]
+        }
+        create: {
+          args: Prisma.AgreementAcceptanceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>
+        }
+        createMany: {
+          args: Prisma.AgreementAcceptanceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgreementAcceptanceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>[]
+        }
+        delete: {
+          args: Prisma.AgreementAcceptanceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>
+        }
+        update: {
+          args: Prisma.AgreementAcceptanceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>
+        }
+        deleteMany: {
+          args: Prisma.AgreementAcceptanceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgreementAcceptanceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgreementAcceptanceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>[]
+        }
+        upsert: {
+          args: Prisma.AgreementAcceptanceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementAcceptancePayload>
+        }
+        aggregate: {
+          args: Prisma.AgreementAcceptanceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgreementAcceptance>
+        }
+        groupBy: {
+          args: Prisma.AgreementAcceptanceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgreementAcceptanceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgreementAcceptanceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgreementAcceptanceCountAggregateOutputType> | number
+        }
+      }
+    }
+    AgreementDelivery: {
+      payload: Prisma.$AgreementDeliveryPayload<ExtArgs>
+      fields: Prisma.AgreementDeliveryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgreementDeliveryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgreementDeliveryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>
+        }
+        findFirst: {
+          args: Prisma.AgreementDeliveryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgreementDeliveryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>
+        }
+        findMany: {
+          args: Prisma.AgreementDeliveryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>[]
+        }
+        create: {
+          args: Prisma.AgreementDeliveryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>
+        }
+        createMany: {
+          args: Prisma.AgreementDeliveryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgreementDeliveryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>[]
+        }
+        delete: {
+          args: Prisma.AgreementDeliveryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>
+        }
+        update: {
+          args: Prisma.AgreementDeliveryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>
+        }
+        deleteMany: {
+          args: Prisma.AgreementDeliveryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgreementDeliveryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgreementDeliveryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>[]
+        }
+        upsert: {
+          args: Prisma.AgreementDeliveryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgreementDeliveryPayload>
+        }
+        aggregate: {
+          args: Prisma.AgreementDeliveryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgreementDelivery>
+        }
+        groupBy: {
+          args: Prisma.AgreementDeliveryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgreementDeliveryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgreementDeliveryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgreementDeliveryCountAggregateOutputType> | number
+        }
+      }
+    }
     ProposalDelivery: {
       payload: Prisma.$ProposalDeliveryPayload<ExtArgs>
       fields: Prisma.ProposalDeliveryFieldRefs
@@ -3961,6 +4186,106 @@ export const CommercialProposalScalarFieldEnum = {
 export type CommercialProposalScalarFieldEnum = (typeof CommercialProposalScalarFieldEnum)[keyof typeof CommercialProposalScalarFieldEnum]
 
 
+export const CommercialAgreementScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  proposalId: 'proposalId',
+  commercialScopeId: 'commercialScopeId',
+  commercialPricingId: 'commercialPricingId',
+  status: 'status',
+  revision: 'revision',
+  agreementVersion: 'agreementVersion',
+  agreementPresentationVersion: 'agreementPresentationVersion',
+  termsVersion: 'termsVersion',
+  title: 'title',
+  sourceFingerprint: 'sourceFingerprint',
+  snapshotJson: 'snapshotJson',
+  engagementOverview: 'engagementOverview',
+  clientResponsibilitiesJson: 'clientResponsibilitiesJson',
+  jsResponsibilitiesJson: 'jsResponsibilitiesJson',
+  timelineTerms: 'timelineTerms',
+  changeRequestTerms: 'changeRequestTerms',
+  thirdPartyCostTerms: 'thirdPartyCostTerms',
+  resultsDisclaimer: 'resultsDisclaimer',
+  acceptanceLanguage: 'acceptanceLanguage',
+  paymentTermType: 'paymentTermType',
+  paymentCustomText: 'paymentCustomText',
+  depositPercent: 'depositPercent',
+  currency: 'currency',
+  includedInvestmentCents: 'includedInvestmentCents',
+  optionalInvestmentCents: 'optionalInvestmentCents',
+  totalInvestmentCents: 'totalInvestmentCents',
+  depositCents: 'depositCents',
+  balanceCents: 'balanceCents',
+  proposalReference: 'proposalReference',
+  createOverrideReason: 'createOverrideReason',
+  createdByEmail: 'createdByEmail',
+  reviewedAt: 'reviewedAt',
+  reviewedByEmail: 'reviewedByEmail',
+  approvedAt: 'approvedAt',
+  approvedByEmail: 'approvedByEmail',
+  acceptedAt: 'acceptedAt',
+  supersededAt: 'supersededAt',
+  supersededByAgreementId: 'supersededByAgreementId',
+  voidedAt: 'voidedAt',
+  voidedByEmail: 'voidedByEmail'
+} as const
+
+export type CommercialAgreementScalarFieldEnum = (typeof CommercialAgreementScalarFieldEnum)[keyof typeof CommercialAgreementScalarFieldEnum]
+
+
+export const AgreementAcceptanceScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  agreementId: 'agreementId',
+  signerName: 'signerName',
+  signerEmail: 'signerEmail',
+  signerTitle: 'signerTitle',
+  acceptedAt: 'acceptedAt',
+  agreementVersion: 'agreementVersion',
+  agreementPresentationVersion: 'agreementPresentationVersion',
+  termsVersion: 'termsVersion',
+  agreementSnapshotHash: 'agreementSnapshotHash',
+  acceptanceTextSnapshot: 'acceptanceTextSnapshot'
+} as const
+
+export type AgreementAcceptanceScalarFieldEnum = (typeof AgreementAcceptanceScalarFieldEnum)[keyof typeof AgreementAcceptanceScalarFieldEnum]
+
+
+export const AgreementDeliveryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  agreementId: 'agreementId',
+  recipientName: 'recipientName',
+  recipientEmail: 'recipientEmail',
+  status: 'status',
+  subjectSnapshot: 'subjectSnapshot',
+  messageSnapshot: 'messageSnapshot',
+  agreementVersion: 'agreementVersion',
+  agreementPresentationVersion: 'agreementPresentationVersion',
+  termsVersion: 'termsVersion',
+  shareTokenHash: 'shareTokenHash',
+  sentAt: 'sentAt',
+  sentByEmail: 'sentByEmail',
+  preparedByEmail: 'preparedByEmail',
+  deliveryProvider: 'deliveryProvider',
+  providerMessageId: 'providerMessageId',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  revokedAt: 'revokedAt',
+  revokedByEmail: 'revokedByEmail',
+  firstViewedAt: 'firstViewedAt',
+  lastViewedAt: 'lastViewedAt',
+  viewCount: 'viewCount'
+} as const
+
+export type AgreementDeliveryScalarFieldEnum = (typeof AgreementDeliveryScalarFieldEnum)[keyof typeof AgreementDeliveryScalarFieldEnum]
+
+
 export const ProposalDeliveryScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -4618,6 +4943,48 @@ export type ListEnumCommercialProposalStatusFieldRefInput<$PrismaModel> = FieldR
 
 
 /**
+ * Reference to a field of type 'CommercialAgreementStatus'
+ */
+export type EnumCommercialAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialAgreementStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CommercialAgreementStatus[]'
+ */
+export type ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommercialAgreementStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AgreementPaymentTermType'
+ */
+export type EnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementPaymentTermType'>
+    
+
+
+/**
+ * Reference to a field of type 'AgreementPaymentTermType[]'
+ */
+export type ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementPaymentTermType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AgreementDeliveryStatus'
+ */
+export type EnumAgreementDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementDeliveryStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AgreementDeliveryStatus[]'
+ */
+export type ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementDeliveryStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'ProposalDeliveryStatus'
  */
 export type EnumProposalDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalDeliveryStatus'>
@@ -4830,6 +5197,9 @@ export type GlobalOmitConfig = {
   commercialPricing?: Prisma.CommercialPricingOmit
   commercialPricingLineItem?: Prisma.CommercialPricingLineItemOmit
   commercialProposal?: Prisma.CommercialProposalOmit
+  commercialAgreement?: Prisma.CommercialAgreementOmit
+  agreementAcceptance?: Prisma.AgreementAcceptanceOmit
+  agreementDelivery?: Prisma.AgreementDeliveryOmit
   proposalDelivery?: Prisma.ProposalDeliveryOmit
 }
 

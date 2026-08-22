@@ -926,6 +926,57 @@ export type EnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
 }
 
+export type EnumCommercialAgreementStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialAgreementStatus | Prisma.EnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialAgreementStatusFilter<$PrismaModel> | $Enums.CommercialAgreementStatus
+}
+
+export type EnumAgreementPaymentTermTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementPaymentTermType | Prisma.EnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel> | $Enums.AgreementPaymentTermType
+}
+
+export type EnumCommercialAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialAgreementStatus | Prisma.EnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialAgreementStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialAgreementStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialAgreementStatusFilter<$PrismaModel>
+}
+
+export type EnumAgreementPaymentTermTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementPaymentTermType | Prisma.EnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementPaymentTermTypeWithAggregatesFilter<$PrismaModel> | $Enums.AgreementPaymentTermType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel>
+}
+
+export type EnumAgreementDeliveryStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementDeliveryStatus | Prisma.EnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementDeliveryStatusFilter<$PrismaModel> | $Enums.AgreementDeliveryStatus
+}
+
+export type EnumAgreementDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementDeliveryStatus | Prisma.EnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementDeliveryStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementDeliveryStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAgreementDeliveryStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAgreementDeliveryStatusFilter<$PrismaModel>
+}
+
 export type EnumProposalDeliveryStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ProposalDeliveryStatus | Prisma.EnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ProposalDeliveryStatus[] | Prisma.ListEnumProposalDeliveryStatusFieldRefInput<$PrismaModel>
@@ -1818,6 +1869,57 @@ export type NestedEnumCommercialProposalStatusWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCommercialProposalStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCommercialAgreementStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialAgreementStatus | Prisma.EnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialAgreementStatusFilter<$PrismaModel> | $Enums.CommercialAgreementStatus
+}
+
+export type NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementPaymentTermType | Prisma.EnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel> | $Enums.AgreementPaymentTermType
+}
+
+export type NestedEnumCommercialAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommercialAgreementStatus | Prisma.EnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommercialAgreementStatus[] | Prisma.ListEnumCommercialAgreementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommercialAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommercialAgreementStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommercialAgreementStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommercialAgreementStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAgreementPaymentTermTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementPaymentTermType | Prisma.EnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementPaymentTermType[] | Prisma.ListEnumAgreementPaymentTermTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementPaymentTermTypeWithAggregatesFilter<$PrismaModel> | $Enums.AgreementPaymentTermType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAgreementPaymentTermTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumAgreementDeliveryStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementDeliveryStatus | Prisma.EnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementDeliveryStatusFilter<$PrismaModel> | $Enums.AgreementDeliveryStatus
+}
+
+export type NestedEnumAgreementDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AgreementDeliveryStatus | Prisma.EnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AgreementDeliveryStatus[] | Prisma.ListEnumAgreementDeliveryStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAgreementDeliveryStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementDeliveryStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAgreementDeliveryStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAgreementDeliveryStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumProposalDeliveryStatusFilter<$PrismaModel = never> = {
