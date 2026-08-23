@@ -65,6 +65,32 @@ import {
   netFollowerChange,
   safePercent,
   validateFacebookManualMetrics,
+  SEARCH_INTELLIGENCE_VERSION,
+  SEARCH_INTENTS,
+  SEARCH_TOPICS,
+  SEARCH_CAPABILITY_MAP,
+  SEARCH_OPPORTUNITY_SOURCES,
+  SEARCH_OPPORTUNITY_STATUSES,
+  SEARCH_PRIORITY_BANDS,
+  SEARCH_EVIDENCE_KINDS,
+  SEARCH_CONSOLE_STAGES,
+  SEARCH_PAGE_INVENTORY,
+  SEARCH_BLOG_INVENTORY,
+  SEARCH_CONTENT_GAPS,
+  SEARCH_INTERNAL_LINK_RECS,
+  SEARCH_OPPORTUNITY_SEEDS,
+  SEARCH_BASELINE_SUMMARY,
+  PREFERRED_SOURCES_DECISION,
+  AI_SEARCH_GUIDANCE_SUMMARY,
+  SOCIAL_VIDEO_SEARCH_DECISION,
+  isSearchIntent,
+  isSearchTopic,
+  isSearchOpportunitySource,
+  isSearchEvidenceKind,
+  resolveSearchConsoleStage,
+  computeSearchPriorityBand,
+  rankSeedOpportunities,
+  buildContentBriefFromSeed,
 } from "@/lib/growth";
 import {
   formatFunnelCount,
@@ -770,6 +796,213 @@ for (const example of ["company_seo_mistakes_001", "founder_lessons_001"]) {
   assert(!example.includes("opportunity_"), "utm example has no opportunity_");
   assert(!/\bcuid\b|[0-9a-f]{24}/i.test(example), "utm example has no id-like tokens");
 }
+
+// --- Growth Sprint 5: Search Intelligence ---
+assert(SEARCH_INTELLIGENCE_VERSION === 1, "search intelligence version");
+assert(SEARCH_INTENTS.includes("LOCAL_SERVICE"), "local service intent");
+assert(SEARCH_INTENTS.includes("PROBLEM_SOLUTION"), "problem solution intent");
+assert(SEARCH_TOPICS.includes("LOCAL_SEO"), "local seo topic");
+assert(SEARCH_TOPICS.includes("WEBSITE_AUDITS"), "audits topic");
+assert(
+  SEARCH_CAPABILITY_MAP.WEBSITE_GROWTH_AUDITS === "CORE_COMMERCIAL",
+  "audits core commercial",
+);
+assert(
+  SEARCH_CAPABILITY_MAP.CUSTOM_SOFTWARE === "FUTURE_PRODUCT",
+  "custom software future",
+);
+assert(SEARCH_OPPORTUNITY_SOURCES.includes("GSC_QUERY"), "gsc query source");
+assert(SEARCH_OPPORTUNITY_SOURCES.includes("SERVICE_GAP"), "service gap source");
+assert(SEARCH_OPPORTUNITY_STATUSES.includes("PLANNED"), "planned status");
+assert(SEARCH_PRIORITY_BANDS.includes("NOW"), "now band");
+assert(SEARCH_EVIDENCE_KINDS.includes("HYPOTHESIS"), "hypothesis evidence");
+assert(SEARCH_EVIDENCE_KINDS.includes("FIRST_PARTY_DATA"), "first party evidence");
+assert(isSearchIntent("TOOL"), "tool intent");
+assert(!isSearchIntent("RANKING"), "ranking not an intent");
+assert(isSearchTopic("SEO"), "seo topic");
+assert(isSearchOpportunitySource("MANUAL_RESEARCH"), "manual research source");
+assert(isSearchEvidenceKind("INFERENCE"), "inference evidence");
+
+assert(
+  resolveSearchConsoleStage({
+    impressions: 2,
+    queryDataStatus: "INSUFFICIENT_DATA",
+  }) === "STAGE_0",
+  "baseline remains stage 0",
+);
+assert(
+  resolveSearchConsoleStage({
+    impressions: 100,
+    queryDataStatus: "AVAILABLE",
+    distinctQueryCount: 5,
+  }) === "STAGE_1",
+  "thin queries stay stage 1",
+);
+
+const highPriority = computeSearchPriorityBand({
+  commercialRelevance: 3,
+  intentStrength: 3,
+  contentGap: 3,
+  auditFunnelRelevance: 3,
+  gscEvidence: 0,
+  effort: 1,
+});
+assert(highPriority.band === "NOW", "high commercial gap is NOW");
+assert(highPriority.score >= 28, "NOW score threshold");
+
+const lowPriority = computeSearchPriorityBand({
+  commercialRelevance: 1,
+  intentStrength: 1,
+  contentGap: 1,
+  auditFunnelRelevance: 1,
+  gscEvidence: 0,
+  effort: 3,
+});
+assert(lowPriority.band === "LATER", "low fit is LATER");
+
+const ranked = rankSeedOpportunities();
+assert(ranked.length === SEARCH_OPPORTUNITY_SEEDS.length, "all seeds ranked");
+assert(ranked[0]!.priority.score >= ranked[ranked.length - 1]!.priority.score, "desc score");
+
+const brief = buildContentBriefFromSeed(SEARCH_OPPORTUNITY_SEEDS[0]!);
+assert(brief.primaryIntent.length > 0, "brief has intent");
+assert(brief.avoidClaimConstraints.length >= 3, "brief claim constraints");
+assert(
+  brief.avoidClaimConstraints.some((c) => /guaranteed|guarantee/i.test(c)),
+  "brief forbids ranking guarantees",
+);
+assert(!("searchVolume" in brief), "brief has no searchVolume field");
+
+assert(SEARCH_BASELINE_SUMMARY.clicks === 0, "baseline clicks immutable");
+assert(SEARCH_BASELINE_SUMMARY.impressions === 2, "baseline impressions immutable");
+assert(
+  SEARCH_BASELINE_SUMMARY.queryDataStatus === "INSUFFICIENT_DATA",
+  "baseline query insufficient",
+);
+assert(
+  SEARCH_PAGE_INVENTORY.some((p) => p.path === "/website-audit"),
+  "audit in inventory",
+);
+assert(
+  SEARCH_PAGE_INVENTORY.some((p) => p.path === "/ai-solutions" && !p.inSitemap),
+  "ai-solutions sitemap gap noted",
+);
+assert(SEARCH_BLOG_INVENTORY.length === 7, "seven blog posts inventoried");
+assert(
+  SEARCH_BLOG_INVENTORY.some(
+    (p) => p.slug === "small-business-not-showing-up-on-google",
+  ),
+  "google visibility article inventoried",
+);
+assert(SEARCH_CONTENT_GAPS.some((g) => g.kind === "MISSING_SERVICE"), "service gap");
+assert(
+  SEARCH_CONTENT_GAPS.some((g) => g.id === "gap-local-cities"),
+  "local doorway caution",
+);
+assert(SEARCH_INTERNAL_LINK_RECS.length >= 3, "internal link recs");
+assert(SEARCH_CONSOLE_STAGES.length === 6, "six gsc stages");
+assert(PREFERRED_SOURCES_DECISION.status === "FUTURE_EXPERIMENT", "preferred sources deferred");
+assert(
+  SOCIAL_VIDEO_SEARCH_DECISION.status === "FUTURE_CROSS_CHANNEL",
+  "social video deferred",
+);
+assert(
+  /SEO best practices remain relevant/i.test(AI_SEARCH_GUIDANCE_SUMMARY.official),
+  "ai search official guidance",
+);
+
+assert(schema.includes("model GrowthSearchOpportunity"), "search opportunity model");
+assert(schema.includes("enum GrowthSearchIntent"), "search intent enum");
+assert(schema.includes("enum GrowthSearchEvidenceKind"), "evidence enum");
+
+assert(growthPage.includes("Search Intelligence"), "dashboard search section");
+assert(growthPage.includes("SEARCH_INTELLIGENCE_VERSION"), "dashboard version");
+assert(growthPage.includes("CreateSearchOpportunityForm"), "opportunity form");
+assert(
+  !/searchvolume|guaranteed ranking|keyword.?volume api/i.test(growthPage),
+  "no fake volume or ranking promises on dashboard",
+);
+assert(
+  !/googleapis\.com\/webmasters|searchconsole\.googleapis|openai|OpenAI/i.test(
+    growthPage,
+  ),
+  "no GSC API or OpenAI on growth page",
+);
+
+const searchIntelSrc = readFileSync(join(here, "search-intelligence.ts"), "utf8");
+assert(
+  !/searchVolume\s*[:=]|monthlySearches\s*[:=]|guaranteed position|guarantee(?:d)? traffic/i.test(
+    searchIntelSrc,
+  ),
+  "no fabricated volume or rank guarantees in model",
+);
+
+const searchResearch = readFileSync(
+  join(here, "../../../docs/research/seo-search-intelligence-2026.md"),
+  "utf8",
+);
+assert(searchResearch.includes("ACCESS DATE"), "research access date");
+assert(searchResearch.includes("GOOGLE OFFICIAL GUIDANCE"), "official section");
+assert(searchResearch.includes("OUR HYPOTHESIS"), "hypothesis separated");
+
+const searchIntelDoc = readFileSync(
+  join(here, "../../../docs/growth/search-intelligence.md"),
+  "utf8",
+);
+assert(searchIntelDoc.includes("SEARCH_INTELLIGENCE_VERSION"), "ops doc version");
+
+const briefContractDoc = readFileSync(
+  join(here, "../../../docs/growth/content-brief-contract.md"),
+  "utf8",
+);
+assert(briefContractDoc.includes("Sprint 6"), "brief contract for sprint 6");
+
+const visibilityPost = readFileSync(
+  join(
+    here,
+    "../../content/blog/small-business-not-showing-up-on-google.tsx",
+  ),
+  "utf8",
+);
+assert(
+  visibilityPost.includes('slug: "small-business-not-showing-up-on-google"'),
+  "visibility article slug",
+);
+assert(
+  visibilityPost.includes("growthEvent=\"blog_cta_clicked\""),
+  "visibility article tracks blog CTA",
+);
+assert(
+  visibilityPost.includes('href="/website-audit"'),
+  "visibility article links audit",
+);
+assert(
+  !/guaranteed page one|skyrocket rankings|dominate Google/i.test(
+    visibilityPost,
+  ),
+  "visibility article avoids hype claims",
+);
+
+const postsIndex = readFileSync(
+  join(here, "../../content/blog/posts.tsx"),
+  "utf8",
+);
+assert(
+  postsIndex.includes("smallBusinessNotShowingUpOnGooglePost"),
+  "visibility post registered",
+);
+
+const leadsPost = readFileSync(
+  join(
+    here,
+    "../../content/blog/why-most-small-business-websites-dont-generate-leads.tsx",
+  ),
+  "utf8",
+);
+assert(
+  leadsPost.includes("/blog/small-business-not-showing-up-on-google"),
+  "leads article cross-links visibility article",
+);
 
 console.log("growth measurement verification passed");
 process.exit(0);

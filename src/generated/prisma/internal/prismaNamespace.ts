@@ -447,7 +447,9 @@ export const ModelName = {
   GrowthSnapshot: 'GrowthSnapshot',
   GrowthContentRecord: 'GrowthContentRecord',
   GrowthContentMetricSnapshot: 'GrowthContentMetricSnapshot',
-  GrowthExperimentDecision: 'GrowthExperimentDecision'
+  GrowthExperimentDecision: 'GrowthExperimentDecision',
+  GrowthSearchOpportunity: 'GrowthSearchOpportunity',
+  GrowthContentPlan: 'GrowthContentPlan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -463,7 +465,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4241,6 +4243,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GrowthSearchOpportunity: {
+      payload: Prisma.$GrowthSearchOpportunityPayload<ExtArgs>
+      fields: Prisma.GrowthSearchOpportunityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GrowthSearchOpportunityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GrowthSearchOpportunityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>
+        }
+        findFirst: {
+          args: Prisma.GrowthSearchOpportunityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GrowthSearchOpportunityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>
+        }
+        findMany: {
+          args: Prisma.GrowthSearchOpportunityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>[]
+        }
+        create: {
+          args: Prisma.GrowthSearchOpportunityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>
+        }
+        createMany: {
+          args: Prisma.GrowthSearchOpportunityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GrowthSearchOpportunityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>[]
+        }
+        delete: {
+          args: Prisma.GrowthSearchOpportunityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>
+        }
+        update: {
+          args: Prisma.GrowthSearchOpportunityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>
+        }
+        deleteMany: {
+          args: Prisma.GrowthSearchOpportunityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GrowthSearchOpportunityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GrowthSearchOpportunityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>[]
+        }
+        upsert: {
+          args: Prisma.GrowthSearchOpportunityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSearchOpportunityPayload>
+        }
+        aggregate: {
+          args: Prisma.GrowthSearchOpportunityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGrowthSearchOpportunity>
+        }
+        groupBy: {
+          args: Prisma.GrowthSearchOpportunityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthSearchOpportunityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GrowthSearchOpportunityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthSearchOpportunityCountAggregateOutputType> | number
+        }
+      }
+    }
+    GrowthContentPlan: {
+      payload: Prisma.$GrowthContentPlanPayload<ExtArgs>
+      fields: Prisma.GrowthContentPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GrowthContentPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GrowthContentPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.GrowthContentPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GrowthContentPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>
+        }
+        findMany: {
+          args: Prisma.GrowthContentPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>[]
+        }
+        create: {
+          args: Prisma.GrowthContentPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>
+        }
+        createMany: {
+          args: Prisma.GrowthContentPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GrowthContentPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.GrowthContentPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>
+        }
+        update: {
+          args: Prisma.GrowthContentPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.GrowthContentPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GrowthContentPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GrowthContentPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.GrowthContentPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthContentPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.GrowthContentPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGrowthContentPlan>
+        }
+        groupBy: {
+          args: Prisma.GrowthContentPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthContentPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GrowthContentPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthContentPlanCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5471,6 +5621,70 @@ export const GrowthExperimentDecisionScalarFieldEnum = {
 export type GrowthExperimentDecisionScalarFieldEnum = (typeof GrowthExperimentDecisionScalarFieldEnum)[keyof typeof GrowthExperimentDecisionScalarFieldEnum]
 
 
+export const GrowthSearchOpportunityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  topic: 'topic',
+  queryConcept: 'queryConcept',
+  intent: 'intent',
+  pageType: 'pageType',
+  source: 'source',
+  evidenceKind: 'evidenceKind',
+  status: 'status',
+  priorityBand: 'priorityBand',
+  priorityScore: 'priorityScore',
+  currentPagePath: 'currentPagePath',
+  recommendedPath: 'recommendedPath',
+  locationContext: 'locationContext',
+  notes: 'notes',
+  createdByEmail: 'createdByEmail',
+  updatedByEmail: 'updatedByEmail'
+} as const
+
+export type GrowthSearchOpportunityScalarFieldEnum = (typeof GrowthSearchOpportunityScalarFieldEnum)[keyof typeof GrowthSearchOpportunityScalarFieldEnum]
+
+
+export const GrowthContentPlanScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  contentType: 'contentType',
+  sourceType: 'sourceType',
+  status: 'status',
+  priorityBand: 'priorityBand',
+  publisher: 'publisher',
+  topic: 'topic',
+  workingTitle: 'workingTitle',
+  audience: 'audience',
+  primaryObjective: 'primaryObjective',
+  searchIntent: 'searchIntent',
+  pageType: 'pageType',
+  targetServicePath: 'targetServicePath',
+  searchOpportunitySlug: 'searchOpportunitySlug',
+  whyRecommendedJson: 'whyRecommendedJson',
+  briefJson: 'briefJson',
+  generationJson: 'generationJson',
+  humanDraftJson: 'humanDraftJson',
+  reviewJson: 'reviewJson',
+  generationHistoryJson: 'generationHistoryJson',
+  publishedUrl: 'publishedUrl',
+  sourceAssetSlug: 'sourceAssetSlug',
+  plannerPromptVersion: 'plannerPromptVersion',
+  developerPromptVersion: 'developerPromptVersion',
+  reviewPromptVersion: 'reviewPromptVersion',
+  lastModel: 'lastModel',
+  lastInputTokens: 'lastInputTokens',
+  lastOutputTokens: 'lastOutputTokens',
+  createdByEmail: 'createdByEmail',
+  updatedByEmail: 'updatedByEmail'
+} as const
+
+export type GrowthContentPlanScalarFieldEnum = (typeof GrowthContentPlanScalarFieldEnum)[keyof typeof GrowthContentPlanScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6399,6 +6613,174 @@ export type EnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel> = FieldR
 export type ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthExperimentDecisionKind[]'>
     
 
+
+/**
+ * Reference to a field of type 'GrowthSearchTopic'
+ */
+export type EnumGrowthSearchTopicFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchTopic'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchTopic[]'
+ */
+export type ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchTopic[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchIntent'
+ */
+export type EnumGrowthSearchIntentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchIntent'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchIntent[]'
+ */
+export type ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchIntent[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchPageType'
+ */
+export type EnumGrowthSearchPageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchPageType'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchPageType[]'
+ */
+export type ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchPageType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchOpportunitySource'
+ */
+export type EnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchOpportunitySource'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchOpportunitySource[]'
+ */
+export type ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchOpportunitySource[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchEvidenceKind'
+ */
+export type EnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchEvidenceKind'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchEvidenceKind[]'
+ */
+export type ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchEvidenceKind[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchOpportunityStatus'
+ */
+export type EnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchOpportunityStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchOpportunityStatus[]'
+ */
+export type ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchOpportunityStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchPriorityBand'
+ */
+export type EnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchPriorityBand'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSearchPriorityBand[]'
+ */
+export type ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSearchPriorityBand[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanType'
+ */
+export type EnumGrowthContentPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanType'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanType[]'
+ */
+export type ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanSourceType'
+ */
+export type EnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanSourceType'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanSourceType[]'
+ */
+export type ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanSourceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanStatus'
+ */
+export type EnumGrowthContentPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanStatus[]'
+ */
+export type ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanPriority'
+ */
+export type EnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanPriority'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanPriority[]'
+ */
+export type ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanPriority[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanPublisher'
+ */
+export type EnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanPublisher'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthContentPlanPublisher[]'
+ */
+export type ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanPublisher[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -6601,6 +6983,8 @@ export type GlobalOmitConfig = {
   growthContentRecord?: Prisma.GrowthContentRecordOmit
   growthContentMetricSnapshot?: Prisma.GrowthContentMetricSnapshotOmit
   growthExperimentDecision?: Prisma.GrowthExperimentDecisionOmit
+  growthSearchOpportunity?: Prisma.GrowthSearchOpportunityOmit
+  growthContentPlan?: Prisma.GrowthContentPlanOmit
 }
 
 /* Types for Logging */

@@ -101,7 +101,9 @@ export const ModelName = {
   GrowthSnapshot: 'GrowthSnapshot',
   GrowthContentRecord: 'GrowthContentRecord',
   GrowthContentMetricSnapshot: 'GrowthContentMetricSnapshot',
-  GrowthExperimentDecision: 'GrowthExperimentDecision'
+  GrowthExperimentDecision: 'GrowthExperimentDecision',
+  GrowthSearchOpportunity: 'GrowthSearchOpportunity',
+  GrowthContentPlan: 'GrowthContentPlan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1309,6 +1311,70 @@ export const GrowthExperimentDecisionScalarFieldEnum = {
 } as const
 
 export type GrowthExperimentDecisionScalarFieldEnum = (typeof GrowthExperimentDecisionScalarFieldEnum)[keyof typeof GrowthExperimentDecisionScalarFieldEnum]
+
+
+export const GrowthSearchOpportunityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  topic: 'topic',
+  queryConcept: 'queryConcept',
+  intent: 'intent',
+  pageType: 'pageType',
+  source: 'source',
+  evidenceKind: 'evidenceKind',
+  status: 'status',
+  priorityBand: 'priorityBand',
+  priorityScore: 'priorityScore',
+  currentPagePath: 'currentPagePath',
+  recommendedPath: 'recommendedPath',
+  locationContext: 'locationContext',
+  notes: 'notes',
+  createdByEmail: 'createdByEmail',
+  updatedByEmail: 'updatedByEmail'
+} as const
+
+export type GrowthSearchOpportunityScalarFieldEnum = (typeof GrowthSearchOpportunityScalarFieldEnum)[keyof typeof GrowthSearchOpportunityScalarFieldEnum]
+
+
+export const GrowthContentPlanScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  contentType: 'contentType',
+  sourceType: 'sourceType',
+  status: 'status',
+  priorityBand: 'priorityBand',
+  publisher: 'publisher',
+  topic: 'topic',
+  workingTitle: 'workingTitle',
+  audience: 'audience',
+  primaryObjective: 'primaryObjective',
+  searchIntent: 'searchIntent',
+  pageType: 'pageType',
+  targetServicePath: 'targetServicePath',
+  searchOpportunitySlug: 'searchOpportunitySlug',
+  whyRecommendedJson: 'whyRecommendedJson',
+  briefJson: 'briefJson',
+  generationJson: 'generationJson',
+  humanDraftJson: 'humanDraftJson',
+  reviewJson: 'reviewJson',
+  generationHistoryJson: 'generationHistoryJson',
+  publishedUrl: 'publishedUrl',
+  sourceAssetSlug: 'sourceAssetSlug',
+  plannerPromptVersion: 'plannerPromptVersion',
+  developerPromptVersion: 'developerPromptVersion',
+  reviewPromptVersion: 'reviewPromptVersion',
+  lastModel: 'lastModel',
+  lastInputTokens: 'lastInputTokens',
+  lastOutputTokens: 'lastOutputTokens',
+  createdByEmail: 'createdByEmail',
+  updatedByEmail: 'updatedByEmail'
+} as const
+
+export type GrowthContentPlanScalarFieldEnum = (typeof GrowthContentPlanScalarFieldEnum)[keyof typeof GrowthContentPlanScalarFieldEnum]
 
 
 export const SortOrder = {

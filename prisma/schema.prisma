@@ -2496,3 +2496,219 @@ model GrowthExperimentDecision {
   @@index([experimentId, createdAt])
   @@index([createdAt])
 }
+
+// --- Growth Sprint 5: Search Intelligence ---
+
+enum GrowthSearchTopic {
+  WEBSITE_GROWTH
+  WEB_DEVELOPMENT
+  SEO
+  LOCAL_SEO
+  GBP
+  CONVERSION
+  WEBSITE_AUDITS
+  CONTENT_TRAFFIC
+  AI_AUTOMATION
+  BUSINESS_AUTOMATION
+  CUSTOM_SOFTWARE
+  ANALYTICS_GROWTH
+}
+
+enum GrowthSearchIntent {
+  INFORMATIONAL
+  COMMERCIAL_INVESTIGATION
+  SERVICE
+  LOCAL_SERVICE
+  TOOL
+  COMPARISON
+  PROBLEM_SOLUTION
+  BRAND
+}
+
+enum GrowthSearchOpportunitySource {
+  GSC_QUERY
+  GSC_PAGE
+  SERVICE_GAP
+  CONTENT_GAP
+  CUSTOMER_QUESTION
+  COMPETITOR_OBSERVATION
+  LOCAL_INTENT
+  AUDIT_INSIGHT
+  MANUAL_RESEARCH
+}
+
+enum GrowthSearchOpportunityStatus {
+  IDEA
+  VALIDATED
+  PLANNED
+  IN_PROGRESS
+  PUBLISHED
+  MONITORING
+  REFRESH
+  ARCHIVED
+}
+
+enum GrowthSearchPriorityBand {
+  NOW
+  NEXT
+  LATER
+}
+
+enum GrowthSearchEvidenceKind {
+  FIRST_PARTY_DATA
+  OFFICIAL_GUIDANCE
+  MANUAL_RESEARCH
+  INFERENCE
+  HYPOTHESIS
+}
+
+enum GrowthSearchPageType {
+  SERVICE
+  BLOG
+  TOOL
+  LANDING
+  LOCAL
+  RESOURCE
+  ABOUT
+  OTHER
+}
+
+/// Manual search opportunity backlog for Sprint 5→6 handoff.
+/// No fabricated search volumes. No ranking guarantees.
+model GrowthSearchOpportunity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  /// Stable operator slug (e.g. seo-service-page). Unique.
+  slug String @unique @db.VarChar(80)
+
+  topic        GrowthSearchTopic
+  queryConcept String @db.VarChar(200)
+  intent       GrowthSearchIntent
+  pageType     GrowthSearchPageType
+  source       GrowthSearchOpportunitySource
+  evidenceKind GrowthSearchEvidenceKind
+  status       GrowthSearchOpportunityStatus @default(IDEA)
+  priorityBand GrowthSearchPriorityBand
+  /// Deterministic score from priority model (diagnostic only).
+  priorityScore Int
+
+  currentPagePath    String? @db.VarChar(300)
+  recommendedPath    String? @db.VarChar(300)
+  locationContext    String? @db.VarChar(120)
+  notes              String? @db.VarChar(2000)
+
+  createdByEmail String
+  updatedByEmail String?
+
+  @@index([status, priorityBand])
+  @@index([topic, status])
+  @@index([priorityScore])
+  @@index([createdAt])
+}
+
+// --- Growth Sprint 6: Content Intelligence ---
+
+enum GrowthContentPlanType {
+  SERVICE_PAGE
+  BLOG
+  FACEBOOK_COMPANY
+  FACEBOOK_FOUNDER
+  GBP_POST
+  VIDEO_BRIEF
+}
+
+enum GrowthContentPlanSourceType {
+  SEARCH_OPPORTUNITY
+  CONTENT_GAP
+  SERVICE_GAP
+  CONTENT_REFRESH
+  FACEBOOK_LEARNING
+  CUSTOMER_QUESTION
+  AUDIT_INSIGHT
+  LOCAL_OPPORTUNITY
+  EXPERIMENT
+  MANUAL_OPERATOR
+  REPURPOSE
+}
+
+enum GrowthContentPlanStatus {
+  IDEA
+  RESEARCHING
+  BRIEF_READY
+  READY_TO_GENERATE
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  MONITORING
+  REFRESH
+  ARCHIVED
+}
+
+enum GrowthContentPlanPriority {
+  NOW
+  NEXT
+  LATER
+}
+
+enum GrowthContentPlanPublisher {
+  COMPANY
+  FOUNDER
+  NONE
+}
+
+/// Content plan for Sprint 6 — brief → draft → human approval.
+/// AI must not set PUBLISHED. Generation history lives in generationHistoryJson.
+model GrowthContentPlan {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  slug String @unique @db.VarChar(80)
+
+  contentType  GrowthContentPlanType
+  sourceType   GrowthContentPlanSourceType
+  status       GrowthContentPlanStatus @default(IDEA)
+  priorityBand GrowthContentPlanPriority
+  publisher    GrowthContentPlanPublisher @default(NONE)
+
+  topic             String  @db.VarChar(40)
+  workingTitle      String  @db.VarChar(200)
+  audience          String  @db.VarChar(300)
+  primaryObjective  String  @db.VarChar(40)
+  searchIntent      String? @db.VarChar(40)
+  pageType          String? @db.VarChar(40)
+  targetServicePath String? @db.VarChar(300)
+
+  /// Optional link to GrowthSearchOpportunity.slug (provenance).
+  searchOpportunitySlug String? @db.VarChar(80)
+
+  whyRecommendedJson Json
+  briefJson          Json?
+  /// AI draft payload (structured). Never auto-published.
+  generationJson     Json?
+  /// Human-edited canonical draft (preferred over generationJson when set).
+  humanDraftJson     Json?
+  reviewJson         Json?
+  generationHistoryJson Json?
+
+  publishedUrl   String? @db.VarChar(500)
+  sourceAssetSlug String? @db.VarChar(80)
+
+  plannerPromptVersion   Int @default(1)
+  developerPromptVersion Int?
+  reviewPromptVersion    Int?
+  lastModel              String? @db.VarChar(80)
+  lastInputTokens        Int?
+  lastOutputTokens       Int?
+
+  createdByEmail String
+  updatedByEmail String?
+
+  @@index([status, priorityBand])
+  @@index([contentType, status])
+  @@index([searchOpportunitySlug])
+  @@index([createdAt])
+}

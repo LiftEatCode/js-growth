@@ -1300,6 +1300,210 @@ export type EnumGrowthExperimentDecisionKindWithAggregatesFilter<$PrismaModel = 
   _max?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
 }
 
+export type EnumGrowthSearchTopicFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchTopic | Prisma.EnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchTopicFilter<$PrismaModel> | $Enums.GrowthSearchTopic
+}
+
+export type EnumGrowthSearchIntentFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchIntent | Prisma.EnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchIntentFilter<$PrismaModel> | $Enums.GrowthSearchIntent
+}
+
+export type EnumGrowthSearchPageTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPageType | Prisma.EnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPageTypeFilter<$PrismaModel> | $Enums.GrowthSearchPageType
+}
+
+export type EnumGrowthSearchOpportunitySourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunitySource | Prisma.EnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel> | $Enums.GrowthSearchOpportunitySource
+}
+
+export type EnumGrowthSearchEvidenceKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchEvidenceKind | Prisma.EnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel> | $Enums.GrowthSearchEvidenceKind
+}
+
+export type EnumGrowthSearchOpportunityStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunityStatus | Prisma.EnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel> | $Enums.GrowthSearchOpportunityStatus
+}
+
+export type EnumGrowthSearchPriorityBandFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPriorityBand | Prisma.EnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel> | $Enums.GrowthSearchPriorityBand
+}
+
+export type EnumGrowthSearchTopicWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchTopic | Prisma.EnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchTopicWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchTopic
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchTopicFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchTopicFilter<$PrismaModel>
+}
+
+export type EnumGrowthSearchIntentWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchIntent | Prisma.EnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchIntentWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchIntent
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchIntentFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchIntentFilter<$PrismaModel>
+}
+
+export type EnumGrowthSearchPageTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPageType | Prisma.EnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPageTypeWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchPageType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchPageTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchPageTypeFilter<$PrismaModel>
+}
+
+export type EnumGrowthSearchOpportunitySourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunitySource | Prisma.EnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunitySourceWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchOpportunitySource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel>
+}
+
+export type EnumGrowthSearchEvidenceKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchEvidenceKind | Prisma.EnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchEvidenceKindWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchEvidenceKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel>
+}
+
+export type EnumGrowthSearchOpportunityStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunityStatus | Prisma.EnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunityStatusWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchOpportunityStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel>
+}
+
+export type EnumGrowthSearchPriorityBandWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPriorityBand | Prisma.EnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPriorityBandWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchPriorityBand
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel>
+}
+
+export type EnumGrowthContentPlanTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanType | Prisma.EnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanTypeFilter<$PrismaModel> | $Enums.GrowthContentPlanType
+}
+
+export type EnumGrowthContentPlanSourceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanSourceType | Prisma.EnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel> | $Enums.GrowthContentPlanSourceType
+}
+
+export type EnumGrowthContentPlanStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanStatus | Prisma.EnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanStatusFilter<$PrismaModel> | $Enums.GrowthContentPlanStatus
+}
+
+export type EnumGrowthContentPlanPriorityFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPriority | Prisma.EnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel> | $Enums.GrowthContentPlanPriority
+}
+
+export type EnumGrowthContentPlanPublisherFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPublisher | Prisma.EnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel> | $Enums.GrowthContentPlanPublisher
+}
+
+export type EnumGrowthContentPlanTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanType | Prisma.EnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanTypeWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanTypeFilter<$PrismaModel>
+}
+
+export type EnumGrowthContentPlanSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanSourceType | Prisma.EnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanSourceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel>
+}
+
+export type EnumGrowthContentPlanStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanStatus | Prisma.EnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanStatusWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanStatusFilter<$PrismaModel>
+}
+
+export type EnumGrowthContentPlanPriorityWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPriority | Prisma.EnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPriorityWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanPriority
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel>
+}
+
+export type EnumGrowthContentPlanPublisherWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPublisher | Prisma.EnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPublisherWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanPublisher
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -2532,6 +2736,210 @@ export type NestedEnumGrowthExperimentDecisionKindWithAggregatesFilter<$PrismaMo
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchTopicFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchTopic | Prisma.EnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchTopicFilter<$PrismaModel> | $Enums.GrowthSearchTopic
+}
+
+export type NestedEnumGrowthSearchIntentFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchIntent | Prisma.EnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchIntentFilter<$PrismaModel> | $Enums.GrowthSearchIntent
+}
+
+export type NestedEnumGrowthSearchPageTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPageType | Prisma.EnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPageTypeFilter<$PrismaModel> | $Enums.GrowthSearchPageType
+}
+
+export type NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunitySource | Prisma.EnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel> | $Enums.GrowthSearchOpportunitySource
+}
+
+export type NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchEvidenceKind | Prisma.EnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel> | $Enums.GrowthSearchEvidenceKind
+}
+
+export type NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunityStatus | Prisma.EnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel> | $Enums.GrowthSearchOpportunityStatus
+}
+
+export type NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPriorityBand | Prisma.EnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel> | $Enums.GrowthSearchPriorityBand
+}
+
+export type NestedEnumGrowthSearchTopicWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchTopic | Prisma.EnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchTopic[] | Prisma.ListEnumGrowthSearchTopicFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchTopicWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchTopic
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchTopicFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchTopicFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchIntentWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchIntent | Prisma.EnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchIntent[] | Prisma.ListEnumGrowthSearchIntentFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchIntentWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchIntent
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchIntentFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchIntentFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchPageTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPageType | Prisma.EnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPageType[] | Prisma.ListEnumGrowthSearchPageTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPageTypeWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchPageType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchPageTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchPageTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchOpportunitySourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunitySource | Prisma.EnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunitySource[] | Prisma.ListEnumGrowthSearchOpportunitySourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunitySourceWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchOpportunitySource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchOpportunitySourceFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchEvidenceKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchEvidenceKind | Prisma.EnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchEvidenceKind[] | Prisma.ListEnumGrowthSearchEvidenceKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchEvidenceKindWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchEvidenceKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchEvidenceKindFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchOpportunityStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchOpportunityStatus | Prisma.EnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchOpportunityStatus[] | Prisma.ListEnumGrowthSearchOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchOpportunityStatusWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchOpportunityStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchOpportunityStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSearchPriorityBandWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSearchPriorityBand | Prisma.EnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSearchPriorityBand[] | Prisma.ListEnumGrowthSearchPriorityBandFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSearchPriorityBandWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSearchPriorityBand
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSearchPriorityBandFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthContentPlanTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanType | Prisma.EnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanTypeFilter<$PrismaModel> | $Enums.GrowthContentPlanType
+}
+
+export type NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanSourceType | Prisma.EnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel> | $Enums.GrowthContentPlanSourceType
+}
+
+export type NestedEnumGrowthContentPlanStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanStatus | Prisma.EnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanStatusFilter<$PrismaModel> | $Enums.GrowthContentPlanStatus
+}
+
+export type NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPriority | Prisma.EnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel> | $Enums.GrowthContentPlanPriority
+}
+
+export type NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPublisher | Prisma.EnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel> | $Enums.GrowthContentPlanPublisher
+}
+
+export type NestedEnumGrowthContentPlanTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanType | Prisma.EnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanType[] | Prisma.ListEnumGrowthContentPlanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanTypeWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthContentPlanSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanSourceType | Prisma.EnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanSourceType[] | Prisma.ListEnumGrowthContentPlanSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanSourceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanSourceTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthContentPlanStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanStatus | Prisma.EnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanStatus[] | Prisma.ListEnumGrowthContentPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanStatusWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthContentPlanPriorityWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPriority | Prisma.EnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPriority[] | Prisma.ListEnumGrowthContentPlanPriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPriorityWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanPriority
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanPriorityFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthContentPlanPublisherWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentPlanPublisher | Prisma.EnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentPlanPublisher[] | Prisma.ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentPlanPublisherWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentPlanPublisher
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
 }
 
 

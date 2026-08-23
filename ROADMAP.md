@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–4** (Measurement → Audit Funnel → Facebook Engine → 30-day Execution) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–6** (Measurement → Audit Funnel → Facebook Engine → 30-day Execution → Search Intelligence → Content Intelligence) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -238,6 +238,31 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 
 **Not included:** Auto-posting, AI post generation, Meta API, Baseline V1 changes.
 
+### Growth Sprint 5 — SEO & Search Intelligence Engine V1 ✅
+
+- Research: `docs/research/seo-search-intelligence-2026.md` (Google Search Central / GSC 2026)
+- `SEARCH_INTELLIGENCE_VERSION = 1`: intents, topics, capability tiers, GSC stages, priority bands, inventories, gaps, seed backlog, content brief contract
+- Prisma `GrowthSearchOpportunity`; `/reports/growth` Search Intelligence panel
+- Preferred Sources + social/video GSC = FUTURE; no GSC API / OpenAI / doorway pages
+- Baseline V1 Search Console totals **immutable**; Facebook Sprint 4 continues in parallel (2026-08-24 → 2026-09-22)
+
+**Not included:** Content drafting automation, GSC OAuth, keyword-volume APIs, mass location pages.
+
+### Growth Sprint 6 — Content Intelligence & Development Engine V1 ✅
+
+- Research: `docs/research/content-intelligence-ai-2026.md`
+- `CONTENT_INTELLIGENCE_VERSION = 1`: planner, collision, claim safety, business facts, briefs
+- Prisma `GrowthContentPlan`; `/reports/growth/content` UI
+- Operator-initiated OpenAI drafts (Responses API) + skeleton mode; human edit/approve; no auto-publish
+- Initial five plans from Sprint 5; acceptance `seo-service-page-v1`
+- Baseline V1 unchanged; Facebook execution continues in parallel
+
+### Growth Sprint 7 — (recommended next)
+
+- Publish SEO service page from approved plan (human)
+- Content performance feedback loop into recommendations
+- Optional AI review pass; Facebook repurposing from approved source assets
+
 ---
 
 ## HARDENING / OPERATIONS (not new features)
@@ -253,11 +278,15 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 Prioritize based on business leverage with the **current** stack:
 
 1. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-2. Execute Growth Sprint 3 Facebook experiments against Baseline V1 (followers + engagement + qualified traffic + audits) — measure before Meta API automation
-3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
-4. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
-5. ~~Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)~~ — **Sprint 7: token-gated delivery + decision (no PDF/e-sign/Stripe yet)**
-6. ~~Measurement / attribution foundation~~ — **Growth Sprint 1 complete**
+2. Continue Facebook 30-day execution (do not pause); measure before Meta API automation
+3. Persist Sprint 5 search opportunities; weekly search review at GSC Stage 0; prepare Sprint 6 content briefs
+4. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
+5. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
+6. ~~Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)~~ — **Sprint 7: token-gated delivery + decision (no PDF/e-sign/Stripe yet)**
+7. ~~Measurement / attribution foundation~~ — **Growth Sprint 1 complete**
+8. ~~Search Intelligence foundation~~ — **Growth Sprint 5 complete**
+9. ~~Content Intelligence foundation~~ — **Growth Sprint 6 complete**
+10. Human-publish SEO service page from approved Sprint 6 plan; feed performance into recommendations (Sprint 7)
 
 ## LATER / EXPLORATORY
 
@@ -340,6 +369,9 @@ Published articles
 - ✅ Why most small business websites don't generate leads
 - ✅ Why local businesses need more than a website
 - ✅ What is Local SEO
+- ✅ Why a one-time website audit isn't enough
+- ✅ Website Growth Audit launch
+- ✅ Small business not showing up on Google (what to fix first)
 
 Upcoming Articles
 

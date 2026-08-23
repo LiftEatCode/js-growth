@@ -14,6 +14,10 @@ import { CreateGrowthContentForm } from "@/components/growth/create-content-form
 import { CreateGrowthSnapshotForm } from "@/components/growth/create-snapshot-form";
 import { GrowthContentRecordsTable } from "@/components/growth/growth-content-records-table";
 import {
+  CreateSearchOpportunityForm,
+  SearchOpportunityRowForm,
+} from "@/components/growth/search-opportunity-form";
+import {
   Button,
   Card,
   Container,
@@ -46,6 +50,7 @@ import {
   KPI_HIERARCHY,
   netFollowerChange,
   type FacebookSnapshotMetrics,
+  type SearchConsoleSnapshotMetrics,
 } from "@/lib/growth";
 import { getFacebookOrganicAttributionSummary } from "@/lib/growth/facebook-attribution-metrics";
 import { summarizeGrowthContentRecords } from "@/lib/growth/content-store";
@@ -60,6 +65,23 @@ import {
   scheduleToday,
   WEBSITE_TO_FACEBOOK_DECISION,
 } from "@/lib/growth/facebook-execution";
+import {
+  AI_SEARCH_GUIDANCE_SUMMARY,
+  PREFERRED_SOURCES_DECISION,
+  SEARCH_BASELINE_SUMMARY,
+  SEARCH_BLOG_INVENTORY,
+  SEARCH_CONTENT_GAPS,
+  SEARCH_CONSOLE_STAGES,
+  SEARCH_INTELLIGENCE_VERSION,
+  SEARCH_INTERNAL_LINK_RECS,
+  SEARCH_OPPORTUNITY_SEEDS,
+  SEARCH_PAGE_INVENTORY,
+  SOCIAL_VIDEO_SEARCH_DECISION,
+  buildContentBriefFromSeed,
+  rankSeedOpportunities,
+  resolveSearchConsoleStage,
+} from "@/lib/growth/search-intelligence";
+import { listSearchOpportunities } from "@/lib/growth/search-opportunity-store";
 import { listGrowthSnapshots } from "@/lib/growth/snapshot-store";
 
 export const metadata: Metadata = {
@@ -170,6 +192,7 @@ export default async function GrowthDashboardPage() {
     contentSummary,
     facebookAttribution,
     experimentDecisions,
+    searchOpportunities,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -178,7 +201,23 @@ export default async function GrowthDashboardPage() {
     summarizeGrowthContentRecords(200),
     getFacebookOrganicAttributionSummary(current),
     listGrowthExperimentDecisions(10),
+    listSearchOpportunities(50),
   ]);
+
+  const searchSnapshots = snapshots.filter((s) => s.source === "SEARCH_CONSOLE");
+  const latestSearchSnapshot = searchSnapshots[0] ?? null;
+  const latestSearchMetrics = (latestSearchSnapshot?.metricsJson ??
+    null) as SearchConsoleSnapshotMetrics | null;
+  const searchStage = resolveSearchConsoleStage({
+    impressions:
+      latestSearchMetrics?.impressions ?? SEARCH_BASELINE_SUMMARY.impressions,
+    queryDataStatus:
+      latestSearchMetrics?.queryDataStatus ??
+      SEARCH_BASELINE_SUMMARY.queryDataStatus,
+    distinctQueryCount: latestSearchMetrics?.topQueries?.length ?? 0,
+  });
+  const rankedSeeds = rankSeedOpportunities();
+  const topBrief = buildContentBriefFromSeed(SEARCH_OPPORTUNITY_SEEDS[0]!);
 
   const facebookSnapshots = snapshots.filter((s) => s.source === "FACEBOOK");
   const latestFacebookSnapshot = facebookSnapshots[0] ?? null;
@@ -248,6 +287,13 @@ export default async function GrowthDashboardPage() {
             render={<Link href="/reports/growth/utm-builder" />}
           >
             UTM Builder
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/content" />}
+          >
+            Content Intelligence
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
@@ -600,17 +646,211 @@ export default async function GrowthDashboardPage() {
         </section>
 
         <section className="mt-12 space-y-4">
-          <div className="flex items-center gap-2">
-            <Search className="size-4 text-brand-blue" />
-            <h2 className="font-heading text-xl font-semibold text-brand">
-              Search
-            </h2>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <Search className="size-4 text-brand-blue" />
+              <h2 className="font-heading text-xl font-semibold text-brand">
+                Search Intelligence
+              </h2>
+            </div>
+            <p className="text-xs font-medium text-muted">
+              search-intelligence-v{SEARCH_INTELLIGENCE_VERSION}
+            </p>
           </div>
-          <Card className="p-6 text-sm leading-6 text-muted">
-            Record Search Console baselines as GrowthSnapshots (source
-            SEARCH_CONSOLE). Primary SEO outcomes: qualified impressions,
-            clicks, landing-page traffic, audit starts, leads — not average
-            position alone. See docs/growth/measurement-framework.md.
+
+          <Card className="space-y-4 p-6">
+            <p className="text-sm leading-6 text-muted">
+              Sprint 5 decides what content should exist. No fabricated search
+              volumes, ranking guarantees, GSC API, or AI drafting. Google APIs on
+              this page: <strong>0</strong>. Baseline V1 Search Console totals
+              remain immutable.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              <BaselineStat
+                label="Baseline clicks"
+                value={SEARCH_BASELINE_SUMMARY.clicks}
+              />
+              <BaselineStat
+                label="Baseline impressions"
+                value={SEARCH_BASELINE_SUMMARY.impressions}
+              />
+              <BaselineStat
+                label="Baseline CTR"
+                value={`${SEARCH_BASELINE_SUMMARY.averageCtr}%`}
+              />
+              <BaselineStat
+                label="Baseline avg position"
+                value={SEARCH_BASELINE_SUMMARY.averagePosition}
+              />
+              <BaselineStat
+                label="Query data"
+                value={SEARCH_BASELINE_SUMMARY.queryDataStatus}
+              />
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <BaselineStat label="GSC stage" value={searchStage} />
+              <BaselineStat
+                label="Latest snapshot"
+                value={
+                  latestSearchSnapshot
+                    ? latestSearchSnapshot.periodEnd
+                        .toISOString()
+                        .slice(0, 10)
+                    : "NONE"
+                }
+              />
+              <BaselineStat
+                label="Latest clicks"
+                value={
+                  latestSearchMetrics?.clicks ??
+                  "NOT_CAPTURED (use baseline)"
+                }
+              />
+              <BaselineStat
+                label="Latest impressions"
+                value={
+                  latestSearchMetrics?.impressions ??
+                  "NOT_CAPTURED (use baseline)"
+                }
+              />
+            </div>
+            <p className="text-xs text-muted">
+              Stage guide:{" "}
+              {SEARCH_CONSOLE_STAGES.map((s) => s.id).join(" → ")}. Prefer
+              INSUFFICIENT_DATA over inventing zeros from exports.
+            </p>
+          </Card>
+
+          <Card className="space-y-3 p-6">
+            <p className="text-sm font-semibold text-brand">
+              Seed backlog (deterministic priority)
+            </p>
+            <ul className="space-y-2 text-sm text-muted">
+              {rankedSeeds.slice(0, 8).map((seed) => (
+                <li key={seed.slug}>
+                  <span className="font-medium text-brand">
+                    {seed.priority.band}
+                  </span>{" "}
+                  · {seed.queryConcept} →{" "}
+                  {seed.recommendedPath ?? seed.currentPagePath ?? "(new)"} ·{" "}
+                  {seed.source}/{seed.evidenceKind}
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card className="space-y-2 p-6">
+              <p className="text-sm font-semibold text-brand">
+                Content gaps ({SEARCH_CONTENT_GAPS.length})
+              </p>
+              <ul className="space-y-2 text-xs text-muted">
+                {SEARCH_CONTENT_GAPS.map((gap) => (
+                  <li key={gap.id}>
+                    [{gap.kind}] {gap.summary}{" "}
+                    <span className="font-mono">({gap.evidence})</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <Card className="space-y-2 p-6">
+              <p className="text-sm font-semibold text-brand">
+                Internal link recs ({SEARCH_INTERNAL_LINK_RECS.length})
+              </p>
+              <ul className="space-y-2 text-xs text-muted">
+                {SEARCH_INTERNAL_LINK_RECS.map((rec) => (
+                  <li key={`${rec.fromPath}->${rec.toPath}`}>
+                    {rec.fromPath} → {rec.toPath}: {rec.reason}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card className="space-y-2 p-6">
+              <p className="text-sm font-semibold text-brand">
+                Service inventory ({SEARCH_PAGE_INVENTORY.length})
+              </p>
+              <ul className="max-h-48 space-y-1 overflow-y-auto text-xs text-muted">
+                {SEARCH_PAGE_INVENTORY.map((page) => (
+                  <li key={page.path}>
+                    {page.path} · {page.pageType}/{page.intent}
+                    {page.inSitemap ? "" : " · NOT IN SITEMAP"}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-muted">
+                Blogs inventoried: {SEARCH_BLOG_INVENTORY.length}
+              </p>
+            </Card>
+            <Card className="space-y-2 p-6">
+              <p className="text-sm font-semibold text-brand">
+                Sprint 6 brief preview (top seed)
+              </p>
+              <dl className="space-y-1 text-xs text-muted">
+                <div>
+                  <dt className="font-medium text-brand">Primary question</dt>
+                  <dd>{topBrief.primaryQuestion}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-brand">Intent / format</dt>
+                  <dd>
+                    {topBrief.primaryIntent} · {topBrief.recommendedFormat}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-brand">CTA</dt>
+                  <dd>{topBrief.cta}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-brand">Avoid</dt>
+                  <dd>{topBrief.avoidClaimConstraints.join("; ")}</dd>
+                </div>
+              </dl>
+              <p className="text-xs text-muted">
+                Preferred Sources: {PREFERRED_SOURCES_DECISION.status}. Social /
+                video GSC: {SOCIAL_VIDEO_SEARCH_DECISION.status}. AI Search:{" "}
+                {AI_SEARCH_GUIDANCE_SUMMARY.weWillTest.slice(0, 80)}…
+              </p>
+            </Card>
+          </div>
+
+          <CreateSearchOpportunityForm />
+
+          <Card className="space-y-3 p-6">
+            <p className="text-sm font-semibold text-brand">
+              Persisted opportunities ({searchOpportunities.length})
+            </p>
+            {searchOpportunities.length === 0 ? (
+              <p className="text-sm text-muted">
+                None yet. Create above or seed from docs after migrate. Seed
+                concepts live in code until operators persist them.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {searchOpportunities.map((row) => (
+                  <SearchOpportunityRowForm
+                    key={row.id}
+                    opportunity={{
+                      id: row.id,
+                      slug: row.slug,
+                      queryConcept: row.queryConcept,
+                      topic: row.topic,
+                      intent: row.intent,
+                      status: row.status,
+                      priorityBand: row.priorityBand,
+                      priorityScore: row.priorityScore,
+                      source: row.source,
+                      evidenceKind: row.evidenceKind,
+                      currentPagePath: row.currentPagePath,
+                      recommendedPath: row.recommendedPath,
+                      notes: row.notes,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </Card>
         </section>
 

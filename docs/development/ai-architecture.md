@@ -4,7 +4,7 @@ Canonical inventory of **all OpenAI usage** in JS Growth.
 
 **Model env:** `OPENAI_API_KEY` (server-only), optional `OPENAI_AUDIT_MODEL` (default `gpt-4.1-mini`).
 
-There are **exactly four** OpenAI call paths. Everything else is deterministic or third-party non-LLM.
+There are **exactly five** OpenAI call paths. Everything else is deterministic or third-party non-LLM.
 
 ---
 
@@ -72,6 +72,20 @@ Client Competitive Growth Analysis **loads** interpretation from DB — **0 Open
 | **Authority** | Implementation Plan facts always win; AI must not add/remove workstreams or invent actions/pricing |
 
 Canonical doc: [implementation-plan-ai-strategy.md](implementation-plan-ai-strategy.md)
+
+---
+
+## 5. Growth — Content Intelligence (operator-gated drafts)
+
+| Field | Detail |
+|---|---|
+| **Purpose** | Develop reviewable content drafts from Search Intelligence / content plans |
+| **Code** | `src/lib/growth/content-ai/` + `content-intelligence.ts` + `content-plan-store.ts` |
+| **Trigger** | Explicit Generate on `/reports/growth/content` (never on page load) |
+| **Cap** | 1 OpenAI call per generate action; skeleton mode = 0 |
+| **Input** | Business-safe facts + validated brief; untrusted notes delimited |
+| **Output** | Zod-validated structured draft on `GrowthContentPlan` |
+| **Human gate** | Edit → Approve → manual publish; no auto-publish / no FB ledger auto-create |
 
 ---
 

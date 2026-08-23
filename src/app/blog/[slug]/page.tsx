@@ -39,16 +39,17 @@ export async function generateMetadata({
   }
 
   const articleUrl = getAbsoluteUrl(`/blog/${post.slug}`);
+  const documentTitle = post.seoTitle ?? post.title;
 
   return {
-    title: post.title,
+    title: documentTitle,
     description: post.description,
     alternates: {
       canonical: articleUrl,
     },
     openGraph: {
       type: "article",
-      title: post.title,
+      title: documentTitle,
       description: post.description,
       url: articleUrl,
       siteName: "JS Solutions",
@@ -57,7 +58,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: documentTitle,
       description: post.description,
     },
   };

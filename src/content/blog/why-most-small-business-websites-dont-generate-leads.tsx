@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { GrowthTrackedLink } from "@/components/growth/growth-tracked-link";
+
 import type { BlogPost } from "./types";
 
 export const whyMostSmallBusinessWebsitesDontGenerateLeadsPost: BlogPost = {
@@ -185,6 +187,16 @@ export const whyMostSmallBusinessWebsitesDontGenerateLeadsPost: BlogPost = {
         the signals your website sends to search engines.
       </p>
 
+      <p>
+        If the deeper issue is that the business is not showing up in Google at
+        all—or only appears for brand searches—start with{" "}
+        <Link href="/blog/small-business-not-showing-up-on-google">
+          why your small business isn&apos;t showing up on Google and what to
+          fix first
+        </Link>
+        .
+      </p>
+
       <h2>7. You are not measuring what is working</h2>
 
       <p>
@@ -240,15 +252,28 @@ export const whyMostSmallBusinessWebsitesDontGenerateLeadsPost: BlogPost = {
       </p>
 
       <p>
-        <Link href="/website-audit">
+        <GrowthTrackedLink
+          href="/website-audit"
+          growthEvent="blog_cta_clicked"
+          placement="blog"
+          ctaKind="audit"
+        >
           Run your free website growth audit
-        </Link>{" "}
+        </GrowthTrackedLink>{" "}
         and see what may be holding your site back.
       </p>
 
       <p>
         If you would rather discuss your website strategy directly,{" "}
-        <Link href="/contact">contact JS Solutions</Link>.
+        <GrowthTrackedLink
+          href="/contact"
+          growthEvent="blog_cta_clicked"
+          placement="blog"
+          ctaKind="contact"
+        >
+          contact JS Solutions
+        </GrowthTrackedLink>
+        .
       </p>
     </>
   ),

@@ -4,6 +4,36 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-23 — Growth Sprint 6 (Content Intelligence & Development Engine V1)
+
+- Research: `docs/research/content-intelligence-ai-2026.md`.
+- `CONTENT_INTELLIGENCE_VERSION = 1` + prompt versions; planner, collision, claim safety, business facts.
+- Prisma `GrowthContentPlan`; `/reports/growth/content` operator UI.
+- OpenAI draft path (Responses + zodTextFormat) — operator-initiated only; skeleton mode = 0 OpenAI.
+- Initial five plans from Sprint 5; acceptance focus `seo-service-page-v1`.
+- No auto-publish / mass generation / Facebook ledger before publish.
+- Baseline V1 unchanged.
+
+## 2026-08-23 — Blog: Small business not showing up on Google
+
+- Published `/blog/small-business-not-showing-up-on-google` (PROBLEM_SOLUTION / SEO).
+- Optional `seoTitle` on BlogPost for distinct document title vs H1.
+- Cross-link with leads article; audit CTAs use `blog_cta_clicked`.
+- Search Intelligence inventory + seed opportunity registered (MONITORING / Stage 0).
+- Distribution ideas: `docs/growth/blog-google-visibility-distribution.md`.
+- Research note: `docs/research/blog-google-visibility-2026.md`.
+- No migration; Baseline V1 unchanged.
+
+## 2026-08-23 — Growth Sprint 5 (SEO & Search Intelligence Engine V1)
+
+- Research: `docs/research/seo-search-intelligence-2026.md` (Google Search Central / GSC 2026 guidance).
+- Model `SEARCH_INTELLIGENCE_VERSION = 1`: intents, topics, capability tiers, GSC stages, priority bands, provenance, inventories, gaps, seed backlog, content brief contract.
+- Prisma `GrowthSearchOpportunity` for operator backlog (no fabricated volumes).
+- `/reports/growth` Search Intelligence panel (baseline preserved, opportunities UI, gaps, brief preview).
+- Docs: search-intelligence, opportunity model, weekly review, brief contract, Sprint 5 acceptance.
+- Preferred Sources + social/video GSC = FUTURE. OpenAI/GSC API/Meta = 0. Baseline V1 unchanged.
+- Facebook Sprint 4 execution continues in parallel.
+
 ## 2026-08-23 — Growth Sprint 4 (30-day Facebook execution engine)
 
 - `facebook-execution-v1`: experimental cadence, 30-day TARGET bands, schedule, experiment sequencing.

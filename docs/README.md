@@ -43,8 +43,12 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Cost controls | [`development/cost-controls.md`](development/cost-controls.md) |
 | Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
 | Analytics | [`development/analytics.md`](development/analytics.md) |
-| Growth measurement (Sprints 1–4) | [`growth/README.md`](growth/README.md) |
+| Growth measurement (Sprints 1–6) | [`growth/README.md`](growth/README.md) |
 | Growth Baseline V1 | [`growth/baselines/growth-baseline-v1.md`](growth/baselines/growth-baseline-v1.md) |
+| Search Intelligence V1 | [`growth/search-intelligence.md`](growth/search-intelligence.md) |
+| Content Intelligence V1 | [`growth/content-intelligence.md`](growth/content-intelligence.md) |
+| SEO research (2026) | [`research/seo-search-intelligence-2026.md`](research/seo-search-intelligence-2026.md) |
+| Content AI research (2026) | [`research/content-intelligence-ai-2026.md`](research/content-intelligence-ai-2026.md) |
 | Facebook organic research (2026) | [`research/facebook-organic-growth-2026.md`](research/facebook-organic-growth-2026.md) |
 | Coding standards | [`development/coding-standards.md`](development/coding-standards.md) |
 | Vercel notes | [`development/vercel.md`](development/vercel.md) |

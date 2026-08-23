@@ -286,3 +286,15 @@ export type GrowthContentMetricSnapshot = Prisma.GrowthContentMetricSnapshotMode
  * Operator-entered Facebook experiment observations (manual; no Meta API).
  */
 export type GrowthExperimentDecision = Prisma.GrowthExperimentDecisionModel
+/**
+ * Model GrowthSearchOpportunity
+ * Manual search opportunity backlog for Sprint 5→6 handoff.
+ * No fabricated search volumes. No ranking guarantees.
+ */
+export type GrowthSearchOpportunity = Prisma.GrowthSearchOpportunityModel
+/**
+ * Model GrowthContentPlan
+ * Content plan for Sprint 6 — brief → draft → human approval.
+ * AI must not set PUBLISHED. Generation history lives in generationHistoryJson.
+ */
+export type GrowthContentPlan = Prisma.GrowthContentPlanModel

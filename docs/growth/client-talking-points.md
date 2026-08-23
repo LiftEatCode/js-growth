@@ -25,6 +25,15 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 
 - “Search visibility metrics like impressions help us understand opportunity, but we judge success by qualified clicks, landing-page engagement, and downstream leads.”
 - “Local and service-intent queries are reviewed separately from brand searches when the data supports it.”
+- “Before producing more content, we map search intent, topic coverage, and existing pages so we create pages that match real buyer questions — not a content factory.”
+- “We track Search Console carefully as data grows: early stages may show impressions without enough query detail to prioritize keywords honestly.”
+- “Content gaps and internal links matter: supporting articles should connect to the services and tools they explain.”
+- “When local search is relevant, we prefer useful, distinct local information over thin city doorway pages.”
+- “Content refresh is part of the system — updating strong pages can matter as much as publishing new ones.”
+- “We plan content from business goals, search intent, and existing page inventory — not from inventing keyword volume.”
+- “When we use AI assistance for drafts, humans review for accuracy and usefulness before anything is published.”
+- “More content is not automatically better; refreshing strong pages can matter more than publishing thin new ones.”
+- “We do not promise rankings, traffic numbers, or timelines. Average position is a diagnostic signal, not a sales claim.”
 
 ## Funnel clarity
 
@@ -60,3 +69,5 @@ Do **not** disclose:
 - Security/session implementation details
 - Full internal Facebook playbook scoring thresholds, experiment prioritization queues, or content decision trees
 - Exact proprietary UTM content ID schemes beyond general “we tag campaigns consistently”
+- Exact search opportunity priority formula, backlog scoring thresholds, or full proprietary opportunity mapping logic
+- Full content-intelligence prompts, collision thresholds, or internal weighting formulas

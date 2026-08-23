@@ -696,3 +696,162 @@ export const GrowthExperimentDecisionKind = {
 } as const
 
 export type GrowthExperimentDecisionKind = (typeof GrowthExperimentDecisionKind)[keyof typeof GrowthExperimentDecisionKind]
+
+
+export const GrowthSearchTopic = {
+  WEBSITE_GROWTH: 'WEBSITE_GROWTH',
+  WEB_DEVELOPMENT: 'WEB_DEVELOPMENT',
+  SEO: 'SEO',
+  LOCAL_SEO: 'LOCAL_SEO',
+  GBP: 'GBP',
+  CONVERSION: 'CONVERSION',
+  WEBSITE_AUDITS: 'WEBSITE_AUDITS',
+  CONTENT_TRAFFIC: 'CONTENT_TRAFFIC',
+  AI_AUTOMATION: 'AI_AUTOMATION',
+  BUSINESS_AUTOMATION: 'BUSINESS_AUTOMATION',
+  CUSTOM_SOFTWARE: 'CUSTOM_SOFTWARE',
+  ANALYTICS_GROWTH: 'ANALYTICS_GROWTH'
+} as const
+
+export type GrowthSearchTopic = (typeof GrowthSearchTopic)[keyof typeof GrowthSearchTopic]
+
+
+export const GrowthSearchIntent = {
+  INFORMATIONAL: 'INFORMATIONAL',
+  COMMERCIAL_INVESTIGATION: 'COMMERCIAL_INVESTIGATION',
+  SERVICE: 'SERVICE',
+  LOCAL_SERVICE: 'LOCAL_SERVICE',
+  TOOL: 'TOOL',
+  COMPARISON: 'COMPARISON',
+  PROBLEM_SOLUTION: 'PROBLEM_SOLUTION',
+  BRAND: 'BRAND'
+} as const
+
+export type GrowthSearchIntent = (typeof GrowthSearchIntent)[keyof typeof GrowthSearchIntent]
+
+
+export const GrowthSearchOpportunitySource = {
+  GSC_QUERY: 'GSC_QUERY',
+  GSC_PAGE: 'GSC_PAGE',
+  SERVICE_GAP: 'SERVICE_GAP',
+  CONTENT_GAP: 'CONTENT_GAP',
+  CUSTOMER_QUESTION: 'CUSTOMER_QUESTION',
+  COMPETITOR_OBSERVATION: 'COMPETITOR_OBSERVATION',
+  LOCAL_INTENT: 'LOCAL_INTENT',
+  AUDIT_INSIGHT: 'AUDIT_INSIGHT',
+  MANUAL_RESEARCH: 'MANUAL_RESEARCH'
+} as const
+
+export type GrowthSearchOpportunitySource = (typeof GrowthSearchOpportunitySource)[keyof typeof GrowthSearchOpportunitySource]
+
+
+export const GrowthSearchOpportunityStatus = {
+  IDEA: 'IDEA',
+  VALIDATED: 'VALIDATED',
+  PLANNED: 'PLANNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PUBLISHED: 'PUBLISHED',
+  MONITORING: 'MONITORING',
+  REFRESH: 'REFRESH',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type GrowthSearchOpportunityStatus = (typeof GrowthSearchOpportunityStatus)[keyof typeof GrowthSearchOpportunityStatus]
+
+
+export const GrowthSearchPriorityBand = {
+  NOW: 'NOW',
+  NEXT: 'NEXT',
+  LATER: 'LATER'
+} as const
+
+export type GrowthSearchPriorityBand = (typeof GrowthSearchPriorityBand)[keyof typeof GrowthSearchPriorityBand]
+
+
+export const GrowthSearchEvidenceKind = {
+  FIRST_PARTY_DATA: 'FIRST_PARTY_DATA',
+  OFFICIAL_GUIDANCE: 'OFFICIAL_GUIDANCE',
+  MANUAL_RESEARCH: 'MANUAL_RESEARCH',
+  INFERENCE: 'INFERENCE',
+  HYPOTHESIS: 'HYPOTHESIS'
+} as const
+
+export type GrowthSearchEvidenceKind = (typeof GrowthSearchEvidenceKind)[keyof typeof GrowthSearchEvidenceKind]
+
+
+export const GrowthSearchPageType = {
+  SERVICE: 'SERVICE',
+  BLOG: 'BLOG',
+  TOOL: 'TOOL',
+  LANDING: 'LANDING',
+  LOCAL: 'LOCAL',
+  RESOURCE: 'RESOURCE',
+  ABOUT: 'ABOUT',
+  OTHER: 'OTHER'
+} as const
+
+export type GrowthSearchPageType = (typeof GrowthSearchPageType)[keyof typeof GrowthSearchPageType]
+
+
+export const GrowthContentPlanType = {
+  SERVICE_PAGE: 'SERVICE_PAGE',
+  BLOG: 'BLOG',
+  FACEBOOK_COMPANY: 'FACEBOOK_COMPANY',
+  FACEBOOK_FOUNDER: 'FACEBOOK_FOUNDER',
+  GBP_POST: 'GBP_POST',
+  VIDEO_BRIEF: 'VIDEO_BRIEF'
+} as const
+
+export type GrowthContentPlanType = (typeof GrowthContentPlanType)[keyof typeof GrowthContentPlanType]
+
+
+export const GrowthContentPlanSourceType = {
+  SEARCH_OPPORTUNITY: 'SEARCH_OPPORTUNITY',
+  CONTENT_GAP: 'CONTENT_GAP',
+  SERVICE_GAP: 'SERVICE_GAP',
+  CONTENT_REFRESH: 'CONTENT_REFRESH',
+  FACEBOOK_LEARNING: 'FACEBOOK_LEARNING',
+  CUSTOMER_QUESTION: 'CUSTOMER_QUESTION',
+  AUDIT_INSIGHT: 'AUDIT_INSIGHT',
+  LOCAL_OPPORTUNITY: 'LOCAL_OPPORTUNITY',
+  EXPERIMENT: 'EXPERIMENT',
+  MANUAL_OPERATOR: 'MANUAL_OPERATOR',
+  REPURPOSE: 'REPURPOSE'
+} as const
+
+export type GrowthContentPlanSourceType = (typeof GrowthContentPlanSourceType)[keyof typeof GrowthContentPlanSourceType]
+
+
+export const GrowthContentPlanStatus = {
+  IDEA: 'IDEA',
+  RESEARCHING: 'RESEARCHING',
+  BRIEF_READY: 'BRIEF_READY',
+  READY_TO_GENERATE: 'READY_TO_GENERATE',
+  DRAFT: 'DRAFT',
+  IN_REVIEW: 'IN_REVIEW',
+  APPROVED: 'APPROVED',
+  PUBLISHED: 'PUBLISHED',
+  MONITORING: 'MONITORING',
+  REFRESH: 'REFRESH',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type GrowthContentPlanStatus = (typeof GrowthContentPlanStatus)[keyof typeof GrowthContentPlanStatus]
+
+
+export const GrowthContentPlanPriority = {
+  NOW: 'NOW',
+  NEXT: 'NEXT',
+  LATER: 'LATER'
+} as const
+
+export type GrowthContentPlanPriority = (typeof GrowthContentPlanPriority)[keyof typeof GrowthContentPlanPriority]
+
+
+export const GrowthContentPlanPublisher = {
+  COMPANY: 'COMPANY',
+  FOUNDER: 'FOUNDER',
+  NONE: 'NONE'
+} as const
+
+export type GrowthContentPlanPublisher = (typeof GrowthContentPlanPublisher)[keyof typeof GrowthContentPlanPublisher]
