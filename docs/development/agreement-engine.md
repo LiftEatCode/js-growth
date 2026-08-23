@@ -9,9 +9,13 @@ Move from **Proposal commercial intent** to **explicit client acceptance of immu
 | Proposal | Client presentation |
 | **CommercialAgreement** | Contractual / commercial terms |
 | **AgreementAcceptance** | Acceptance evidence |
-| Payment (Sprint 9) | Separate from acceptance |
+| **CommercialPayment (Sprint 9)** | Money collected via Stripe Checkout |
 
 **Accepted Agreement ≠ paid ≠ Opportunity WON.**
+
+Deposit paid (`DEPOSIT_AND_BALANCE`) enables Client/Project onboarding eligibility; WON only on human convert. See [`client-project-onboarding.md`](./client-project-onboarding.md).
+
+Canonical payment doc: [`commercial-payments.md`](./commercial-payments.md).
 
 ## Versions
 
@@ -73,6 +77,8 @@ Explicit: signer name, email, optional title, unchecked checkbox, **Accept Agree
 Idempotent: one acceptance per Agreement; double-submit safe.
 
 No Stripe, no Resend, no auto-WON on acceptance.
+
+After acceptance, public page may show Payment Pending and an operator-created Pay CTA (Sprint 9) — still **0** Stripe calls on page load.
 
 ## Delivery
 

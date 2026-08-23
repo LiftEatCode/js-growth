@@ -73,7 +73,11 @@ COMMERCIALIZATION (internal)
        ↓
   Human review / approve Proposal
        ↓
-  (Future) Public delivery / acceptance / payment — NOT implemented
+  Proposal Delivery → Agreement → Acceptance → Commercial Payment (Sprints 7–9)
+       ↓
+  Client / Project Onboarding (Commercial Sprint 10 — human convert after eligibility)
+       ↓
+  (Future) Change orders / client portal — NOT implemented
        ↓
   (Future) Opportunity Won/Lost → Delivery
 
@@ -89,7 +93,8 @@ LEAD / SERVICE HANDOFF
 | Surface | Examples | Auth |
 |---|---|---|
 | Public | `/`, `/website-audit`, `/report/[id]`, `/report/[id]/pdf`, `/contact` | None (report UUID) |
-| Payments | `/api/reports/[id]/checkout`, `/api/stripe/webhook` | Stripe signatures |
+| Payments | `/api/reports/[id]/checkout`, `/api/stripe/webhook`, `/payment/return` | Stripe signatures (webhook); return page is non-authoritative |
+| Public commercial | `/proposal/{token}`, `/agreement/{token}` | Token hash + revocation; noindex |
 | Email webhook | `/api/resend/webhook` | Svix / Resend secret |
 | Internal | `/reports/**`, `/reports/prospecting/**`, `/internal-login` | `requireInternalSession()` / `getInternalSession()` |
 
@@ -114,7 +119,9 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 | Area | Code root |
 |---|---|
 | Website audit | `src/lib/website-audit/` |
-| Payments | `src/lib/payments/` |
+| Payments (audit) | `src/lib/payments/` |
+| Commercial payments (agreements) | `src/lib/commercialization/payments/` |
+| Client / Project onboarding | `src/lib/commercialization/onboarding/` |
 | Prospecting | `src/lib/prospecting/` |
 | Competitive intelligence | `src/lib/competitive-intelligence/` |
 | Commercialization / implementation plans | `src/lib/commercialization/` |

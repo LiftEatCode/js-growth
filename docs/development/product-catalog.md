@@ -74,7 +74,25 @@ Verified against implementation. Separates **public products**, **internal tools
 
 - Client-readable proposal snapshot from approved Scope + approved complete Pricing
 - Presentation-only; does not recalculate commercial facts
-- Internal preview only — **no** public URL, PDF, email, acceptance, e-sign, or Stripe
+- Public delivery + decision via Sprint 7
+
+### Commercial Agreement Engine V1 (Commercial Sprint 8)
+
+- Immutable accepted Agreement snapshot + payment terms
+- Public `/agreement/{token}` acceptance (Accepted ≠ paid ≠ Won)
+
+### Commercial Payments V1 (Commercial Sprint 9)
+
+- Operator-gated Stripe Checkout for deposit / balance / full
+- Webhook-authoritative reconciliation to ACCEPTED Agreement cents
+- See [commercial-payments.md](commercial-payments.md)
+
+### Client / Project Onboarding V1 (Commercial Sprint 10)
+
+- Human Convert → Client + Project + immutable commercial snapshot
+- Deposit-start eligibility; balance before final handoff
+- Internal `/reports/clients` — no client portal
+- See [client-project-onboarding.md](client-project-onboarding.md)
 
 ---
 

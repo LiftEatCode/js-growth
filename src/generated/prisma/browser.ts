@@ -207,6 +207,12 @@ export type CommercialProposal = Prisma.CommercialProposalModel
  */
 export type CommercialAgreement = Prisma.CommercialAgreementModel
 /**
+ * Model CommercialPayment
+ * Commercial Sprint 9 — payment collection for an ACCEPTED Agreement.
+ * Amounts come only from accepted Agreement. Stripe is the processor, not authority.
+ */
+export type CommercialPayment = Prisma.CommercialPaymentModel
+/**
  * Model AgreementAcceptance
  * Immutable client acceptance evidence for an Agreement.
  */
@@ -222,3 +228,38 @@ export type AgreementDelivery = Prisma.AgreementDeliveryModel
  * Snapshots recipient + message. Share token authorizes client read-only access.
  */
 export type ProposalDelivery = Prisma.ProposalDeliveryModel
+/**
+ * Model Client
+ * Durable JS Solutions customer. Prospect ≠ Opportunity ≠ Client.
+ */
+export type Client = Prisma.ClientModel
+/**
+ * Model ClientProject
+ * Delivery engagement created from an ACCEPTED Agreement (one per Opportunity).
+ */
+export type ClientProject = Prisma.ClientProjectModel
+/**
+ * Model ProjectWorkstream
+ * 
+ */
+export type ProjectWorkstream = Prisma.ProjectWorkstreamModel
+/**
+ * Model ProjectDeliverable
+ * Client-readable commercial deliverable presentation (may share a delivery task).
+ */
+export type ProjectDeliverable = Prisma.ProjectDeliverableModel
+/**
+ * Model ProjectDeliveryTask
+ * Canonical execution unit — one completion even if multiple workstreams reference it.
+ */
+export type ProjectDeliveryTask = Prisma.ProjectDeliveryTaskModel
+/**
+ * Model ProjectOnboardingItem
+ * 
+ */
+export type ProjectOnboardingItem = Prisma.ProjectOnboardingItemModel
+/**
+ * Model ProjectActivity
+ * 
+ */
+export type ProjectActivity = Prisma.ProjectActivityModel

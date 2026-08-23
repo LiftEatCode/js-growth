@@ -411,6 +411,7 @@ model Prospect {
   implementationPlans         ImplementationPlan[]
   implementationInterpretations ImplementationPlanInterpretation[]
   opportunities               Opportunity[]
+  client                      Client?
 
   @@index([hostname])
   @@index([sourceRef])
@@ -1306,6 +1307,23 @@ enum OpportunityActivityType {
   AGREEMENT_ACCESS_REVOKED
   AGREEMENT_ACCEPTED
   AGREEMENT_VOIDED
+  PAYMENT_REQUIREMENT_CREATED
+  PAYMENT_CHECKOUT_CREATED
+  PAYMENT_LINK_SENT
+  PAYMENT_COMPLETED
+  PAYMENT_FAILED
+  PAYMENT_EXPIRED
+  DEPOSIT_PAID
+  BALANCE_PAID
+  PAYMENT_RECONCILIATION_FAILED
+  CLIENT_CREATED
+  PROJECT_CREATED
+  ONBOARDING_STARTED
+  ONBOARDING_ITEM_UPDATED
+  PROJECT_READY_FOR_KICKOFF
+  PROJECT_STARTED
+  PROJECT_BLOCKED
+  PROJECT_COMPLETED
 }
 
 /// Commercial Sprint 3 — sales opportunity (human-created commercial pursuit).
@@ -1359,6 +1377,12 @@ model Opportunity {
   proposalDeliveries ProposalDelivery[]
   agreements CommercialAgreement[]
   agreementDeliveries AgreementDelivery[]
+  commercialPayments CommercialPayment[]
+  clientProject      ClientProject?
+
+  /// Set when converted to a Client (Sprint 10).
+  clientId String?
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
 
   @@index([prospectId, createdAt])
   @@index([campaignId, createdAt])
@@ -1367,6 +1391,7 @@ model Opportunity {
   @@index([nextActionAt])
   @@index([implementationPlanId])
   @@index([leadId])
+  @@index([clientId])
 }
 
 /// Append-only sales timeline for an Opportunity.
@@ -1777,12 +1802,79 @@ model CommercialAgreement {
 
   deliveries AgreementDelivery[]
   acceptance AgreementAcceptance?
+  payments   CommercialPayment[]
 
   @@index([opportunityId, createdAt])
   @@index([opportunityId, status])
   @@index([proposalId, createdAt])
   @@index([commercialScopeId])
   @@index([commercialPricingId])
+  @@index([status, createdAt])
+}
+
+enum CommercialPaymentType {
+  DEPOSIT
+  BALANCE
+  FULL
+}
+
+enum CommercialPaymentStatus {
+  PENDING
+  CHECKOUT_CREATED
+  PAID
+  FAILED
+  EXPIRED
+  REFUNDED
+  CANCELED
+}
+
+/// Commercial Sprint 9 — payment collection for an ACCEPTED Agreement.
+/// Amounts come only from accepted Agreement. Stripe is the processor, not authority.
+model CommercialPayment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  agreementId String
+  agreement   CommercialAgreement @relation(fields: [agreementId], references: [id], onDelete: Cascade)
+
+  type   CommercialPaymentType
+  status CommercialPaymentStatus @default(PENDING)
+
+  currency String @default("USD")
+
+  amountDueCents  Int
+  amountPaidCents Int @default(0)
+
+  paymentSequence         Int
+  paymentTermTypeSnapshot String
+
+  stripeCheckoutSessionId String? @unique
+  stripePaymentIntentId   String? @unique
+  checkoutUrl             String?
+
+  checkoutCreatedAt DateTime?
+  paidAt            DateTime?
+  failedAt          DateTime?
+  expiredAt         DateTime?
+  refundedAt        DateTime?
+  canceledAt        DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  reconciliationCode    String?
+  reconciliationMessage String?
+
+  createdByEmail String?
+
+  @@unique([agreementId, type, paymentSequence])
+  @@index([opportunityId, createdAt])
+  @@index([agreementId, status])
+  @@index([agreementId, type, status])
   @@index([status, createdAt])
 }
 
@@ -1935,4 +2027,271 @@ model ProposalDelivery {
   @@index([opportunityId, createdAt])
   @@index([proposalId, createdAt])
   @@index([status, createdAt])
+}
+
+// ─── Commercial Sprint 10 — Client / Project Onboarding ─────────────────────
+
+enum ClientStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum ClientProjectStatus {
+  ONBOARDING
+  READY
+  ACTIVE
+  BLOCKED
+  COMPLETED
+  CANCELED
+  ARCHIVED
+}
+
+enum ProjectWorkstreamStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+}
+
+enum ProjectDeliverableStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+  NOT_APPLICABLE
+}
+
+enum ProjectDeliveryTaskStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+}
+
+enum OnboardingItemStatus {
+  NOT_STARTED
+  REQUESTED
+  RECEIVED
+  NOT_REQUIRED
+  COMPLETED
+}
+
+enum ProjectActivityType {
+  PROJECT_CREATED
+  ONBOARDING_STARTED
+  ONBOARDING_ITEM_UPDATED
+  PROJECT_READY_FOR_KICKOFF
+  PROJECT_STARTED
+  PROJECT_BLOCKED
+  PROJECT_COMPLETED
+  DELIVERY_TASK_UPDATED
+  NOTE_ADDED
+}
+
+/// Durable JS Solutions customer. Prospect ≠ Opportunity ≠ Client.
+model Client {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  primaryContactName  String?
+  primaryContactEmail String?
+  phone               String?
+
+  website  String?
+  hostname String?
+
+  city  String?
+  state String?
+
+  sourceProspectId    String?  @unique
+  sourceProspect      Prospect? @relation(fields: [sourceProspectId], references: [id], onDelete: SetNull)
+
+  sourceOpportunityId String? @unique
+  /// Soft reference — Opportunity also links clientId. No FK cycle.
+
+  status ClientStatus @default(ACTIVE)
+
+  createdByEmail String
+
+  opportunities Opportunity[]
+  projects      ClientProject[]
+
+  @@index([hostname])
+  @@index([status, createdAt])
+  @@index([primaryContactEmail])
+}
+
+/// Delivery engagement created from an ACCEPTED Agreement (one per Opportunity).
+model ClientProject {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  opportunityId String      @unique
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  agreementId String @unique
+  scopeId     String
+  pricingId   String
+  proposalId  String
+
+  name   String
+  status ClientProjectStatus @default(ONBOARDING)
+
+  ownerEmail String
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  archivedAt  DateTime?
+
+  /// Immutable commercial delivery snapshot at conversion (Sprint 10).
+  commercialSnapshotJson Json
+
+  onboardingVersion Int @default(1)
+
+  createdByEmail String
+
+  workstreams      ProjectWorkstream[]
+  deliverables     ProjectDeliverable[]
+  deliveryTasks    ProjectDeliveryTask[]
+  onboardingItems  ProjectOnboardingItem[]
+  activities       ProjectActivity[]
+
+  @@index([clientId, createdAt])
+  @@index([status, createdAt])
+  @@index([ownerEmail, status])
+}
+
+model ProjectWorkstream {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  sourceScopeSectionId String?
+
+  title            String
+  capabilitiesJson Json
+  sortOrder        Int
+  status           ProjectWorkstreamStatus @default(NOT_STARTED)
+
+  deliverables ProjectDeliverable[]
+
+  @@index([projectId, sortOrder])
+}
+
+/// Client-readable commercial deliverable presentation (may share a delivery task).
+model ProjectDeliverable {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  workstreamId String
+  workstream   ProjectWorkstream @relation(fields: [workstreamId], references: [id], onDelete: Cascade)
+
+  deliveryTaskId String?
+  deliveryTask   ProjectDeliveryTask? @relation(fields: [deliveryTaskId], references: [id], onDelete: SetNull)
+
+  sourceScopeDeliverableId String?
+  sourceActionKey          String?
+
+  title       String
+  description String?
+  sortOrder   Int
+  status      ProjectDeliverableStatus @default(NOT_STARTED)
+
+  completedAt  DateTime?
+  internalNotes String?
+
+  @@index([projectId, sortOrder])
+  @@index([workstreamId, sortOrder])
+  @@index([deliveryTaskId])
+}
+
+/// Canonical execution unit — one completion even if multiple workstreams reference it.
+model ProjectDeliveryTask {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  /// Deterministic key: sourceActionKey or deliverable:{id}
+  key String
+
+  title       String
+  description String?
+
+  status ProjectDeliveryTaskStatus @default(NOT_STARTED)
+
+  sourceScopeDeliverableIdsJson Json
+  sourceWorkstreamIdsJson       Json
+  capabilitiesJson              Json
+
+  assignedToEmail String?
+  dueAt           DateTime?
+  completedAt     DateTime?
+  internalNotes   String?
+
+  deliverables ProjectDeliverable[]
+
+  @@unique([projectId, key])
+  @@index([projectId, status])
+}
+
+model ProjectOnboardingItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  key         String
+  label       String
+  description String?
+
+  status   OnboardingItemStatus @default(NOT_STARTED)
+  required Boolean              @default(true)
+
+  sortOrder Int
+
+  completedAt DateTime?
+  /// Operator notes only — never store credentials/passwords.
+  notes       String?
+
+  @@unique([projectId, key])
+  @@index([projectId, sortOrder])
+}
+
+model ProjectActivity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  type ProjectActivityType
+
+  actorEmail String
+
+  fromValueJson Json?
+  toValueJson   Json?
+  note          String?
+
+  @@index([projectId, createdAt])
+  @@index([type, createdAt])
 }

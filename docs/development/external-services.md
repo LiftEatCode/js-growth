@@ -47,12 +47,14 @@ Inventory of production dependencies used by JS Growth. **Never commit secret va
 
 | | |
 |---|---|
-| **Purpose** | One-time Professional Website Growth Audit purchase |
-| **Usage** | Server Checkout session + webhook; public price label only on client |
+| **Purpose** | (1) One-time Professional Website Growth Audit purchase; (2) Commercial Agreement deposit/full/balance Checkout (Sprint 9) |
+| **Usage** | Server Checkout session + shared webhook route; audit uses Price ID; agreement payments use dynamic `price_data` |
 | **Env** | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PROFESSIONAL_AUDIT_PRICE_ID`, `NEXT_PUBLIC_PROFESSIONAL_AUDIT_PRICE_LABEL` |
 | **Cost exposure** | Stripe fees on paid checkouts |
-| **Safeguards** | `mode: "payment"` only; webhook grants entitlement; do not mix test/live Price IDs |
-| **Not implemented** | Competitive analysis SKU, subscriptions |
+| **Safeguards** | `mode: "payment"` only; webhook is payment authority; test/live keys isolated; commercial amounts from ACCEPTED Agreement only |
+| **Not implemented** | Subscriptions, invoices, tax engine for commercial agreements |
+
+Canonical commercial payment doc: [commercial-payments.md](commercial-payments.md)
 
 ---
 

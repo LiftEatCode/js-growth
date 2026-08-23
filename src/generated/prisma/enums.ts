@@ -398,7 +398,24 @@ export const OpportunityActivityType = {
   AGREEMENT_LINK_VIEWED: 'AGREEMENT_LINK_VIEWED',
   AGREEMENT_ACCESS_REVOKED: 'AGREEMENT_ACCESS_REVOKED',
   AGREEMENT_ACCEPTED: 'AGREEMENT_ACCEPTED',
-  AGREEMENT_VOIDED: 'AGREEMENT_VOIDED'
+  AGREEMENT_VOIDED: 'AGREEMENT_VOIDED',
+  PAYMENT_REQUIREMENT_CREATED: 'PAYMENT_REQUIREMENT_CREATED',
+  PAYMENT_CHECKOUT_CREATED: 'PAYMENT_CHECKOUT_CREATED',
+  PAYMENT_LINK_SENT: 'PAYMENT_LINK_SENT',
+  PAYMENT_COMPLETED: 'PAYMENT_COMPLETED',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  PAYMENT_EXPIRED: 'PAYMENT_EXPIRED',
+  DEPOSIT_PAID: 'DEPOSIT_PAID',
+  BALANCE_PAID: 'BALANCE_PAID',
+  PAYMENT_RECONCILIATION_FAILED: 'PAYMENT_RECONCILIATION_FAILED',
+  CLIENT_CREATED: 'CLIENT_CREATED',
+  PROJECT_CREATED: 'PROJECT_CREATED',
+  ONBOARDING_STARTED: 'ONBOARDING_STARTED',
+  ONBOARDING_ITEM_UPDATED: 'ONBOARDING_ITEM_UPDATED',
+  PROJECT_READY_FOR_KICKOFF: 'PROJECT_READY_FOR_KICKOFF',
+  PROJECT_STARTED: 'PROJECT_STARTED',
+  PROJECT_BLOCKED: 'PROJECT_BLOCKED',
+  PROJECT_COMPLETED: 'PROJECT_COMPLETED'
 } as const
 
 export type OpportunityActivityType = (typeof OpportunityActivityType)[keyof typeof OpportunityActivityType]
@@ -455,6 +472,28 @@ export const AgreementPaymentTermType = {
 export type AgreementPaymentTermType = (typeof AgreementPaymentTermType)[keyof typeof AgreementPaymentTermType]
 
 
+export const CommercialPaymentType = {
+  DEPOSIT: 'DEPOSIT',
+  BALANCE: 'BALANCE',
+  FULL: 'FULL'
+} as const
+
+export type CommercialPaymentType = (typeof CommercialPaymentType)[keyof typeof CommercialPaymentType]
+
+
+export const CommercialPaymentStatus = {
+  PENDING: 'PENDING',
+  CHECKOUT_CREATED: 'CHECKOUT_CREATED',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  EXPIRED: 'EXPIRED',
+  REFUNDED: 'REFUNDED',
+  CANCELED: 'CANCELED'
+} as const
+
+export type CommercialPaymentStatus = (typeof CommercialPaymentStatus)[keyof typeof CommercialPaymentStatus]
+
+
 export const AgreementDeliveryStatus = {
   DRAFT: 'DRAFT',
   READY: 'READY',
@@ -486,3 +525,82 @@ export const ProposalDecision = {
 } as const
 
 export type ProposalDecision = (typeof ProposalDecision)[keyof typeof ProposalDecision]
+
+
+export const ClientStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ClientStatus = (typeof ClientStatus)[keyof typeof ClientStatus]
+
+
+export const ClientProjectStatus = {
+  ONBOARDING: 'ONBOARDING',
+  READY: 'READY',
+  ACTIVE: 'ACTIVE',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ClientProjectStatus = (typeof ClientProjectStatus)[keyof typeof ClientProjectStatus]
+
+
+export const ProjectWorkstreamStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type ProjectWorkstreamStatus = (typeof ProjectWorkstreamStatus)[keyof typeof ProjectWorkstreamStatus]
+
+
+export const ProjectDeliverableStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED',
+  NOT_APPLICABLE: 'NOT_APPLICABLE'
+} as const
+
+export type ProjectDeliverableStatus = (typeof ProjectDeliverableStatus)[keyof typeof ProjectDeliverableStatus]
+
+
+export const ProjectDeliveryTaskStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type ProjectDeliveryTaskStatus = (typeof ProjectDeliveryTaskStatus)[keyof typeof ProjectDeliveryTaskStatus]
+
+
+export const OnboardingItemStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  REQUESTED: 'REQUESTED',
+  RECEIVED: 'RECEIVED',
+  NOT_REQUIRED: 'NOT_REQUIRED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type OnboardingItemStatus = (typeof OnboardingItemStatus)[keyof typeof OnboardingItemStatus]
+
+
+export const ProjectActivityType = {
+  PROJECT_CREATED: 'PROJECT_CREATED',
+  ONBOARDING_STARTED: 'ONBOARDING_STARTED',
+  ONBOARDING_ITEM_UPDATED: 'ONBOARDING_ITEM_UPDATED',
+  PROJECT_READY_FOR_KICKOFF: 'PROJECT_READY_FOR_KICKOFF',
+  PROJECT_STARTED: 'PROJECT_STARTED',
+  PROJECT_BLOCKED: 'PROJECT_BLOCKED',
+  PROJECT_COMPLETED: 'PROJECT_COMPLETED',
+  DELIVERY_TASK_UPDATED: 'DELIVERY_TASK_UPDATED',
+  NOTE_ADDED: 'NOTE_ADDED'
+} as const
+
+export type ProjectActivityType = (typeof ProjectActivityType)[keyof typeof ProjectActivityType]

@@ -7,7 +7,12 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test:verify": "node scripts/run-verify.mjs",
+    "test:e2e": "playwright test",
+    "test:commercial:integration": "tsx tests/commercial/integration/commercial-workflow.integration.ts",
+    "test:commercial:db": "COMMERCIAL_TEST_MOCK_RESEND=1 tsx --import ./tests/commercial/shims/register.mjs tests/commercial/integration/commercial-workflow.db.integration.ts",
+    "test:commercial": "node scripts/run-commercial.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -30,6 +35,7 @@
     "react-dom": "19.2.4",
     "react-hook-form": "^7.83.0",
     "resend": "^6.18.0",
+    "server-only": "^0.0.1",
     "shadcn": "^4.13.0",
     "stripe": "^22.5.0",
     "tailwind-merge": "^3.6.0",
@@ -37,14 +43,17 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "dotenv": "^16.6.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5"
   }
 }

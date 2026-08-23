@@ -8,6 +8,8 @@ import { OpportunityPricingCard } from "@/components/opportunities/opportunity-p
 import { OpportunityProposalCard } from "@/components/opportunities/opportunity-proposal-card";
 import { OpportunityProposalDeliveryCard } from "@/components/opportunities/opportunity-proposal-delivery-card";
 import { OpportunityAgreementCard } from "@/components/opportunities/opportunity-agreement-card";
+import { OpportunityOnboardingCard } from "@/components/opportunities/opportunity-onboarding-card";
+import { OpportunityPaymentCard } from "@/components/opportunities/opportunity-payment-card";
 import { OpportunityScopeCard } from "@/components/opportunities/opportunity-scope-card";
 import { Button, Card, Container } from "@/components/ui";
 import { getServiceCapabilityDisplayName } from "@/lib/commercialization/capabilities";
@@ -15,6 +17,11 @@ import { loadCurrentAgreementForOpportunity } from "@/lib/commercialization/agre
 import {
   loadAgreementDeliveriesForOpportunity,
 } from "@/lib/commercialization/agreement-delivery";
+import {
+  getOnboardingEligibility,
+  loadProjectForOpportunity,
+} from "@/lib/commercialization/onboarding";
+import { loadPaymentStateForOpportunity } from "@/lib/commercialization/payments";
 import { loadOpportunityDetail } from "@/lib/commercialization/opportunities/load";
 import {
   loadProposalDeliveriesForOpportunity,
@@ -69,7 +76,8 @@ export default async function OpportunityDetailPage({
   const agreementLoad = await loadCurrentAgreementForOpportunity({
     opportunityId,
   });
-  const [deliveryContacts, deliveries, agreementDeliveries] =
+  const paymentLoad = await loadPaymentStateForOpportunity({ opportunityId });
+  const [deliveryContacts, deliveries, agreementDeliveries, projectLoad] =
     await Promise.all([
       loadProposalDeliveryContactOptions({ opportunityId }),
       loadProposalDeliveriesForOpportunity({
@@ -80,7 +88,12 @@ export default async function OpportunityDetailPage({
         opportunityId,
         currentAgreementId: agreementLoad.agreement?.id ?? null,
       }),
+      loadProjectForOpportunity({ opportunityId }),
     ]);
+  const onboardingEligibility = getOnboardingEligibility({
+    agreement: paymentLoad.agreement,
+    payments: paymentLoad.payments,
+  });
   const { opportunity, activities, intelligence } = detail;
   const caps = opportunity.capabilitiesSnapshot;
 
@@ -400,6 +413,67 @@ export default async function OpportunityDetailPage({
                 agreement={agreementLoad.agreement}
                 contactOptions={deliveryContacts}
                 deliveries={agreementDeliveries}
+              />
+            </div>
+          </Card>
+        ) : null}
+
+        {agreementLoad.agreement?.status === "ACCEPTED" &&
+        paymentLoad.agreement ? (
+          <Card variant="elevated" padding="lg">
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              Payment
+            </h2>
+            <div className="mt-4">
+              <OpportunityPaymentCard
+                opportunityId={opportunity.id}
+                agreementId={paymentLoad.agreement.agreementId}
+                paymentTermLabel={
+                  agreementLoad.agreement.paymentTermLabel
+                }
+                state={paymentLoad.state}
+                contactEmail={
+                  deliveryContacts.find((c) => c.isPrimary)?.email ??
+                  deliveryContacts[0]?.email ??
+                  null
+                }
+                contactName={
+                  deliveryContacts.find((c) => c.isPrimary)?.name ??
+                  deliveryContacts[0]?.name ??
+                  null
+                }
+              />
+            </div>
+          </Card>
+        ) : null}
+
+        {agreementLoad.agreement?.status === "ACCEPTED" ? (
+          <Card variant="elevated" padding="lg">
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              Client / Project
+            </h2>
+            <div className="mt-4">
+              <OpportunityOnboardingCard
+                opportunityId={opportunity.id}
+                eligible={onboardingEligibility.eligible}
+                eligibilityReason={onboardingEligibility.reason}
+                paymentOverallLabel={paymentLoad.state.overallLabel}
+                depositPaid={onboardingEligibility.depositPaid}
+                balanceOutstandingCents={
+                  onboardingEligibility.balanceOutstandingCents
+                }
+                paidInFull={onboardingEligibility.paidInFull}
+                existingClient={projectLoad.client}
+                existingProject={
+                  projectLoad.project
+                    ? {
+                        id: projectLoad.project.id,
+                        name: projectLoad.project.name,
+                        statusLabel: projectLoad.project.statusLabel,
+                        clientId: projectLoad.project.clientId,
+                      }
+                    : null
+                }
               />
             </div>
           </Card>

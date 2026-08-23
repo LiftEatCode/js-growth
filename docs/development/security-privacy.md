@@ -27,11 +27,14 @@ Competitive Growth Analysis is **internal-only** (`noindex`). Not exposed on pub
 |---|---|---|
 | Public site HTML fetch | Crawl targets | SSRF-aware fetch constraints in audit crawl |
 | Audit evidence | Scores, findings, URLs | Stored on `AuditReport` / competitor snapshots |
-| Buyer payment | Stripe customer/payment refs | Stripe + `ReportPurchase`; no card storage in app DB |
+| Buyer payment (audit) | Stripe customer/payment refs | Stripe + `ReportPurchase`; no card storage in app DB |
+| Buyer payment (agreement) | Checkout session / payment intent refs | Stripe + `CommercialPayment`; amounts from ACCEPTED Agreement; no card storage |
+| Public commercial tokens | Proposal/agreement share hashes | Token hash stored; raw token not logged to analytics |
 | Prospect / contact PII | Emails, phones, form URLs | Internal workspace; suppression list |
 | Outreach content | Draft/sent bodies | Internal; delivery events append-only |
 | Competitor business data | Places candidates, audits | Internal CI; not public product surface |
 | Opportunity commercial notes / stages | Pipeline + next actions | Internal only; analytics keys forbidden |
+| Client / Project / onboarding | Contact, checklist status, delivery notes | Internal `/reports/clients/*` only; no passwords in notes; analytics forbids `client_id`, `project_id`, credentials keys |
 | Commercial Scope / Pricing / Proposal | Offer, prices, proposal snapshots | Internal `/reports/**` only; analytics keys forbidden; not on `/report/*` |
 | OpenAI prompts | Bounded audit/outreach/CI inputs | Server-only API; treat as confidential |
 

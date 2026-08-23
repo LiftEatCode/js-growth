@@ -181,7 +181,11 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 
 **Sprint 8:** Formal Agreement + client acceptance — token-gated `/agreement/{token}`, immutable snapshot + SHA-256 acceptance hash, payment terms on Agreement (no Stripe), human approve + explicit send. `COMMERCIAL_AGREEMENT_VERSION = 1`. Migration `20260823120000_add_commercial_agreements`. See `docs/development/agreement-engine.md`.
 
-**Not included:** AI sales email, automatic follow-up, e-sign, Stripe checkout, automatic Won/Lost on decision.
+**Sprint 9:** Payment / deposit collection — `CommercialPayment`, operator-gated Stripe Checkout (`price_data`), webhook reconciliation to ACCEPTED Agreement amounts, deposit/balance/full states, no auto-WON. `COMMERCIAL_PAYMENT_VERSION = 1`. Migration `20260823180000_add_commercial_payments`. See `docs/development/commercial-payments.md`.
+
+**Sprint 10:** Client / Project onboarding — payment eligibility → human Convert → WON + Client + Project + commercial snapshot + checklist + delivery task dedupe. Deposit-start for `DEPOSIT_AND_BALANCE`; balance gates final handoff. Migration `20260823190000_add_clients_projects`. See `docs/development/client-project-onboarding.md`.
+
+**Not included (through Sprint 10):** AI sales email, automatic follow-up, e-sign, automatic Client/Project on payment webhook, tax engine, invoices, subscriptions, client portal, change-order engine, password vault.
 
 ---
 

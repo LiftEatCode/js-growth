@@ -8,9 +8,11 @@
 Prospect (identified / qualified)
         ↓  explicit human action
 Opportunity (commercial pursuit)
-        ↓  future sprints
-Scope → Pricing → Proposal → Won/Lost → Client
+        ↓
+Scope → Pricing → Proposal → Agreement → Payment → (Sprint 10) Client / Project
 ```
+
+**Accepted Agreement ≠ paid. Paid ≠ automatic WON.** Deposit paid can enable onboarding eligibility (Sprint 10). See [commercial-payments.md](./commercial-payments.md) and [client-project-onboarding.md](./client-project-onboarding.md).
 
 **Prospect ≠ Opportunity**
 
@@ -93,7 +95,7 @@ Append-only `OpportunityActivity`:
 
 ## Won / Lost
 
-- **WON:** sets `wonAt`. Does **not** create a Client (no Client model in V1).
+- **WON:** set via explicit Convert to Client / Start Onboarding (Sprint 10) after payment eligibility — not via payment webhook alone. Creates/reuses Client + Project. See [client-project-onboarding.md](./client-project-onboarding.md).
 - **LOST:** requires `lostReason` (`PRICE`, `NO_RESPONSE`, `NOT_READY`, `NO_FIT`, `COMPETITOR`, `DIY`, `TIMING`, `OTHER`) + optional note.
 
 ---

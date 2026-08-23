@@ -11,7 +11,7 @@ Variable cost surfaces and **code-enforced** caps. Values from `src/lib/**/const
 | **Google Places** | Discover businesses; discover competitors | Discovery: `MAX_PROVIDER_REQUESTS_PER_RUN = 3`, `MAX_DISCOVERY_CANDIDATES_PER_RUN = 25`. CI: `MAX_COMPETITOR_PROVIDER_REQUESTS_PER_PROSPECT = 3`, `MAX_COMPETITOR_CANDIDATES_PER_PROSPECT = 10`, discovery TTL 30 days |
 | **OpenAI** | Pro audit AI; outreach drafts; CI interpretation; Implementation Plan AI strategy | Audit AI: attempts ≤ 2, persist/reuse. Drafts: `MAX_AI_DRAFTS_PER_RUN = 5`. CI / Implementation strategy: 1 generation + optional 1 repair per click |
 | **Resend** | Contact notifications; approved outreach sends | `MAX_OUTREACH_EMAILS_PER_DAY = 10`; suppression |
-| **Stripe** | Successful Professional Checkout | One-time Product; no CI SKU |
+| **Stripe** | Successful Professional Audit Checkout; commercial Agreement Checkout when operator creates session | One-time only; commercial amounts from ACCEPTED Agreement; no CI SKU |
 | **Hosting / DB** | Always-on platform | Vercel + Postgres plan |
 
 ---
@@ -31,6 +31,9 @@ Variable cost surfaces and **code-enforced** caps. Values from `src/lib/**/const
 | Commercial Scope create / edit / approve | Pure DB — **0** OpenAI / Places / crawl / Resend / Stripe |
 | Commercial Pricing create / edit / approve | Pure DB — **0** OpenAI / Places / crawl / Resend / Stripe |
 | Commercial Proposal create / revise / approve / page load | Pure DB + deterministic copy — **0** OpenAI / Places / crawl / Resend / Stripe |
+| Agreement accept / public agreement load | Pure DB — **0** Stripe / OpenAI / Places / crawl |
+| Commercial payment checkout create | Stripe Checkout only when operator clicks Create (or test mock) — **0** OpenAI / Places / crawl |
+| Client convert / project page / checklist updates | Pure DB — **0** OpenAI / Places / crawl / Resend / Stripe |
 | Contact discovery | Fetch/parse HTML — capped pages/run |
 
 ---

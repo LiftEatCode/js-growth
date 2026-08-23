@@ -558,6 +558,7 @@ export type CommercialAgreementWhereInput = {
   commercialPricing?: Prisma.XOR<Prisma.CommercialPricingScalarRelationFilter, Prisma.CommercialPricingWhereInput>
   deliveries?: Prisma.AgreementDeliveryListRelationFilter
   acceptance?: Prisma.XOR<Prisma.AgreementAcceptanceNullableScalarRelationFilter, Prisma.AgreementAcceptanceWhereInput> | null
+  payments?: Prisma.CommercialPaymentListRelationFilter
 }
 
 export type CommercialAgreementOrderByWithRelationInput = {
@@ -611,6 +612,7 @@ export type CommercialAgreementOrderByWithRelationInput = {
   commercialPricing?: Prisma.CommercialPricingOrderByWithRelationInput
   deliveries?: Prisma.AgreementDeliveryOrderByRelationAggregateInput
   acceptance?: Prisma.AgreementAcceptanceOrderByWithRelationInput
+  payments?: Prisma.CommercialPaymentOrderByRelationAggregateInput
 }
 
 export type CommercialAgreementWhereUniqueInput = Prisma.AtLeast<{
@@ -667,6 +669,7 @@ export type CommercialAgreementWhereUniqueInput = Prisma.AtLeast<{
   commercialPricing?: Prisma.XOR<Prisma.CommercialPricingScalarRelationFilter, Prisma.CommercialPricingWhereInput>
   deliveries?: Prisma.AgreementDeliveryListRelationFilter
   acceptance?: Prisma.XOR<Prisma.AgreementAcceptanceNullableScalarRelationFilter, Prisma.AgreementAcceptanceWhereInput> | null
+  payments?: Prisma.CommercialPaymentListRelationFilter
 }, "id">
 
 export type CommercialAgreementOrderByWithAggregationInput = {
@@ -818,6 +821,7 @@ export type CommercialAgreementCreateInput = {
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
   deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateInput = {
@@ -867,6 +871,7 @@ export type CommercialAgreementUncheckedCreateInput = {
   voidedByEmail?: string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUpdateInput = {
@@ -916,6 +921,7 @@ export type CommercialAgreementUpdateInput = {
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
   deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateInput = {
@@ -965,6 +971,7 @@ export type CommercialAgreementUncheckedUpdateInput = {
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementCreateManyInput = {
@@ -1456,6 +1463,20 @@ export type EnumAgreementPaymentTermTypeFieldUpdateOperationsInput = {
   set?: $Enums.AgreementPaymentTermType
 }
 
+export type CommercialAgreementCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.CommercialAgreementCreateWithoutPaymentsInput, Prisma.CommercialAgreementUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.CommercialAgreementCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.CommercialAgreementWhereUniqueInput
+}
+
+export type CommercialAgreementUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.CommercialAgreementCreateWithoutPaymentsInput, Prisma.CommercialAgreementUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.CommercialAgreementCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.CommercialAgreementUpsertWithoutPaymentsInput
+  connect?: Prisma.CommercialAgreementWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommercialAgreementUpdateToOneWithWhereWithoutPaymentsInput, Prisma.CommercialAgreementUpdateWithoutPaymentsInput>, Prisma.CommercialAgreementUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type CommercialAgreementCreateNestedOneWithoutAcceptanceInput = {
   create?: Prisma.XOR<Prisma.CommercialAgreementCreateWithoutAcceptanceInput, Prisma.CommercialAgreementUncheckedCreateWithoutAcceptanceInput>
   connectOrCreate?: Prisma.CommercialAgreementCreateOrConnectWithoutAcceptanceInput
@@ -1530,6 +1551,7 @@ export type CommercialAgreementCreateWithoutOpportunityInput = {
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
   deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateWithoutOpportunityInput = {
@@ -1578,6 +1600,7 @@ export type CommercialAgreementUncheckedCreateWithoutOpportunityInput = {
   voidedByEmail?: string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementCreateOrConnectWithoutOpportunityInput = {
@@ -1702,6 +1725,7 @@ export type CommercialAgreementCreateWithoutCommercialScopeInput = {
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
   deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateWithoutCommercialScopeInput = {
@@ -1750,6 +1774,7 @@ export type CommercialAgreementUncheckedCreateWithoutCommercialScopeInput = {
   voidedByEmail?: string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementCreateOrConnectWithoutCommercialScopeInput = {
@@ -1824,6 +1849,7 @@ export type CommercialAgreementCreateWithoutCommercialPricingInput = {
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutAgreementsInput
   deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateWithoutCommercialPricingInput = {
@@ -1872,6 +1898,7 @@ export type CommercialAgreementUncheckedCreateWithoutCommercialPricingInput = {
   voidedByEmail?: string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementCreateOrConnectWithoutCommercialPricingInput = {
@@ -1946,6 +1973,7 @@ export type CommercialAgreementCreateWithoutProposalInput = {
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
   deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateWithoutProposalInput = {
@@ -1994,6 +2022,7 @@ export type CommercialAgreementUncheckedCreateWithoutProposalInput = {
   voidedByEmail?: string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementCreateOrConnectWithoutProposalInput = {
@@ -2020,6 +2049,218 @@ export type CommercialAgreementUpdateWithWhereUniqueWithoutProposalInput = {
 export type CommercialAgreementUpdateManyWithWhereWithoutProposalInput = {
   where: Prisma.CommercialAgreementScalarWhereInput
   data: Prisma.XOR<Prisma.CommercialAgreementUpdateManyMutationInput, Prisma.CommercialAgreementUncheckedUpdateManyWithoutProposalInput>
+}
+
+export type CommercialAgreementCreateWithoutPaymentsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  status?: $Enums.CommercialAgreementStatus
+  revision?: number
+  agreementVersion: number
+  agreementPresentationVersion: number
+  termsVersion: number
+  title: string
+  sourceFingerprint: string
+  snapshotJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  engagementOverview: string
+  clientResponsibilitiesJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  jsResponsibilitiesJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  timelineTerms: string
+  changeRequestTerms: string
+  thirdPartyCostTerms: string
+  resultsDisclaimer: string
+  acceptanceLanguage: string
+  paymentTermType?: $Enums.AgreementPaymentTermType
+  paymentCustomText?: string | null
+  depositPercent?: number
+  currency: string
+  includedInvestmentCents: number
+  optionalInvestmentCents: number
+  totalInvestmentCents: number
+  depositCents?: number | null
+  balanceCents?: number | null
+  proposalReference: string
+  createOverrideReason?: string | null
+  createdByEmail: string
+  reviewedAt?: Date | string | null
+  reviewedByEmail?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  acceptedAt?: Date | string | null
+  supersededAt?: Date | string | null
+  supersededByAgreementId?: string | null
+  voidedAt?: Date | string | null
+  voidedByEmail?: string | null
+  opportunity: Prisma.OpportunityCreateNestedOneWithoutAgreementsInput
+  proposal: Prisma.CommercialProposalCreateNestedOneWithoutAgreementsInput
+  commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutAgreementsInput
+  commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
+  deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
+  acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+}
+
+export type CommercialAgreementUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  opportunityId: string
+  proposalId: string
+  commercialScopeId: string
+  commercialPricingId: string
+  status?: $Enums.CommercialAgreementStatus
+  revision?: number
+  agreementVersion: number
+  agreementPresentationVersion: number
+  termsVersion: number
+  title: string
+  sourceFingerprint: string
+  snapshotJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  engagementOverview: string
+  clientResponsibilitiesJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  jsResponsibilitiesJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  timelineTerms: string
+  changeRequestTerms: string
+  thirdPartyCostTerms: string
+  resultsDisclaimer: string
+  acceptanceLanguage: string
+  paymentTermType?: $Enums.AgreementPaymentTermType
+  paymentCustomText?: string | null
+  depositPercent?: number
+  currency: string
+  includedInvestmentCents: number
+  optionalInvestmentCents: number
+  totalInvestmentCents: number
+  depositCents?: number | null
+  balanceCents?: number | null
+  proposalReference: string
+  createOverrideReason?: string | null
+  createdByEmail: string
+  reviewedAt?: Date | string | null
+  reviewedByEmail?: string | null
+  approvedAt?: Date | string | null
+  approvedByEmail?: string | null
+  acceptedAt?: Date | string | null
+  supersededAt?: Date | string | null
+  supersededByAgreementId?: string | null
+  voidedAt?: Date | string | null
+  voidedByEmail?: string | null
+  deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
+  acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+}
+
+export type CommercialAgreementCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.CommercialAgreementWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommercialAgreementCreateWithoutPaymentsInput, Prisma.CommercialAgreementUncheckedCreateWithoutPaymentsInput>
+}
+
+export type CommercialAgreementUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.CommercialAgreementUpdateWithoutPaymentsInput, Prisma.CommercialAgreementUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.CommercialAgreementCreateWithoutPaymentsInput, Prisma.CommercialAgreementUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.CommercialAgreementWhereInput
+}
+
+export type CommercialAgreementUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.CommercialAgreementWhereInput
+  data: Prisma.XOR<Prisma.CommercialAgreementUpdateWithoutPaymentsInput, Prisma.CommercialAgreementUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type CommercialAgreementUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumCommercialAgreementStatusFieldUpdateOperationsInput | $Enums.CommercialAgreementStatus
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  agreementVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  agreementPresentationVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  termsVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  snapshotJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  engagementOverview?: Prisma.StringFieldUpdateOperationsInput | string
+  clientResponsibilitiesJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  jsResponsibilitiesJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  timelineTerms?: Prisma.StringFieldUpdateOperationsInput | string
+  changeRequestTerms?: Prisma.StringFieldUpdateOperationsInput | string
+  thirdPartyCostTerms?: Prisma.StringFieldUpdateOperationsInput | string
+  resultsDisclaimer?: Prisma.StringFieldUpdateOperationsInput | string
+  acceptanceLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentTermType?: Prisma.EnumAgreementPaymentTermTypeFieldUpdateOperationsInput | $Enums.AgreementPaymentTermType
+  paymentCustomText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositPercent?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  includedInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  optionalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  totalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  depositCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  balanceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  proposalReference?: Prisma.StringFieldUpdateOperationsInput | string
+  createOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supersededByAgreementId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  opportunity?: Prisma.OpportunityUpdateOneRequiredWithoutAgreementsNestedInput
+  proposal?: Prisma.CommercialProposalUpdateOneRequiredWithoutAgreementsNestedInput
+  commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutAgreementsNestedInput
+  commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
+  deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
+  acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+}
+
+export type CommercialAgreementUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  opportunityId?: Prisma.StringFieldUpdateOperationsInput | string
+  proposalId?: Prisma.StringFieldUpdateOperationsInput | string
+  commercialScopeId?: Prisma.StringFieldUpdateOperationsInput | string
+  commercialPricingId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommercialAgreementStatusFieldUpdateOperationsInput | $Enums.CommercialAgreementStatus
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  agreementVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  agreementPresentationVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  termsVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  snapshotJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  engagementOverview?: Prisma.StringFieldUpdateOperationsInput | string
+  clientResponsibilitiesJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  jsResponsibilitiesJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  timelineTerms?: Prisma.StringFieldUpdateOperationsInput | string
+  changeRequestTerms?: Prisma.StringFieldUpdateOperationsInput | string
+  thirdPartyCostTerms?: Prisma.StringFieldUpdateOperationsInput | string
+  resultsDisclaimer?: Prisma.StringFieldUpdateOperationsInput | string
+  acceptanceLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentTermType?: Prisma.EnumAgreementPaymentTermTypeFieldUpdateOperationsInput | $Enums.AgreementPaymentTermType
+  paymentCustomText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositPercent?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  includedInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  optionalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  totalInvestmentCents?: Prisma.IntFieldUpdateOperationsInput | number
+  depositCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  balanceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  proposalReference?: Prisma.StringFieldUpdateOperationsInput | string
+  createOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supersededByAgreementId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
+  acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementCreateWithoutAcceptanceInput = {
@@ -2068,6 +2309,7 @@ export type CommercialAgreementCreateWithoutAcceptanceInput = {
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutAgreementsInput
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
   deliveries?: Prisma.AgreementDeliveryCreateNestedManyWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateWithoutAcceptanceInput = {
@@ -2116,6 +2358,7 @@ export type CommercialAgreementUncheckedCreateWithoutAcceptanceInput = {
   voidedAt?: Date | string | null
   voidedByEmail?: string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedCreateNestedManyWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementCreateOrConnectWithoutAcceptanceInput = {
@@ -2180,6 +2423,7 @@ export type CommercialAgreementUpdateWithoutAcceptanceInput = {
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutAgreementsNestedInput
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
   deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateWithoutAcceptanceInput = {
@@ -2228,6 +2472,7 @@ export type CommercialAgreementUncheckedUpdateWithoutAcceptanceInput = {
   voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementCreateWithoutDeliveriesInput = {
@@ -2276,6 +2521,7 @@ export type CommercialAgreementCreateWithoutDeliveriesInput = {
   commercialScope: Prisma.CommercialScopeCreateNestedOneWithoutAgreementsInput
   commercialPricing: Prisma.CommercialPricingCreateNestedOneWithoutAgreementsInput
   acceptance?: Prisma.AgreementAcceptanceCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementUncheckedCreateWithoutDeliveriesInput = {
@@ -2324,6 +2570,7 @@ export type CommercialAgreementUncheckedCreateWithoutDeliveriesInput = {
   voidedAt?: Date | string | null
   voidedByEmail?: string | null
   acceptance?: Prisma.AgreementAcceptanceUncheckedCreateNestedOneWithoutAgreementInput
+  payments?: Prisma.CommercialPaymentUncheckedCreateNestedManyWithoutAgreementInput
 }
 
 export type CommercialAgreementCreateOrConnectWithoutDeliveriesInput = {
@@ -2388,6 +2635,7 @@ export type CommercialAgreementUpdateWithoutDeliveriesInput = {
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutAgreementsNestedInput
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
   acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateWithoutDeliveriesInput = {
@@ -2436,6 +2684,7 @@ export type CommercialAgreementUncheckedUpdateWithoutDeliveriesInput = {
   voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementCreateManyOpportunityInput = {
@@ -2530,6 +2779,7 @@ export type CommercialAgreementUpdateWithoutOpportunityInput = {
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
   deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateWithoutOpportunityInput = {
@@ -2578,6 +2828,7 @@ export type CommercialAgreementUncheckedUpdateWithoutOpportunityInput = {
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateManyWithoutOpportunityInput = {
@@ -2718,6 +2969,7 @@ export type CommercialAgreementUpdateWithoutCommercialScopeInput = {
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
   deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateWithoutCommercialScopeInput = {
@@ -2766,6 +3018,7 @@ export type CommercialAgreementUncheckedUpdateWithoutCommercialScopeInput = {
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateManyWithoutCommercialScopeInput = {
@@ -2906,6 +3159,7 @@ export type CommercialAgreementUpdateWithoutCommercialPricingInput = {
   commercialScope?: Prisma.CommercialScopeUpdateOneRequiredWithoutAgreementsNestedInput
   deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateWithoutCommercialPricingInput = {
@@ -2954,6 +3208,7 @@ export type CommercialAgreementUncheckedUpdateWithoutCommercialPricingInput = {
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateManyWithoutCommercialPricingInput = {
@@ -3094,6 +3349,7 @@ export type CommercialAgreementUpdateWithoutProposalInput = {
   commercialPricing?: Prisma.CommercialPricingUpdateOneRequiredWithoutAgreementsNestedInput
   deliveries?: Prisma.AgreementDeliveryUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateWithoutProposalInput = {
@@ -3142,6 +3398,7 @@ export type CommercialAgreementUncheckedUpdateWithoutProposalInput = {
   voidedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveries?: Prisma.AgreementDeliveryUncheckedUpdateManyWithoutAgreementNestedInput
   acceptance?: Prisma.AgreementAcceptanceUncheckedUpdateOneWithoutAgreementNestedInput
+  payments?: Prisma.CommercialPaymentUncheckedUpdateManyWithoutAgreementNestedInput
 }
 
 export type CommercialAgreementUncheckedUpdateManyWithoutProposalInput = {
@@ -3197,10 +3454,12 @@ export type CommercialAgreementUncheckedUpdateManyWithoutProposalInput = {
 
 export type CommercialAgreementCountOutputType = {
   deliveries: number
+  payments: number
 }
 
 export type CommercialAgreementCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   deliveries?: boolean | CommercialAgreementCountOutputTypeCountDeliveriesArgs
+  payments?: boolean | CommercialAgreementCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -3218,6 +3477,13 @@ export type CommercialAgreementCountOutputTypeDefaultArgs<ExtArgs extends runtim
  */
 export type CommercialAgreementCountOutputTypeCountDeliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AgreementDeliveryWhereInput
+}
+
+/**
+ * CommercialAgreementCountOutputType without action
+ */
+export type CommercialAgreementCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommercialPaymentWhereInput
 }
 
 
@@ -3272,6 +3538,7 @@ export type CommercialAgreementSelect<ExtArgs extends runtime.Types.Extensions.I
   commercialPricing?: boolean | Prisma.CommercialPricingDefaultArgs<ExtArgs>
   deliveries?: boolean | Prisma.CommercialAgreement$deliveriesArgs<ExtArgs>
   acceptance?: boolean | Prisma.CommercialAgreement$acceptanceArgs<ExtArgs>
+  payments?: boolean | Prisma.CommercialAgreement$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.CommercialAgreementCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["commercialAgreement"]>
 
@@ -3432,6 +3699,7 @@ export type CommercialAgreementInclude<ExtArgs extends runtime.Types.Extensions.
   commercialPricing?: boolean | Prisma.CommercialPricingDefaultArgs<ExtArgs>
   deliveries?: boolean | Prisma.CommercialAgreement$deliveriesArgs<ExtArgs>
   acceptance?: boolean | Prisma.CommercialAgreement$acceptanceArgs<ExtArgs>
+  payments?: boolean | Prisma.CommercialAgreement$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.CommercialAgreementCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CommercialAgreementIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3456,6 +3724,7 @@ export type $CommercialAgreementPayload<ExtArgs extends runtime.Types.Extensions
     commercialPricing: Prisma.$CommercialPricingPayload<ExtArgs>
     deliveries: Prisma.$AgreementDeliveryPayload<ExtArgs>[]
     acceptance: Prisma.$AgreementAcceptancePayload<ExtArgs> | null
+    payments: Prisma.$CommercialPaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3920,6 +4189,7 @@ export interface Prisma__CommercialAgreementClient<T, Null = never, ExtArgs exte
   commercialPricing<T extends Prisma.CommercialPricingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialPricingDefaultArgs<ExtArgs>>): Prisma.Prisma__CommercialPricingClient<runtime.Types.Result.GetResult<Prisma.$CommercialPricingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   deliveries<T extends Prisma.CommercialAgreement$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialAgreement$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgreementDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   acceptance<T extends Prisma.CommercialAgreement$acceptanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialAgreement$acceptanceArgs<ExtArgs>>): Prisma.Prisma__AgreementAcceptanceClient<runtime.Types.Result.GetResult<Prisma.$AgreementAcceptancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  payments<T extends Prisma.CommercialAgreement$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommercialAgreement$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4434,6 +4704,30 @@ export type CommercialAgreement$acceptanceArgs<ExtArgs extends runtime.Types.Ext
    */
   include?: Prisma.AgreementAcceptanceInclude<ExtArgs> | null
   where?: Prisma.AgreementAcceptanceWhereInput
+}
+
+/**
+ * CommercialAgreement.payments
+ */
+export type CommercialAgreement$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommercialPayment
+   */
+  select?: Prisma.CommercialPaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommercialPayment
+   */
+  omit?: Prisma.CommercialPaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommercialPaymentInclude<ExtArgs> | null
+  where?: Prisma.CommercialPaymentWhereInput
+  orderBy?: Prisma.CommercialPaymentOrderByWithRelationInput | Prisma.CommercialPaymentOrderByWithRelationInput[]
+  cursor?: Prisma.CommercialPaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommercialPaymentScalarFieldEnum | Prisma.CommercialPaymentScalarFieldEnum[]
 }
 
 /**

@@ -87,9 +87,17 @@ export const ModelName = {
   CommercialPricingLineItem: 'CommercialPricingLineItem',
   CommercialProposal: 'CommercialProposal',
   CommercialAgreement: 'CommercialAgreement',
+  CommercialPayment: 'CommercialPayment',
   AgreementAcceptance: 'AgreementAcceptance',
   AgreementDelivery: 'AgreementDelivery',
-  ProposalDelivery: 'ProposalDelivery'
+  ProposalDelivery: 'ProposalDelivery',
+  Client: 'Client',
+  ClientProject: 'ClientProject',
+  ProjectWorkstream: 'ProjectWorkstream',
+  ProjectDeliverable: 'ProjectDeliverable',
+  ProjectDeliveryTask: 'ProjectDeliveryTask',
+  ProjectOnboardingItem: 'ProjectOnboardingItem',
+  ProjectActivity: 'ProjectActivity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -742,7 +750,8 @@ export const OpportunityScalarFieldEnum = {
   lostAt: 'lostAt',
   lostReason: 'lostReason',
   lostNote: 'lostNote',
-  createdByEmail: 'createdByEmail'
+  createdByEmail: 'createdByEmail',
+  clientId: 'clientId'
 } as const
 
 export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
@@ -964,6 +973,38 @@ export const CommercialAgreementScalarFieldEnum = {
 export type CommercialAgreementScalarFieldEnum = (typeof CommercialAgreementScalarFieldEnum)[keyof typeof CommercialAgreementScalarFieldEnum]
 
 
+export const CommercialPaymentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  opportunityId: 'opportunityId',
+  agreementId: 'agreementId',
+  type: 'type',
+  status: 'status',
+  currency: 'currency',
+  amountDueCents: 'amountDueCents',
+  amountPaidCents: 'amountPaidCents',
+  paymentSequence: 'paymentSequence',
+  paymentTermTypeSnapshot: 'paymentTermTypeSnapshot',
+  stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  checkoutUrl: 'checkoutUrl',
+  checkoutCreatedAt: 'checkoutCreatedAt',
+  paidAt: 'paidAt',
+  failedAt: 'failedAt',
+  expiredAt: 'expiredAt',
+  refundedAt: 'refundedAt',
+  canceledAt: 'canceledAt',
+  failureCode: 'failureCode',
+  failureMessage: 'failureMessage',
+  reconciliationCode: 'reconciliationCode',
+  reconciliationMessage: 'reconciliationMessage',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type CommercialPaymentScalarFieldEnum = (typeof CommercialPaymentScalarFieldEnum)[keyof typeof CommercialPaymentScalarFieldEnum]
+
+
 export const AgreementAcceptanceScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -1047,6 +1088,139 @@ export const ProposalDeliveryScalarFieldEnum = {
 } as const
 
 export type ProposalDeliveryScalarFieldEnum = (typeof ProposalDeliveryScalarFieldEnum)[keyof typeof ProposalDeliveryScalarFieldEnum]
+
+
+export const ClientScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  primaryContactName: 'primaryContactName',
+  primaryContactEmail: 'primaryContactEmail',
+  phone: 'phone',
+  website: 'website',
+  hostname: 'hostname',
+  city: 'city',
+  state: 'state',
+  sourceProspectId: 'sourceProspectId',
+  sourceOpportunityId: 'sourceOpportunityId',
+  status: 'status',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+export const ClientProjectScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  clientId: 'clientId',
+  opportunityId: 'opportunityId',
+  agreementId: 'agreementId',
+  scopeId: 'scopeId',
+  pricingId: 'pricingId',
+  proposalId: 'proposalId',
+  name: 'name',
+  status: 'status',
+  ownerEmail: 'ownerEmail',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  archivedAt: 'archivedAt',
+  commercialSnapshotJson: 'commercialSnapshotJson',
+  onboardingVersion: 'onboardingVersion',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type ClientProjectScalarFieldEnum = (typeof ClientProjectScalarFieldEnum)[keyof typeof ClientProjectScalarFieldEnum]
+
+
+export const ProjectWorkstreamScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  projectId: 'projectId',
+  sourceScopeSectionId: 'sourceScopeSectionId',
+  title: 'title',
+  capabilitiesJson: 'capabilitiesJson',
+  sortOrder: 'sortOrder',
+  status: 'status'
+} as const
+
+export type ProjectWorkstreamScalarFieldEnum = (typeof ProjectWorkstreamScalarFieldEnum)[keyof typeof ProjectWorkstreamScalarFieldEnum]
+
+
+export const ProjectDeliverableScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  projectId: 'projectId',
+  workstreamId: 'workstreamId',
+  deliveryTaskId: 'deliveryTaskId',
+  sourceScopeDeliverableId: 'sourceScopeDeliverableId',
+  sourceActionKey: 'sourceActionKey',
+  title: 'title',
+  description: 'description',
+  sortOrder: 'sortOrder',
+  status: 'status',
+  completedAt: 'completedAt',
+  internalNotes: 'internalNotes'
+} as const
+
+export type ProjectDeliverableScalarFieldEnum = (typeof ProjectDeliverableScalarFieldEnum)[keyof typeof ProjectDeliverableScalarFieldEnum]
+
+
+export const ProjectDeliveryTaskScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  projectId: 'projectId',
+  key: 'key',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  sourceScopeDeliverableIdsJson: 'sourceScopeDeliverableIdsJson',
+  sourceWorkstreamIdsJson: 'sourceWorkstreamIdsJson',
+  capabilitiesJson: 'capabilitiesJson',
+  assignedToEmail: 'assignedToEmail',
+  dueAt: 'dueAt',
+  completedAt: 'completedAt',
+  internalNotes: 'internalNotes'
+} as const
+
+export type ProjectDeliveryTaskScalarFieldEnum = (typeof ProjectDeliveryTaskScalarFieldEnum)[keyof typeof ProjectDeliveryTaskScalarFieldEnum]
+
+
+export const ProjectOnboardingItemScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  projectId: 'projectId',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  status: 'status',
+  required: 'required',
+  sortOrder: 'sortOrder',
+  completedAt: 'completedAt',
+  notes: 'notes'
+} as const
+
+export type ProjectOnboardingItemScalarFieldEnum = (typeof ProjectOnboardingItemScalarFieldEnum)[keyof typeof ProjectOnboardingItemScalarFieldEnum]
+
+
+export const ProjectActivityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  projectId: 'projectId',
+  type: 'type',
+  actorEmail: 'actorEmail',
+  fromValueJson: 'fromValueJson',
+  toValueJson: 'toValueJson',
+  note: 'note'
+} as const
+
+export type ProjectActivityScalarFieldEnum = (typeof ProjectActivityScalarFieldEnum)[keyof typeof ProjectActivityScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -33,6 +33,8 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Pricing Engine | [`development/pricing-engine.md`](development/pricing-engine.md) |
 | Proposal Engine | [`development/proposal-engine.md`](development/proposal-engine.md) |
 | Agreement Engine | [`development/agreement-engine.md`](development/agreement-engine.md) |
+| Commercial Payments | [`development/commercial-payments.md`](development/commercial-payments.md) |
+| Client / Project Onboarding | [`development/client-project-onboarding.md`](development/client-project-onboarding.md) |
 | Public-audit competitor URLs (separate) | [`development/competitive-intelligence-v1.md`](development/competitive-intelligence-v1.md) |
 | AI architecture (all OpenAI paths) | [`development/ai-architecture.md`](development/ai-architecture.md) |
 | External services / APIs | [`development/external-services.md`](development/external-services.md) |

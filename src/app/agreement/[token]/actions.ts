@@ -40,3 +40,27 @@ export async function acceptAgreementAction(options: {
       : "Agreement accepted.",
   };
 }
+
+/** Form-action entry for progressive enhancement / Playwright-native submit. */
+export async function acceptAgreementFormAction(
+  _prev: AcceptAgreementActionResult,
+  formData: FormData,
+): Promise<AcceptAgreementActionResult> {
+  const shareToken = String(formData.get("shareToken") ?? "");
+  const signerName = String(formData.get("signerName") ?? "");
+  const signerEmail = String(formData.get("signerEmail") ?? "");
+  const signerTitleRaw = formData.get("signerTitle");
+  const signerTitle =
+    typeof signerTitleRaw === "string" && signerTitleRaw.trim()
+      ? signerTitleRaw
+      : undefined;
+  const acceptanceConfirmed = formData.get("acceptanceConfirmed") === "true";
+
+  return acceptAgreementAction({
+    shareToken,
+    signerName,
+    signerEmail,
+    signerTitle,
+    acceptanceConfirmed,
+  });
+}
