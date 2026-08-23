@@ -324,6 +324,251 @@ assert(
   "payment return location has no session_id key",
 );
 
+const STRIPE_PAYMENT_INTENT = "pi_test_1a2b3c4d5e6f7g8h9i0j";
+const paymentIntentReturn = buildAnalyticsPageViewParams({
+  origin: ORIGIN,
+  pathname: "/payment/return",
+  search: `?payment_intent=${STRIPE_PAYMENT_INTENT}`,
+  title: "Payment confirmation",
+});
+assert(
+  analyticsPayloadExposesToken(paymentIntentReturn, STRIPE_PAYMENT_INTENT) ===
+    false,
+  "serialized payment return analytics never contains PaymentIntent id",
+);
+
+// ---------------------------------------------------------------------------
+// Internal /reports commercial route families — record IDs → [id]
+// Realistic Prisma cuid-shaped identifiers from production Realtime.
+// ---------------------------------------------------------------------------
+const CLIENT_ID = "cmt62pv7h008rblydpexsym3o";
+const PROJECT_ID = "cmt62pv8o008sblydyv0udbzz";
+const OPPORTUNITY_ID = "cmt4smahs0003xkyd8zeb21q4";
+const SCOPE_ID = "cmt5scope0001xkydabcdef01";
+const PRICING_ID = "cmt5price0002xkydabcdef02";
+const PROPOSAL_ID = "cmt5prop00003xkydabcdef03";
+const AGREEMENT_ID = "cmt5agree0004xkydabcdef04";
+const CAMPAIGN_ID = "cmt6camp00005xkydabcdef05";
+const PROSPECT_ID = "cmt6pros00006xkydabcdef06";
+const COMPETITOR_ID = "cmt6comp00007xkydabcdef07";
+const AUDIT_ID = "cmt6audit0008xkydabcdef08";
+const RUN_ID = "cmt6run000009xkydabcdef09";
+const INTERNAL_REPORT_UUID = REPORT_ID;
+
+const internalRouteMatrix: Array<{
+  input: string;
+  expected: string;
+  ids: string[];
+  label: string;
+}> = [
+  {
+    input: `/reports/${INTERNAL_REPORT_UUID}`,
+    expected: "/reports/[id]",
+    ids: [INTERNAL_REPORT_UUID],
+    label: "internal audit report",
+  },
+  {
+    input: `/reports/clients/${CLIENT_ID}`,
+    expected: "/reports/clients/[id]",
+    ids: [CLIENT_ID],
+    label: "client detail",
+  },
+  {
+    input: `/reports/clients/${CLIENT_ID}/projects/${PROJECT_ID}`,
+    expected: "/reports/clients/[id]/projects/[id]",
+    ids: [CLIENT_ID, PROJECT_ID],
+    label: "client project",
+  },
+  {
+    input: `/reports/opportunities/${OPPORTUNITY_ID}`,
+    expected: "/reports/opportunities/[id]",
+    ids: [OPPORTUNITY_ID],
+    label: "opportunity detail",
+  },
+  {
+    input: `/reports/opportunities/${OPPORTUNITY_ID}/scope/${SCOPE_ID}`,
+    expected: "/reports/opportunities/[id]/scope/[id]",
+    ids: [OPPORTUNITY_ID, SCOPE_ID],
+    label: "opportunity scope",
+  },
+  {
+    input: `/reports/opportunities/${OPPORTUNITY_ID}/pricing/${PRICING_ID}`,
+    expected: "/reports/opportunities/[id]/pricing/[id]",
+    ids: [OPPORTUNITY_ID, PRICING_ID],
+    label: "opportunity pricing",
+  },
+  {
+    input: `/reports/opportunities/${OPPORTUNITY_ID}/proposal/${PROPOSAL_ID}`,
+    expected: "/reports/opportunities/[id]/proposal/[id]",
+    ids: [OPPORTUNITY_ID, PROPOSAL_ID],
+    label: "opportunity proposal",
+  },
+  {
+    input: `/reports/opportunities/${OPPORTUNITY_ID}/agreement/${AGREEMENT_ID}`,
+    expected: "/reports/opportunities/[id]/agreement/[id]",
+    ids: [OPPORTUNITY_ID, AGREEMENT_ID],
+    label: "opportunity agreement",
+  },
+  {
+    input: `/reports/prospecting/${CAMPAIGN_ID}`,
+    expected: "/reports/prospecting/[id]",
+    ids: [CAMPAIGN_ID],
+    label: "prospecting campaign",
+  },
+  {
+    input: `/reports/prospecting/${CAMPAIGN_ID}/prospects/${PROSPECT_ID}`,
+    expected: "/reports/prospecting/[id]/prospects/[id]",
+    ids: [CAMPAIGN_ID, PROSPECT_ID],
+    label: "campaign prospect",
+  },
+  {
+    input: `/reports/prospecting/${CAMPAIGN_ID}/prospects/new`,
+    expected: "/reports/prospecting/[id]/prospects/new",
+    ids: [CAMPAIGN_ID],
+    label: "campaign prospect new (static new)",
+  },
+  {
+    input: `/reports/prospecting/${CAMPAIGN_ID}/discovery/${RUN_ID}`,
+    expected: "/reports/prospecting/[id]/discovery/[id]",
+    ids: [CAMPAIGN_ID, RUN_ID],
+    label: "campaign discovery run",
+  },
+  {
+    input: `/reports/prospecting/${CAMPAIGN_ID}/prospects/${PROSPECT_ID}/competitive-report`,
+    expected: "/reports/prospecting/[id]/prospects/[id]/competitive-report",
+    ids: [CAMPAIGN_ID, PROSPECT_ID],
+    label: "competitive report",
+  },
+  {
+    input: `/reports/prospecting/${CAMPAIGN_ID}/prospects/${PROSPECT_ID}/competitors/${COMPETITOR_ID}/audits/${AUDIT_ID}`,
+    expected:
+      "/reports/prospecting/[id]/prospects/[id]/competitors/[id]/audits/[id]",
+    ids: [CAMPAIGN_ID, PROSPECT_ID, COMPETITOR_ID, AUDIT_ID],
+    label: "competitor audit",
+  },
+];
+
+for (const row of internalRouteMatrix) {
+  assert(
+    sanitizeAnalyticsPagePath(row.input) === row.expected,
+    `${row.label}: path sanitizes to ${row.expected}`,
+  );
+
+  const payload = buildAnalyticsPageViewParams({
+    origin: ORIGIN,
+    pathname: row.input,
+    search: `?client_id=${CLIENT_ID}&opportunity_id=${OPPORTUNITY_ID}&utm_source=test`,
+    title: `Internal ${row.label}`,
+    referrer: `${ORIGIN}${row.input}`,
+  });
+
+  assert(
+    payload.page_path === row.expected,
+    `${row.label}: page_view path is ${row.expected}`,
+  );
+  assert(
+    payload.page_location === `${ORIGIN}${row.expected}`,
+    `${row.label}: page_location omits IDs and commercial query params`,
+  );
+  assert(
+    payload.page_path.includes("[id]"),
+    `${row.label}: redacted path includes [id]`,
+  );
+
+  const serialized = JSON.stringify(payload);
+  for (const id of row.ids) {
+    assert(
+      analyticsPayloadExposesToken(payload, id) === false,
+      `${row.label}: serialized payload must not contain ${id}`,
+    );
+  }
+  assert(
+    serialized.includes(CLIENT_ID) === false,
+    `${row.label}: client id must not appear in analytics payload`,
+  );
+  assert(
+    serialized.includes(OPPORTUNITY_ID) === false,
+    `${row.label}: opportunity id must not appear in analytics payload`,
+  );
+  assert(
+    payload.page_location.includes("client_id") === false,
+    `${row.label}: client_id query key absent from page_location`,
+  );
+  assert(
+    payload.page_location.includes("opportunity_id") === false,
+    `${row.label}: opportunity_id query key absent from page_location`,
+  );
+}
+
+for (const staticPath of [
+  "/reports",
+  "/reports/growth",
+  "/reports/growth/utm-builder",
+  "/reports/opportunities",
+  "/reports/clients",
+  "/reports/prospecting",
+  "/reports/prospecting/new",
+]) {
+  assert(
+    sanitizeAnalyticsPagePath(staticPath) === staticPath,
+    `static path preserved: ${staticPath}`,
+  );
+  const payload = buildAnalyticsPageViewParams({
+    origin: ORIGIN,
+    pathname: staticPath,
+    search: "?utm_source=newsletter",
+    title: "Internal",
+  });
+  assert(
+    payload.page_path === staticPath,
+    `static page_view path preserved: ${staticPath}`,
+  );
+  assert(
+    payload.page_location === `${ORIGIN}${staticPath}?utm_source=newsletter`,
+    `static path keeps safe UTM query: ${staticPath}`,
+  );
+}
+
+const reportsQueryLeak = buildAnalyticsPageViewParams({
+  origin: ORIGIN,
+  pathname: "/reports/growth",
+  search: `?campaign_id=${CAMPAIGN_ID}&prospect_id=${PROSPECT_ID}`,
+  title: "Growth",
+});
+assert(
+  reportsQueryLeak.page_location === `${ORIGIN}/reports/growth`,
+  "static /reports/growth strips commercial ID query params",
+);
+assert(
+  analyticsPayloadExposesToken(reportsQueryLeak, CAMPAIGN_ID) === false,
+  "campaign_id absent from growth analytics payload",
+);
+assert(
+  analyticsPayloadExposesToken(reportsQueryLeak, PROSPECT_ID) === false,
+  "prospect_id absent from growth analytics payload",
+);
+
+assert(
+  isForbiddenAnalyticsParamKey("campaign_id"),
+  "campaign_id key is forbidden in event params",
+);
+assert(
+  isForbiddenAnalyticsParamKey("client_id"),
+  "client_id key is forbidden in event params",
+);
+assert(
+  isForbiddenAnalyticsParamKey("project_id"),
+  "project_id key is forbidden in event params",
+);
+assert(
+  isForbiddenAnalyticsParamKey("run_id"),
+  "run_id key is forbidden in event params",
+);
+assert(
+  isForbiddenAnalyticsParamKey("competitor_id"),
+  "competitor_id key is forbidden in event params",
+);
+
 const reportView = buildAnalyticsPageViewParams({
   origin: ORIGIN,
   pathname: `/report/${REPORT_ID}`,

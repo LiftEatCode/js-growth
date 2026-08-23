@@ -19,12 +19,17 @@
 ## Privacy
 
 - Event + page-path sanitizers strip commercial IDs, UUIDs, Stripe IDs, PII keys.
-- Forbidden keys include prospect/opportunity/client/project/proposal/agreement/payment IDs, emails, phones.
-- **Capability-bearing URLs are redacted before third-party analytics** (application routes unchanged):
+- Forbidden keys include prospect/opportunity/client/project/proposal/agreement/payment/campaign IDs, emails, phones.
+- **Third-party analytics records commercial route families, never commercial record identity.**
+- Capability-bearing and internal dynamic URLs are redacted before analytics (application routes unchanged):
   - `/report/{uuid}` → `/report/[id]`
   - `/proposal/{shareToken}` → `/proposal/[secure]`
   - `/agreement/{shareToken}` → `/agreement/[secure]`
-  - `/payment/return?session_id=…` → path kept; Stripe session query stripped
+  - `/reports/clients/{clientId}/projects/{projectId}` → `/reports/clients/[id]/projects/[id]`
+  - `/reports/opportunities/{id}/scope/{id}` → `/reports/opportunities/[id]/scope/[id]`
+  - `/reports/prospecting/{campaignId}/prospects/{prospectId}` → `/reports/prospecting/[id]/prospects/[id]`
+  - Static feature paths preserved: `/reports/growth`, `/reports/clients`, `/reports/opportunities`, `/reports/prospecting`
+  - `/payment/return?session_id=…` → path kept; Stripe session / payment_intent query stripped
 - Public/private boundary documented in growth measurement framework.
 
 ## Authority boundaries
