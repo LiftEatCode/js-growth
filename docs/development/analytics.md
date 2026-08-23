@@ -20,6 +20,11 @@
 
 - Event + page-path sanitizers strip commercial IDs, UUIDs, Stripe IDs, PII keys.
 - Forbidden keys include prospect/opportunity/client/project/proposal/agreement/payment IDs, emails, phones.
+- **Capability-bearing URLs are redacted before third-party analytics** (application routes unchanged):
+  - `/report/{uuid}` → `/report/[id]`
+  - `/proposal/{shareToken}` → `/proposal/[secure]`
+  - `/agreement/{shareToken}` → `/agreement/[secure]`
+  - `/payment/return?session_id=…` → path kept; Stripe session query stripped
 - Public/private boundary documented in growth measurement framework.
 
 ## Authority boundaries

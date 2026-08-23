@@ -9,7 +9,9 @@ import {
   sanitizeCommercialEventParams,
 } from "./commercial-events";
 import {
+  analyticsPayloadExposesToken,
   buildAnalyticsPageViewParams,
+  containsCapabilityTokenShape,
   containsReportUuid,
   sanitizeAnalyticsPagePath,
 } from "./page-path";
@@ -205,6 +207,121 @@ assert(
 assert(
   sanitizeAnalyticsPagePath("/contact") === "/contact",
   "public contact path is unchanged",
+);
+
+// Capability-bearing commercial share tokens (base64url-shaped, not UUIDs).
+const PROPOSAL_SHARE_TOKEN =
+  "xK9mN2pQ7rS4tU8vW1yZ0aBcDeFgHiJkLmNoPqRsTuVwXyZ";
+const AGREEMENT_SHARE_TOKEN =
+  "AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-abcde";
+
+assert(
+  sanitizeAnalyticsPagePath(`/proposal/${PROPOSAL_SHARE_TOKEN}`) ===
+    "/proposal/[secure]",
+  "proposal page_path is redacted to /proposal/[secure]",
+);
+assert(
+  sanitizeAnalyticsPagePath(`/agreement/${AGREEMENT_SHARE_TOKEN}`) ===
+    "/agreement/[secure]",
+  "agreement page_path is redacted to /agreement/[secure]",
+);
+assert(
+  sanitizeAnalyticsPagePath(`/proposal/${PROPOSAL_SHARE_TOKEN}/`) ===
+    "/proposal/[secure]/",
+  "proposal trailing slash still redacts token segment",
+);
+assert(
+  sanitizeAnalyticsPagePath("/proposal") === "/proposal",
+  "proposal index path unchanged when no token",
+);
+assert(
+  sanitizeAnalyticsPagePath("/agreement") === "/agreement",
+  "agreement index path unchanged when no token",
+);
+
+const proposalView = buildAnalyticsPageViewParams({
+  origin: ORIGIN,
+  pathname: `/proposal/${PROPOSAL_SHARE_TOKEN}`,
+  search: `?utm_source=email&token=${PROPOSAL_SHARE_TOKEN}`,
+  title: "Website Growth Implementation Proposal",
+  referrer: `${ORIGIN}/proposal/${PROPOSAL_SHARE_TOKEN}`,
+});
+assert(
+  proposalView.page_path === "/proposal/[secure]",
+  "proposal page_view uses /proposal/[secure]",
+);
+assert(
+  proposalView.page_location === `${ORIGIN}/proposal/[secure]`,
+  "proposal page_location has no raw token or query leak",
+);
+assert(
+  proposalView.page_referrer === `${ORIGIN}/proposal/[secure]`,
+  "proposal page_referrer redacts share token",
+);
+assert(
+  analyticsPayloadExposesToken(proposalView, PROPOSAL_SHARE_TOKEN) === false,
+  "serialized proposal analytics payload never contains raw share token",
+);
+assert(
+  containsCapabilityTokenShape(proposalView.page_path) === false,
+  "sanitized proposal path has no token-shaped segment",
+);
+assert(
+  containsCapabilityTokenShape(proposalView.page_location) === false,
+  "sanitized proposal location has no token-shaped segment",
+);
+
+const agreementView = buildAnalyticsPageViewParams({
+  origin: ORIGIN,
+  pathname: `/agreement/${AGREEMENT_SHARE_TOKEN}`,
+  search: `?ref=${AGREEMENT_SHARE_TOKEN}`,
+  title: "Website Growth Implementation Agreement",
+  referrer: `${ORIGIN}/agreement/${AGREEMENT_SHARE_TOKEN}`,
+});
+assert(
+  agreementView.page_path === "/agreement/[secure]",
+  "agreement page_view uses /agreement/[secure]",
+);
+assert(
+  agreementView.page_location === `${ORIGIN}/agreement/[secure]`,
+  "agreement page_location has no raw token or query leak",
+);
+assert(
+  analyticsPayloadExposesToken(agreementView, AGREEMENT_SHARE_TOKEN) === false,
+  "serialized agreement analytics payload never contains raw share token",
+);
+assert(
+  containsCapabilityTokenShape(agreementView.page_path) === false,
+  "sanitized agreement path has no token-shaped segment",
+);
+assert(
+  containsCapabilityTokenShape(JSON.stringify(agreementView)) === false,
+  "serialized agreement analytics has no token-shaped values",
+);
+
+// /payment/return may carry Stripe checkout session_id — strip from analytics.
+const STRIPE_SESSION = "cs_test_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6";
+const paymentReturn = buildAnalyticsPageViewParams({
+  origin: ORIGIN,
+  pathname: "/payment/return",
+  search: `?status=success&session_id=${STRIPE_SESSION}`,
+  title: "Payment confirmation",
+});
+assert(
+  paymentReturn.page_path === "/payment/return",
+  "payment return path identity preserved",
+);
+assert(
+  paymentReturn.page_location === `${ORIGIN}/payment/return`,
+  "payment return page_location omits session_id query",
+);
+assert(
+  analyticsPayloadExposesToken(paymentReturn, STRIPE_SESSION) === false,
+  "serialized payment return analytics never contains Stripe session id",
+);
+assert(
+  paymentReturn.page_location.includes("session_id") === false,
+  "payment return location has no session_id key",
 );
 
 const reportView = buildAnalyticsPageViewParams({

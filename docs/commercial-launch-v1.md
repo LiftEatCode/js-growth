@@ -91,7 +91,7 @@ Contact path: `/contact` and published email `jssolutions.tx@gmail.com`
 
 Payments: Stripe Checkout
 
-Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set. Report UUIDs are omitted from custom events and redacted from report `page_path` values (`/report/[id]/...`). No cookie-consent banner is implemented.
+Analytics: Google Analytics may load when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set. Capability-bearing URLs are redacted in analytics payloads (`/report/[id]/...`, `/proposal/[secure]`, `/agreement/[secure]`). Stripe session query params are omitted from `/payment/return` analytics locations. No cookie-consent banner is implemented.
 
 ## Known limitations
 
