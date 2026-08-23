@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–3** (Measurement/Baseline → Audit Funnel → Facebook Organic Engine) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–4** (Measurement → Audit Funnel → Facebook Engine → 30-day Execution) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -227,6 +227,16 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - No Meta Graph API; Growth Baseline V1 preserved
 
 **Not included:** Meta API sync, Meta Pixel/CAPI, paid social automation, Baseline V1 edits.
+
+### Growth Sprint 4 — 30-Day Facebook Execution & Optimization ✅
+
+- `facebook-execution-v1` cadence/targets/schedule/experiment sequence
+- Content metric checkpoints (`GrowthContentMetricSnapshot`) + edit UI on `/reports/growth`
+- Due-for-measurement queue, daily operator view, follower & publisher scorecards
+- Experiment decision logging; 018 website→Facebook remains queued
+- Docs: 30-day plan + review template + acceptance
+
+**Not included:** Auto-posting, AI post generation, Meta API, Baseline V1 changes.
 
 ---
 

@@ -700,6 +700,57 @@ assert(
   "growth page has no Meta API clients",
 );
 
+const contentForm = readFileSync(
+  join(here, "../../components/growth/create-content-form.tsx"),
+  "utf8",
+);
+assert(contentForm.includes("isPending"), "content form pending lock");
+assert(contentForm.includes("Saving..."), "content form saving label");
+assert(
+  contentForm.includes("disabled={isPending}"),
+  "content form disables while pending",
+);
+
+const contentStore = readFileSync(
+  join(here, "content-store.ts"),
+  "utf8",
+);
+assert(
+  contentStore.includes("GROWTH_CONTENT_RAPID_DUPLICATE_WINDOW_MS"),
+  "rapid duplicate window constant",
+);
+assert(
+  contentStore.includes("updateGrowthContentManualMetrics"),
+  "same-record metric update helper",
+);
+assert(
+  contentStore.includes("deduplicated"),
+  "create returns deduplicated flag",
+);
+assert(
+  contentStore.includes("growthContentMetricSnapshot"),
+  "checkpoint snapshots wired",
+);
+assert(schema.includes("model GrowthContentMetricSnapshot"), "snapshot model");
+assert(schema.includes("model GrowthExperimentDecision"), "experiment decision model");
+
+const execution = readFileSync(
+  join(here, "facebook-execution.ts"),
+  "utf8",
+);
+assert(execution.includes("facebook-execution-v1"), "execution version");
+assert(execution.includes("EXPERIMENTAL OPERATING CADENCE"), "cadence label");
+assert(execution.includes("2026-08-24"), "execution start");
+assert(growthPage.includes("FACEBOOK_EXECUTION_VERSION"), "dashboard execution");
+assert(growthPage.includes("GrowthContentRecordsTable"), "edit metrics table");
+assert(growthPage.includes("CreateExperimentDecisionForm"), "experiment form");
+assert(
+  !/graph\.facebook\.com|facebook-nodejs-business-sdk|openai|OpenAI/i.test(
+    growthPage,
+  ),
+  "no Meta/OpenAI clients on growth page",
+);
+
 const researchDoc = readFileSync(
   join(here, "../../../docs/research/facebook-organic-growth-2026.md"),
   "utf8",

@@ -29,9 +29,22 @@
 
 ---
 
-## Important findings
+## Research refresh (Sprint 4 — 2026-08-23)
 
-### Feed ranking & discovery (FACT)
+No change to core ranking FACTS from Sprint 3.
+
+**Execution questions:**
+
+**FACT:** Meta does not publish a universal “post X times/day” organic Page rule in ranking docs; Insights/Business Suite remain the measurement surface.  
+**HYPOTHESIS:** 3–5 company + 2–4 founder posts/week is a workable observation cadence for a small Page.  
+**TEST:** 30-day experimental cadence (see `facebook-30-day-execution-plan.md`); recalibrate after Week 2.
+
+**FACT:** Audience “when fans are online” style Insights exist in Meta Business Suite (operator UI).  
+**HYPOTHESIS:** Timing optimization matters less than content job + format experiments at 75 followers.  
+**TEST:** Prefer experiment isolation over fine-grained dayparting in month 1.
+
+Industry posting-frequency blogs remain **secondary / hypothesis only**.
+
 
 Meta states Feed is personalized via ML ranking, not simple chronology.
 

@@ -9,8 +9,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 
+import { CreateExperimentDecisionForm } from "@/components/growth/create-experiment-decision-form";
 import { CreateGrowthContentForm } from "@/components/growth/create-content-form";
 import { CreateGrowthSnapshotForm } from "@/components/growth/create-snapshot-form";
+import { GrowthContentRecordsTable } from "@/components/growth/growth-content-records-table";
 import {
   Button,
   Card,
@@ -47,6 +49,17 @@ import {
 } from "@/lib/growth";
 import { getFacebookOrganicAttributionSummary } from "@/lib/growth/facebook-attribution-metrics";
 import { summarizeGrowthContentRecords } from "@/lib/growth/content-store";
+import { listGrowthExperimentDecisions } from "@/lib/growth/experiment-decisions";
+import {
+  FACEBOOK_30_DAY_TARGETS,
+  FACEBOOK_EXECUTION_VERSION,
+  FACEBOOK_EXECUTION_WINDOW,
+  FACEBOOK_EXPERIMENT_SEQUENCE,
+  FACEBOOK_EXPERIMENTAL_CADENCE,
+  followerTargetProgress,
+  scheduleToday,
+  WEBSITE_TO_FACEBOOK_DECISION,
+} from "@/lib/growth/facebook-execution";
 import { listGrowthSnapshots } from "@/lib/growth/snapshot-store";
 
 export const metadata: Metadata = {
@@ -156,6 +169,7 @@ export default async function GrowthDashboardPage() {
     snapshots,
     contentSummary,
     facebookAttribution,
+    experimentDecisions,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -163,6 +177,7 @@ export default async function GrowthDashboardPage() {
     listGrowthSnapshots(20),
     summarizeGrowthContentRecords(200),
     getFacebookOrganicAttributionSummary(current),
+    listGrowthExperimentDecisions(10),
   ]);
 
   const facebookSnapshots = snapshots.filter((s) => s.source === "FACEBOOK");
@@ -181,6 +196,33 @@ export default async function GrowthDashboardPage() {
     currentFollowers,
     GROWTH_BASELINE_V1.facebook.followers,
   );
+  const followerProgress = followerTargetProgress({
+    currentFollowers,
+  });
+  const todaysSchedule = scheduleToday();
+  const tableRows = contentSummary.rows.map((row) => ({
+    id: row.id,
+    title: row.title,
+    utmContent: row.utmContent,
+    publisherType: row.publisherType,
+    publishedAt: row.publishedAt.toISOString().slice(0, 10),
+    contentJob: row.contentJob,
+    contentPillar: row.contentPillar,
+    contentFormat: row.contentFormat,
+    fbViews: row.fbViews,
+    fbReach: row.fbReach,
+    fbEngagements: row.fbEngagements,
+    fbReactions: row.fbReactions,
+    fbComments: row.fbComments,
+    fbShares: row.fbShares,
+    fbPageVisits: row.fbPageVisits,
+    fbFollowersGained: row.fbFollowersGained,
+    fbLinkClicks: row.fbLinkClicks,
+    notes: row.notes,
+    measurementStatus: row.measurementStatus,
+    has72h: row.has72h,
+    has7d: row.has7d,
+  }));
 
   return (
     <main className="min-h-screen bg-slate-50/70">
@@ -806,71 +848,218 @@ export default async function GrowthDashboardPage() {
             </Card>
           </div>
 
-          <Card className="space-y-2 p-6">
+          <Card className="space-y-3 p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              Active Facebook experiments
+              What should I do today? ({FACEBOOK_EXECUTION_VERSION})
             </p>
-            <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
-              <li>2026-010 Photo vs text</li>
-              <li>2026-011 Native vs link</li>
-              <li>2026-012 Founder vs company</li>
-              <li>2026-013 Direct vs soft CTA</li>
-              <li>2026-014 Edu vs proof</li>
-              <li>2026-015 Reel vs static</li>
-              <li>2026-016 Follow CTA</li>
-              <li>2026-017 Discussion vs info</li>
-              <li>2026-018 Website → Facebook follow loop</li>
-            </ul>
-            <p className="text-xs text-muted">
-              Docs: docs/growth/experiments/2026-01*.md — no significance claims
-              from tiny samples.
+            <p className="text-sm text-muted">
+              Window {FACEBOOK_EXECUTION_WINDOW.startDate} →{" "}
+              {FACEBOOK_EXECUTION_WINDOW.endDate}. Weekly FACEBOOK snapshot:{" "}
+              {FACEBOOK_EXECUTION_WINDOW.weeklySnapshotWeekday}s.
             </p>
+            <div className="grid gap-3 lg:grid-cols-3">
+              <div>
+                <p className="text-xs font-semibold text-brand">Scheduled today</p>
+                {todaysSchedule.length === 0 ? (
+                  <p className="mt-1 text-sm text-muted">No schedule row for today.</p>
+                ) : (
+                  <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-muted">
+                    {todaysSchedule.map((item) => (
+                      <li key={`${item.date}-${item.slugHint}`}>
+                        {item.publisher}: {item.titleHint} ({item.contentJob}/
+                        {item.contentFormat}
+                        {item.link ? ", link" : ", native"}
+                        {item.experimentId ? `, ${item.experimentId}` : ""})
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-brand">Metrics due</p>
+                <p className="mt-1 text-sm text-muted">
+                  72h: {contentSummary.due72h.length} · 7d:{" "}
+                  {contentSummary.due7d.length}
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-5 text-xs text-muted">
+                  {[...contentSummary.due72h, ...contentSummary.due7d]
+                    .slice(0, 6)
+                    .map((row) => (
+                      <li key={row.id}>
+                        {row.utmContent} — {row.measurementStatus}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-brand">Current experiment</p>
+                <p className="mt-1 text-sm text-muted">
+                  Now: {FACEBOOK_EXPERIMENT_SEQUENCE.current} · Next:{" "}
+                  {FACEBOOK_EXPERIMENT_SEQUENCE.next}
+                </p>
+                <p className="mt-2 text-xs text-muted">
+                  Cadence ({FACEBOOK_EXPERIMENTAL_CADENCE.label}): company{" "}
+                  {FACEBOOK_EXPERIMENTAL_CADENCE.companyPostsPerWeek.target}
+                  /wk · founder{" "}
+                  {FACEBOOK_EXPERIMENTAL_CADENCE.founderPostsPerWeek.target}/wk
+                </p>
+              </div>
+            </div>
           </Card>
 
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card className="space-y-3 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Follower growth scorecard
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <BaselineStat
+                  label="Baseline"
+                  value={FACEBOOK_30_DAY_TARGETS.baselineFollowers}
+                />
+                <BaselineStat
+                  label="Current"
+                  value={currentFollowers ?? "NOT CAPTURED"}
+                />
+                <BaselineStat
+                  label="Δ absolute"
+                  value={
+                    followerProgress.absoluteGain != null
+                      ? followerProgress.absoluteGain
+                      : "NOT CAPTURED"
+                  }
+                />
+                <BaselineStat
+                  label="Band"
+                  value={followerProgress.band.replaceAll("_", " ")}
+                />
+              </div>
+              <p className="text-xs text-muted">
+                30d floor +{FACEBOOK_30_DAY_TARGETS.followers.floorAbsoluteGain} ·
+                target +{FACEBOOK_30_DAY_TARGETS.followers.targetAbsoluteGain} ·
+                stretch +{FACEBOOK_30_DAY_TARGETS.followers.stretchAbsoluteGain}{" "}
+                (TARGET bands, not forecasts). Also track Page visits / non-follower
+                % / engagement — never chase followers alone.
+              </p>
+            </Card>
+            <Card className="space-y-3 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Company vs founder (ledger totals)
+              </p>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="font-semibold text-brand">COMPANY</p>
+                  <p className="text-muted">
+                    posts={contentSummary.publisherScorecard.COMPANY.posts}
+                    <br />
+                    views=
+                    {contentSummary.publisherScorecard.COMPANY.views ??
+                      "NOT_CAPTURED"}
+                    <br />
+                    eng=
+                    {contentSummary.publisherScorecard.COMPANY.engagements ??
+                      "NOT_CAPTURED"}
+                    <br />
+                    follows=
+                    {contentSummary.publisherScorecard.COMPANY.followersGained ??
+                      "NOT_CAPTURED"}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-brand">FOUNDER</p>
+                  <p className="text-muted">
+                    posts={contentSummary.publisherScorecard.FOUNDER.posts}
+                    <br />
+                    views=
+                    {contentSummary.publisherScorecard.FOUNDER.views ??
+                      "NOT_CAPTURED"}
+                    <br />
+                    eng=
+                    {contentSummary.publisherScorecard.FOUNDER.engagements ??
+                      "NOT_CAPTURED"}
+                    <br />
+                    follows=
+                    {contentSummary.publisherScorecard.FOUNDER.followersGained ??
+                      "NOT_CAPTURED"}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-muted">
+                Do not declare a single winner — founder may win engagement while
+                company wins audit UTMs. Attributed audits: company=
+                {facebookAttribution.company}, founder=
+                {facebookAttribution.founder}.
+              </p>
+            </Card>
+          </div>
+
+          <Card className="space-y-2 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Weekly review prompts
+            </p>
+            <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
+              <li>
+                Top engagement in ledger:{" "}
+                {contentSummary.rows
+                  .slice()
+                  .sort(
+                    (a, b) => (b.fbEngagements ?? -1) - (a.fbEngagements ?? -1),
+                  )[0]?.utmContent ?? "INSUFFICIENT DATA"}
+              </li>
+              <li>
+                Top views in ledger:{" "}
+                {contentSummary.rows
+                  .slice()
+                  .sort((a, b) => (b.fbViews ?? -1) - (a.fbViews ?? -1))[0]
+                  ?.utmContent ?? "INSUFFICIENT DATA"}
+              </li>
+              <li>
+                Non-follower % (latest snapshot):{" "}
+                {typeof latestFbMetrics?.nonFollowerViewPercent === "number"
+                  ? `${latestFbMetrics.nonFollowerViewPercent}%`
+                  : "NOT CAPTURED"}
+              </li>
+              <li>
+                FB-attributed audits (28d):{" "}
+                {facebookAttribution.totalAttributedAudits}
+              </li>
+              <li>
+                Website→Facebook: {WEBSITE_TO_FACEBOOK_DECISION.status} (
+                {WEBSITE_TO_FACEBOOK_DECISION.experimentId})
+              </li>
+            </ul>
+          </Card>
+
+          <Card className="space-y-2 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Experiment sequencing
+            </p>
+            <p className="text-sm text-muted">
+              Current: <strong>{FACEBOOK_EXPERIMENT_SEQUENCE.current}</strong> ·
+              Next: <strong>{FACEBOOK_EXPERIMENT_SEQUENCE.next}</strong>
+            </p>
+            <p className="text-xs text-muted">
+              Backlog: {FACEBOOK_EXPERIMENT_SEQUENCE.backlog.join(" → ")}
+            </p>
+            {experimentDecisions.length > 0 ? (
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-muted">
+                {experimentDecisions.map((row) => (
+                  <li key={row.id}>
+                    {row.createdAt.toISOString().slice(0, 10)} {row.experimentId}{" "}
+                    → {row.decision} ({row.confidence ?? "n/a"})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-muted">No decisions recorded yet.</p>
+            )}
+          </Card>
+
+          <CreateExperimentDecisionForm />
           <CreateGrowthContentForm />
 
           <Card className="overflow-hidden p-0">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-border bg-slate-50 text-xs uppercase tracking-[0.08em] text-muted">
-                <tr>
-                  <th className="px-4 py-3">Published</th>
-                  <th className="px-4 py-3">Publisher</th>
-                  <th className="px-4 py-3">Job / format</th>
-                  <th className="px-4 py-3">utm_content</th>
-                  <th className="px-4 py-3">FB metrics</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contentSummary.rows.length === 0 ? (
-                  <tr>
-                    <td className="px-4 py-4 text-muted" colSpan={5}>
-                      No content records yet. Record company and founder posts
-                      above.
-                    </td>
-                  </tr>
-                ) : (
-                  contentSummary.rows.slice(0, 15).map((row) => (
-                    <tr key={row.id} className="border-b border-border/70">
-                      <td className="px-4 py-3">
-                        {row.publishedAt.toISOString().slice(0, 10)}
-                      </td>
-                      <td className="px-4 py-3">{row.publisherType}</td>
-                      <td className="px-4 py-3">
-                        {row.contentJob} / {row.contentFormat}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-xs">
-                        {row.utmContent}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-muted">
-                        views=
-                        {row.fbViews ?? "NOT_CAPTURED"} · eng=
-                        {row.fbEngagements ?? "NOT_CAPTURED"}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+            <GrowthContentRecordsTable rows={tableRows} />
           </Card>
         </section>
 

@@ -299,3 +299,14 @@ export type GrowthSnapshot = Prisma.GrowthSnapshotModel
  * First-party website/commercial outcomes remain separate (attributionJson / DB).
  */
 export type GrowthContentRecord = Prisma.GrowthContentRecordModel
+/**
+ * Model GrowthContentMetricSnapshot
+ * Point-in-time Facebook Insights capture for a canonical content record.
+ * One post = one GrowthContentRecord; checkpoints mature as snapshots.
+ */
+export type GrowthContentMetricSnapshot = Prisma.GrowthContentMetricSnapshotModel
+/**
+ * Model GrowthExperimentDecision
+ * Operator-entered Facebook experiment observations (manual; no Meta API).
+ */
+export type GrowthExperimentDecision = Prisma.GrowthExperimentDecisionModel

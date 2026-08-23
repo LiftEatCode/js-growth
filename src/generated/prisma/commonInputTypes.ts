@@ -1266,6 +1266,40 @@ export type EnumGrowthContentFormatWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumGrowthContentFormatFilter<$PrismaModel>
 }
 
+export type EnumGrowthContentMetricCheckpointFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentMetricCheckpoint | Prisma.EnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel> | $Enums.GrowthContentMetricCheckpoint
+}
+
+export type EnumGrowthContentMetricCheckpointWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentMetricCheckpoint | Prisma.EnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentMetricCheckpointWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentMetricCheckpoint
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel>
+}
+
+export type EnumGrowthExperimentDecisionKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthExperimentDecisionKind | Prisma.EnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel> | $Enums.GrowthExperimentDecisionKind
+}
+
+export type EnumGrowthExperimentDecisionKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthExperimentDecisionKind | Prisma.EnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthExperimentDecisionKindWithAggregatesFilter<$PrismaModel> | $Enums.GrowthExperimentDecisionKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -2464,6 +2498,40 @@ export type NestedEnumGrowthContentFormatWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGrowthContentFormatFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGrowthContentFormatFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentMetricCheckpoint | Prisma.EnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel> | $Enums.GrowthContentMetricCheckpoint
+}
+
+export type NestedEnumGrowthContentMetricCheckpointWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthContentMetricCheckpoint | Prisma.EnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthContentMetricCheckpoint[] | Prisma.ListEnumGrowthContentMetricCheckpointFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthContentMetricCheckpointWithAggregatesFilter<$PrismaModel> | $Enums.GrowthContentMetricCheckpoint
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthContentMetricCheckpointFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthExperimentDecisionKind | Prisma.EnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel> | $Enums.GrowthExperimentDecisionKind
+}
+
+export type NestedEnumGrowthExperimentDecisionKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthExperimentDecisionKind | Prisma.EnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthExperimentDecisionKind[] | Prisma.ListEnumGrowthExperimentDecisionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthExperimentDecisionKindWithAggregatesFilter<$PrismaModel> | $Enums.GrowthExperimentDecisionKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthExperimentDecisionKindFilter<$PrismaModel>
 }
 
 

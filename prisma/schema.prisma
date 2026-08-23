@@ -2426,4 +2426,73 @@ model GrowthContentRecord {
   @@index([contentFormat, publishedAt])
   @@index([utmContent])
   @@index([createdAt])
+
+  metricSnapshots GrowthContentMetricSnapshot[]
+}
+
+enum GrowthContentMetricCheckpoint {
+  INITIAL
+  HOURS_72
+  DAYS_7
+}
+
+/// Point-in-time Facebook Insights capture for a canonical content record.
+/// One post = one GrowthContentRecord; checkpoints mature as snapshots.
+model GrowthContentMetricSnapshot {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  contentRecordId String
+  contentRecord   GrowthContentRecord @relation(fields: [contentRecordId], references: [id], onDelete: Cascade)
+
+  checkpoint GrowthContentMetricCheckpoint
+  capturedAt DateTime @default(now())
+
+  fbViews           Int?
+  fbReach           Int?
+  fbEngagements     Int?
+  fbReactions       Int?
+  fbComments        Int?
+  fbShares          Int?
+  fbPageVisits      Int?
+  fbFollowersGained Int?
+  fbLinkClicks      Int?
+
+  notes            String? @db.VarChar(2000)
+  capturedByEmail  String
+
+  @@unique([contentRecordId, checkpoint])
+  @@index([checkpoint, capturedAt])
+  @@index([capturedAt])
+}
+
+enum GrowthExperimentDecisionKind {
+  CONTINUE
+  ITERATE
+  PROMOTE
+  STOP
+  INCONCLUSIVE
+}
+
+/// Operator-entered Facebook experiment observations (manual; no Meta API).
+model GrowthExperimentDecision {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  /// e.g. 2026-012
+  experimentId String @db.VarChar(40)
+
+  hypothesis       String? @db.VarChar(1000)
+  primaryMetric    String? @db.VarChar(120)
+  secondaryMetrics String? @db.VarChar(500)
+  observations     String  @db.VarChar(4000)
+  sampleSize       Int?
+  result           String? @db.VarChar(2000)
+  confidence       String? @db.VarChar(20)
+  decision         GrowthExperimentDecisionKind
+
+  createdByEmail String
+
+  @@index([experimentId, createdAt])
+  @@index([createdAt])
 }

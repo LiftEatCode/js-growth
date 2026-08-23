@@ -146,3 +146,26 @@ export {
   type FacebookContentPillar,
   type FacebookContentFormat,
 } from "./facebook-growth";
+
+export {
+  FACEBOOK_EXECUTION_VERSION,
+  FACEBOOK_EXECUTION_WINDOW,
+  FACEBOOK_CONTENT_METRIC_CHECKPOINTS,
+  FACEBOOK_CHECKPOINT_DUE_HOURS,
+  FACEBOOK_EXPERIMENTAL_CADENCE,
+  FACEBOOK_30_DAY_TARGETS,
+  FACEBOOK_EXPERIMENT_SEQUENCE,
+  FACEBOOK_30_DAY_SCHEDULE,
+  GROWTH_EXPERIMENT_DECISIONS,
+  WEBSITE_TO_FACEBOOK_DECISION,
+  isFacebookContentMetricCheckpoint,
+  isGrowthExperimentDecisionKind,
+  getMeasurementDueStatus,
+  followerTargetProgress,
+  scheduleForDate,
+  scheduleToday,
+  type FacebookContentMetricCheckpoint,
+  type MeasurementDueStatus,
+  type GrowthExperimentDecisionKind,
+  type ScheduledFacebookPost,
+} from "./facebook-execution";

@@ -41,6 +41,7 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 - “Content is planned with a clear job — discovery, engagement, authority, proof, or conversion — rather than posting randomly.”
 - “We run controlled experiments on formats and messaging, and we keep incomplete Facebook metrics explicit instead of inventing zeros.”
 - “Campaign links use consistent tagging so Facebook traffic can be compared to other channels over time.”
+- “We measure social content at intervals after publish so we can see what grew over a few days versus what stalled — then we change the next posts based on that feedback.”
 
 ## Privacy & trust
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useId, useRef } from "react";
+import { LoaderCircle } from "lucide-react";
 
 import {
   createGrowthContentAction,
@@ -20,24 +21,37 @@ const initialState: CreateContentState = {
 };
 
 export function CreateGrowthContentForm() {
-  const [state, formAction] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     createGrowthContentAction,
     initialState,
   );
-
+  const formRef = useRef<HTMLFormElement>(null);
+  const statusId = useId();
   const today = new Date().toISOString().slice(0, 10);
+
+  useEffect(() => {
+    if (state.success) {
+      formRef.current?.reset();
+    }
+  }, [state.success, state.message]);
+
+  const submitLabel = isPending ? "Saving..." : "Record Facebook Content";
 
   return (
     <form
+      ref={formRef}
       action={formAction}
       className="space-y-4 rounded-2xl border border-border bg-white p-6"
+      aria-busy={isPending}
     >
       <p className="text-sm font-semibold text-brand">
         Record Facebook content (manual ledger)
       </p>
       <p className="text-xs leading-5 text-muted">
-        Leave Facebook metric fields blank when Insights values are unknown —
-        blank means NOT_CAPTURED, not zero.
+        One Facebook post = one canonical record. Leave metric fields blank when
+        Insights values are unknown — blank means NOT_CAPTURED, not zero. Update
+        the same record at ~72h / ~7d; do not resubmit create for metric
+        maturity.
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -47,7 +61,8 @@ export function CreateGrowthContentForm() {
             name="publisherType"
             required
             defaultValue="COMPANY"
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           >
             {FACEBOOK_PUBLISHER_TYPES.map((value) => (
               <option key={value} value={value}>
@@ -63,7 +78,8 @@ export function CreateGrowthContentForm() {
             name="publishedAt"
             required
             defaultValue={today}
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           />
         </label>
         <label className="block space-y-1 text-sm">
@@ -72,7 +88,8 @@ export function CreateGrowthContentForm() {
             name="contentJob"
             required
             defaultValue="AUTHORITY"
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           >
             {FACEBOOK_CONTENT_JOBS.map((value) => (
               <option key={value} value={value}>
@@ -87,7 +104,8 @@ export function CreateGrowthContentForm() {
             name="contentPillar"
             required
             defaultValue="WEBSITE_AUDITS"
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           >
             {FACEBOOK_CONTENT_PILLARS.map((value) => (
               <option key={value} value={value}>
@@ -102,7 +120,8 @@ export function CreateGrowthContentForm() {
             name="contentFormat"
             required
             defaultValue="PHOTO"
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           >
             {FACEBOOK_CONTENT_FORMATS.map((value) => (
               <option key={value} value={value}>
@@ -118,7 +137,8 @@ export function CreateGrowthContentForm() {
             required
             placeholder="seo_mistakes_001"
             pattern="[a-z0-9][a-z0-9_-]*"
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           />
         </label>
       </div>
@@ -130,7 +150,8 @@ export function CreateGrowthContentForm() {
           required
           maxLength={200}
           placeholder="Short internal label for the post"
-          className="flex h-10 w-full rounded-xl border border-border px-3"
+          disabled={isPending}
+          className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
         />
       </label>
 
@@ -140,7 +161,8 @@ export function CreateGrowthContentForm() {
           <input
             name="campaign"
             placeholder="page_organic or founder_content"
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           />
         </label>
         <label className="block space-y-1 text-sm">
@@ -149,7 +171,8 @@ export function CreateGrowthContentForm() {
             name="postUrl"
             type="url"
             placeholder="https://www.facebook.com/..."
-            className="flex h-10 w-full rounded-xl border border-border px-3"
+            disabled={isPending}
+            className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
           />
         </label>
       </div>
@@ -175,7 +198,8 @@ export function CreateGrowthContentForm() {
               type="number"
               min={0}
               step={1}
-              className="flex h-10 w-full rounded-xl border border-border px-3"
+              disabled={isPending}
+              className="flex h-10 w-full rounded-xl border border-border px-3 disabled:opacity-60"
             />
           </label>
         ))}
@@ -187,18 +211,49 @@ export function CreateGrowthContentForm() {
           name="notes"
           rows={3}
           maxLength={2000}
-          className="w-full rounded-xl border border-border px-3 py-2 text-sm"
+          disabled={isPending}
+          className="w-full rounded-xl border border-border px-3 py-2 text-sm disabled:opacity-60"
         />
       </label>
 
-      <Button type="submit">Save content record</Button>
-      {state.message ? (
-        <p
-          className={`text-sm ${state.success ? "text-green-700" : "text-red-600"}`}
-        >
-          {state.message}
-        </p>
-      ) : null}
+      <Button
+        type="submit"
+        disabled={isPending}
+        aria-describedby={statusId}
+      >
+        {isPending ? (
+          <>
+            <LoaderCircle
+              aria-hidden="true"
+              className="size-4 animate-spin"
+            />
+            Saving...
+          </>
+        ) : state.success ? (
+          "Saved"
+        ) : (
+          submitLabel
+        )}
+      </Button>
+
+      <p
+        id={statusId}
+        role="status"
+        aria-live="polite"
+        className={`text-sm ${
+          state.success
+            ? "text-green-700"
+            : state.message
+              ? "text-red-600"
+              : "text-muted"
+        }`}
+      >
+        {isPending
+          ? "Saving content record…"
+          : state.message
+            ? state.message
+            : "Ready to record one canonical content item."}
+      </p>
     </form>
   );
 }

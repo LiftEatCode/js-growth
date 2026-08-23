@@ -676,3 +676,23 @@ export const GrowthContentFormat = {
 } as const
 
 export type GrowthContentFormat = (typeof GrowthContentFormat)[keyof typeof GrowthContentFormat]
+
+
+export const GrowthContentMetricCheckpoint = {
+  INITIAL: 'INITIAL',
+  HOURS_72: 'HOURS_72',
+  DAYS_7: 'DAYS_7'
+} as const
+
+export type GrowthContentMetricCheckpoint = (typeof GrowthContentMetricCheckpoint)[keyof typeof GrowthContentMetricCheckpoint]
+
+
+export const GrowthExperimentDecisionKind = {
+  CONTINUE: 'CONTINUE',
+  ITERATE: 'ITERATE',
+  PROMOTE: 'PROMOTE',
+  STOP: 'STOP',
+  INCONCLUSIVE: 'INCONCLUSIVE'
+} as const
+
+export type GrowthExperimentDecisionKind = (typeof GrowthExperimentDecisionKind)[keyof typeof GrowthExperimentDecisionKind]

@@ -401,6 +401,7 @@ export type GrowthContentRecordWhereInput = {
   fbFollowersGained?: Prisma.IntNullableFilter<"GrowthContentRecord"> | number | null
   fbLinkClicks?: Prisma.IntNullableFilter<"GrowthContentRecord"> | number | null
   createdByEmail?: Prisma.StringFilter<"GrowthContentRecord"> | string
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotListRelationFilter
 }
 
 export type GrowthContentRecordOrderByWithRelationInput = {
@@ -428,6 +429,7 @@ export type GrowthContentRecordOrderByWithRelationInput = {
   fbFollowersGained?: Prisma.SortOrderInput | Prisma.SortOrder
   fbLinkClicks?: Prisma.SortOrderInput | Prisma.SortOrder
   createdByEmail?: Prisma.SortOrder
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotOrderByRelationAggregateInput
 }
 
 export type GrowthContentRecordWhereUniqueInput = Prisma.AtLeast<{
@@ -458,6 +460,7 @@ export type GrowthContentRecordWhereUniqueInput = Prisma.AtLeast<{
   fbFollowersGained?: Prisma.IntNullableFilter<"GrowthContentRecord"> | number | null
   fbLinkClicks?: Prisma.IntNullableFilter<"GrowthContentRecord"> | number | null
   createdByEmail?: Prisma.StringFilter<"GrowthContentRecord"> | string
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotListRelationFilter
 }, "id">
 
 export type GrowthContentRecordOrderByWithAggregationInput = {
@@ -547,6 +550,7 @@ export type GrowthContentRecordCreateInput = {
   fbFollowersGained?: number | null
   fbLinkClicks?: number | null
   createdByEmail: string
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotCreateNestedManyWithoutContentRecordInput
 }
 
 export type GrowthContentRecordUncheckedCreateInput = {
@@ -574,6 +578,7 @@ export type GrowthContentRecordUncheckedCreateInput = {
   fbFollowersGained?: number | null
   fbLinkClicks?: number | null
   createdByEmail: string
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotUncheckedCreateNestedManyWithoutContentRecordInput
 }
 
 export type GrowthContentRecordUpdateInput = {
@@ -601,6 +606,7 @@ export type GrowthContentRecordUpdateInput = {
   fbFollowersGained?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   fbLinkClicks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotUpdateManyWithoutContentRecordNestedInput
 }
 
 export type GrowthContentRecordUncheckedUpdateInput = {
@@ -628,6 +634,7 @@ export type GrowthContentRecordUncheckedUpdateInput = {
   fbFollowersGained?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   fbLinkClicks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  metricSnapshots?: Prisma.GrowthContentMetricSnapshotUncheckedUpdateManyWithoutContentRecordNestedInput
 }
 
 export type GrowthContentRecordCreateManyInput = {
@@ -816,6 +823,11 @@ export type GrowthContentRecordSumOrderByAggregateInput = {
   fbLinkClicks?: Prisma.SortOrder
 }
 
+export type GrowthContentRecordScalarRelationFilter = {
+  is?: Prisma.GrowthContentRecordWhereInput
+  isNot?: Prisma.GrowthContentRecordWhereInput
+}
+
 export type EnumGrowthContentPlatformFieldUpdateOperationsInput = {
   set?: $Enums.GrowthContentPlatform
 }
@@ -836,6 +848,173 @@ export type EnumGrowthContentFormatFieldUpdateOperationsInput = {
   set?: $Enums.GrowthContentFormat
 }
 
+export type GrowthContentRecordCreateNestedOneWithoutMetricSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.GrowthContentRecordCreateWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUncheckedCreateWithoutMetricSnapshotsInput>
+  connectOrCreate?: Prisma.GrowthContentRecordCreateOrConnectWithoutMetricSnapshotsInput
+  connect?: Prisma.GrowthContentRecordWhereUniqueInput
+}
+
+export type GrowthContentRecordUpdateOneRequiredWithoutMetricSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.GrowthContentRecordCreateWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUncheckedCreateWithoutMetricSnapshotsInput>
+  connectOrCreate?: Prisma.GrowthContentRecordCreateOrConnectWithoutMetricSnapshotsInput
+  upsert?: Prisma.GrowthContentRecordUpsertWithoutMetricSnapshotsInput
+  connect?: Prisma.GrowthContentRecordWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GrowthContentRecordUpdateToOneWithWhereWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUpdateWithoutMetricSnapshotsInput>, Prisma.GrowthContentRecordUncheckedUpdateWithoutMetricSnapshotsInput>
+}
+
+export type GrowthContentRecordCreateWithoutMetricSnapshotsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  platform?: $Enums.GrowthContentPlatform
+  publisherType: $Enums.GrowthContentPublisherType
+  publishedAt: Date | string
+  contentJob: $Enums.GrowthContentJob
+  contentPillar: $Enums.GrowthContentPillar
+  contentFormat: $Enums.GrowthContentFormat
+  campaign: string
+  utmContent: string
+  postUrl?: string | null
+  title: string
+  notes?: string | null
+  fbViews?: number | null
+  fbReach?: number | null
+  fbEngagements?: number | null
+  fbReactions?: number | null
+  fbComments?: number | null
+  fbShares?: number | null
+  fbPageVisits?: number | null
+  fbFollowersGained?: number | null
+  fbLinkClicks?: number | null
+  createdByEmail: string
+}
+
+export type GrowthContentRecordUncheckedCreateWithoutMetricSnapshotsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  platform?: $Enums.GrowthContentPlatform
+  publisherType: $Enums.GrowthContentPublisherType
+  publishedAt: Date | string
+  contentJob: $Enums.GrowthContentJob
+  contentPillar: $Enums.GrowthContentPillar
+  contentFormat: $Enums.GrowthContentFormat
+  campaign: string
+  utmContent: string
+  postUrl?: string | null
+  title: string
+  notes?: string | null
+  fbViews?: number | null
+  fbReach?: number | null
+  fbEngagements?: number | null
+  fbReactions?: number | null
+  fbComments?: number | null
+  fbShares?: number | null
+  fbPageVisits?: number | null
+  fbFollowersGained?: number | null
+  fbLinkClicks?: number | null
+  createdByEmail: string
+}
+
+export type GrowthContentRecordCreateOrConnectWithoutMetricSnapshotsInput = {
+  where: Prisma.GrowthContentRecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.GrowthContentRecordCreateWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUncheckedCreateWithoutMetricSnapshotsInput>
+}
+
+export type GrowthContentRecordUpsertWithoutMetricSnapshotsInput = {
+  update: Prisma.XOR<Prisma.GrowthContentRecordUpdateWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUncheckedUpdateWithoutMetricSnapshotsInput>
+  create: Prisma.XOR<Prisma.GrowthContentRecordCreateWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUncheckedCreateWithoutMetricSnapshotsInput>
+  where?: Prisma.GrowthContentRecordWhereInput
+}
+
+export type GrowthContentRecordUpdateToOneWithWhereWithoutMetricSnapshotsInput = {
+  where?: Prisma.GrowthContentRecordWhereInput
+  data: Prisma.XOR<Prisma.GrowthContentRecordUpdateWithoutMetricSnapshotsInput, Prisma.GrowthContentRecordUncheckedUpdateWithoutMetricSnapshotsInput>
+}
+
+export type GrowthContentRecordUpdateWithoutMetricSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  platform?: Prisma.EnumGrowthContentPlatformFieldUpdateOperationsInput | $Enums.GrowthContentPlatform
+  publisherType?: Prisma.EnumGrowthContentPublisherTypeFieldUpdateOperationsInput | $Enums.GrowthContentPublisherType
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contentJob?: Prisma.EnumGrowthContentJobFieldUpdateOperationsInput | $Enums.GrowthContentJob
+  contentPillar?: Prisma.EnumGrowthContentPillarFieldUpdateOperationsInput | $Enums.GrowthContentPillar
+  contentFormat?: Prisma.EnumGrowthContentFormatFieldUpdateOperationsInput | $Enums.GrowthContentFormat
+  campaign?: Prisma.StringFieldUpdateOperationsInput | string
+  utmContent?: Prisma.StringFieldUpdateOperationsInput | string
+  postUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fbViews?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbReach?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbEngagements?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbReactions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbComments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbShares?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbPageVisits?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbFollowersGained?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbLinkClicks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type GrowthContentRecordUncheckedUpdateWithoutMetricSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  platform?: Prisma.EnumGrowthContentPlatformFieldUpdateOperationsInput | $Enums.GrowthContentPlatform
+  publisherType?: Prisma.EnumGrowthContentPublisherTypeFieldUpdateOperationsInput | $Enums.GrowthContentPublisherType
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contentJob?: Prisma.EnumGrowthContentJobFieldUpdateOperationsInput | $Enums.GrowthContentJob
+  contentPillar?: Prisma.EnumGrowthContentPillarFieldUpdateOperationsInput | $Enums.GrowthContentPillar
+  contentFormat?: Prisma.EnumGrowthContentFormatFieldUpdateOperationsInput | $Enums.GrowthContentFormat
+  campaign?: Prisma.StringFieldUpdateOperationsInput | string
+  utmContent?: Prisma.StringFieldUpdateOperationsInput | string
+  postUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fbViews?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbReach?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbEngagements?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbReactions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbComments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbShares?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbPageVisits?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbFollowersGained?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fbLinkClicks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdByEmail?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+
+/**
+ * Count Type GrowthContentRecordCountOutputType
+ */
+
+export type GrowthContentRecordCountOutputType = {
+  metricSnapshots: number
+}
+
+export type GrowthContentRecordCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  metricSnapshots?: boolean | GrowthContentRecordCountOutputTypeCountMetricSnapshotsArgs
+}
+
+/**
+ * GrowthContentRecordCountOutputType without action
+ */
+export type GrowthContentRecordCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GrowthContentRecordCountOutputType
+   */
+  select?: Prisma.GrowthContentRecordCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * GrowthContentRecordCountOutputType without action
+ */
+export type GrowthContentRecordCountOutputTypeCountMetricSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GrowthContentMetricSnapshotWhereInput
+}
 
 
 export type GrowthContentRecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -863,6 +1042,8 @@ export type GrowthContentRecordSelect<ExtArgs extends runtime.Types.Extensions.I
   fbFollowersGained?: boolean
   fbLinkClicks?: boolean
   createdByEmail?: boolean
+  metricSnapshots?: boolean | Prisma.GrowthContentRecord$metricSnapshotsArgs<ExtArgs>
+  _count?: boolean | Prisma.GrowthContentRecordCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["growthContentRecord"]>
 
 export type GrowthContentRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -947,10 +1128,18 @@ export type GrowthContentRecordSelectScalar = {
 }
 
 export type GrowthContentRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "platform" | "publisherType" | "publishedAt" | "contentJob" | "contentPillar" | "contentFormat" | "campaign" | "utmContent" | "postUrl" | "title" | "notes" | "fbViews" | "fbReach" | "fbEngagements" | "fbReactions" | "fbComments" | "fbShares" | "fbPageVisits" | "fbFollowersGained" | "fbLinkClicks" | "createdByEmail", ExtArgs["result"]["growthContentRecord"]>
+export type GrowthContentRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  metricSnapshots?: boolean | Prisma.GrowthContentRecord$metricSnapshotsArgs<ExtArgs>
+  _count?: boolean | Prisma.GrowthContentRecordCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type GrowthContentRecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type GrowthContentRecordIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $GrowthContentRecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "GrowthContentRecord"
-  objects: {}
+  objects: {
+    metricSnapshots: Prisma.$GrowthContentMetricSnapshotPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     createdAt: Date
@@ -1382,6 +1571,7 @@ readonly fields: GrowthContentRecordFieldRefs;
  */
 export interface Prisma__GrowthContentRecordClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  metricSnapshots<T extends Prisma.GrowthContentRecord$metricSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GrowthContentRecord$metricSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GrowthContentMetricSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1452,6 +1642,10 @@ export type GrowthContentRecordFindUniqueArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
+  /**
    * Filter, which GrowthContentRecord to fetch.
    */
   where: Prisma.GrowthContentRecordWhereUniqueInput
@@ -1470,6 +1664,10 @@ export type GrowthContentRecordFindUniqueOrThrowArgs<ExtArgs extends runtime.Typ
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
+  /**
    * Filter, which GrowthContentRecord to fetch.
    */
   where: Prisma.GrowthContentRecordWhereUniqueInput
@@ -1487,6 +1685,10 @@ export type GrowthContentRecordFindFirstArgs<ExtArgs extends runtime.Types.Exten
    * Omit specific fields from the GrowthContentRecord
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
   /**
    * Filter, which GrowthContentRecord to fetch.
    */
@@ -1536,6 +1738,10 @@ export type GrowthContentRecordFindFirstOrThrowArgs<ExtArgs extends runtime.Type
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
+  /**
    * Filter, which GrowthContentRecord to fetch.
    */
   where?: Prisma.GrowthContentRecordWhereInput
@@ -1583,6 +1789,10 @@ export type GrowthContentRecordFindManyArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the GrowthContentRecord
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
   /**
    * Filter, which GrowthContentRecords to fetch.
    */
@@ -1632,6 +1842,10 @@ export type GrowthContentRecordCreateArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
+  /**
    * The data needed to create a GrowthContentRecord.
    */
   data: Prisma.XOR<Prisma.GrowthContentRecordCreateInput, Prisma.GrowthContentRecordUncheckedCreateInput>
@@ -1679,6 +1893,10 @@ export type GrowthContentRecordUpdateArgs<ExtArgs extends runtime.Types.Extensio
    * Omit specific fields from the GrowthContentRecord
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
   /**
    * The data needed to update a GrowthContentRecord.
    */
@@ -1746,6 +1964,10 @@ export type GrowthContentRecordUpsertArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
+  /**
    * The filter to search for the GrowthContentRecord to update in case it exists.
    */
   where: Prisma.GrowthContentRecordWhereUniqueInput
@@ -1772,6 +1994,10 @@ export type GrowthContentRecordDeleteArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
+  /**
    * Filter which GrowthContentRecord to delete.
    */
   where: Prisma.GrowthContentRecordWhereUniqueInput
@@ -1792,6 +2018,30 @@ export type GrowthContentRecordDeleteManyArgs<ExtArgs extends runtime.Types.Exte
 }
 
 /**
+ * GrowthContentRecord.metricSnapshots
+ */
+export type GrowthContentRecord$metricSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GrowthContentMetricSnapshot
+   */
+  select?: Prisma.GrowthContentMetricSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GrowthContentMetricSnapshot
+   */
+  omit?: Prisma.GrowthContentMetricSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentMetricSnapshotInclude<ExtArgs> | null
+  where?: Prisma.GrowthContentMetricSnapshotWhereInput
+  orderBy?: Prisma.GrowthContentMetricSnapshotOrderByWithRelationInput | Prisma.GrowthContentMetricSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.GrowthContentMetricSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GrowthContentMetricSnapshotScalarFieldEnum | Prisma.GrowthContentMetricSnapshotScalarFieldEnum[]
+}
+
+/**
  * GrowthContentRecord without action
  */
 export type GrowthContentRecordDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1803,4 +2053,8 @@ export type GrowthContentRecordDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Omit specific fields from the GrowthContentRecord
    */
   omit?: Prisma.GrowthContentRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthContentRecordInclude<ExtArgs> | null
 }

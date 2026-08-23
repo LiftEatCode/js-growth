@@ -4,6 +4,22 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-23 — Growth Sprint 4 (30-day Facebook execution engine)
+
+- `facebook-execution-v1`: experimental cadence, 30-day TARGET bands, schedule, experiment sequencing.
+- Metric checkpoints: `GrowthContentMetricSnapshot` (INITIAL / HOURS_72 / DAYS_7) on canonical content records.
+- Dashboard: edit metrics UI, due-for-measurement queue, daily operator view, follower + company/founder scorecards, experiment decisions.
+- Docs: 30-day plan, review template, Sprint 4 acceptance; research refresh appendix.
+- Website→Facebook (018) remains QUEUED.
+- Baseline V1 unchanged; Meta/OpenAI = 0.
+
+## 2026-08-23 — Facebook content ledger submit hardening
+
+- Client pending lock on content form (`Saving…` / disabled / accessible status).
+- Server: 120s rapid-submit idempotency + reject recreate of existing `utm_content`.
+- Store helper `updateGrowthContentManualMetrics` for same-record 72h/7d maturity (UI edit still Sprint 4 gap).
+- Cleaned accidental duplicate rows for `company_seo_mistakes_001` (kept earliest canonical `cmt660oeg000004k3ucbxv5yr`; deleted two rapid-click duplicates).
+
 ## 2026-08-23 — Growth Sprint 3 (Facebook Organic Growth & Distribution Engine)
 
 - Research: `docs/research/facebook-organic-growth-2026.md` (official Meta sources prioritized).

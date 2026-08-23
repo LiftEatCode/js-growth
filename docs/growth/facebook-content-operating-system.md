@@ -97,10 +97,25 @@ Builder: `/reports/growth/utm-builder`
 ## Measurement workflow
 
 1. Publish.  
-2. Create `GrowthContentRecord` on `/reports/growth` (blank FB metrics = NOT_CAPTURED).  
-3. After 48–72h (and again ~7d), update Insights numbers manually when available.  
+2. Create **one** `GrowthContentRecord` on `/reports/growth` (blank FB metrics = NOT_CAPTURED).  
+3. After ~72h (and again ~7d), **update Insights numbers on the same record** — do not create another row for metric maturity.  
 4. Check first-party Facebook attribution on growth dashboard.  
 5. Weekly review doc.
+
+### Duplicate-submit protection
+
+- Client: submit button uses `useActionState` pending lock (`Saving…`, disabled) so rapid clicks cannot fire parallel creates from the UI.  
+- Server: rapid resubmission of the same content identity within 120s is idempotent (returns the canonical row).  
+- Server: a later create with an existing `utm_content` is rejected — one post = one canonical record.  
+- Metric maturity uses `updateGrowthContentManualMetrics` + optional `GrowthContentMetricSnapshot` checkpoints (INITIAL / HOURS_72 / DAYS_7) via Edit / Record Metrics on `/reports/growth`.
+
+### Observed zeros vs NOT_CAPTURED
+
+Blank metric fields stay `null` (NOT_CAPTURED). An entered `0` (e.g. comments = 0) is a real observed zero.
+
+### Sprint 4 execution
+
+See `facebook-30-day-execution-plan.md` for experimental cadence, TARGET bands, schedule, and experiment sequencing.
 
 ## Weekly / monthly review
 
