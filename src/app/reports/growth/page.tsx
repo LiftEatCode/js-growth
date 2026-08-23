@@ -9,6 +9,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
+import { CreateGrowthContentForm } from "@/components/growth/create-content-form";
 import { CreateGrowthSnapshotForm } from "@/components/growth/create-snapshot-form";
 import {
   Button,
@@ -30,13 +31,22 @@ import {
 import {
   describeQualifiedTraffic,
   AUDIT_FUNNEL_VERSION,
+  FACEBOOK_FOLLOWER_TARGET_FRAMEWORK,
+  FACEBOOK_GROWTH_VERSION,
+  FACEBOOK_METRIC_LAYERS,
+  FACEBOOK_SCORECARD,
+  followerGrowthRatePercent,
   GROWTH_BASELINE_DATE,
   GROWTH_BASELINE_LABEL,
   GROWTH_BASELINE_PERIOD,
   GROWTH_BASELINE_V1,
   GROWTH_BASELINE_VERSION,
   KPI_HIERARCHY,
+  netFollowerChange,
+  type FacebookSnapshotMetrics,
 } from "@/lib/growth";
+import { getFacebookOrganicAttributionSummary } from "@/lib/growth/facebook-attribution-metrics";
+import { summarizeGrowthContentRecords } from "@/lib/growth/content-store";
 import { listGrowthSnapshots } from "@/lib/growth/snapshot-store";
 
 export const metadata: Metadata = {
@@ -139,13 +149,38 @@ export default async function GrowthDashboardPage() {
   const current = lastNDaysEndingNow(28);
   const previous = previousPeriod(current.periodStart, current.periodEnd);
 
-  const [currentMetrics, previousMetrics, auditFunnel, snapshots] =
-    await Promise.all([
-      getInternalFunnelMetrics(current),
-      getInternalFunnelMetrics(previous),
-      getAuditFunnelDashboardMetrics(current),
-      listGrowthSnapshots(20),
-    ]);
+  const [
+    currentMetrics,
+    previousMetrics,
+    auditFunnel,
+    snapshots,
+    contentSummary,
+    facebookAttribution,
+  ] = await Promise.all([
+    getInternalFunnelMetrics(current),
+    getInternalFunnelMetrics(previous),
+    getAuditFunnelDashboardMetrics(current),
+    listGrowthSnapshots(20),
+    summarizeGrowthContentRecords(200),
+    getFacebookOrganicAttributionSummary(current),
+  ]);
+
+  const facebookSnapshots = snapshots.filter((s) => s.source === "FACEBOOK");
+  const latestFacebookSnapshot = facebookSnapshots[0] ?? null;
+  const latestFbMetrics = (latestFacebookSnapshot?.metricsJson ??
+    null) as FacebookSnapshotMetrics | null;
+  const currentFollowers =
+    typeof latestFbMetrics?.followers === "number"
+      ? latestFbMetrics.followers
+      : null;
+  const followerDelta = netFollowerChange(
+    currentFollowers,
+    GROWTH_BASELINE_V1.facebook.followers,
+  );
+  const followerRate = followerGrowthRatePercent(
+    currentFollowers,
+    GROWTH_BASELINE_V1.facebook.followers,
+  );
 
   return (
     <main className="min-h-screen bg-slate-50/70">
@@ -538,17 +573,304 @@ export default async function GrowthDashboardPage() {
         </section>
 
         <section className="mt-12 space-y-4">
-          <div className="flex items-center gap-2">
-            <Share2 className="size-4 text-brand-blue" />
-            <h2 className="font-heading text-xl font-semibold text-brand">
-              Facebook
-            </h2>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <Share2 className="size-4 text-brand-blue" />
+              <h2 className="font-heading text-xl font-semibold text-brand">
+                Facebook
+              </h2>
+            </div>
+            <p className="text-xs font-medium text-muted">
+              {FACEBOOK_GROWTH_VERSION}
+            </p>
           </div>
-          <Card className="p-6 text-sm leading-6 text-muted">
-            Keep <strong>JS Solutions Page</strong> and{" "}
-            <strong>founder/personal</strong> baselines separate. Capture
-            manually as FACEBOOK snapshots. Use utm_source=facebook +
-            organic_social (founder_content campaign for personal posts).
+
+          <Card className="space-y-4 p-6">
+            <p className="text-sm leading-6 text-muted">
+              Balanced scorecard — not a single Facebook score. Manual Facebook
+              Insights + first-party website attribution. Meta API calls on this
+              page: <strong>0</strong>. Unknowns stay NOT CAPTURED /
+              INSUFFICIENT DATA / NOT ATTRIBUTABLE.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                  Leading
+                </p>
+                <p className="mt-1 text-sm text-brand">
+                  {FACEBOOK_SCORECARD.leading.join(" · ")}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                  Mid-funnel
+                </p>
+                <p className="mt-1 text-sm text-brand">
+                  {FACEBOOK_SCORECARD.midFunnel.join(" · ")}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                  Lagging / business
+                </p>
+                <p className="mt-1 text-sm text-brand">
+                  {FACEBOOK_SCORECARD.lagging.join(" · ")}
+                </p>
+              </div>
+            </div>
+            <ol className="space-y-1 text-sm text-muted">
+              {FACEBOOK_METRIC_LAYERS.map((layer) => (
+                <li key={layer.id}>
+                  <span className="font-semibold text-brand">
+                    L{layer.layer} {layer.name}:
+                  </span>{" "}
+                  {layer.metrics.join(" · ")}
+                </li>
+              ))}
+            </ol>
+          </Card>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card className="space-y-3 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Baseline V1 (immutable)
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <BaselineStat
+                  label="Followers"
+                  value={GROWTH_BASELINE_V1.facebook.followers}
+                />
+                <BaselineStat
+                  label="Visits"
+                  value={GROWTH_BASELINE_V1.facebook.visits}
+                />
+                <BaselineStat
+                  label="Engagements"
+                  value={GROWTH_BASELINE_V1.facebook.engagements}
+                />
+                <BaselineStat
+                  label="Non-follower views"
+                  value={`${GROWTH_BASELINE_V1.facebook.viewsByFollowerStatus.nonFollowersPercent}%`}
+                />
+              </div>
+            </Card>
+            <Card className="space-y-3 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Current snapshot vs baseline
+              </p>
+              {latestFacebookSnapshot && latestFbMetrics ? (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <BaselineStat
+                    label="Followers (latest)"
+                    value={
+                      currentFollowers != null
+                        ? currentFollowers
+                        : "NOT CAPTURED"
+                    }
+                  />
+                  <BaselineStat
+                    label="Δ followers"
+                    value={
+                      followerDelta.status === "AVAILABLE"
+                        ? followerDelta.value
+                        : "NOT CAPTURED"
+                    }
+                  />
+                  <BaselineStat
+                    label="Follower growth %"
+                    value={
+                      followerRate.status === "AVAILABLE"
+                        ? `${followerRate.value}%`
+                        : followerRate.status === "ZERO"
+                          ? "0%"
+                          : followerRate.status.replaceAll("_", " ")
+                    }
+                  />
+                  <BaselineStat
+                    label="Page visits (snapshot)"
+                    value={
+                      typeof latestFbMetrics.pageVisits === "number"
+                        ? latestFbMetrics.pageVisits
+                        : "NOT CAPTURED"
+                    }
+                  />
+                  <BaselineStat
+                    label="Engagements (snapshot)"
+                    value={
+                      typeof latestFbMetrics.engagement === "number"
+                        ? latestFbMetrics.engagement
+                        : "NOT CAPTURED"
+                    }
+                  />
+                  <BaselineStat
+                    label="Non-follower %"
+                    value={
+                      typeof latestFbMetrics.nonFollowerViewPercent === "number"
+                        ? `${latestFbMetrics.nonFollowerViewPercent}%`
+                        : "NOT CAPTURED"
+                    }
+                  />
+                </div>
+              ) : (
+                <p className="text-sm text-muted">
+                  No FACEBOOK GrowthSnapshot recorded yet after Baseline V1.
+                  Use the snapshot form below (source FACEBOOK).
+                </p>
+              )}
+              <p className="text-xs leading-5 text-muted">
+                Experimental follower TARGET (not forecast): +
+                {
+                  FACEBOOK_FOLLOWER_TARGET_FRAMEWORK.windows.days30
+                    .minAbsoluteGain
+                }
+                –{FACEBOOK_FOLLOWER_TARGET_FRAMEWORK.windows.days30.stretchAbsoluteGain}{" "}
+                in 30 days from baseline 75.
+              </p>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card className="space-y-3 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Company vs founder (content ledger)
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <BaselineStat
+                  label="Company records"
+                  value={contentSummary.byPublisher.COMPANY}
+                />
+                <BaselineStat
+                  label="Founder records"
+                  value={contentSummary.byPublisher.FOUNDER}
+                />
+              </div>
+              <p className="text-xs text-muted">
+                Jobs:{" "}
+                {Object.keys(contentSummary.byJob).length === 0
+                  ? "NONE YET"
+                  : Object.entries(contentSummary.byJob)
+                      .map(([k, v]) => `${k}=${v}`)
+                      .join(" · ")}
+              </p>
+              <p className="text-xs text-muted">
+                Formats:{" "}
+                {Object.keys(contentSummary.byFormat).length === 0
+                  ? "NONE YET"
+                  : Object.entries(contentSummary.byFormat)
+                      .map(([k, v]) => `${k}=${v}`)
+                      .join(" · ")}
+              </p>
+              <p className="text-xs text-muted">
+                Pillars:{" "}
+                {Object.keys(contentSummary.byPillar).length === 0
+                  ? "NONE YET"
+                  : Object.entries(contentSummary.byPillar)
+                      .map(([k, v]) => `${k}=${v}`)
+                      .join(" · ")}
+              </p>
+            </Card>
+            <Card className="space-y-3 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Facebook-attributed funnel (first-party, 28d)
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <BaselineStat
+                  label="FB organic audits"
+                  value={facebookAttribution.totalAttributedAudits}
+                />
+                <BaselineStat
+                  label="Company classified"
+                  value={facebookAttribution.company}
+                />
+                <BaselineStat
+                  label="Founder classified"
+                  value={facebookAttribution.founder}
+                />
+                <BaselineStat
+                  label="Publisher NOT ATTRIBUTABLE"
+                  value={facebookAttribution.notAttributablePublisher}
+                />
+              </div>
+              <p className="text-xs leading-5 text-muted">
+                Classification uses utm_content prefixes (`company_` /
+                `founder_`) then campaign (`page_organic` /
+                `founder_content`). Website sessions: review in GA4 (not loaded
+                here). Commercial outcomes observe-only.
+              </p>
+              <Link
+                href="/reports/growth/utm-builder"
+                className="inline-flex text-sm font-medium text-brand-blue underline"
+              >
+                UTM builder
+              </Link>
+            </Card>
+          </div>
+
+          <Card className="space-y-2 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Active Facebook experiments
+            </p>
+            <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
+              <li>2026-010 Photo vs text</li>
+              <li>2026-011 Native vs link</li>
+              <li>2026-012 Founder vs company</li>
+              <li>2026-013 Direct vs soft CTA</li>
+              <li>2026-014 Edu vs proof</li>
+              <li>2026-015 Reel vs static</li>
+              <li>2026-016 Follow CTA</li>
+              <li>2026-017 Discussion vs info</li>
+              <li>2026-018 Website → Facebook follow loop</li>
+            </ul>
+            <p className="text-xs text-muted">
+              Docs: docs/growth/experiments/2026-01*.md — no significance claims
+              from tiny samples.
+            </p>
+          </Card>
+
+          <CreateGrowthContentForm />
+
+          <Card className="overflow-hidden p-0">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-border bg-slate-50 text-xs uppercase tracking-[0.08em] text-muted">
+                <tr>
+                  <th className="px-4 py-3">Published</th>
+                  <th className="px-4 py-3">Publisher</th>
+                  <th className="px-4 py-3">Job / format</th>
+                  <th className="px-4 py-3">utm_content</th>
+                  <th className="px-4 py-3">FB metrics</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contentSummary.rows.length === 0 ? (
+                  <tr>
+                    <td className="px-4 py-4 text-muted" colSpan={5}>
+                      No content records yet. Record company and founder posts
+                      above.
+                    </td>
+                  </tr>
+                ) : (
+                  contentSummary.rows.slice(0, 15).map((row) => (
+                    <tr key={row.id} className="border-b border-border/70">
+                      <td className="px-4 py-3">
+                        {row.publishedAt.toISOString().slice(0, 10)}
+                      </td>
+                      <td className="px-4 py-3">{row.publisherType}</td>
+                      <td className="px-4 py-3">
+                        {row.contentJob} / {row.contentFormat}
+                      </td>
+                      <td className="px-4 py-3 font-mono text-xs">
+                        {row.utmContent}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted">
+                        views=
+                        {row.fbViews ?? "NOT_CAPTURED"} · eng=
+                        {row.fbEngagements ?? "NOT_CAPTURED"}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </Card>
         </section>
 

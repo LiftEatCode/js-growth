@@ -139,6 +139,7 @@ export function buildUtmUrl(input: UtmBuilderInput): UtmBuilderResult {
 export const FACEBOOK_PAGE_UTM = {
   source: "facebook",
   medium: "organic_social",
+  campaign: "page_organic",
 } as const;
 
 /** Facebook organic — founder/personal posts promoting JS Solutions. */

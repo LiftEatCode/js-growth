@@ -2329,3 +2329,101 @@ model GrowthSnapshot {
   @@index([periodStart, periodEnd])
   @@index([createdAt])
 }
+
+// ─── Growth Sprint 3 — Facebook content performance ledger ──────────────────
+
+enum GrowthContentPlatform {
+  FACEBOOK
+}
+
+enum GrowthContentPublisherType {
+  COMPANY
+  FOUNDER
+}
+
+enum GrowthContentJob {
+  REACH
+  ENGAGEMENT
+  FOLLOWER_GROWTH
+  AUTHORITY
+  TRUST
+  TRAFFIC
+  AUDIT_CONVERSION
+  LEAD_GENERATION
+  PROOF
+  COMMUNITY
+}
+
+enum GrowthContentPillar {
+  WEBSITE_CONVERSION
+  SEO
+  LOCAL_SEO
+  GBP
+  SMALL_BUSINESS_GROWTH
+  WEBSITE_AUDITS
+  CASE_STUDIES
+  COMMON_MISTAKES
+  BEHIND_THE_SCENES
+  BUILDING_JS_SOLUTIONS
+  AI_AUTOMATION
+  RESOURCES
+}
+
+enum GrowthContentFormat {
+  PHOTO
+  TEXT
+  LINK
+  REEL
+  VIDEO
+  CAROUSEL
+  LIVE
+}
+
+/// Manual Facebook content ledger. Facebook metrics are operator-entered.
+/// First-party website/commercial outcomes remain separate (attributionJson / DB).
+model GrowthContentRecord {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  platform      GrowthContentPlatform      @default(FACEBOOK)
+  publisherType GrowthContentPublisherType
+  publishedAt   DateTime
+
+  contentJob    GrowthContentJob
+  contentPillar GrowthContentPillar
+  contentFormat GrowthContentFormat
+
+  /// Bounded marketing campaign slug (no PII / commercial IDs).
+  campaign String @db.VarChar(80)
+
+  /// Bounded utm_content value (e.g. company_seo_mistakes_001).
+  utmContent String @db.VarChar(80)
+
+  /// Optional public Facebook post URL.
+  postUrl String? @db.VarChar(500)
+
+  title String  @db.VarChar(200)
+  notes String? @db.VarChar(2000)
+
+  /// Manual Facebook Insights metrics (never invent zeros for unknown).
+  fbViews           Int?
+  fbReach           Int?
+  fbEngagements     Int?
+  fbReactions       Int?
+  fbComments        Int?
+  fbShares          Int?
+  fbPageVisits      Int?
+  fbFollowersGained Int?
+  fbLinkClicks      Int?
+
+  createdByEmail String
+
+  @@index([platform, publishedAt])
+  @@index([publisherType, publishedAt])
+  @@index([contentJob, publishedAt])
+  @@index([contentPillar, publishedAt])
+  @@index([contentFormat, publishedAt])
+  @@index([utmContent])
+  @@index([createdAt])
+}

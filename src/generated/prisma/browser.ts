@@ -269,3 +269,9 @@ export type ProjectActivity = Prisma.ProjectActivityModel
  * per source in src/lib/growth/snapshot.ts — not a generic analytics dump.
  */
 export type GrowthSnapshot = Prisma.GrowthSnapshotModel
+/**
+ * Model GrowthContentRecord
+ * Manual Facebook content ledger. Facebook metrics are operator-entered.
+ * First-party website/commercial outcomes remain separate (attributionJson / DB).
+ */
+export type GrowthContentRecord = Prisma.GrowthContentRecordModel

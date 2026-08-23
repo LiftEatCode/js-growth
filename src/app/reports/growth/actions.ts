@@ -4,12 +4,27 @@ import { revalidatePath } from "next/cache";
 
 import { requireInternalSession } from "@/lib/internal-auth";
 import {
+  createGrowthContentRecord,
+  parseOptionalIntField,
+} from "@/lib/growth/content-store";
+import {
+  isFacebookContentFormat,
+  isFacebookContentJob,
+  isFacebookContentPillar,
+  isFacebookPublisherType,
+} from "@/lib/growth/facebook-growth";
+import {
   GROWTH_SNAPSHOT_SOURCES,
   type GrowthSnapshotSource,
 } from "@/lib/growth/snapshot";
 import { createGrowthSnapshot } from "@/lib/growth/snapshot-store";
 
 export type CreateSnapshotState = {
+  success: boolean;
+  message: string;
+};
+
+export type CreateContentState = {
   success: boolean;
   message: string;
 };
@@ -60,4 +75,99 @@ export async function createGrowthSnapshotAction(
 
   revalidatePath("/reports/growth");
   return { success: true, message: `Snapshot ${result.id} saved.` };
+}
+
+export async function createGrowthContentAction(
+  _previous: CreateContentState,
+  formData: FormData,
+): Promise<CreateContentState> {
+  const session = await requireInternalSession();
+
+  const publisherType = String(formData.get("publisherType") ?? "");
+  const contentJob = String(formData.get("contentJob") ?? "");
+  const contentPillar = String(formData.get("contentPillar") ?? "");
+  const contentFormat = String(formData.get("contentFormat") ?? "");
+  const publishedAtRaw = String(formData.get("publishedAt") ?? "");
+  const contentSlug = String(formData.get("contentSlug") ?? "");
+  const title = String(formData.get("title") ?? "");
+  const campaign = String(formData.get("campaign") ?? "").trim() || undefined;
+  const postUrl = String(formData.get("postUrl") ?? "").trim() || null;
+  const notes = String(formData.get("notes") ?? "").trim() || null;
+
+  if (!isFacebookPublisherType(publisherType)) {
+    return { success: false, message: "Invalid publisher type." };
+  }
+  if (!isFacebookContentJob(contentJob)) {
+    return { success: false, message: "Invalid content job." };
+  }
+  if (!isFacebookContentPillar(contentPillar)) {
+    return { success: false, message: "Invalid content pillar." };
+  }
+  if (!isFacebookContentFormat(contentFormat)) {
+    return { success: false, message: "Invalid content format." };
+  }
+
+  const publishedAt = new Date(publishedAtRaw);
+  if (Number.isNaN(publishedAt.getTime())) {
+    return { success: false, message: "Invalid published date." };
+  }
+
+  let metrics: {
+    fbViews: number | null;
+    fbReach: number | null;
+    fbEngagements: number | null;
+    fbReactions: number | null;
+    fbComments: number | null;
+    fbShares: number | null;
+    fbPageVisits: number | null;
+    fbFollowersGained: number | null;
+    fbLinkClicks: number | null;
+  };
+
+  try {
+    metrics = {
+      fbViews: parseOptionalIntField(formData.get("fbViews")),
+      fbReach: parseOptionalIntField(formData.get("fbReach")),
+      fbEngagements: parseOptionalIntField(formData.get("fbEngagements")),
+      fbReactions: parseOptionalIntField(formData.get("fbReactions")),
+      fbComments: parseOptionalIntField(formData.get("fbComments")),
+      fbShares: parseOptionalIntField(formData.get("fbShares")),
+      fbPageVisits: parseOptionalIntField(formData.get("fbPageVisits")),
+      fbFollowersGained: parseOptionalIntField(
+        formData.get("fbFollowersGained"),
+      ),
+      fbLinkClicks: parseOptionalIntField(formData.get("fbLinkClicks")),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Invalid Facebook metrics.",
+    };
+  }
+
+  const result = await createGrowthContentRecord({
+    publisherType,
+    publishedAt,
+    contentJob,
+    contentPillar,
+    contentFormat,
+    campaign,
+    contentSlug,
+    title,
+    postUrl,
+    notes,
+    ...metrics,
+    createdByEmail: session.email,
+  });
+
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth");
+  return {
+    success: true,
+    message: `Content saved (${result.utmContent}). Use UTM builder with matching utm_content.`,
+  };
 }

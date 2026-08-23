@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprint 1 (Measurement, Attribution & Growth Baseline V1)** implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–3** (Measurement/Baseline → Audit Funnel → Facebook Organic Engine) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -216,6 +216,18 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 
 **Not included:** Facebook Growth Engine, Meta Pixel, paid ads, pricing changes, Baseline V1 modifications.
 
+### Growth Sprint 3 — Facebook Organic Growth & Distribution Engine ✅
+
+- Research-first Meta organic distribution notes (`docs/research/facebook-organic-growth-2026.md`)
+- `facebook-growth-v1` layers + balanced scorecard (followers **and** business outcomes)
+- Company Page vs founder distribution roles + deterministic UTM separation
+- Content jobs / pillars / formats + `GrowthContentRecord` manual ledger
+- Facebook experiments 010–018; content OS; weekly review; Page checklist; internal playbook
+- `/reports/growth` Facebook panel (baseline comparison, ledger, first-party FB attribution)
+- No Meta Graph API; Growth Baseline V1 preserved
+
+**Not included:** Meta API sync, Meta Pixel/CAPI, paid social automation, Baseline V1 edits.
+
 ---
 
 ## HARDENING / OPERATIONS (not new features)
@@ -231,7 +243,7 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 Prioritize based on business leverage with the **current** stack:
 
 1. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-2. Execute Growth experiments against Sprint 1 baseline (qualified traffic, Facebook, SEO, audit funnel) — measure before scaling automation
+2. Execute Growth Sprint 3 Facebook experiments against Baseline V1 (followers + engagement + qualified traffic + audits) — measure before Meta API automation
 3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
 4. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
 5. ~~Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)~~ — **Sprint 7: token-gated delivery + decision (no PDF/e-sign/Stripe yet)**

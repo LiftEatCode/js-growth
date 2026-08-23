@@ -45,6 +45,26 @@ import {
   mergeAttributionWithFunnelContext,
   parseAuditFunnelContextFromUnknown,
   isAuditFunnelStep,
+  FACEBOOK_CONTENT_FORMATS,
+  FACEBOOK_CONTENT_JOBS,
+  FACEBOOK_CONTENT_PILLARS,
+  FACEBOOK_FOLLOWER_TARGET_FRAMEWORK,
+  FACEBOOK_GROWTH_VERSION,
+  FACEBOOK_METRIC_LAYERS,
+  FACEBOOK_PAGE_CAMPAIGN,
+  FACEBOOK_PUBLISHER_TYPES,
+  FACEBOOK_SCORECARD,
+  buildFacebookCompanyUtmContent,
+  buildFacebookFounderUtmContent,
+  classifyFacebookOrganicPublisher,
+  followerGrowthRatePercent,
+  isFacebookContentFormat,
+  isFacebookContentJob,
+  isFacebookContentPillar,
+  isFacebookPublisherType,
+  netFollowerChange,
+  safePercent,
+  validateFacebookManualMetrics,
 } from "@/lib/growth";
 import {
   formatFunnelCount,
@@ -516,6 +536,189 @@ const ctaParams = sanitizeGrowthEventParams({
 assert(ctaParams?.cta_location === "report_upgrade", "cta_location allowed");
 assert(ctaParams?.report_context === "inline_landing", "report_context allowed");
 assert(ctaParams && !("report_id" in ctaParams), "report_id stripped from cta params");
+
+// ─── Growth Sprint 3 — Facebook organic growth ──────────────────────────────
+
+assert(FACEBOOK_GROWTH_VERSION === "facebook-growth-v1", "facebook growth version");
+assert(FACEBOOK_PUBLISHER_TYPES.includes("COMPANY"), "company publisher");
+assert(FACEBOOK_PUBLISHER_TYPES.includes("FOUNDER"), "founder publisher");
+assert(FACEBOOK_CONTENT_JOBS.includes("REACH"), "reach job");
+assert(FACEBOOK_CONTENT_JOBS.includes("AUDIT_CONVERSION"), "audit job");
+assert(FACEBOOK_CONTENT_PILLARS.includes("SEO"), "seo pillar");
+assert(FACEBOOK_CONTENT_FORMATS.includes("PHOTO"), "photo format");
+assert(FACEBOOK_CONTENT_FORMATS.includes("REEL"), "reel format");
+assert(isFacebookPublisherType("COMPANY"), "publisher type guard");
+assert(!isFacebookPublisherType("PAGE"), "invalid publisher rejected");
+assert(isFacebookContentJob("ENGAGEMENT"), "job guard");
+assert(!isFacebookContentJob("VIRAL"), "invalid job rejected");
+assert(isFacebookContentPillar("LOCAL_SEO"), "pillar guard");
+assert(!isFacebookContentPillar("RANDOM"), "invalid pillar rejected");
+assert(isFacebookContentFormat("CAROUSEL"), "format guard");
+assert(!isFacebookContentFormat("STORY"), "story not in V1 formats");
+
+assert(
+  buildFacebookCompanyUtmContent("seo_mistakes_001") === "company_seo_mistakes_001",
+  "company utm_content",
+);
+assert(
+  buildFacebookFounderUtmContent("lessons_001") === "founder_lessons_001",
+  "founder utm_content",
+);
+assert(buildFacebookCompanyUtmContent("Bad Value!") === null, "rejects bad slug");
+
+const companyUtm = buildUtmUrl({
+  destinationUrl: "https://jsgrowth.com/website-audit",
+  source: FACEBOOK_PAGE_UTM.source,
+  medium: FACEBOOK_PAGE_UTM.medium,
+  campaign: FACEBOOK_PAGE_UTM.campaign,
+  content: buildFacebookCompanyUtmContent("seo_mistakes_001") ?? undefined,
+});
+assert(companyUtm.ok, "company UTM builds");
+if (companyUtm.ok) {
+  assert(companyUtm.url.includes("utm_campaign=page_organic"), "page_organic campaign");
+  assert(
+    companyUtm.url.includes("utm_content=company_seo_mistakes_001"),
+    "company content param",
+  );
+}
+
+const founderUtm = buildUtmUrl({
+  destinationUrl: "https://jsgrowth.com/website-audit",
+  source: FACEBOOK_FOUNDER_UTM.source,
+  medium: FACEBOOK_FOUNDER_UTM.medium,
+  campaign: FACEBOOK_FOUNDER_UTM.campaign,
+  content: buildFacebookFounderUtmContent("lessons_001") ?? undefined,
+});
+assert(founderUtm.ok, "founder UTM builds");
+if (founderUtm.ok) {
+  assert(
+    founderUtm.url.includes("utm_campaign=founder_content"),
+    "founder campaign",
+  );
+  assert(
+    founderUtm.url.includes("utm_content=founder_lessons_001"),
+    "founder content param",
+  );
+}
+
+assert(FACEBOOK_PAGE_UTM.campaign === FACEBOOK_PAGE_CAMPAIGN, "page campaign constant");
+assert(
+  classifyFacebookOrganicPublisher({
+    source: "facebook",
+    medium: "organic_social",
+    content: "company_seo_mistakes_001",
+  }) === "COMPANY",
+  "classifies company from content",
+);
+assert(
+  classifyFacebookOrganicPublisher({
+    source: "facebook",
+    medium: "organic_social",
+    content: "founder_lessons_001",
+  }) === "FOUNDER",
+  "classifies founder from content",
+);
+assert(
+  classifyFacebookOrganicPublisher({
+    source: "facebook",
+    medium: "organic_social",
+    campaign: "founder_content",
+  }) === "FOUNDER",
+  "classifies founder from campaign",
+);
+assert(
+  classifyFacebookOrganicPublisher({
+    source: "facebook",
+    medium: "organic_social",
+    campaign: "page_organic",
+  }) === "COMPANY",
+  "classifies company from campaign",
+);
+assert(
+  classifyFacebookOrganicPublisher({
+    source: "google",
+    medium: "organic",
+  }) === null,
+  "non-facebook not classified",
+);
+
+const pct = safePercent(5, 10);
+assert(pct.status === "AVAILABLE" && pct.value === 50, "safePercent 50%");
+assert(safePercent(null, 10).status === "NOT_CAPTURED", "null numerator NOT_CAPTURED");
+assert(safePercent(1, 0).status === "UNKNOWN", "zero denominator UNKNOWN");
+assert(safePercent(0, 0).status === "ZERO", "0/0 ZERO");
+assert(safePercent(1, 3).status === "INSUFFICIENT_DATA", "n<5 insufficient");
+
+const delta = netFollowerChange(80, 75);
+assert(delta.status === "AVAILABLE" && delta.value === 5, "net follower +5");
+assert(netFollowerChange(null, 75).status === "NOT_CAPTURED", "missing followers");
+const growthPct = followerGrowthRatePercent(80, 75);
+assert(
+  growthPct.status === "AVAILABLE" && growthPct.value === 6.7,
+  "follower growth rate",
+);
+assert(
+  followerGrowthRatePercent(5, 0).status === "INSUFFICIENT_DATA",
+  "zero baseline growth insufficient",
+);
+
+const manualOk = validateFacebookManualMetrics({ views: 10, engagements: 2 });
+assert(manualOk.ok, "manual metrics valid");
+const manualBad = validateFacebookManualMetrics({ views: -1 });
+assert(!manualBad.ok, "negative manual metric rejected");
+const manualBlank = validateFacebookManualMetrics({});
+assert(manualBlank.ok, "blank metrics ok (NOT_CAPTURED semantics)");
+
+assert(FACEBOOK_METRIC_LAYERS.length === 5, "five metric layers");
+assert(FACEBOOK_SCORECARD.leading.includes("reach"), "leading includes reach");
+assert(
+  FACEBOOK_FOLLOWER_TARGET_FRAMEWORK.label === "TARGET",
+  "follower targets labeled TARGET not forecast",
+);
+assert(
+  FACEBOOK_FOLLOWER_TARGET_FRAMEWORK.baselineFollowers === 75,
+  "target framework anchors baseline followers",
+);
+
+assert(GROWTH_BASELINE_V1.facebook.followers === 75, "baseline followers immutable");
+assert(
+  GROWTH_BASELINE_V1.facebook.viewsByFollowerStatus.nonFollowersPercent === 95.3,
+  "baseline non-follower immutable",
+);
+
+assert(schema.includes("model GrowthContentRecord"), "GrowthContentRecord in schema");
+assert(schema.includes("enum GrowthContentPublisherType"), "publisher enum in schema");
+
+assert(growthPage.includes("FACEBOOK_GROWTH_VERSION"), "dashboard facebook version");
+assert(growthPage.includes("CreateGrowthContentForm"), "dashboard content form");
+assert(
+  growthPage.includes("getFacebookOrganicAttributionSummary"),
+  "dashboard facebook attribution",
+);
+assert(
+  !/graph\.facebook\.com|facebook-nodejs-business-sdk/i.test(growthPage),
+  "growth page has no Meta API clients",
+);
+
+const researchDoc = readFileSync(
+  join(here, "../../../docs/research/facebook-organic-growth-2026.md"),
+  "utf8",
+);
+assert(researchDoc.includes("Research date"), "research doc date");
+assert(researchDoc.includes("FACT"), "research FACT/HYPOTHESIS/TEST");
+
+const playbook = readFileSync(
+  join(here, "../../../docs/growth/facebook-organic-playbook.md"),
+  "utf8",
+);
+assert(playbook.includes("WHAT WE KNOW"), "playbook sections");
+
+for (const example of ["company_seo_mistakes_001", "founder_lessons_001"]) {
+  assert(!example.includes("@"), "utm example has no email");
+  assert(!example.includes("prospect_"), "utm example has no prospect_");
+  assert(!example.includes("opportunity_"), "utm example has no opportunity_");
+  assert(!/\bcuid\b|[0-9a-f]{24}/i.test(example), "utm example has no id-like tokens");
+}
 
 console.log("growth measurement verification passed");
 process.exit(0);

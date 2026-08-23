@@ -98,7 +98,8 @@ export const ModelName = {
   ProjectDeliveryTask: 'ProjectDeliveryTask',
   ProjectOnboardingItem: 'ProjectOnboardingItem',
   ProjectActivity: 'ProjectActivity',
-  GrowthSnapshot: 'GrowthSnapshot'
+  GrowthSnapshot: 'GrowthSnapshot',
+  GrowthContentRecord: 'GrowthContentRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1236,6 +1237,36 @@ export const GrowthSnapshotScalarFieldEnum = {
 } as const
 
 export type GrowthSnapshotScalarFieldEnum = (typeof GrowthSnapshotScalarFieldEnum)[keyof typeof GrowthSnapshotScalarFieldEnum]
+
+
+export const GrowthContentRecordScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  platform: 'platform',
+  publisherType: 'publisherType',
+  publishedAt: 'publishedAt',
+  contentJob: 'contentJob',
+  contentPillar: 'contentPillar',
+  contentFormat: 'contentFormat',
+  campaign: 'campaign',
+  utmContent: 'utmContent',
+  postUrl: 'postUrl',
+  title: 'title',
+  notes: 'notes',
+  fbViews: 'fbViews',
+  fbReach: 'fbReach',
+  fbEngagements: 'fbEngagements',
+  fbReactions: 'fbReactions',
+  fbComments: 'fbComments',
+  fbShares: 'fbShares',
+  fbPageVisits: 'fbPageVisits',
+  fbFollowersGained: 'fbFollowersGained',
+  fbLinkClicks: 'fbLinkClicks',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type GrowthContentRecordScalarFieldEnum = (typeof GrowthContentRecordScalarFieldEnum)[keyof typeof GrowthContentRecordScalarFieldEnum]
 
 
 export const SortOrder = {

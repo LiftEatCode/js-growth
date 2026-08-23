@@ -33,6 +33,15 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 - “Our free website audit funnel is instrumented end-to-end — from landing page through report review — so we can see where qualified visitors drop off before scaling traffic.”
 - “We fixed measurement quality issues (like duplicate completion events) before increasing ad spend or social distribution.”
 
+## Facebook / organic social (client-safe)
+
+- “Organic social is treated as a distribution system — reach and recognition matter, but we also track website engagement, audits, and commercial outcomes.”
+- “Audience size and engagement can support social proof for a small service business; they are not treated as revenue by themselves.”
+- “We separate company Page content from founder/personal distribution so we can learn which presence builds trust versus which drives service inquiries.”
+- “Content is planned with a clear job — discovery, engagement, authority, proof, or conversion — rather than posting randomly.”
+- “We run controlled experiments on formats and messaging, and we keep incomplete Facebook metrics explicit instead of inventing zeros.”
+- “Campaign links use consistent tagging so Facebook traffic can be compared to other channels over time.”
+
 ## Privacy & trust
 
 - “We do not put customer personal information or internal commercial record identifiers into public analytics tools.”
@@ -48,3 +57,5 @@ Do **not** disclose:
 - Exact competitive scoring algorithms
 - Internal automation architecture or credentials
 - Security/session implementation details
+- Full internal Facebook playbook scoring thresholds, experiment prioritization queues, or content decision trees
+- Exact proprietary UTM content ID schemes beyond general “we tag campaigns consistently”

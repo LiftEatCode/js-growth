@@ -614,3 +614,65 @@ export const GrowthSnapshotSource = {
 } as const
 
 export type GrowthSnapshotSource = (typeof GrowthSnapshotSource)[keyof typeof GrowthSnapshotSource]
+
+
+export const GrowthContentPlatform = {
+  FACEBOOK: 'FACEBOOK'
+} as const
+
+export type GrowthContentPlatform = (typeof GrowthContentPlatform)[keyof typeof GrowthContentPlatform]
+
+
+export const GrowthContentPublisherType = {
+  COMPANY: 'COMPANY',
+  FOUNDER: 'FOUNDER'
+} as const
+
+export type GrowthContentPublisherType = (typeof GrowthContentPublisherType)[keyof typeof GrowthContentPublisherType]
+
+
+export const GrowthContentJob = {
+  REACH: 'REACH',
+  ENGAGEMENT: 'ENGAGEMENT',
+  FOLLOWER_GROWTH: 'FOLLOWER_GROWTH',
+  AUTHORITY: 'AUTHORITY',
+  TRUST: 'TRUST',
+  TRAFFIC: 'TRAFFIC',
+  AUDIT_CONVERSION: 'AUDIT_CONVERSION',
+  LEAD_GENERATION: 'LEAD_GENERATION',
+  PROOF: 'PROOF',
+  COMMUNITY: 'COMMUNITY'
+} as const
+
+export type GrowthContentJob = (typeof GrowthContentJob)[keyof typeof GrowthContentJob]
+
+
+export const GrowthContentPillar = {
+  WEBSITE_CONVERSION: 'WEBSITE_CONVERSION',
+  SEO: 'SEO',
+  LOCAL_SEO: 'LOCAL_SEO',
+  GBP: 'GBP',
+  SMALL_BUSINESS_GROWTH: 'SMALL_BUSINESS_GROWTH',
+  WEBSITE_AUDITS: 'WEBSITE_AUDITS',
+  CASE_STUDIES: 'CASE_STUDIES',
+  COMMON_MISTAKES: 'COMMON_MISTAKES',
+  BEHIND_THE_SCENES: 'BEHIND_THE_SCENES',
+  BUILDING_JS_SOLUTIONS: 'BUILDING_JS_SOLUTIONS',
+  AI_AUTOMATION: 'AI_AUTOMATION',
+  RESOURCES: 'RESOURCES'
+} as const
+
+export type GrowthContentPillar = (typeof GrowthContentPillar)[keyof typeof GrowthContentPillar]
+
+
+export const GrowthContentFormat = {
+  PHOTO: 'PHOTO',
+  TEXT: 'TEXT',
+  LINK: 'LINK',
+  REEL: 'REEL',
+  VIDEO: 'VIDEO',
+  CAROUSEL: 'CAROUSEL',
+  LIVE: 'LIVE'
+} as const
+
+export type GrowthContentFormat = (typeof GrowthContentFormat)[keyof typeof GrowthContentFormat]

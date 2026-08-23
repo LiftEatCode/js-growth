@@ -23,11 +23,18 @@ Internal builder: `/reports/growth/utm-builder`
 
 | Channel | Example |
 |---|---|
-| Business Page post | `utm_source=facebook&utm_medium=organic_social&utm_campaign=website_growth&utm_content=website_leads_post_01` |
-| Founder/personal post | `utm_source=facebook&utm_medium=organic_social&utm_campaign=founder_content&utm_content=…` |
+| Business Page post | `utm_source=facebook&utm_medium=organic_social&utm_campaign=page_organic&utm_content=company_seo_mistakes_001` |
+| Founder/personal post | `utm_source=facebook&utm_medium=organic_social&utm_campaign=founder_content&utm_content=founder_lessons_001` |
+| Legacy Page campaign (still classifies COMPANY) | `utm_campaign=website_growth` or `page` |
 | Paid (later) | `utm_source=facebook&utm_medium=paid_social&utm_campaign=…` |
 
-Keep Page vs personal baselines separate in reporting.
+**Presets:** `FACEBOOK_PAGE_UTM` (`page_organic`) and `FACEBOOK_FOUNDER_UTM` (`founder_content`).
+
+`utm_content` must be bounded non-PII marketing slugs. Prefer `company_<slug>` / `founder_<slug>`.
+
+Keep Page vs personal baselines and ledger rows separate in reporting.
+
+Never UTM ordinary internal navigation.
 
 ## Google Business Profile
 

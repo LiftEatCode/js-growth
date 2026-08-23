@@ -4,6 +4,17 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-23 — Growth Sprint 3 (Facebook Organic Growth & Distribution Engine)
+
+- Research: `docs/research/facebook-organic-growth-2026.md` (official Meta sources prioritized).
+- Model `facebook-growth-v1`: metric layers, balanced scorecard, company/founder separation, jobs/pillars/formats.
+- UTM: `page_organic` + `company_*` vs `founder_content` + `founder_*` (`utm-standard-v1` preserved).
+- Prisma `GrowthContentRecord` ledger (manual FB metrics + first-party bridge via utm_content).
+- `/reports/growth` Facebook panel: baseline vs snapshot, content ledger, publisher split, FB-attributed audits.
+- Docs: playbook, content OS, weekly review, Page checklist, experiments 010–018.
+- No Meta Graph API; dashboard side-effect budget Meta/OpenAI/Places/crawl/Resend/Stripe = 0.
+- Growth Baseline V1 Facebook totals **unchanged**.
+
 ## 2026-08-23 — Growth Sprint 2 (Audit Conversion Funnel)
 
 - Defined `AUDIT_FUNNEL_VERSION = 1` contract (`docs/growth/audit-funnel.md`).

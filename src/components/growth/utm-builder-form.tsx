@@ -55,7 +55,7 @@ export function UtmBuilderForm() {
     if (preset === "facebook_page") {
       setSource(FACEBOOK_PAGE_UTM.source);
       setMedium(FACEBOOK_PAGE_UTM.medium);
-      setCampaign("website_growth");
+      setCampaign(FACEBOOK_PAGE_UTM.campaign);
       return;
     }
     if (preset === "facebook_founder") {
