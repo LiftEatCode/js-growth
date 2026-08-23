@@ -245,3 +245,13 @@ export {
   type ContentBriefV1,
   type SeedContentPlan,
 } from "./content-intelligence";
+export {
+  CONTENT_AI_HISTORY_OPERATIONS,
+  canRunAiMutation,
+  canApplyCandidate,
+  resolveAiOutputTarget,
+  applyAiOutputInMemory,
+  applyCandidateInMemory,
+  discardCandidateInMemory,
+  type ContentAiHistoryOperation,
+} from "./content-plan-revision";

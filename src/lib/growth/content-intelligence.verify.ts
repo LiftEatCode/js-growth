@@ -39,7 +39,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 assert(CONTENT_INTELLIGENCE_VERSION === 1, "content intelligence version");
 assert(CONTENT_PLANNER_PROMPT_VERSION === 1, "planner prompt version");
-assert(CONTENT_DEVELOPER_PROMPT_VERSION === 1, "developer prompt version");
+assert(CONTENT_DEVELOPER_PROMPT_VERSION === 2, "developer prompt version");
 assert(CONTENT_TYPES.includes("SERVICE_PAGE"), "service page type");
 assert(CONTENT_TYPES.includes("FACEBOOK_FOUNDER"), "founder type");
 assert(CONTENT_SOURCE_TYPES.includes("SEARCH_OPPORTUNITY"), "search source");
@@ -156,6 +156,8 @@ const schema = readFileSync(
   "utf8",
 );
 assert(schema.includes("model GrowthContentPlan"), "content plan model");
+assert(schema.includes("candidateDraftJson"), "candidate draft field");
+assert(schema.includes("aiBusyUntil"), "ai busy lock field");
 
 const growthPage = readFileSync(
   join(here, "../../app/reports/growth/page.tsx"),
@@ -194,8 +196,47 @@ assert(
   "generate uses content AI provider",
 );
 assert(
+  generateSrc.includes("REGENERATE_FROM_BRIEF"),
+  "supports regenerate from brief",
+);
+assert(
+  generateSrc.includes("REVISE_CURRENT_DRAFT"),
+  "supports revise current draft",
+);
+assert(
+  !generateSrc.includes("Human draft exists — edit it instead of regenerating"),
+  "hard human-draft permanent block removed",
+);
+assert(
   !generateSrc.includes("chat.completions"),
   "no chat completions",
+);
+
+const revisePrompt = readFileSync(
+  join(here, "content-ai/prompt.ts"),
+  "utf8",
+);
+assert(
+  revisePrompt.includes("REVISION_INSTRUCTION"),
+  "revision instruction delimiters",
+);
+assert(
+  revisePrompt.includes("CURRENT_CANONICAL_HUMAN_DRAFT"),
+  "revise includes human draft",
+);
+
+const storeSrc = readFileSync(join(here, "content-plan-store.ts"), "utf8");
+assert(storeSrc.includes("applyCandidateDraft"), "apply candidate store");
+assert(storeSrc.includes("discardCandidateDraft"), "discard candidate store");
+assert(
+  storeSrc.includes("tryAcquireAiBusyLock"),
+  "server-side AI busy lock",
+);
+assert(
+  !storeSrc.includes(
+    "Human draft exists — clear or edit human draft before regenerating AI draft",
+  ),
+  "store no longer permanently blocks AI after human edit",
 );
 
 const providerSrc = readFileSync(

@@ -2691,8 +2691,13 @@ model GrowthContentPlan {
   generationJson     Json?
   /// Human-edited canonical draft (preferred over generationJson when set).
   humanDraftJson     Json?
+  /// AI-proposed revision. Never becomes canonical until explicit Apply.
+  candidateDraftJson Json?
   reviewJson         Json?
   generationHistoryJson Json?
+
+  /// Soft lock to prevent concurrent AI revision races.
+  aiBusyUntil DateTime?
 
   publishedUrl   String? @db.VarChar(500)
   sourceAssetSlug String? @db.VarChar(80)

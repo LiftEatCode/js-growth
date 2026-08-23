@@ -4,6 +4,16 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-23 — Sprint 6 hardening: AI candidate vs human canonical draft
+
+- Human drafts remain protected from silent overwrite.
+- After human edit: **Regenerate from Brief** / **Revise with AI** write `candidateDraftJson` only.
+- Explicit **Apply AI Revision** / **Discard Candidate**; Apply/Discard/save = 0 OpenAI.
+- Persisted candidate + `aiBusyUntil` concurrency lock; APPROVED requires reopen before AI mutate.
+- History ops: `INITIAL_GENERATE`, `REGENERATE_FROM_BRIEF`, `REVISE_CURRENT_DRAFT`, `APPLY_CANDIDATE`, `DISCARD_CANDIDATE`, `REOPEN_FOR_REVIEW`.
+- Principle: **AI MAY PROPOSE. HUMANS CONTROL THE CANONICAL DRAFT.**
+- Migration `20260823240000_growth_sprint6_candidate_draft`. Baseline V1 unchanged.
+
 ## 2026-08-23 — Growth Sprint 6 (Content Intelligence & Development Engine V1)
 
 - Research: `docs/research/content-intelligence-ai-2026.md`.

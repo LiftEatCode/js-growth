@@ -61,6 +61,7 @@ export type GrowthContentPlanMinAggregateOutputType = {
   pageType: string | null
   targetServicePath: string | null
   searchOpportunitySlug: string | null
+  aiBusyUntil: Date | null
   publishedUrl: string | null
   sourceAssetSlug: string | null
   plannerPromptVersion: number | null
@@ -91,6 +92,7 @@ export type GrowthContentPlanMaxAggregateOutputType = {
   pageType: string | null
   targetServicePath: string | null
   searchOpportunitySlug: string | null
+  aiBusyUntil: Date | null
   publishedUrl: string | null
   sourceAssetSlug: string | null
   plannerPromptVersion: number | null
@@ -125,8 +127,10 @@ export type GrowthContentPlanCountAggregateOutputType = {
   briefJson: number
   generationJson: number
   humanDraftJson: number
+  candidateDraftJson: number
   reviewJson: number
   generationHistoryJson: number
+  aiBusyUntil: number
   publishedUrl: number
   sourceAssetSlug: number
   plannerPromptVersion: number
@@ -175,6 +179,7 @@ export type GrowthContentPlanMinAggregateInputType = {
   pageType?: true
   targetServicePath?: true
   searchOpportunitySlug?: true
+  aiBusyUntil?: true
   publishedUrl?: true
   sourceAssetSlug?: true
   plannerPromptVersion?: true
@@ -205,6 +210,7 @@ export type GrowthContentPlanMaxAggregateInputType = {
   pageType?: true
   targetServicePath?: true
   searchOpportunitySlug?: true
+  aiBusyUntil?: true
   publishedUrl?: true
   sourceAssetSlug?: true
   plannerPromptVersion?: true
@@ -239,8 +245,10 @@ export type GrowthContentPlanCountAggregateInputType = {
   briefJson?: true
   generationJson?: true
   humanDraftJson?: true
+  candidateDraftJson?: true
   reviewJson?: true
   generationHistoryJson?: true
+  aiBusyUntil?: true
   publishedUrl?: true
   sourceAssetSlug?: true
   plannerPromptVersion?: true
@@ -362,8 +370,10 @@ export type GrowthContentPlanGroupByOutputType = {
   briefJson: runtime.JsonValue | null
   generationJson: runtime.JsonValue | null
   humanDraftJson: runtime.JsonValue | null
+  candidateDraftJson: runtime.JsonValue | null
   reviewJson: runtime.JsonValue | null
   generationHistoryJson: runtime.JsonValue | null
+  aiBusyUntil: Date | null
   publishedUrl: string | null
   sourceAssetSlug: string | null
   plannerPromptVersion: number
@@ -421,8 +431,10 @@ export type GrowthContentPlanWhereInput = {
   briefJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   generationJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   humanDraftJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
+  candidateDraftJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   reviewJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   generationHistoryJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
+  aiBusyUntil?: Prisma.DateTimeNullableFilter<"GrowthContentPlan"> | Date | string | null
   publishedUrl?: Prisma.StringNullableFilter<"GrowthContentPlan"> | string | null
   sourceAssetSlug?: Prisma.StringNullableFilter<"GrowthContentPlan"> | string | null
   plannerPromptVersion?: Prisma.IntFilter<"GrowthContentPlan"> | number
@@ -457,8 +469,10 @@ export type GrowthContentPlanOrderByWithRelationInput = {
   briefJson?: Prisma.SortOrderInput | Prisma.SortOrder
   generationJson?: Prisma.SortOrderInput | Prisma.SortOrder
   humanDraftJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  candidateDraftJson?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewJson?: Prisma.SortOrderInput | Prisma.SortOrder
   generationHistoryJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiBusyUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceAssetSlug?: Prisma.SortOrderInput | Prisma.SortOrder
   plannerPromptVersion?: Prisma.SortOrder
@@ -496,8 +510,10 @@ export type GrowthContentPlanWhereUniqueInput = Prisma.AtLeast<{
   briefJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   generationJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   humanDraftJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
+  candidateDraftJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   reviewJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
   generationHistoryJson?: Prisma.JsonNullableFilter<"GrowthContentPlan">
+  aiBusyUntil?: Prisma.DateTimeNullableFilter<"GrowthContentPlan"> | Date | string | null
   publishedUrl?: Prisma.StringNullableFilter<"GrowthContentPlan"> | string | null
   sourceAssetSlug?: Prisma.StringNullableFilter<"GrowthContentPlan"> | string | null
   plannerPromptVersion?: Prisma.IntFilter<"GrowthContentPlan"> | number
@@ -532,8 +548,10 @@ export type GrowthContentPlanOrderByWithAggregationInput = {
   briefJson?: Prisma.SortOrderInput | Prisma.SortOrder
   generationJson?: Prisma.SortOrderInput | Prisma.SortOrder
   humanDraftJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  candidateDraftJson?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewJson?: Prisma.SortOrderInput | Prisma.SortOrder
   generationHistoryJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  aiBusyUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceAssetSlug?: Prisma.SortOrderInput | Prisma.SortOrder
   plannerPromptVersion?: Prisma.SortOrder
@@ -576,8 +594,10 @@ export type GrowthContentPlanScalarWhereWithAggregatesInput = {
   briefJson?: Prisma.JsonNullableWithAggregatesFilter<"GrowthContentPlan">
   generationJson?: Prisma.JsonNullableWithAggregatesFilter<"GrowthContentPlan">
   humanDraftJson?: Prisma.JsonNullableWithAggregatesFilter<"GrowthContentPlan">
+  candidateDraftJson?: Prisma.JsonNullableWithAggregatesFilter<"GrowthContentPlan">
   reviewJson?: Prisma.JsonNullableWithAggregatesFilter<"GrowthContentPlan">
   generationHistoryJson?: Prisma.JsonNullableWithAggregatesFilter<"GrowthContentPlan">
+  aiBusyUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"GrowthContentPlan"> | Date | string | null
   publishedUrl?: Prisma.StringNullableWithAggregatesFilter<"GrowthContentPlan"> | string | null
   sourceAssetSlug?: Prisma.StringNullableWithAggregatesFilter<"GrowthContentPlan"> | string | null
   plannerPromptVersion?: Prisma.IntWithAggregatesFilter<"GrowthContentPlan"> | number
@@ -612,8 +632,10 @@ export type GrowthContentPlanCreateInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Date | string | null
   publishedUrl?: string | null
   sourceAssetSlug?: string | null
   plannerPromptVersion?: number
@@ -648,8 +670,10 @@ export type GrowthContentPlanUncheckedCreateInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Date | string | null
   publishedUrl?: string | null
   sourceAssetSlug?: string | null
   plannerPromptVersion?: number
@@ -684,8 +708,10 @@ export type GrowthContentPlanUpdateInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceAssetSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannerPromptVersion?: Prisma.IntFieldUpdateOperationsInput | number
@@ -720,8 +746,10 @@ export type GrowthContentPlanUncheckedUpdateInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceAssetSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannerPromptVersion?: Prisma.IntFieldUpdateOperationsInput | number
@@ -756,8 +784,10 @@ export type GrowthContentPlanCreateManyInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Date | string | null
   publishedUrl?: string | null
   sourceAssetSlug?: string | null
   plannerPromptVersion?: number
@@ -792,8 +822,10 @@ export type GrowthContentPlanUpdateManyMutationInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceAssetSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannerPromptVersion?: Prisma.IntFieldUpdateOperationsInput | number
@@ -828,8 +860,10 @@ export type GrowthContentPlanUncheckedUpdateManyInput = {
   briefJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   humanDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  candidateDraftJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   reviewJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   generationHistoryJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  aiBusyUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   publishedUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceAssetSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannerPromptVersion?: Prisma.IntFieldUpdateOperationsInput | number
@@ -864,8 +898,10 @@ export type GrowthContentPlanCountOrderByAggregateInput = {
   briefJson?: Prisma.SortOrder
   generationJson?: Prisma.SortOrder
   humanDraftJson?: Prisma.SortOrder
+  candidateDraftJson?: Prisma.SortOrder
   reviewJson?: Prisma.SortOrder
   generationHistoryJson?: Prisma.SortOrder
+  aiBusyUntil?: Prisma.SortOrder
   publishedUrl?: Prisma.SortOrder
   sourceAssetSlug?: Prisma.SortOrder
   plannerPromptVersion?: Prisma.SortOrder
@@ -904,6 +940,7 @@ export type GrowthContentPlanMaxOrderByAggregateInput = {
   pageType?: Prisma.SortOrder
   targetServicePath?: Prisma.SortOrder
   searchOpportunitySlug?: Prisma.SortOrder
+  aiBusyUntil?: Prisma.SortOrder
   publishedUrl?: Prisma.SortOrder
   sourceAssetSlug?: Prisma.SortOrder
   plannerPromptVersion?: Prisma.SortOrder
@@ -934,6 +971,7 @@ export type GrowthContentPlanMinOrderByAggregateInput = {
   pageType?: Prisma.SortOrder
   targetServicePath?: Prisma.SortOrder
   searchOpportunitySlug?: Prisma.SortOrder
+  aiBusyUntil?: Prisma.SortOrder
   publishedUrl?: Prisma.SortOrder
   sourceAssetSlug?: Prisma.SortOrder
   plannerPromptVersion?: Prisma.SortOrder
@@ -998,8 +1036,10 @@ export type GrowthContentPlanSelect<ExtArgs extends runtime.Types.Extensions.Int
   briefJson?: boolean
   generationJson?: boolean
   humanDraftJson?: boolean
+  candidateDraftJson?: boolean
   reviewJson?: boolean
   generationHistoryJson?: boolean
+  aiBusyUntil?: boolean
   publishedUrl?: boolean
   sourceAssetSlug?: boolean
   plannerPromptVersion?: boolean
@@ -1034,8 +1074,10 @@ export type GrowthContentPlanSelectCreateManyAndReturn<ExtArgs extends runtime.T
   briefJson?: boolean
   generationJson?: boolean
   humanDraftJson?: boolean
+  candidateDraftJson?: boolean
   reviewJson?: boolean
   generationHistoryJson?: boolean
+  aiBusyUntil?: boolean
   publishedUrl?: boolean
   sourceAssetSlug?: boolean
   plannerPromptVersion?: boolean
@@ -1070,8 +1112,10 @@ export type GrowthContentPlanSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   briefJson?: boolean
   generationJson?: boolean
   humanDraftJson?: boolean
+  candidateDraftJson?: boolean
   reviewJson?: boolean
   generationHistoryJson?: boolean
+  aiBusyUntil?: boolean
   publishedUrl?: boolean
   sourceAssetSlug?: boolean
   plannerPromptVersion?: boolean
@@ -1106,8 +1150,10 @@ export type GrowthContentPlanSelectScalar = {
   briefJson?: boolean
   generationJson?: boolean
   humanDraftJson?: boolean
+  candidateDraftJson?: boolean
   reviewJson?: boolean
   generationHistoryJson?: boolean
+  aiBusyUntil?: boolean
   publishedUrl?: boolean
   sourceAssetSlug?: boolean
   plannerPromptVersion?: boolean
@@ -1120,7 +1166,7 @@ export type GrowthContentPlanSelectScalar = {
   updatedByEmail?: boolean
 }
 
-export type GrowthContentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "slug" | "contentType" | "sourceType" | "status" | "priorityBand" | "publisher" | "topic" | "workingTitle" | "audience" | "primaryObjective" | "searchIntent" | "pageType" | "targetServicePath" | "searchOpportunitySlug" | "whyRecommendedJson" | "briefJson" | "generationJson" | "humanDraftJson" | "reviewJson" | "generationHistoryJson" | "publishedUrl" | "sourceAssetSlug" | "plannerPromptVersion" | "developerPromptVersion" | "reviewPromptVersion" | "lastModel" | "lastInputTokens" | "lastOutputTokens" | "createdByEmail" | "updatedByEmail", ExtArgs["result"]["growthContentPlan"]>
+export type GrowthContentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "slug" | "contentType" | "sourceType" | "status" | "priorityBand" | "publisher" | "topic" | "workingTitle" | "audience" | "primaryObjective" | "searchIntent" | "pageType" | "targetServicePath" | "searchOpportunitySlug" | "whyRecommendedJson" | "briefJson" | "generationJson" | "humanDraftJson" | "candidateDraftJson" | "reviewJson" | "generationHistoryJson" | "aiBusyUntil" | "publishedUrl" | "sourceAssetSlug" | "plannerPromptVersion" | "developerPromptVersion" | "reviewPromptVersion" | "lastModel" | "lastInputTokens" | "lastOutputTokens" | "createdByEmail" | "updatedByEmail", ExtArgs["result"]["growthContentPlan"]>
 
 export type $GrowthContentPlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "GrowthContentPlan"
@@ -1156,8 +1202,16 @@ export type $GrowthContentPlanPayload<ExtArgs extends runtime.Types.Extensions.I
      * Human-edited canonical draft (preferred over generationJson when set).
      */
     humanDraftJson: runtime.JsonValue | null
+    /**
+     * AI-proposed revision. Never becomes canonical until explicit Apply.
+     */
+    candidateDraftJson: runtime.JsonValue | null
     reviewJson: runtime.JsonValue | null
     generationHistoryJson: runtime.JsonValue | null
+    /**
+     * Soft lock to prevent concurrent AI revision races.
+     */
+    aiBusyUntil: Date | null
     publishedUrl: string | null
     sourceAssetSlug: string | null
     plannerPromptVersion: number
@@ -1612,8 +1666,10 @@ export interface GrowthContentPlanFieldRefs {
   readonly briefJson: Prisma.FieldRef<"GrowthContentPlan", 'Json'>
   readonly generationJson: Prisma.FieldRef<"GrowthContentPlan", 'Json'>
   readonly humanDraftJson: Prisma.FieldRef<"GrowthContentPlan", 'Json'>
+  readonly candidateDraftJson: Prisma.FieldRef<"GrowthContentPlan", 'Json'>
   readonly reviewJson: Prisma.FieldRef<"GrowthContentPlan", 'Json'>
   readonly generationHistoryJson: Prisma.FieldRef<"GrowthContentPlan", 'Json'>
+  readonly aiBusyUntil: Prisma.FieldRef<"GrowthContentPlan", 'DateTime'>
   readonly publishedUrl: Prisma.FieldRef<"GrowthContentPlan", 'String'>
   readonly sourceAssetSlug: Prisma.FieldRef<"GrowthContentPlan", 'String'>
   readonly plannerPromptVersion: Prisma.FieldRef<"GrowthContentPlan", 'Int'>

@@ -22,7 +22,7 @@ import {
 
 export const CONTENT_INTELLIGENCE_VERSION = 1 as const;
 export const CONTENT_PLANNER_PROMPT_VERSION = 1 as const;
-export const CONTENT_DEVELOPER_PROMPT_VERSION = 1 as const;
+export const CONTENT_DEVELOPER_PROMPT_VERSION = 2 as const;
 export const CONTENT_REVIEW_PROMPT_VERSION = 1 as const;
 
 export const CONTENT_TYPES = [

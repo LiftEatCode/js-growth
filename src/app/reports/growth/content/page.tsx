@@ -107,13 +107,22 @@ export default async function GrowthContentIntelligencePage() {
           ) : (
             plans.map((plan) => {
               const brief = plan.briefJson as ContentBriefV1 | null;
-              const draft =
+              const hasHumanDraft = plan.humanDraftJson != null;
+              const hasCandidate = plan.candidateDraftJson != null;
+              const canonical =
                 plan.humanDraftJson ?? plan.generationJson ?? null;
               const defaultHumanDraft = JSON.stringify(
-                draft ?? { bodyMarkdown: "", cta: brief?.cta ?? "" },
+                plan.humanDraftJson ??
+                  plan.generationJson ?? { bodyMarkdown: "", cta: brief?.cta ?? "" },
                 null,
                 2,
               );
+              const candidateDraftJson = hasCandidate
+                ? JSON.stringify(plan.candidateDraftJson, null, 2)
+                : null;
+              const aiBusy =
+                plan.aiBusyUntil != null &&
+                new Date(plan.aiBusyUntil).getTime() > Date.now();
               return (
                 <Card key={plan.id} className="space-y-3 p-6">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -148,10 +157,12 @@ export default async function GrowthContentIntelligencePage() {
                       </p>
                     </div>
                   ) : null}
-                  {draft ? (
-                    <pre className="max-h-48 overflow-auto rounded-xl border border-border bg-white p-3 text-[11px] text-muted">
-                      {JSON.stringify(draft, null, 2)}
-                    </pre>
+                  {canonical ? (
+                    <p className="text-xs text-muted">
+                      Canonical source:{" "}
+                      {hasHumanDraft ? "humanDraftJson" : "generationJson"}
+                      {hasCandidate ? " · AI candidate pending review" : ""}
+                    </p>
                   ) : (
                     <p className="text-xs text-muted">
                       No draft yet. Generate skeleton or OpenAI draft below.
@@ -160,7 +171,11 @@ export default async function GrowthContentIntelligencePage() {
                   <ContentPlanControls
                     planId={plan.id}
                     status={plan.status}
+                    hasHumanDraft={hasHumanDraft}
+                    hasCandidate={hasCandidate}
                     defaultHumanDraft={defaultHumanDraft}
+                    candidateDraftJson={candidateDraftJson}
+                    aiBusy={aiBusy}
                   />
                 </Card>
               );

@@ -4,9 +4,12 @@ import { useActionState } from "react";
 import { LoaderCircle } from "lucide-react";
 
 import {
+  applyContentCandidateAction,
   approveContentPlanAction,
+  discardContentCandidateAction,
   generateContentDraftAction,
   markContentPlanPublishedAction,
+  reopenContentPlanForReviewAction,
   saveContentHumanDraftAction,
   seedInitialContentPlansAction,
   type ContentPlanActionState,
@@ -42,11 +45,19 @@ export function SeedContentPlansForm() {
 export function ContentPlanControls({
   planId,
   status,
+  hasHumanDraft,
+  hasCandidate,
   defaultHumanDraft,
+  candidateDraftJson,
+  aiBusy,
 }: {
   planId: string;
   status: string;
+  hasHumanDraft: boolean;
+  hasCandidate: boolean;
   defaultHumanDraft: string;
+  candidateDraftJson: string | null;
+  aiBusy: boolean;
 }) {
   const [genState, genAction, genPending] = useActionState(
     generateContentDraftAction,
@@ -54,6 +65,18 @@ export function ContentPlanControls({
   );
   const [editState, editAction, editPending] = useActionState(
     saveContentHumanDraftAction,
+    initial,
+  );
+  const [applyState, applyAction, applyPending] = useActionState(
+    applyContentCandidateAction,
+    initial,
+  );
+  const [discardState, discardAction, discardPending] = useActionState(
+    discardContentCandidateAction,
+    initial,
+  );
+  const [reopenState, reopenAction, reopenPending] = useActionState(
+    reopenContentPlanForReviewAction,
     initial,
   );
   const [approveState, approveAction, approvePending] = useActionState(
@@ -65,8 +88,29 @@ export function ContentPlanControls({
     initial,
   );
 
+  const approvedLocked = status === "APPROVED" || status === "PUBLISHED";
+  const aiDisabled = genPending || aiBusy || approvedLocked;
+
   return (
     <div className="space-y-4 border-t border-border pt-4">
+      {approvedLocked ? (
+        <form action={reopenAction} className="flex flex-wrap items-center gap-2">
+          <input type="hidden" name="planId" value={planId} />
+          <p className="w-full text-xs text-muted">
+            Plan is {status}. Reopen for review before AI revise/apply or human
+            edit.
+          </p>
+          {status === "APPROVED" ? (
+            <Button type="submit" variant="outline" disabled={reopenPending}>
+              {reopenPending ? "Reopening…" : "Reopen for review"}
+            </Button>
+          ) : null}
+          <p role="status" className="text-xs text-muted">
+            {reopenState.message}
+          </p>
+        </form>
+      ) : null}
+
       <form action={genAction} className="space-y-2">
         <input type="hidden" name="planId" value={planId} />
         <label className="block space-y-1 text-xs">
@@ -74,54 +118,147 @@ export function ContentPlanControls({
           <textarea
             name="operatorNotes"
             rows={2}
-            disabled={genPending}
+            disabled={aiDisabled}
             className="w-full rounded-lg border border-border px-2 py-1 disabled:opacity-60"
-            placeholder="Optional notes — treated as data, not instructions"
+            placeholder="Optional notes — treated as data, not system overrides"
           />
         </label>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            type="submit"
-            name="mode"
-            value="openai"
-            disabled={genPending}
-          >
-            {genPending ? "Generating…" : "Generate draft (OpenAI)"}
-          </Button>
-          <Button
-            type="submit"
-            name="mode"
-            value="skeleton"
-            variant="outline"
-            disabled={genPending}
-          >
-            Skeleton draft (0 OpenAI)
-          </Button>
-        </div>
+
+        {hasHumanDraft ? (
+          <>
+            <label className="block space-y-1 text-xs">
+              <span className="font-medium">
+                AI revision instructions (untrusted)
+              </span>
+              <textarea
+                name="revisionInstruction"
+                rows={3}
+                disabled={aiDisabled}
+                className="w-full rounded-lg border border-border px-2 py-1 disabled:opacity-60"
+                placeholder='e.g. Remove the AI automation section, strengthen diagnose-first…'
+              />
+            </label>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="submit"
+                name="mode"
+                value="revise"
+                disabled={aiDisabled}
+              >
+                {genPending ? "Revising…" : "Revise with AI"}
+              </Button>
+              <Button
+                type="submit"
+                name="mode"
+                value="regenerate"
+                variant="outline"
+                disabled={aiDisabled}
+              >
+                {genPending ? "Generating…" : "Regenerate from Brief"}
+              </Button>
+              <Button
+                type="submit"
+                name="mode"
+                value="skeleton_regenerate"
+                variant="outline"
+                disabled={aiDisabled}
+              >
+                Skeleton candidate (0 OpenAI)
+              </Button>
+            </div>
+            <p className="text-[11px] text-muted">
+              AI writes a candidate only. Canonical human draft is never
+              overwritten until you Apply.
+            </p>
+          </>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="submit"
+              name="mode"
+              value="openai"
+              disabled={aiDisabled}
+            >
+              {genPending ? "Generating…" : "Generate draft (OpenAI)"}
+            </Button>
+            <Button
+              type="submit"
+              name="mode"
+              value="skeleton"
+              variant="outline"
+              disabled={aiDisabled}
+            >
+              Skeleton draft (0 OpenAI)
+            </Button>
+          </div>
+        )}
         <p role="status" className="text-xs text-muted">
           {genState.message}
         </p>
       </form>
 
-      <form action={editAction} className="space-y-2">
-        <input type="hidden" name="planId" value={planId} />
-        <label className="block space-y-1 text-xs">
-          <span className="font-medium">Human draft JSON</span>
-          <textarea
-            name="humanDraftJson"
-            rows={8}
-            defaultValue={defaultHumanDraft}
-            disabled={editPending}
-            className="w-full rounded-lg border border-border px-2 py-1 font-mono text-[11px] disabled:opacity-60"
-          />
-        </label>
-        <Button type="submit" disabled={editPending}>
-          {editPending ? "Saving…" : "Save human edit"}
-        </Button>
-        <p role="status" className="text-xs text-muted">
-          {editState.message}
+      <div className="rounded-xl border border-border bg-white p-3">
+        <p className="text-xs font-semibold tracking-wide text-brand">
+          CURRENT HUMAN / CANONICAL DRAFT
         </p>
-      </form>
+        <form action={editAction} className="mt-2 space-y-2">
+          <input type="hidden" name="planId" value={planId} />
+          <label className="block space-y-1 text-xs">
+            <span className="font-medium">Human draft JSON</span>
+            <textarea
+              name="humanDraftJson"
+              rows={8}
+              defaultValue={defaultHumanDraft}
+              disabled={editPending || approvedLocked}
+              className="w-full rounded-lg border border-border px-2 py-1 font-mono text-[11px] disabled:opacity-60"
+            />
+          </label>
+          <Button type="submit" disabled={editPending || approvedLocked}>
+            {editPending ? "Saving…" : "Save human edit"}
+          </Button>
+          <p role="status" className="text-xs text-muted">
+            {editState.message}
+          </p>
+        </form>
+      </div>
+
+      {hasCandidate && candidateDraftJson ? (
+        <div className="rounded-xl border-2 border-dashed border-amber-600/50 bg-amber-50/40 p-3">
+          <p className="text-xs font-semibold tracking-wide text-amber-900">
+            AI CANDIDATE (not canonical)
+          </p>
+          <pre className="mt-2 max-h-48 overflow-auto rounded-lg border border-amber-700/20 bg-white p-2 font-mono text-[11px] text-muted">
+            {candidateDraftJson}
+          </pre>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <form action={applyAction}>
+              <input type="hidden" name="planId" value={planId} />
+              <Button
+                type="submit"
+                disabled={applyPending || discardPending || approvedLocked}
+              >
+                {applyPending ? "Applying…" : "Apply AI Revision"}
+              </Button>
+            </form>
+            <form action={discardAction}>
+              <input type="hidden" name="planId" value={planId} />
+              <Button
+                type="submit"
+                variant="outline"
+                disabled={discardPending || applyPending}
+              >
+                {discardPending ? "Discarding…" : "Discard Candidate"}
+              </Button>
+            </form>
+          </div>
+          <p role="status" className="mt-2 text-xs text-muted">
+            {applyState.message || discardState.message}
+          </p>
+          <p className="mt-1 text-[11px] text-muted">
+            Apply/Discard use 0 OpenAI calls. Apply does not approve or publish.
+          </p>
+        </div>
+      ) : null}
 
       <form action={approveAction} className="flex flex-wrap items-center gap-2">
         <input type="hidden" name="planId" value={planId} />

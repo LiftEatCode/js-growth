@@ -14,8 +14,18 @@ import {
   type ContentPriorityBand,
   type SeedContentPlan,
 } from "@/lib/growth/content-intelligence";
+import {
+  appendGenerationHistory,
+  canApplyCandidate,
+  canDiscardCandidate,
+  canRunAiMutation,
+  decidePersistAiDraft,
+  isAiBusyLockActive,
+  nextAiBusyUntil,
+  type ContentAiHistoryOperation,
+} from "@/lib/growth/content-plan-revision";
 import { prisma } from "@/lib/prisma";
-import type { Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -142,6 +152,20 @@ export async function saveHumanDraft(input: {
   humanDraftJson: unknown;
   updatedByEmail: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) {
+    return { ok: false, error: "Plan not found" };
+  }
+  if (existing.status === "APPROVED" || existing.status === "PUBLISHED") {
+    return {
+      ok: false,
+      error:
+        "Plan is APPROVED/PUBLISHED. Reopen for review before editing the canonical draft.",
+    };
+  }
+
   const text = JSON.stringify(input.humanDraftJson);
   const safety = evaluateClaimSafety(text);
   await prisma.growthContentPlan.update({
@@ -160,6 +184,117 @@ export async function saveHumanDraft(input: {
   return { ok: true };
 }
 
+/**
+ * Acquire exclusive AI busy lock. Returns false if another request holds the lock.
+ */
+export async function tryAcquireAiBusyLock(
+  id: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const now = new Date();
+  const until = nextAiBusyUntil(now);
+  const result = await prisma.growthContentPlan.updateMany({
+    where: {
+      id,
+      OR: [{ aiBusyUntil: null }, { aiBusyUntil: { lt: now } }],
+    },
+    data: { aiBusyUntil: until },
+  });
+  if (result.count === 0) {
+    const exists = await prisma.growthContentPlan.findUnique({
+      where: { id },
+      select: { id: true, aiBusyUntil: true },
+    });
+    if (!exists) {
+      return { ok: false, error: "Plan not found" };
+    }
+    return {
+      ok: false,
+      error: "AI revision already in progress. Wait and retry.",
+    };
+  }
+  return { ok: true };
+}
+
+export async function releaseAiBusyLock(id: string): Promise<void> {
+  await prisma.growthContentPlan.updateMany({
+    where: { id },
+    data: { aiBusyUntil: null },
+  });
+}
+
+export async function persistAiDraftResult(input: {
+  id: string;
+  draftPayload: unknown;
+  model: string;
+  promptVersion: number;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  operation:
+    | "INITIAL_GENERATE"
+    | "REGENERATE_FROM_BRIEF"
+    | "REVISE_CURRENT_DRAFT";
+  updatedByEmail: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) {
+    return { ok: false, error: "Plan not found" };
+  }
+
+  const decision = decidePersistAiDraft({
+    status: existing.status,
+    hasHumanDraft: existing.humanDraftJson != null,
+    operation: input.operation,
+    aiBusyUntil: existing.aiBusyUntil,
+  });
+  if (!decision.ok) {
+    return { ok: false, error: decision.error };
+  }
+
+  const history = appendGenerationHistory(existing.generationHistoryJson, {
+    at: new Date().toISOString(),
+    operation: input.operation,
+    model: input.model,
+    promptVersion: input.promptVersion,
+    inputTokens: input.inputTokens,
+    outputTokens: input.outputTokens,
+    resultStatus: "ok",
+  });
+
+  const safety = evaluateClaimSafety(JSON.stringify(input.draftPayload));
+
+  const data: Prisma.GrowthContentPlanUpdateInput = {
+    generationHistoryJson: history as Prisma.InputJsonValue,
+    reviewJson: {
+      claimFlags: safety.flags,
+      readiness: safety.readiness,
+      source: "deterministic_post_generate",
+    } as Prisma.InputJsonValue,
+    status: decision.nextStatus,
+    developerPromptVersion: input.promptVersion,
+    lastModel: input.model,
+    lastInputTokens: input.inputTokens,
+    lastOutputTokens: input.outputTokens,
+    updatedByEmail: input.updatedByEmail,
+    aiBusyUntil: null,
+  };
+
+  if (decision.target === "generationJson") {
+    data.generationJson = input.draftPayload as Prisma.InputJsonValue;
+  } else {
+    data.candidateDraftJson = input.draftPayload as Prisma.InputJsonValue;
+  }
+
+  // Explicit: never touch humanDraftJson here.
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data,
+  });
+  return { ok: true };
+}
+
+/** @deprecated Prefer persistAiDraftResult — kept for skeleton INITIAL path. */
 export async function persistGeneratedDraft(input: {
   id: string;
   generationJson: unknown;
@@ -170,6 +305,79 @@ export async function persistGeneratedDraft(input: {
   operation: string;
   updatedByEmail: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
+  const op =
+    input.operation === "REGENERATE_FROM_BRIEF" ||
+    input.operation === "REVISE_CURRENT_DRAFT"
+      ? input.operation
+      : "INITIAL_GENERATE";
+  return persistAiDraftResult({
+    id: input.id,
+    draftPayload: input.generationJson,
+    model: input.model,
+    promptVersion: input.promptVersion,
+    inputTokens: input.inputTokens,
+    outputTokens: input.outputTokens,
+    operation: op,
+    updatedByEmail: input.updatedByEmail,
+  });
+}
+
+export async function applyCandidateDraft(input: {
+  id: string;
+  updatedByEmail: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) {
+    return { ok: false, error: "Plan not found" };
+  }
+  if (isAiBusyLockActive(existing.aiBusyUntil)) {
+    return {
+      ok: false,
+      error: "AI revision already in progress. Wait and retry.",
+    };
+  }
+
+  const gate = canApplyCandidate({
+    status: existing.status,
+    hasCandidate: existing.candidateDraftJson != null,
+  });
+  if (!gate.ok) {
+    return { ok: false, error: gate.error! };
+  }
+
+  const safety = evaluateClaimSafety(
+    JSON.stringify(existing.candidateDraftJson),
+  );
+  const history = appendGenerationHistory(existing.generationHistoryJson, {
+    at: new Date().toISOString(),
+    operation: "APPLY_CANDIDATE",
+    resultStatus: "applied",
+  });
+
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data: {
+      humanDraftJson: existing.candidateDraftJson as Prisma.InputJsonValue,
+      candidateDraftJson: Prisma.DbNull,
+      reviewJson: {
+        claimFlags: safety.flags,
+        readiness: safety.readiness,
+        source: "apply_candidate",
+      } as Prisma.InputJsonValue,
+      generationHistoryJson: history as Prisma.InputJsonValue,
+      status: "IN_REVIEW",
+      updatedByEmail: input.updatedByEmail,
+    },
+  });
+  return { ok: true };
+}
+
+export async function discardCandidateDraft(input: {
+  id: string;
+  updatedByEmail: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
   const existing = await prisma.growthContentPlan.findUnique({
     where: { id: input.id },
   });
@@ -177,53 +385,97 @@ export async function persistGeneratedDraft(input: {
     return { ok: false, error: "Plan not found" };
   }
 
-  // Never overwrite human edits with regeneration.
-  if (existing.humanDraftJson != null) {
-    return {
-      ok: false,
-      error:
-        "Human draft exists — clear or edit human draft before regenerating AI draft",
-    };
+  const gate = canDiscardCandidate({
+    hasCandidate: existing.candidateDraftJson != null,
+  });
+  if (!gate.ok) {
+    return { ok: false, error: gate.error! };
   }
 
-  const history = Array.isArray(existing.generationHistoryJson)
-    ? (existing.generationHistoryJson as unknown[])
-    : [];
-  history.push({
+  const history = appendGenerationHistory(existing.generationHistoryJson, {
     at: new Date().toISOString(),
-    operation: input.operation,
-    model: input.model,
-    promptVersion: input.promptVersion,
-    inputTokens: input.inputTokens,
-    outputTokens: input.outputTokens,
+    operation: "DISCARD_CANDIDATE",
+    resultStatus: "discarded",
   });
-
-  const safety = evaluateClaimSafety(JSON.stringify(input.generationJson));
 
   await prisma.growthContentPlan.update({
     where: { id: input.id },
     data: {
-      generationJson: input.generationJson as Prisma.InputJsonValue,
+      candidateDraftJson: Prisma.DbNull,
       generationHistoryJson: history as Prisma.InputJsonValue,
-      reviewJson: {
-        claimFlags: safety.flags,
-        readiness: safety.readiness,
-        source: "deterministic_post_generate",
-      } as Prisma.InputJsonValue,
-      status: "DRAFT",
-      developerPromptVersion: input.promptVersion,
-      lastModel: input.model,
-      lastInputTokens: input.inputTokens,
-      lastOutputTokens: input.outputTokens,
+      updatedByEmail: input.updatedByEmail,
+      // humanDraftJson intentionally untouched
+    },
+  });
+  return { ok: true };
+}
+
+export async function reopenContentPlanForReview(input: {
+  id: string;
+  updatedByEmail: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) {
+    return { ok: false, error: "Plan not found" };
+  }
+  if (existing.status !== "APPROVED") {
+    return {
+      ok: false,
+      error: "Only APPROVED plans can reopen for review.",
+    };
+  }
+
+  const history = appendGenerationHistory(existing.generationHistoryJson, {
+    at: new Date().toISOString(),
+    operation: "REOPEN_FOR_REVIEW",
+    resultStatus: "ok",
+  });
+
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data: {
+      status: "IN_REVIEW",
+      generationHistoryJson: history as Prisma.InputJsonValue,
       updatedByEmail: input.updatedByEmail,
     },
   });
   return { ok: true };
 }
 
+export async function recordAiOperationFailure(input: {
+  id: string;
+  operation: ContentAiHistoryOperation;
+  updatedByEmail: string;
+}): Promise<void> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+    select: { generationHistoryJson: true },
+  });
+  if (!existing) return;
+
+  const history = appendGenerationHistory(existing.generationHistoryJson, {
+    at: new Date().toISOString(),
+    operation: input.operation,
+    resultStatus: "error",
+  });
+
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data: {
+      generationHistoryJson: history as Prisma.InputJsonValue,
+      aiBusyUntil: null,
+      updatedByEmail: input.updatedByEmail,
+    },
+  });
+}
+
 export async function applySkeletonDraftWithoutOpenAi(input: {
   id: string;
   updatedByEmail: string;
+  /** When human draft exists, skeleton lands as candidate (regenerate). */
+  asRegenerateCandidate?: boolean;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
   const plan = await prisma.growthContentPlan.findUnique({
     where: { id: input.id },
@@ -240,6 +492,11 @@ export async function applySkeletonDraftWithoutOpenAi(input: {
     return { ok: false, error: validation.errors.join("; ") };
   }
 
+  const gate = canRunAiMutation(plan.status);
+  if (!gate.ok) {
+    return { ok: false, error: gate.error! };
+  }
+
   const draft =
     brief.contentType === "SERVICE_PAGE"
       ? buildServicePageSkeletonDraft(brief)
@@ -254,9 +511,15 @@ export async function applySkeletonDraftWithoutOpenAi(input: {
             : [],
         };
 
-  return persistGeneratedDraft({
+  const hasHuman = plan.humanDraftJson != null;
+  const operation =
+    hasHuman || input.asRegenerateCandidate
+      ? "REGENERATE_FROM_BRIEF"
+      : "INITIAL_GENERATE";
+
+  return persistAiDraftResult({
     id: input.id,
-    generationJson: {
+    draftPayload: {
       mode: "skeleton",
       draft,
     },
@@ -264,7 +527,7 @@ export async function applySkeletonDraftWithoutOpenAi(input: {
     promptVersion: CONTENT_PLANNER_PROMPT_VERSION,
     inputTokens: null,
     outputTokens: null,
-    operation: "GENERATE_DRAFT",
+    operation,
     updatedByEmail: input.updatedByEmail,
   });
 }

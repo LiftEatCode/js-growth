@@ -11,7 +11,13 @@ import {
   validateBriefForGeneration,
   type ContentBriefV1,
 } from "@/lib/growth/content-intelligence";
-import { persistGeneratedDraft } from "@/lib/growth/content-plan-store";
+import {
+  persistAiDraftResult,
+  recordAiOperationFailure,
+  releaseAiBusyLock,
+  tryAcquireAiBusyLock,
+} from "@/lib/growth/content-plan-store";
+import { canRunAiMutation } from "@/lib/growth/content-plan-revision";
 import { prisma } from "@/lib/prisma";
 
 import {
@@ -22,21 +28,30 @@ import {
 import {
   buildContentDeveloperSystemPrompt,
   buildContentDeveloperUserPrompt,
+  buildContentReviseUserPrompt,
 } from "./prompt";
 import { contentDraftStructuredSchema } from "./schema";
 
 export type GenerateContentDraftResult =
-  | { ok: true; model: string; usedOpenAi: true }
+  | { ok: true; model: string; usedOpenAi: true; target: string }
   | { ok: false; error: string; code?: string };
 
+export type ContentAiOperation =
+  | "INITIAL_GENERATE"
+  | "REGENERATE_FROM_BRIEF"
+  | "REVISE_CURRENT_DRAFT";
+
 /**
- * Operator-initiated draft generation. Exactly one OpenAI call when configured.
- * Does not publish. Does not create GrowthContentRecord.
+ * Operator-initiated AI draft. Never writes humanDraftJson.
+ * INITIAL → generationJson when no human draft.
+ * REGENERATE / REVISE → candidateDraftJson only.
  */
-export async function generateContentDraft(input: {
+export async function runContentAiDraft(input: {
   planId: string;
   updatedByEmail: string;
+  operation: ContentAiOperation;
   operatorNotes?: string | null;
+  revisionInstruction?: string | null;
   provider?: ReturnType<typeof createContentAiProvider>;
 }): Promise<GenerateContentDraftResult> {
   const plan = await prisma.growthContentPlan.findUnique({
@@ -45,12 +60,44 @@ export async function generateContentDraft(input: {
   if (!plan) {
     return { ok: false, error: "Plan not found", code: "NOT_FOUND" };
   }
-  if (plan.humanDraftJson != null) {
+
+  const statusGate = canRunAiMutation(plan.status);
+  if (!statusGate.ok) {
+    return { ok: false, error: statusGate.error!, code: "STATUS_BLOCKED" };
+  }
+
+  if (
+    input.operation === "INITIAL_GENERATE" &&
+    plan.humanDraftJson != null
+  ) {
     return {
       ok: false,
-      error: "Human draft exists — edit it instead of regenerating",
-      code: "HUMAN_DRAFT_EXISTS",
+      error:
+        "Human draft exists — use Regenerate from Brief or Revise with AI.",
+      code: "USE_CANDIDATE_FLOW",
     };
+  }
+
+  if (
+    input.operation === "REVISE_CURRENT_DRAFT" &&
+    plan.humanDraftJson == null
+  ) {
+    return {
+      ok: false,
+      error: "Revise requires a current human/canonical draft.",
+      code: "NO_HUMAN_DRAFT",
+    };
+  }
+
+  if (input.operation === "REVISE_CURRENT_DRAFT") {
+    const instruction = input.revisionInstruction?.trim();
+    if (!instruction) {
+      return {
+        ok: false,
+        error: "Revision instruction is required.",
+        code: "NO_INSTRUCTION",
+      };
+    }
   }
 
   const brief = plan.briefJson as ContentBriefV1 | null;
@@ -76,24 +123,44 @@ export async function generateContentDraft(input: {
     };
   }
 
+  const lock = await tryAcquireAiBusyLock(input.planId);
+  if (!lock.ok) {
+    return { ok: false, error: lock.error, code: "AI_BUSY" };
+  }
+
   const provider =
     input.provider ?? createContentAiProvider({ apiKey });
   const model = getOpenAiAuditModel();
   const timeoutMs = getAiGenerationTimeoutMs();
 
   try {
+    const userPrompt =
+      input.operation === "REVISE_CURRENT_DRAFT"
+        ? buildContentReviseUserPrompt({
+            brief,
+            currentHumanDraft: plan.humanDraftJson,
+            revisionInstruction: input.revisionInstruction!.trim(),
+            operatorNotes: input.operatorNotes,
+          })
+        : buildContentDeveloperUserPrompt({
+            brief,
+            operatorNotes: input.operatorNotes,
+          });
+
     const result = await provider.generate({
       model,
       system: buildContentDeveloperSystemPrompt(),
-      user: buildContentDeveloperUserPrompt({
-        brief,
-        operatorNotes: input.operatorNotes,
-      }),
+      user: userPrompt,
       timeoutMs,
     });
 
     const parsed = contentDraftStructuredSchema.safeParse(result.parsed);
     if (!parsed.success) {
+      await recordAiOperationFailure({
+        id: input.planId,
+        operation: input.operation,
+        updatedByEmail: input.updatedByEmail,
+      });
       return {
         ok: false,
         error: "Model output failed schema validation",
@@ -105,33 +172,49 @@ export async function generateContentDraft(input: {
       `${parsed.data.bodyMarkdown}\n${parsed.data.cta}\n${parsed.data.seoTitle ?? ""}`,
     );
 
-    const persist = await persistGeneratedDraft({
-      id: input.planId,
-      generationJson: {
-        mode: "openai",
-        promptVersion: CONTENT_DEVELOPER_PROMPT_VERSION,
-        draft: {
-          ...parsed.data,
-          claimFlags: [
-            ...parsed.data.claimFlags,
-            ...safety.flags,
-          ],
-        },
+    const draftPayload = {
+      mode: "openai" as const,
+      promptVersion: CONTENT_DEVELOPER_PROMPT_VERSION,
+      operation: input.operation,
+      draft: {
+        ...parsed.data,
+        claimFlags: [...parsed.data.claimFlags, ...safety.flags],
       },
+    };
+
+    const persist = await persistAiDraftResult({
+      id: input.planId,
+      draftPayload,
       model: result.model,
       promptVersion: CONTENT_DEVELOPER_PROMPT_VERSION,
       inputTokens: result.usage.inputTokens,
       outputTokens: result.usage.outputTokens,
-      operation: "GENERATE_DRAFT",
+      operation: input.operation,
       updatedByEmail: input.updatedByEmail,
     });
 
     if (!persist.ok) {
+      await releaseAiBusyLock(input.planId);
       return { ok: false, error: persist.error, code: "PERSIST_FAILED" };
     }
 
-    return { ok: true, model: result.model, usedOpenAi: true };
+    const target =
+      input.operation === "INITIAL_GENERATE" && plan.humanDraftJson == null
+        ? "generationJson"
+        : "candidateDraftJson";
+
+    return {
+      ok: true,
+      model: result.model,
+      usedOpenAi: true,
+      target,
+    };
   } catch (error) {
+    await recordAiOperationFailure({
+      id: input.planId,
+      operation: input.operation,
+      updatedByEmail: input.updatedByEmail,
+    });
     if (error instanceof MissingOpenAiKeyError) {
       return {
         ok: false,
@@ -148,4 +231,42 @@ export async function generateContentDraft(input: {
       code: "PROVIDER",
     };
   }
+}
+
+/** Initial generate when no human draft. */
+export async function generateContentDraft(input: {
+  planId: string;
+  updatedByEmail: string;
+  operatorNotes?: string | null;
+  provider?: ReturnType<typeof createContentAiProvider>;
+}): Promise<GenerateContentDraftResult> {
+  return runContentAiDraft({
+    ...input,
+    operation: "INITIAL_GENERATE",
+  });
+}
+
+export async function regenerateContentDraftFromBrief(input: {
+  planId: string;
+  updatedByEmail: string;
+  operatorNotes?: string | null;
+  provider?: ReturnType<typeof createContentAiProvider>;
+}): Promise<GenerateContentDraftResult> {
+  return runContentAiDraft({
+    ...input,
+    operation: "REGENERATE_FROM_BRIEF",
+  });
+}
+
+export async function reviseContentDraftWithAi(input: {
+  planId: string;
+  updatedByEmail: string;
+  revisionInstruction: string;
+  operatorNotes?: string | null;
+  provider?: ReturnType<typeof createContentAiProvider>;
+}): Promise<GenerateContentDraftResult> {
+  return runContentAiDraft({
+    ...input,
+    operation: "REVISE_CURRENT_DRAFT",
+  });
 }

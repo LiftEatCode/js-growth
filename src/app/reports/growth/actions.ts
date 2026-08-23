@@ -516,18 +516,21 @@ export async function generateContentDraftAction(
   const planId = String(formData.get("planId") ?? "").trim();
   const mode = String(formData.get("mode") ?? "openai").trim();
   const notes = String(formData.get("operatorNotes") ?? "").trim() || null;
+  const revisionInstruction =
+    String(formData.get("revisionInstruction") ?? "").trim() || null;
 
   if (!planId) {
     return { success: false, message: "Missing plan id." };
   }
 
-  if (mode === "skeleton") {
+  if (mode === "skeleton" || mode === "skeleton_regenerate") {
     const { applySkeletonDraftWithoutOpenAi } = await import(
       "@/lib/growth/content-plan-store"
     );
     const result = await applySkeletonDraftWithoutOpenAi({
       id: planId,
       updatedByEmail: session.email,
+      asRegenerateCandidate: mode === "skeleton_regenerate",
     });
     if (!result.ok) {
       return { success: false, message: result.error };
@@ -535,17 +538,30 @@ export async function generateContentDraftAction(
     revalidatePath("/reports/growth/content");
     return {
       success: true,
-      message: "Deterministic skeleton draft saved (0 OpenAI calls).",
+      message:
+        mode === "skeleton_regenerate"
+          ? "Skeleton candidate saved (0 OpenAI). Human draft unchanged."
+          : "Deterministic skeleton draft saved (0 OpenAI calls).",
     };
   }
 
-  const { generateContentDraft } = await import(
+  const { runContentAiDraft } = await import(
     "@/lib/growth/content-ai/generate"
   );
-  const result = await generateContentDraft({
+
+  const operation =
+    mode === "regenerate"
+      ? ("REGENERATE_FROM_BRIEF" as const)
+      : mode === "revise"
+        ? ("REVISE_CURRENT_DRAFT" as const)
+        : ("INITIAL_GENERATE" as const);
+
+  const result = await runContentAiDraft({
     planId,
     updatedByEmail: session.email,
     operatorNotes: notes,
+    revisionInstruction,
+    operation,
   });
 
   if (!result.ok) {
@@ -553,9 +569,98 @@ export async function generateContentDraftAction(
   }
 
   revalidatePath("/reports/growth/content");
+  const where =
+    result.target === "candidateDraftJson"
+      ? "AI candidate (human draft unchanged)"
+      : "initial AI draft";
   return {
     success: true,
-    message: `Draft generated with ${result.model} (1 OpenAI call). Not published.`,
+    message: `${where} via ${result.model} (1 OpenAI call). Not published.`,
+  };
+}
+
+export async function applyContentCandidateAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  if (!planId) {
+    return { success: false, message: "Missing plan id." };
+  }
+
+  const { applyCandidateDraft } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await applyCandidateDraft({
+    id: planId,
+    updatedByEmail: session.email,
+  });
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message:
+      "AI candidate applied to canonical human draft (0 OpenAI). Not approved/published.",
+  };
+}
+
+export async function discardContentCandidateAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  if (!planId) {
+    return { success: false, message: "Missing plan id." };
+  }
+
+  const { discardCandidateDraft } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await discardCandidateDraft({
+    id: planId,
+    updatedByEmail: session.email,
+  });
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: "AI candidate discarded (0 OpenAI). Human draft unchanged.",
+  };
+}
+
+export async function reopenContentPlanForReviewAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  if (!planId) {
+    return { success: false, message: "Missing plan id." };
+  }
+
+  const { reopenContentPlanForReview } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await reopenContentPlanForReview({
+    id: planId,
+    updatedByEmail: session.email,
+  });
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: "Plan reopened for review. AI revise/apply allowed again.",
   };
 }
 
