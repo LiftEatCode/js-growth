@@ -10,17 +10,26 @@ import { fileURLToPath } from "node:url";
 import { isForbiddenAnalyticsParamKey } from "@/lib/analytics/commercial-events";
 import {
   ATTRIBUTION_VERSION,
+  buildGrowthBaselineV1SnapshotPayloads,
   buildUtmUrl,
+  DATA_STATUS,
   FACEBOOK_FOUNDER_UTM,
   FACEBOOK_PAGE_UTM,
+  GA4_PRODUCTION_MEASUREMENT_ID,
   GBP_UTM,
+  GROWTH_BASELINE_DATE,
+  GROWTH_BASELINE_PERIOD,
+  GROWTH_BASELINE_V1,
+  GROWTH_BASELINE_VERSION,
   GROWTH_EVENT_VERSION,
   GROWTH_EVENTS,
   GROWTH_KEY_EVENT_CANDIDATES,
   isAllowedGrowthEventParamKey,
   isGrowthEventName,
+  isInsufficientData,
   isKnownUtmMedium,
   isKnownUtmSource,
+  isNotCaptured,
   isValidUtmValue,
   KPI_HIERARCHY,
   normalizeUtmValue,
@@ -28,9 +37,20 @@ import {
   parseCampaignAttributionFromUnknown,
   QUALIFIED_TRAFFIC_INDICATORS,
   sanitizeGrowthEventParams,
+  snapshotMetricIsExplicitlyUnavailable,
   UTM_STANDARD_VERSION,
   validateGrowthSnapshotMetrics,
+  AUDIT_FUNNEL_VERSION,
+  AUDIT_FUNNEL_STEPS,
+  mergeAttributionWithFunnelContext,
+  parseAuditFunnelContextFromUnknown,
+  isAuditFunnelStep,
 } from "@/lib/growth";
+import {
+  formatFunnelCount,
+  formatFunnelRate,
+  FUNNEL_METRIC_STATUS,
+} from "@/lib/growth/audit-funnel-display";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -256,6 +276,246 @@ const schema = readFileSync(
 );
 assert(schema.includes("model GrowthSnapshot"), "GrowthSnapshot in schema");
 assert(schema.includes("attributionJson"), "attributionJson on AuditReport");
+
+// ─── Growth Baseline V1 ─────────────────────────────────────────────────────
+
+assert(GROWTH_BASELINE_VERSION === 1, "baseline version is 1");
+assert(GROWTH_BASELINE_DATE === "2026-08-23", "baseline date");
+assert(GROWTH_BASELINE_PERIOD.start === "2026-07-26", "baseline period start");
+assert(GROWTH_BASELINE_PERIOD.end === "2026-08-22", "baseline period end");
+
+assert(GROWTH_BASELINE_V1.searchConsole.clicks === 0, "GSC clicks");
+assert(GROWTH_BASELINE_V1.searchConsole.impressions === 2, "GSC impressions");
+assert(GROWTH_BASELINE_V1.searchConsole.averageCtr === 0, "GSC CTR");
+assert(GROWTH_BASELINE_V1.searchConsole.averagePosition === 77, "GSC avg position");
+assert(
+  isInsufficientData(GROWTH_BASELINE_V1.searchConsole.queryDataStatus),
+  "GSC query data insufficient",
+);
+assert(
+  isInsufficientData(GROWTH_BASELINE_V1.searchConsole.topQueries),
+  "topQueries is INSUFFICIENT_DATA not []",
+);
+assert(
+  !Array.isArray(GROWTH_BASELINE_V1.searchConsole.topQueries),
+  "insufficient query data must not be an empty array",
+);
+
+assert(GROWTH_BASELINE_V1.facebook.followers === 75, "FB followers");
+assert(GROWTH_BASELINE_V1.facebook.visits === 9, "FB visits");
+assert(GROWTH_BASELINE_V1.facebook.engagements === 5, "FB engagements");
+assert(
+  GROWTH_BASELINE_V1.facebook.viewsByFollowerStatus.nonFollowersPercent === 95.3,
+  "FB non-follower views",
+);
+assert(
+  GROWTH_BASELINE_V1.facebook.viewsByContentType.photoPercent === 90.3,
+  "FB photo views",
+);
+assert(
+  isNotCaptured(GROWTH_BASELINE_V1.facebook.totalViewsStatus),
+  "FB total views NOT_CAPTURED",
+);
+assert(
+  GROWTH_BASELINE_V1.facebook.totalViewsStatus === DATA_STATUS.NOT_CAPTURED,
+  "FB total views must remain NOT_CAPTURED (not numeric zero)",
+);
+
+assert(
+  GA4_PRODUCTION_MEASUREMENT_ID === "G-0REXF012SK",
+  "GA4 production measurement ID",
+);
+assert(GROWTH_BASELINE_V1.ga4.productionTrackingVerified === true, "GA4 verified");
+assert(
+  isNotCaptured(GROWTH_BASELINE_V1.ga4.historicalTrafficTotalsStatus),
+  "GA4 historical totals not captured from Realtime",
+);
+assert(
+  GROWTH_BASELINE_V1.ga4.monitorEventCardinality.status ===
+    "MONITOR_EVENT_CARDINALITY",
+  "cardinality monitor flag",
+);
+assert(
+  GROWTH_BASELINE_V1.ga4.monitorEventCardinality.observedDuringRealtimeValidation
+    .audit_submitted === 1,
+  "monitor submitted count",
+);
+assert(
+  GROWTH_BASELINE_V1.ga4.monitorEventCardinality.observedDuringRealtimeValidation
+    .audit_completed === 2,
+  "monitor completed count",
+);
+
+const baselinePayloads = buildGrowthBaselineV1SnapshotPayloads();
+const gscValidated = validateGrowthSnapshotMetrics(
+  "SEARCH_CONSOLE",
+  baselinePayloads.searchConsole,
+);
+assert(gscValidated.ok, "baseline GSC snapshot validates");
+if (gscValidated.ok) {
+  assert(gscValidated.metrics.clicks === 0, "persisted GSC clicks");
+  assert(gscValidated.metrics.impressions === 2, "persisted GSC impressions");
+  assert(
+    gscValidated.metrics.queryDataStatus === DATA_STATUS.INSUFFICIENT_DATA,
+    "persisted query status",
+  );
+  assert(
+    !("topQueries" in gscValidated.metrics),
+    "GSC snapshot omits topQueries rather than empty list",
+  );
+  assert(
+    snapshotMetricIsExplicitlyUnavailable(
+      gscValidated.metrics,
+      "queryDataStatus",
+    ),
+    "queryDataStatus unavailable helper",
+  );
+}
+
+const ga4Validated = validateGrowthSnapshotMetrics("GA4", baselinePayloads.ga4);
+assert(ga4Validated.ok, "baseline GA4 snapshot validates");
+if (ga4Validated.ok) {
+  assert(
+    !("users" in ga4Validated.metrics) && !("sessions" in ga4Validated.metrics),
+    "GA4 baseline does not invent traffic totals",
+  );
+  assert(
+    !JSON.stringify(ga4Validated.metrics).includes(GA4_PRODUCTION_MEASUREMENT_ID),
+    "measurement ID not stored in GA4 snapshot metricsJson",
+  );
+}
+
+const fbValidated = validateGrowthSnapshotMetrics(
+  "FACEBOOK",
+  baselinePayloads.facebook,
+);
+assert(fbValidated.ok, "baseline Facebook snapshot validates");
+if (fbValidated.ok) {
+  assert(fbValidated.metrics.followers === 75, "FB snapshot followers");
+  assert(fbValidated.metrics.pageVisits === 9, "FB snapshot visits");
+  assert(fbValidated.metrics.engagement === 5, "FB snapshot engagements");
+  assert(
+    fbValidated.metrics.totalViewsStatus === DATA_STATUS.NOT_CAPTURED,
+    "FB totalViewsStatus",
+  );
+  assert(
+    !("contentViews" in fbValidated.metrics) &&
+      !("impressions" in fbValidated.metrics),
+    "FB NOT_CAPTURED views not stored as zero numeric fields",
+  );
+  assert(
+    snapshotMetricIsExplicitlyUnavailable(
+      fbValidated.metrics,
+      "totalViewsStatus",
+    ),
+    "totalViewsStatus unavailable helper",
+  );
+}
+
+const leakedMeasurementId = sanitizeGrowthEventParams({
+  placement: "audit_landing",
+  measurement_id: GA4_PRODUCTION_MEASUREMENT_ID,
+  ga_measurement_id: GA4_PRODUCTION_MEASUREMENT_ID,
+} as Record<string, string | number | boolean>);
+assert(leakedMeasurementId?.placement === "audit_landing", "keeps placement");
+assert(
+  leakedMeasurementId !== undefined &&
+    !("measurement_id" in leakedMeasurementId) &&
+    !("ga_measurement_id" in leakedMeasurementId),
+  "measurement ID stripped from growth event params",
+);
+assert(
+  !JSON.stringify(leakedMeasurementId).includes(GA4_PRODUCTION_MEASUREMENT_ID),
+  "measurement ID string absent from sanitized growth params",
+);
+
+const baselineDoc = readFileSync(
+  join(here, "../../../docs/growth/baselines/growth-baseline-v1.md"),
+  "utf8",
+);
+assert(baselineDoc.includes("GROWTH_BASELINE_VERSION = 1"), "baseline doc version");
+assert(baselineDoc.includes("INSUFFICIENT_DATA"), "baseline doc insufficient");
+assert(baselineDoc.includes("NOT_CAPTURED"), "baseline doc not captured");
+assert(baselineDoc.includes("MONITOR_EVENT_CARDINALITY"), "baseline doc monitor");
+
+const growthPage = readFileSync(
+  join(here, "../../app/reports/growth/page.tsx"),
+  "utf8",
+);
+assert(growthPage.includes("GROWTH_BASELINE_V1"), "dashboard renders baseline V1");
+assert(
+  !/from ["']@google-analytics|from ["']googleapis|AnalyticsDataClient|facebook-nodejs-business-sdk|graph\.facebook\.com\/v\d/i.test(
+    growthPage,
+  ),
+  "growth dashboard has no external analytics API clients",
+);
+assert(
+  !/ensureGrowthBaselineV1Snapshots|persist-growth-baseline/i.test(growthPage),
+  "dashboard render path does not run baseline persistence writes",
+);
+assert(
+  growthPage.includes("AUDIT_FUNNEL"),
+  "dashboard renders audit funnel section",
+);
+assert(
+  growthPage.includes("getAuditFunnelDashboardMetrics"),
+  "dashboard loads audit funnel metrics",
+);
+
+assert(AUDIT_FUNNEL_VERSION === 1, "audit funnel version");
+assert(AUDIT_FUNNEL_STEPS.length === 7, "audit funnel step count");
+assert(isAuditFunnelStep("audit_submitted"), "audit_submitted is funnel step");
+assert(!isAuditFunnelStep("purchase"), "purchase not funnel step");
+
+const funnelParsed = parseAuditFunnelContextFromUnknown({
+  version: 1,
+  landingViewAt: "2026-08-23T12:00:00.000Z",
+  startedAt: "2026-08-23T12:01:00.000Z",
+});
+assert(funnelParsed?.landingViewAt?.startsWith("2026"), "parses funnel milestones");
+
+const merged = mergeAttributionWithFunnelContext(
+  parseCampaignAttribution({
+    source: "facebook",
+    medium: "organic_social",
+    campaign: "page",
+    content: null,
+    landingPath: "/website-audit",
+  }),
+  funnelParsed,
+);
+assert(merged && "funnel" in merged && merged.source === "facebook", "merges funnel into attribution");
+
+assert(
+  formatFunnelRate({ status: FUNNEL_METRIC_STATUS.INSUFFICIENT_DATA, value: null }) ===
+    "INSUFFICIENT DATA",
+  "insufficient data rate label",
+);
+assert(
+  formatFunnelCount({ status: FUNNEL_METRIC_STATUS.NOT_CAPTURED, value: null }) ===
+    "NOT CAPTURED",
+  "not captured count label",
+);
+
+const auditTool = readFileSync(
+  join(here, "../../components/website-audit/website-audit-tool.tsx"),
+  "utf8",
+);
+assert(
+  !auditTool.includes("COMMERCIAL_EVENTS.auditCompleted"),
+  "audit_completed no longer double-fired via commercial event",
+);
+assert(auditTool.includes("trackAuditFunnelEvent"), "audit tool uses funnel tracker");
+
+const ctaParams = sanitizeGrowthEventParams({
+  cta_location: "report_upgrade",
+  cta_type: "professional_audit",
+  report_context: "inline_landing",
+  report_id: "3ad43538-a0b0-4f39-937b-b119be11f62f",
+} as Record<string, string | number | boolean>);
+assert(ctaParams?.cta_location === "report_upgrade", "cta_location allowed");
+assert(ctaParams?.report_context === "inline_landing", "report_context allowed");
+assert(ctaParams && !("report_id" in ctaParams), "report_id stripped from cta params");
 
 console.log("growth measurement verification passed");
 process.exit(0);

@@ -66,15 +66,37 @@ export const GROWTH_CTA_KINDS = [
 
 export type GrowthCtaKind = (typeof GROWTH_CTA_KINDS)[number];
 
+export const GROWTH_REPORT_CONTEXTS = [
+  "inline_landing",
+  "dedicated_report",
+] as const;
+
+export type GrowthReportContext = (typeof GROWTH_REPORT_CONTEXTS)[number];
+
+export const GROWTH_CTA_LOCATIONS = [
+  "audit_landing",
+  "report_upgrade",
+  "report_implementation",
+  "report_nav",
+  "landing_footer",
+  "contact_page",
+] as const;
+
+export type GrowthCtaLocation = (typeof GROWTH_CTA_LOCATIONS)[number];
+
 export type GrowthEventParams = {
   placement?: GrowthCtaPlacement;
   cta_kind?: GrowthCtaKind;
+  cta_location?: GrowthCtaLocation;
+  cta_type?: GrowthCtaKind;
+  report_context?: GrowthReportContext;
   pages_scanned?: number;
   pages_discovered?: number;
   site_scan_truncated?: boolean;
   truncated?: boolean;
   competitor_count?: number;
   successful_competitor_count?: number;
+  form_name?: string;
 };
 
 export function isGrowthEventName(name: string): name is GrowthEventName {
@@ -85,12 +107,16 @@ export function isAllowedGrowthEventParamKey(key: string): boolean {
   return (
     key === "placement" ||
     key === "cta_kind" ||
+    key === "cta_location" ||
+    key === "cta_type" ||
+    key === "report_context" ||
     key === "pages_scanned" ||
     key === "pages_discovered" ||
     key === "site_scan_truncated" ||
     key === "truncated" ||
     key === "competitor_count" ||
-    key === "successful_competitor_count"
+    key === "successful_competitor_count" ||
+    key === "form_name"
   );
 }
 

@@ -10,7 +10,7 @@ import { COMMERCIAL_EVENTS, trackCommercialEvent } from "@/lib/analytics/commerc
 import { GrowthTrackedLink } from "@/components/growth/growth-tracked-link";
 import {
   GROWTH_EVENTS,
-  trackGrowthEvent,
+  trackAuditFunnelEvent,
 } from "@/lib/growth";
 import {
   getProfessionalAuditPricePresentation,
@@ -22,6 +22,7 @@ import { FREE_AI_CAPABILITY_COPY } from "@/lib/website-audit/ai-interpretation/c
 interface ReportUpgradeCtaProps {
   showUpgradeCta: boolean;
   reportId?: string;
+  reportContext?: "inline_landing" | "dedicated_report";
   children?: React.ReactNode;
 }
 
@@ -44,6 +45,7 @@ const PROFESSIONAL_BENEFITS = [
 export function ReportUpgradeCta({
   showUpgradeCta,
   reportId,
+  reportContext = "inline_landing",
   children,
 }: ReportUpgradeCtaProps) {
   const [checkoutStarted, setCheckoutStarted] = useState(false);
@@ -107,10 +109,17 @@ export function ReportUpgradeCta({
                 trackCommercialEvent(
                   COMMERCIAL_EVENTS.professionalCheckoutStarted,
                 );
-                trackGrowthEvent(GROWTH_EVENTS.professionalAuditCtaClicked, {
-                  placement: "report",
-                  cta_kind: "professional_audit",
-                });
+                trackAuditFunnelEvent(
+                  GROWTH_EVENTS.professionalAuditCtaClicked,
+                  {
+                    placement: "report",
+                    cta_kind: "professional_audit",
+                    cta_location: "report_upgrade",
+                    cta_type: "professional_audit",
+                    report_context: reportContext,
+                  },
+                  { dedupeKey: "professional_audit_cta-report_upgrade" },
+                );
               }}
             >
               <Button

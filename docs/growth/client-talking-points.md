@@ -6,8 +6,10 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 
 ## Measurement first
 
+- “Before optimizing traffic, we establish a measurable baseline across search visibility, website behavior, social discovery, and business outcomes. That allows us to measure whether changes are producing qualified traffic and commercial results rather than relying on vanity metrics.”
 - “We establish a measurement baseline before changing strategy so we can separate real improvement from normal traffic fluctuations.”
 - “Growth work is treated as measurable experiments with a hypothesis, KPI, baseline, and review date.”
+- “When data is incomplete, we keep that explicit — we do not invent or backfill numbers to make the baseline look better.”
 
 ## Acquisition vs conversion
 
@@ -28,6 +30,8 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 
 - “We map the customer journey from first visit through audit usage and contact actions, then into our private commercial pipeline.”
 - “Marketing analytics observes engagement; payment and contract systems remain the authority for revenue.”
+- “Our free website audit funnel is instrumented end-to-end — from landing page through report review — so we can see where qualified visitors drop off before scaling traffic.”
+- “We fixed measurement quality issues (like duplicate completion events) before increasing ad spend or social distribution.”
 
 ## Privacy & trust
 

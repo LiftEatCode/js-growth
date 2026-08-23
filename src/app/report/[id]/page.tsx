@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 
 import { AuditResults } from "@/components/website-audit/audit-results";
-import { AuditReportViewBeacon } from "@/components/growth/growth-page-beacon";
 import {
   Button,
   Container,
@@ -83,7 +82,6 @@ export default async function ReportPage({
 
   return (
     <main className="min-h-screen bg-slate-50/60">
-      <AuditReportViewBeacon />
       <div className="border-b border-border bg-white">
         <Container className="py-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -136,6 +134,7 @@ export default async function ReportPage({
           reportId={report.id}
           professionallyUnlocked={professionallyUnlocked}
           interpretation={interpretation}
+          reportContext="dedicated_report"
         />
       </Container>
     </main>

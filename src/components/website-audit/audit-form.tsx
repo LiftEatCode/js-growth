@@ -4,6 +4,7 @@ import {
   type ChangeEvent,
   type FormEvent,
   useEffect,
+  useRef,
   useState,
   useTransition,
 } from "react";
@@ -19,6 +20,7 @@ import {
 
 import { auditWebsite } from "@/app/website-audit/actions";
 import { GrowthAttributionField } from "@/components/growth/growth-attribution-field";
+import { GrowthFunnelField } from "@/components/growth/growth-funnel-field";
 import {
   Button,
   Card,
@@ -26,7 +28,7 @@ import {
 } from "@/components/ui";
 import {
   GROWTH_EVENTS,
-  trackGrowthEvent,
+  trackAuditFunnelEvent,
 } from "@/lib/growth";
 import type {
   WebsiteAuditResponse,
@@ -40,12 +42,11 @@ interface AuditFormProps {
 }
 
 const auditStatusMessages = [
-  "Analyzing technical health…",
-  "Discovering important pages…",
-  "Reviewing service pages…",
-  "Checking site-wide consistency…",
-  "Analyzing conversion paths…",
+  "Analyzing website structure…",
+  "Reviewing search signals…",
+  "Checking conversion foundations…",
   "Reviewing local visibility…",
+  "Preparing your growth report…",
 ] as const;
 
 const competitiveStatusMessages = [
@@ -66,6 +67,26 @@ export function AuditForm({
   const [competitorUrls, setCompetitorUrls] = useState(["", "", ""]);
   const [isPending, startTransition] = useTransition();
   const hasCompetitors = competitorUrls.some((value) => value.trim());
+  const startedRef = useRef(false);
+
+  function markAuditStarted(): void {
+    if (startedRef.current || isPending) {
+      return;
+    }
+    startedRef.current = true;
+    trackAuditFunnelEvent(
+      GROWTH_EVENTS.auditStarted,
+      {
+        placement: "audit_landing",
+        cta_location: "audit_landing",
+        cta_type: "audit",
+      },
+      {
+        dedupeKey: "audit_started",
+        recordMilestone: "startedAt",
+      },
+    );
+  }
 
   function handleSubmit(
     event: FormEvent<HTMLFormElement>,
@@ -76,9 +97,7 @@ export function AuditForm({
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    trackGrowthEvent(GROWTH_EVENTS.auditStarted, {
-      placement: "audit_landing",
-    });
+    markAuditStarted();
 
     startTransition(async () => {
       let response: WebsiteAuditResponse;
@@ -103,9 +122,18 @@ export function AuditForm({
         return;
       }
 
-      trackGrowthEvent(GROWTH_EVENTS.auditSubmitted, {
-        placement: "audit_landing",
-      });
+      trackAuditFunnelEvent(
+        GROWTH_EVENTS.auditSubmitted,
+        {
+          placement: "audit_landing",
+          cta_location: "audit_landing",
+          cta_type: "audit",
+        },
+        {
+          dedupeKey: "audit_submitted",
+          recordMilestone: "submittedAt",
+        },
+      );
 
       onAuditComplete(response);
     });
@@ -119,6 +147,7 @@ export function AuditForm({
         aria-busy={isPending}
       >
         <GrowthAttributionField />
+        <GrowthFunnelField />
         <div className="space-y-2">
           <label
             htmlFor="website-audit-url"
@@ -144,6 +173,7 @@ export function AuditForm({
               onChange={(
                 event: ChangeEvent<HTMLInputElement>,
               ) => setUrl(event.target.value)}
+              onFocus={markAuditStarted}
               disabled={isPending}
               aria-describedby={
                 error

@@ -1,6 +1,10 @@
 "use server";
 
 import { parseCampaignAttributionFromFormData } from "@/lib/growth/attribution";
+import {
+  mergeAttributionWithFunnelContext,
+  parseAuditFunnelContextFromFormData,
+} from "@/lib/growth/audit-funnel";
 import { buildCompetitiveIntelligence } from "@/lib/website-audit/competitive/crawl-competitor";
 import {
   collectCompetitorRawUrls,
@@ -72,7 +76,12 @@ export async function auditWebsite(
       console.error("Website audit competitive comparison failed:", error);
     }
 
-    const attribution = parseCampaignAttributionFromFormData(formData);
+    const campaignAttribution = parseCampaignAttributionFromFormData(formData);
+    const funnelContext = parseAuditFunnelContextFromFormData(formData);
+    const attribution = mergeAttributionWithFunnelContext(
+      campaignAttribution,
+      funnelContext,
+    ) as typeof campaignAttribution;
 
     const report = createAuditReport(auditResult, "public", {
       attribution,

@@ -3,6 +3,11 @@
  *
  * Snapshots are immutable historical baselines. Validate JSON shape;
  * do not create a generic analytics dump.
+ *
+ * Status semantics (optional fields):
+ * - AVAILABLE — metric was captured
+ * - INSUFFICIENT_DATA — source could not expose the breakdown (≠ zero)
+ * - NOT_CAPTURED — value was not recorded; do not invent or estimate
  */
 
 import { z } from "zod";
@@ -18,9 +23,24 @@ export type GrowthSnapshotSource = (typeof GROWTH_SNAPSHOT_SOURCES)[number];
 
 const optionalNonNegInt = z.number().int().nonnegative().optional();
 const optionalNonNegNumber = z.number().nonnegative().optional();
+/** Change rates may be negative (e.g. visits −78.6%). */
+const optionalNumber = z.number().optional();
+
+const dataStatusSchema = z.enum([
+  "AVAILABLE",
+  "INSUFFICIENT_DATA",
+  "NOT_CAPTURED",
+  "NOT_APPLICABLE",
+]);
+
+const baselineMetaSchema = {
+  baselineVersion: z.number().int().positive().optional(),
+  baselineLabel: z.string().max(120).optional(),
+};
 
 export const ga4SnapshotMetricsSchema = z
   .object({
+    ...baselineMetaSchema,
     users: optionalNonNegInt,
     newUsers: optionalNonNegInt,
     sessions: optionalNonNegInt,
@@ -33,12 +53,18 @@ export const ga4SnapshotMetricsSchema = z
     auditStarts: optionalNonNegInt,
     auditSubmissions: optionalNonNegInt,
     contactSubmissions: optionalNonNegInt,
+    instrumentationStatus: z
+      .enum(["VERIFIED_WORKING", "UNVERIFIED", "UNKNOWN"])
+      .optional(),
+    historicalTrafficTotalsStatus: dataStatusSchema.optional(),
+    keyEventCandidates: z.array(z.string().max(80)).max(20).optional(),
     notes: z.string().max(2000).optional(),
   })
   .strict();
 
 export const searchConsoleSnapshotMetricsSchema = z
   .object({
+    ...baselineMetaSchema,
     clicks: optionalNonNegInt,
     impressions: optionalNonNegInt,
     averageCtr: optionalNonNegNumber,
@@ -72,12 +98,15 @@ export const searchConsoleSnapshotMetricsSchema = z
     localIntentClicks: optionalNonNegInt,
     serviceIntentClicks: optionalNonNegInt,
     auditToolIntentClicks: optionalNonNegInt,
+    queryDataStatus: dataStatusSchema.optional(),
+    propertyVerification: z.enum(["VERIFIED", "UNVERIFIED"]).optional(),
     notes: z.string().max(2000).optional(),
   })
   .strict();
 
 export const facebookSnapshotMetricsSchema = z
   .object({
+    ...baselineMetaSchema,
     property: z.enum(["js_solutions_page", "founder_personal"]),
     followers: optionalNonNegInt,
     reach: optionalNonNegInt,
@@ -86,6 +115,21 @@ export const facebookSnapshotMetricsSchema = z
     engagement: optionalNonNegInt,
     linkClicks: optionalNonNegInt,
     pageVisits: optionalNonNegInt,
+    followerChangePercent: optionalNumber,
+    visitChangePercent: optionalNumber,
+    engagementChangePercent: optionalNumber,
+    nonFollowerViewPercent: optionalNonNegNumber,
+    followerViewPercent: optionalNonNegNumber,
+    photoViewPercent: optionalNonNegNumber,
+    textViewPercent: optionalNonNegNumber,
+    linkViewPercent: optionalNonNegNumber,
+    engagementNonFollowerPercent: optionalNonNegNumber,
+    engagementFollowerPercent: optionalNonNegNumber,
+    engagementReactionsPercent: optionalNonNegNumber,
+    totalViewsStatus: dataStatusSchema.optional(),
+    topFansStatus: dataStatusSchema.optional(),
+    audienceDemographicsStatus: dataStatusSchema.optional(),
+    howPeopleFindContentStatus: dataStatusSchema.optional(),
     topPosts: z
       .array(
         z
@@ -105,6 +149,7 @@ export const facebookSnapshotMetricsSchema = z
 
 export const internalSnapshotMetricsSchema = z
   .object({
+    ...baselineMetaSchema,
     auditsCreated: optionalNonNegInt,
     freeReportsCompleted: optionalNonNegInt,
     professionalPurchases: optionalNonNegInt,
@@ -152,4 +197,16 @@ export function validateGrowthSnapshotMetrics(
   }
 
   return { ok: true, metrics: parsed.data as Record<string, unknown> };
+}
+
+/**
+ * Reject treating insufficient/not-captured statuses as numeric zeros
+ * when interpreting snapshot metrics for comparisons.
+ */
+export function snapshotMetricIsExplicitlyUnavailable(
+  metrics: Record<string, unknown>,
+  statusKey: string,
+): boolean {
+  const status = metrics[statusKey];
+  return status === "INSUFFICIENT_DATA" || status === "NOT_CAPTURED";
 }

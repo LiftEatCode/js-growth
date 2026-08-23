@@ -12,7 +12,8 @@ import { GrowthAttributionField } from "@/components/growth/growth-attribution-f
 import { budgetOptions, serviceOptions } from "@/content/contact";
 import {
   GROWTH_EVENTS,
-  trackGrowthEvent,
+  trackAuditFunnelEvent,
+  trackGa4GenerateLead,
 } from "@/lib/growth";
 
 const initialState: ContactFormState = {
@@ -31,7 +32,16 @@ export function ContactForm() {
 
   useEffect(() => {
     if (state.success) {
-      trackGrowthEvent(GROWTH_EVENTS.contactFormSubmitted);
+      trackAuditFunnelEvent(
+        GROWTH_EVENTS.contactFormSubmitted,
+        {
+          cta_location: "contact_page",
+          cta_type: "contact",
+          form_name: "contact",
+        },
+        { dedupeKey: "contact_form_submitted" },
+      );
+      trackGa4GenerateLead({ form_name: "contact" });
       formRef.current?.reset();
     }
   }, [state.success]);
@@ -41,7 +51,10 @@ export function ContactForm() {
       return;
     }
     started.current = true;
-    trackGrowthEvent(GROWTH_EVENTS.contactFormStarted);
+    trackAuditFunnelEvent(GROWTH_EVENTS.contactFormStarted, {
+      cta_location: "contact_page",
+      cta_type: "contact",
+    }, { dedupeKey: "contact_form_started" });
   }
 
   return (

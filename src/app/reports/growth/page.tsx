@@ -21,7 +21,20 @@ import {
   previousPeriod,
 } from "@/lib/growth/funnel-metrics";
 import {
+  formatFunnelCount,
+  formatFunnelRate,
+  getAuditFunnelDashboardMetrics,
+  type FunnelCountMetric,
+  type FunnelRateMetric,
+} from "@/lib/growth/audit-funnel-metrics";
+import {
   describeQualifiedTraffic,
+  AUDIT_FUNNEL_VERSION,
+  GROWTH_BASELINE_DATE,
+  GROWTH_BASELINE_LABEL,
+  GROWTH_BASELINE_PERIOD,
+  GROWTH_BASELINE_V1,
+  GROWTH_BASELINE_VERSION,
   KPI_HIERARCHY,
 } from "@/lib/growth";
 import { listGrowthSnapshots } from "@/lib/growth/snapshot-store";
@@ -37,6 +50,14 @@ export const dynamic = "force-dynamic";
 
 function formatCount(value: number): string {
   return new Intl.NumberFormat("en-US").format(value);
+}
+
+function StatusBadge({ status }: { status: string }) {
+  return (
+    <span className="rounded-md border border-border bg-slate-50 px-2 py-0.5 font-mono text-xs text-muted">
+      {status}
+    </span>
+  );
 }
 
 function Metric({
@@ -65,15 +86,66 @@ function Metric({
   );
 }
 
+function BaselineStat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  return (
+    <div className="rounded-xl border border-border/80 bg-white px-3 py-2">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+        {label}
+      </p>
+      <p className="mt-1 text-sm font-semibold text-brand">{value}</p>
+    </div>
+  );
+}
+
+function FunnelStep({ label, metric }: { label: string; metric: FunnelCountMetric }) {
+  return (
+    <div className="rounded-2xl border border-border bg-white p-4">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+        {label}
+      </p>
+      <p className="mt-2 font-heading text-2xl font-semibold text-brand">
+        {formatFunnelCount(metric)}
+      </p>
+    </div>
+  );
+}
+
+function FunnelRate({
+  label,
+  metric,
+}: {
+  label: string;
+  metric: FunnelRateMetric;
+}) {
+  return (
+    <div className="rounded-xl border border-border/80 bg-slate-50 px-3 py-2">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+        {label}
+      </p>
+      <p className="mt-1 text-sm font-semibold text-brand">
+        {formatFunnelRate(metric)}
+      </p>
+    </div>
+  );
+}
+
 export default async function GrowthDashboardPage() {
   const current = lastNDaysEndingNow(28);
   const previous = previousPeriod(current.periodStart, current.periodEnd);
 
-  const [currentMetrics, previousMetrics, snapshots] = await Promise.all([
-    getInternalFunnelMetrics(current),
-    getInternalFunnelMetrics(previous),
-    listGrowthSnapshots(20),
-  ]);
+  const [currentMetrics, previousMetrics, auditFunnel, snapshots] =
+    await Promise.all([
+      getInternalFunnelMetrics(current),
+      getInternalFunnelMetrics(previous),
+      getAuditFunnelDashboardMetrics(current),
+      listGrowthSnapshots(20),
+    ]);
 
   return (
     <main className="min-h-screen bg-slate-50/70">
@@ -81,7 +153,7 @@ export default async function GrowthDashboardPage() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-blue">
-              Growth Sprint 1
+              Growth Baseline V{GROWTH_BASELINE_VERSION}
             </p>
             <h1 className="mt-2 font-heading text-3xl font-semibold tracking-tight text-brand">
               Growth measurement baseline
@@ -89,7 +161,9 @@ export default async function GrowthDashboardPage() {
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
               Internal product facts only. GA4 / Search Console / Facebook are
               linked for operator review — V1 does not call external analytics
-              APIs on page load.
+              APIs on page load. Unknowns stay{" "}
+              <StatusBadge status="NOT_CAPTURED" /> /{" "}
+              <StatusBadge status="INSUFFICIENT_DATA" /> — never estimated zeros.
             </p>
           </div>
           <Button
@@ -100,6 +174,128 @@ export default async function GrowthDashboardPage() {
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
+
+        <section className="mt-10 space-y-4">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="size-4 text-brand-blue" />
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              {GROWTH_BASELINE_LABEL}
+            </h2>
+          </div>
+          <Card className="space-y-5 p-6">
+            <p className="text-sm leading-6 text-muted">
+              Recorded {GROWTH_BASELINE_DATE}. Window{" "}
+              {GROWTH_BASELINE_PERIOD.start} → {GROWTH_BASELINE_PERIOD.end}.
+              Canonical values live in code and docs — compare future sprints
+              against this snapshot without rewriting history.
+            </p>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Search Console ({GROWTH_BASELINE_V1.searchConsole.property})
+              </p>
+              <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+                <BaselineStat
+                  label="Clicks"
+                  value={GROWTH_BASELINE_V1.searchConsole.clicks}
+                />
+                <BaselineStat
+                  label="Impressions"
+                  value={GROWTH_BASELINE_V1.searchConsole.impressions}
+                />
+                <BaselineStat
+                  label="CTR"
+                  value={`${GROWTH_BASELINE_V1.searchConsole.averageCtr}%`}
+                />
+                <BaselineStat
+                  label="Avg position"
+                  value={GROWTH_BASELINE_V1.searchConsole.averagePosition}
+                />
+                <BaselineStat
+                  label="Query data"
+                  value={GROWTH_BASELINE_V1.searchConsole.queryDataStatus}
+                />
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                GA4 instrumentation
+              </p>
+              <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <BaselineStat label="Production tracking" value="VERIFIED" />
+                <BaselineStat
+                  label="Historical traffic totals"
+                  value={GROWTH_BASELINE_V1.ga4.historicalTrafficTotalsStatus}
+                />
+                <BaselineStat
+                  label="Key-event candidates"
+                  value={GROWTH_BASELINE_V1.ga4.keyEventCandidates.join(", ")}
+                />
+              </div>
+              <p className="mt-2 text-xs text-muted">
+                Realtime funnel verified:{" "}
+                {GROWTH_BASELINE_V1.ga4.verifiedFunnel.join(" → ")}.{" "}
+                {GROWTH_BASELINE_V1.ga4.monitorEventCardinality.status}:
+                submitted=
+                {
+                  GROWTH_BASELINE_V1.ga4.monitorEventCardinality
+                    .observedDuringRealtimeValidation.audit_submitted
+                }
+                , completed=
+                {
+                  GROWTH_BASELINE_V1.ga4.monitorEventCardinality
+                    .observedDuringRealtimeValidation.audit_completed
+                }{" "}
+                (monitor only — baseline snapshot; Sprint 2 dedupes duplicate
+                `audit_completed` fires).
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Facebook — JS Solutions Page
+              </p>
+              <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                <BaselineStat
+                  label="Followers"
+                  value={GROWTH_BASELINE_V1.facebook.followers}
+                />
+                <BaselineStat
+                  label="Visits"
+                  value={GROWTH_BASELINE_V1.facebook.visits}
+                />
+                <BaselineStat
+                  label="Engagements"
+                  value={GROWTH_BASELINE_V1.facebook.engagements}
+                />
+                <BaselineStat
+                  label="Non-follower views"
+                  value={`${GROWTH_BASELINE_V1.facebook.viewsByFollowerStatus.nonFollowersPercent}%`}
+                />
+                <BaselineStat
+                  label="Photo views"
+                  value={`${GROWTH_BASELINE_V1.facebook.viewsByContentType.photoPercent}%`}
+                />
+                <BaselineStat
+                  label="Total views"
+                  value={GROWTH_BASELINE_V1.facebook.totalViewsStatus}
+                />
+                <BaselineStat
+                  label="Top fans"
+                  value={GROWTH_BASELINE_V1.facebook.topFansStatus}
+                />
+                <BaselineStat
+                  label="Demographics"
+                  value={GROWTH_BASELINE_V1.facebook.audienceDemographicsStatus}
+                />
+              </div>
+            </div>
+            <p className="text-sm leading-6 text-muted">
+              Funnel: Facebook / Search / GBP / Direct / Referral → Session →
+              Qualified Visit → Audit Landing → Started → Submitted → Completed →
+              CTA / Contact → Lead / Prospect → Opportunity → Proposal →
+              Agreement → Payment → Client.
+            </p>
+          </Card>
+        </section>
 
         <section className="mt-10 space-y-4">
           <div className="flex items-center gap-2">
@@ -207,7 +403,102 @@ export default async function GrowthDashboardPage() {
           <div className="flex items-center gap-2">
             <BarChart3 className="size-4 text-brand-blue" />
             <h2 className="font-heading text-xl font-semibold text-brand">
-              Website & Audit Funnel (internal)
+              Website Audit Funnel (AUDIT_FUNNEL v{AUDIT_FUNNEL_VERSION})
+            </h2>
+          </div>
+          <p className="text-sm text-muted">
+            Last 28 days. Browser-only steps (report views, CTA clicks, contact
+            submissions) require GA4 Funnel Exploration — see{" "}
+            <code className="text-xs">docs/growth/ga4-audit-funnel.md</code>.
+            First-party funnel milestones persist on audit attribution when
+            captured in-session.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <FunnelStep label="Landing views" metric={auditFunnel.landingViews} />
+            <FunnelStep label="Audit starts" metric={auditFunnel.auditStarts} />
+            <FunnelStep
+              label="Audit submissions"
+              metric={auditFunnel.auditSubmissions}
+            />
+            <FunnelStep
+              label="Audit completions"
+              metric={auditFunnel.auditCompletions}
+            />
+            <FunnelStep label="Report views" metric={auditFunnel.reportViews} />
+            <FunnelStep
+              label="Professional CTA clicks"
+              metric={auditFunnel.professionalCtaClicks}
+            />
+            <FunnelStep
+              label="Contact submissions"
+              metric={auditFunnel.contactSubmissions}
+            />
+            <FunnelStep label="Prospects created" metric={auditFunnel.leadsProspects} />
+          </div>
+          <Card className="p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              Step conversion rates (last 28d)
+            </p>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              <FunnelRate
+                label="Landing → Start"
+                metric={auditFunnel.rates.landingToStart}
+              />
+              <FunnelRate
+                label="Start → Submit"
+                metric={auditFunnel.rates.startToSubmit}
+              />
+              <FunnelRate
+                label="Submit → Complete"
+                metric={auditFunnel.rates.submitToComplete}
+              />
+              <FunnelRate
+                label="Complete → Report view"
+                metric={auditFunnel.rates.completeToReportView}
+              />
+              <FunnelRate
+                label="Report → CTA"
+                metric={auditFunnel.rates.reportToCta}
+              />
+              <FunnelRate
+                label="CTA → Lead"
+                metric={auditFunnel.rates.ctaToLead}
+              />
+            </div>
+            <p className="mt-4 text-xs leading-5 text-muted">
+              Rates show INSUFFICIENT DATA below {5} observations in the
+              denominator — never fabricated 0%. Compare submissions vs Baseline
+              V1 internal window once Sprint 3 traffic increases.
+            </p>
+          </Card>
+          {auditFunnel.attributionBySource.length > 0 ? (
+            <Card className="p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                Audit submissions by source / medium (first-party)
+              </p>
+              <ul className="mt-3 space-y-2 text-sm">
+                {auditFunnel.attributionBySource.map((row) => (
+                  <li
+                    key={`funnel-${row.source}-${row.medium ?? ""}`}
+                    className="flex justify-between gap-4 border-b border-border/70 py-2"
+                  >
+                    <span>
+                      {row.source}
+                      {row.medium ? ` / ${row.medium}` : ""}
+                    </span>
+                    <span className="font-semibold">{formatCount(row.count)}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ) : null}
+        </section>
+
+        <section className="mt-12 space-y-4">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="size-4 text-brand-blue" />
+            <h2 className="font-heading text-xl font-semibold text-brand">
+              Website & Audit Funnel (internal DB)
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

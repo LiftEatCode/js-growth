@@ -24,7 +24,7 @@ import {
 import { trackCommercialEvent, COMMERCIAL_EVENTS } from "@/lib/analytics/commercial-events";
 import {
   GROWTH_EVENTS,
-  trackGrowthEvent,
+  trackAuditFunnelEvent,
 } from "@/lib/growth";
 import type { WebsiteAuditSuccessResponse } from "@/lib/website-audit/types";
 
@@ -47,14 +47,21 @@ export function WebsiteAuditTool() {
     auditResult: WebsiteAuditSuccessResponse,
   ): void {
     setResult(auditResult);
-    trackCommercialEvent(COMMERCIAL_EVENTS.auditCompleted, {
-      pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
-      site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
-    });
-    trackGrowthEvent(GROWTH_EVENTS.auditCompleted, {
-      pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
-      site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
-    });
+
+    trackAuditFunnelEvent(
+      GROWTH_EVENTS.auditCompleted,
+      {
+        pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
+        site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
+        cta_location: "audit_landing",
+        report_context: "inline_landing",
+      },
+      {
+        dedupeKey: auditResult.reportId
+          ? `audit_completed-${auditResult.reportId}`
+          : "audit_completed",
+      },
+    );
 
     if (auditResult.siteData) {
       trackCommercialEvent(COMMERCIAL_EVENTS.multiPageAuditCompleted, {
@@ -104,7 +111,13 @@ export function WebsiteAuditTool() {
           <p className="mt-4 max-w-2xl leading-7 text-muted">
             We run a representative multi-page scan of the public site you
             submit. You&apos;ll see a Website Growth Score, category results,
-            and the first issues to work on.
+            and the first issues to work on — usually within a couple of minutes.
+          </p>
+
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
+            JS Solutions reads only publicly available pages. We do not log in,
+            change your site, or store passwords. Your URL is used to run the
+            audit and save your report link.
           </p>
 
           <div className="mt-8">
@@ -173,6 +186,7 @@ export function WebsiteAuditTool() {
             result={result}
             reportId={result.reportId}
             mode="public"
+            reportContext="inline_landing"
           />
         ) : (
           <AuditPreview />

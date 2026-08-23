@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import {
   captureCampaignAttributionInBrowser,
   GROWTH_EVENTS,
-  trackGrowthEvent,
+  trackAuditFunnelEvent,
   type GrowthEventName,
   type GrowthEventParams,
 } from "@/lib/growth";
@@ -17,9 +17,13 @@ import {
 export function GrowthPageBeacon({
   event,
   params,
+  dedupeKey,
+  recordMilestone,
 }: {
   event: GrowthEventName;
   params?: GrowthEventParams;
+  dedupeKey?: string;
+  recordMilestone?: "landingViewAt" | "startedAt" | "submittedAt";
 }) {
   const fired = useRef(false);
 
@@ -29,8 +33,11 @@ export function GrowthPageBeacon({
     }
     fired.current = true;
     captureCampaignAttributionInBrowser();
-    trackGrowthEvent(event, params);
-  }, [event, params]);
+    trackAuditFunnelEvent(event, params, {
+      dedupeKey,
+      recordMilestone,
+    });
+  }, [dedupeKey, event, params, recordMilestone]);
 
   return null;
 }
@@ -39,16 +46,30 @@ export function AuditLandingBeacon() {
   return (
     <GrowthPageBeacon
       event={GROWTH_EVENTS.auditLandingView}
-      params={{ placement: "audit_landing" }}
+      params={{
+        placement: "audit_landing",
+        cta_location: "audit_landing",
+      }}
+      dedupeKey="audit_landing_view"
+      recordMilestone="landingViewAt"
     />
   );
 }
 
-export function AuditReportViewBeacon() {
+export function AuditReportViewBeacon({
+  reportContext = "dedicated_report",
+}: {
+  reportContext?: "inline_landing" | "dedicated_report";
+}) {
   return (
     <GrowthPageBeacon
       event={GROWTH_EVENTS.auditReportViewed}
-      params={{ placement: "report" }}
+      params={{
+        placement: "report",
+        report_context: reportContext,
+        cta_location: "report_nav",
+      }}
+      dedupeKey={`audit_report_viewed-${reportContext}`}
     />
   );
 }

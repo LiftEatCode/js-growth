@@ -5,7 +5,7 @@ import type { ComponentProps } from "react";
 
 import {
   GROWTH_EVENTS,
-  trackGrowthEvent,
+  trackAuditFunnelEvent,
   type GrowthCtaKind,
   type GrowthCtaPlacement,
 } from "@/lib/growth";
@@ -43,9 +43,18 @@ export function GrowthTrackedLink({
     <Link
       {...props}
       onClick={(event) => {
-        trackGrowthEvent(EVENT_MAP[growthEvent], {
+        trackAuditFunnelEvent(EVENT_MAP[growthEvent], {
           placement,
           cta_kind: ctaKind,
+          cta_type: ctaKind,
+          cta_location:
+            placement === "report"
+              ? "report_implementation"
+              : placement === "audit_landing"
+                ? "audit_landing"
+                : "landing_footer",
+        }, {
+          dedupeKey: `${growthEvent}-${placement}`,
         });
         onClick?.(event);
       }}

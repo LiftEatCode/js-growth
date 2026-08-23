@@ -15,6 +15,8 @@ export type AuditLeadStatus =
 
 export type AuditReportSourceValue = "PUBLIC_FUNNEL" | "PROSPECTING";
 
+import type { AuditFunnelMilestone } from "@/lib/growth/audit-funnel";
+
 /** Bounded marketing attribution stored on public-funnel audits only. */
 export type AuditReportAttribution = {
   source: string | null;
@@ -23,6 +25,7 @@ export type AuditReportAttribution = {
   content: string | null;
   landingPath: string;
   capturedAt: string;
+  funnel?: AuditFunnelMilestone;
 };
 
 export interface AuditReport {

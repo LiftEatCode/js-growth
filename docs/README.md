@@ -44,6 +44,7 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
 | Analytics | [`development/analytics.md`](development/analytics.md) |
 | Growth measurement (Sprint 1) | [`growth/README.md`](growth/README.md) |
+| Growth Baseline V1 | [`growth/baselines/growth-baseline-v1.md`](growth/baselines/growth-baseline-v1.md) |
 | Coding standards | [`development/coding-standards.md`](development/coding-standards.md) |
 | Vercel notes | [`development/vercel.md`](development/vercel.md) |
 

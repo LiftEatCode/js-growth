@@ -200,8 +200,21 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - `GrowthSnapshot` model for immutable GA4 / GSC / Facebook / Internal baselines
 - Internal `/reports/growth` dashboard (DB aggregates; no external analytics APIs on load)
 - Privacy: commercial IDs / PII forbidden in GA4; Stripe/DB remain payment authority
+- **Growth Baseline V1 recorded 2026-08-23** (`GROWTH_BASELINE_VERSION = 1`) — see `docs/growth/baselines/growth-baseline-v1.md`
 
 **Not included:** SEO content gen, social automation, paid ads, GBP optimizer SaaS, attribution AI, client analytics portal.
+
+### Growth Sprint 2 — Website Audit Conversion Funnel ✅
+
+- `AUDIT_FUNNEL_VERSION = 1` deterministic funnel contract + session dedupe
+- Cardinality fix: one `audit_completed` per completion (removed duplicate gtag)
+- First-party funnel milestones on `attributionJson.funnel`; internal funnel dashboard section
+- Conversion UX: hero clarity, form trust, honest processing copy, inline report view tracking
+- GA4 funnel operator guide + `generate_lead` compatibility layer (contact only)
+- Experiments 001–004 documented (sequential measurement — low traffic)
+- Research: `docs/research/audit-conversion-funnel-2026.md`
+
+**Not included:** Facebook Growth Engine, Meta Pixel, paid ads, pricing changes, Baseline V1 modifications.
 
 ---
 

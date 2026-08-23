@@ -63,7 +63,12 @@ export default function WebsiteAuditPage() {
             <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
               Get a website growth audit that evaluates search visibility,
               content, conversion opportunities, local SEO, technical health,
-              and performance.
+              and performance — in about two minutes.
+            </p>
+
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+              Built for small business owners who want a clear picture of what
+              to fix first. No login, no credit card, and no ranking guarantees.
             </p>
 
             <p className="mt-8 text-sm font-medium text-cyan-300">

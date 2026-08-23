@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { AuditExecutiveDashboard } from "@/components/website-audit/audit-executive-dashboard";
+import { AuditReportViewBeacon } from "@/components/growth/growth-page-beacon";
 import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
 import { AuditLeadCapture } from "@/components/website-audit/audit-lead-capture";
 import { ReportActionPlan } from "@/components/website-audit/report-action-plan";
@@ -44,6 +45,7 @@ interface AuditResultsProps {
   reportId?: string;
   professionallyUnlocked?: boolean;
   interpretation?: AiInterpretationView | null;
+  reportContext?: "inline_landing" | "dedicated_report";
 }
 
 export function AuditResults({
@@ -52,6 +54,7 @@ export function AuditResults({
   reportId,
   professionallyUnlocked = false,
   interpretation = null,
+  reportContext = reportId ? "dedicated_report" : "inline_landing",
 }: AuditResultsProps) {
   const view = buildGrowthReportViewModel(result, mode, {
     professionallyUnlocked,
@@ -60,6 +63,7 @@ export function AuditResults({
 
   return (
     <div className="space-y-10">
+      <AuditReportViewBeacon reportContext={reportContext} />
       <AuditExecutiveDashboard view={view} reportId={reportId} />
 
       <ReportNav view={view} showAiInterpretation={Boolean(interpretation && interpretation.status !== "hidden")} />
@@ -118,6 +122,7 @@ export function AuditResults({
         <ReportUpgradeCta
           showUpgradeCta={view.capabilities.showUpgradeCta}
           reportId={reportId}
+          reportContext={reportContext}
         />
       ) : null}
 

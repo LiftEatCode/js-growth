@@ -8,21 +8,44 @@
 ## Canonical funnel
 
 ```
-VISITOR
-→ ENGAGED VISITOR
-→ AUDIT LANDING PAGE
-→ AUDIT START
-→ AUDIT SUBMITTED
-→ AUDIT COMPLETED
-→ REPORT VIEWED
-→ PROFESSIONAL AUDIT CTA
-→ PURCHASE / LEAD
-→ PROSPECT
-→ OPPORTUNITY
-→ PROPOSAL
-→ AGREEMENT
-→ CLIENT
+Facebook / Search / GBP / Direct / Referral
+        ↓
+Website Session
+        ↓
+Qualified Visit
+        ↓
+AUDIT LANDING PAGE
+        ↓
+AUDIT START
+        ↓
+AUDIT SUBMITTED
+        ↓
+AUDIT COMPLETED
+        ↓
+REPORT VIEWED / PROFESSIONAL AUDIT CTA / CONTACT
+        ↓
+LEAD / PROSPECT
+        ↓
+OPPORTUNITY
+        ↓
+PROPOSAL
+        ↓
+AGREEMENT
+        ↓
+PAYMENT
+        ↓
+CLIENT
 ```
+
+Historical alias (Growth Sprint 1 wording): VISITOR → ENGAGED VISITOR → … remains equivalent for public analytics stages.
+
+### Growth Baseline V1
+
+Verified production baseline recorded **2026-08-23** (`GROWTH_BASELINE_VERSION = 1`).
+
+See [`baselines/growth-baseline-v1.md`](baselines/growth-baseline-v1.md) and `src/lib/growth/baseline-v1.ts`.
+
+Unknown metrics remain `NOT_CAPTURED` / `INSUFFICIENT_DATA` — never estimated zeros.
 
 ### Stage ownership
 
@@ -39,7 +62,7 @@ VISITOR
 | Event | When |
 |---|---|
 | `audit_landing_view` | `/website-audit` mount |
-| `audit_started` | Audit form submit initiated |
+| `audit_started` | User first focuses the audit URL field (meaningful form interaction) |
 | `audit_submitted` | Audit server success returned |
 | `audit_completed` | Results rendered |
 | `audit_report_viewed` | `/report/[id]` mount |

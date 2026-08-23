@@ -64,6 +64,7 @@ export {
 export {
   GROWTH_SNAPSHOT_SOURCES,
   validateGrowthSnapshotMetrics,
+  snapshotMetricIsExplicitlyUnavailable,
   ga4SnapshotMetricsSchema,
   searchConsoleSnapshotMetricsSchema,
   facebookSnapshotMetricsSchema,
@@ -74,3 +75,42 @@ export {
   type FacebookSnapshotMetrics,
   type InternalSnapshotMetrics,
 } from "./snapshot";
+
+export {
+  GROWTH_BASELINE_VERSION,
+  GROWTH_BASELINE_LABEL,
+  GROWTH_BASELINE_DATE,
+  GROWTH_BASELINE_PERIOD,
+  DATA_STATUS,
+  GA4_PRODUCTION_MEASUREMENT_ID,
+  GROWTH_BASELINE_V1,
+  buildGrowthBaselineV1SnapshotPayloads,
+  isInsufficientData,
+  isNotCaptured,
+  type GrowthBaselineV1,
+  type DataStatus,
+} from "./baseline-v1";
+
+export {
+  AUDIT_FUNNEL_VERSION,
+  AUDIT_FUNNEL_STEPS,
+  FUNNEL_STORAGE_KEY,
+  REPORT_CONTEXTS,
+  CTA_LOCATIONS,
+  CTA_TYPES,
+  recordFunnelMilestone,
+  readAuditFunnelContext,
+  serializeAuditFunnelContextForForm,
+  parseAuditFunnelContextFromUnknown,
+  parseAuditFunnelContextFromFormData,
+  mergeAttributionWithFunnelContext,
+  hasFunnelEventFired,
+  trackAuditFunnelEvent,
+  trackGa4GenerateLead,
+  isAuditFunnelStep,
+  type AuditFunnelStep,
+  type AuditFunnelMilestone,
+  type ReportContext,
+  type CtaLocation,
+  type CtaType,
+} from "./audit-funnel";
