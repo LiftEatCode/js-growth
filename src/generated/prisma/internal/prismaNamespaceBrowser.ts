@@ -97,7 +97,8 @@ export const ModelName = {
   ProjectDeliverable: 'ProjectDeliverable',
   ProjectDeliveryTask: 'ProjectDeliveryTask',
   ProjectOnboardingItem: 'ProjectOnboardingItem',
-  ProjectActivity: 'ProjectActivity'
+  ProjectActivity: 'ProjectActivity',
+  GrowthSnapshot: 'GrowthSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -135,7 +136,8 @@ export const AuditReportScalarFieldEnum = {
   aiAttemptCount: 'aiAttemptCount',
   aiStartedAt: 'aiStartedAt',
   aiGeneratedAt: 'aiGeneratedAt',
-  aiInterpretation: 'aiInterpretation'
+  aiInterpretation: 'aiInterpretation',
+  attributionJson: 'attributionJson'
 } as const
 
 export type AuditReportScalarFieldEnum = (typeof AuditReportScalarFieldEnum)[keyof typeof AuditReportScalarFieldEnum]
@@ -1221,6 +1223,19 @@ export const ProjectActivityScalarFieldEnum = {
 } as const
 
 export type ProjectActivityScalarFieldEnum = (typeof ProjectActivityScalarFieldEnum)[keyof typeof ProjectActivityScalarFieldEnum]
+
+
+export const GrowthSnapshotScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  source: 'source',
+  metricsJson: 'metricsJson',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type GrowthSnapshotScalarFieldEnum = (typeof GrowthSnapshotScalarFieldEnum)[keyof typeof GrowthSnapshotScalarFieldEnum]
 
 
 export const SortOrder = {

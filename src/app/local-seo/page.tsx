@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import {
   ArrowRight,
@@ -12,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { GrowthTrackedLink } from "@/components/growth/growth-tracked-link";
 import { CTASection } from "@/components/marketing";
 import { GoogleBusinessProfileSection } from "@/components/sections/google-business-profile-section";
 import {
@@ -105,7 +105,14 @@ export default function LocalSEOPage() {
                 <Button
                   size="xl"
                   nativeButton={false}
-                  render={<Link href="/contact" />}
+                  render={
+                    <GrowthTrackedLink
+                      href="/contact"
+                      growthEvent="service_cta_clicked"
+                      placement="service"
+                      ctaKind="contact"
+                    />
+                  }
                 >
                   Get a Local SEO Plan
 
@@ -119,7 +126,15 @@ export default function LocalSEOPage() {
                   size="xl"
                   variant="outline"
                   nativeButton={false}
-                  render={<Link href="/website-audit" />}
+                  render={
+                    <GrowthTrackedLink
+                      href="/website-audit"
+                      growthEvent="service_cta_clicked"
+                      placement="service"
+                      ctaKind="audit"
+                      className="border-white/15 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
+                    />
+                  }
                   className="border-white/15 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
                 >
                   Run Website Audit

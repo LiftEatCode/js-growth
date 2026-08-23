@@ -104,6 +104,7 @@ export type AuditReportCountAggregateOutputType = {
   aiStartedAt: number
   aiGeneratedAt: number
   aiInterpretation: number
+  attributionJson: number
   _all: number
 }
 
@@ -186,6 +187,7 @@ export type AuditReportCountAggregateInputType = {
   aiStartedAt?: true
   aiGeneratedAt?: true
   aiInterpretation?: true
+  attributionJson?: true
   _all?: true
 }
 
@@ -295,6 +297,7 @@ export type AuditReportGroupByOutputType = {
   aiStartedAt: Date | null
   aiGeneratedAt: Date | null
   aiInterpretation: runtime.JsonValue | null
+  attributionJson: runtime.JsonValue | null
   _count: AuditReportCountAggregateOutputType | null
   _avg: AuditReportAvgAggregateOutputType | null
   _sum: AuditReportSumAggregateOutputType | null
@@ -340,6 +343,7 @@ export type AuditReportWhereInput = {
   aiStartedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
   aiGeneratedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
   aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
+  attributionJson?: Prisma.JsonNullableFilter<"AuditReport">
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   purchases?: Prisma.ReportPurchaseListRelationFilter
   prospects?: Prisma.ProspectListRelationFilter
@@ -368,6 +372,7 @@ export type AuditReportOrderByWithRelationInput = {
   aiStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   aiGeneratedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   aiInterpretation?: Prisma.SortOrderInput | Prisma.SortOrder
+  attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
   lead?: Prisma.LeadOrderByWithRelationInput
   purchases?: Prisma.ReportPurchaseOrderByRelationAggregateInput
   prospects?: Prisma.ProspectOrderByRelationAggregateInput
@@ -399,6 +404,7 @@ export type AuditReportWhereUniqueInput = Prisma.AtLeast<{
   aiStartedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
   aiGeneratedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
   aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
+  attributionJson?: Prisma.JsonNullableFilter<"AuditReport">
   lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
   purchases?: Prisma.ReportPurchaseListRelationFilter
   prospects?: Prisma.ProspectListRelationFilter
@@ -427,6 +433,7 @@ export type AuditReportOrderByWithAggregationInput = {
   aiStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   aiGeneratedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   aiInterpretation?: Prisma.SortOrderInput | Prisma.SortOrder
+  attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AuditReportCountOrderByAggregateInput
   _avg?: Prisma.AuditReportAvgOrderByAggregateInput
   _max?: Prisma.AuditReportMaxOrderByAggregateInput
@@ -457,6 +464,7 @@ export type AuditReportScalarWhereWithAggregatesInput = {
   aiStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AuditReport"> | Date | string | null
   aiGeneratedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AuditReport"> | Date | string | null
   aiInterpretation?: Prisma.JsonNullableWithAggregatesFilter<"AuditReport">
+  attributionJson?: Prisma.JsonNullableWithAggregatesFilter<"AuditReport">
 }
 
 export type AuditReportCreateInput = {
@@ -478,6 +486,7 @@ export type AuditReportCreateInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
@@ -506,6 +515,7 @@ export type AuditReportUncheckedCreateInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
@@ -532,6 +542,7 @@ export type AuditReportUpdateInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
@@ -560,6 +571,7 @@ export type AuditReportUncheckedUpdateInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -587,6 +599,7 @@ export type AuditReportCreateManyInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportUpdateManyMutationInput = {
@@ -608,6 +621,7 @@ export type AuditReportUpdateManyMutationInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportUncheckedUpdateManyInput = {
@@ -630,6 +644,7 @@ export type AuditReportUncheckedUpdateManyInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportCountOrderByAggregateInput = {
@@ -652,6 +667,7 @@ export type AuditReportCountOrderByAggregateInput = {
   aiStartedAt?: Prisma.SortOrder
   aiGeneratedAt?: Prisma.SortOrder
   aiInterpretation?: Prisma.SortOrder
+  attributionJson?: Prisma.SortOrder
 }
 
 export type AuditReportAvgOrderByAggregateInput = {
@@ -899,6 +915,7 @@ export type AuditReportCreateWithoutLeadInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
@@ -925,6 +942,7 @@ export type AuditReportUncheckedCreateWithoutLeadInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
@@ -981,6 +999,7 @@ export type AuditReportScalarWhereInput = {
   aiStartedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
   aiGeneratedAt?: Prisma.DateTimeNullableFilter<"AuditReport"> | Date | string | null
   aiInterpretation?: Prisma.JsonNullableFilter<"AuditReport">
+  attributionJson?: Prisma.JsonNullableFilter<"AuditReport">
 }
 
 export type AuditReportCreateWithoutPurchasesInput = {
@@ -1002,6 +1021,7 @@ export type AuditReportCreateWithoutPurchasesInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
@@ -1029,6 +1049,7 @@ export type AuditReportUncheckedCreateWithoutPurchasesInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
@@ -1070,6 +1091,7 @@ export type AuditReportUpdateWithoutPurchasesInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
@@ -1097,6 +1119,7 @@ export type AuditReportUncheckedUpdateWithoutPurchasesInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -1122,6 +1145,7 @@ export type AuditReportCreateWithoutProspectsInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   outreachMessages?: Prisma.OutreachMessageCreateNestedManyWithoutAuditReportInput
@@ -1149,6 +1173,7 @@ export type AuditReportUncheckedCreateWithoutProspectsInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
@@ -1190,6 +1215,7 @@ export type AuditReportUpdateWithoutProspectsInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
@@ -1217,6 +1243,7 @@ export type AuditReportUncheckedUpdateWithoutProspectsInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -1242,6 +1269,7 @@ export type AuditReportCreateWithoutOutreachMessagesInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
@@ -1269,6 +1297,7 @@ export type AuditReportUncheckedCreateWithoutOutreachMessagesInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedCreateNestedManyWithoutAuditReportInput
@@ -1310,6 +1339,7 @@ export type AuditReportUpdateWithoutOutreachMessagesInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
@@ -1337,6 +1367,7 @@ export type AuditReportUncheckedUpdateWithoutOutreachMessagesInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   competitiveComparisons?: Prisma.CompetitiveComparisonSnapshotUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -1362,6 +1393,7 @@ export type AuditReportCreateWithoutCompetitiveComparisonsInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
@@ -1389,6 +1421,7 @@ export type AuditReportUncheckedCreateWithoutCompetitiveComparisonsInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
@@ -1430,6 +1463,7 @@ export type AuditReportUpdateWithoutCompetitiveComparisonsInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
@@ -1457,6 +1491,7 @@ export type AuditReportUncheckedUpdateWithoutCompetitiveComparisonsInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -1482,6 +1517,7 @@ export type AuditReportCreateWithoutImplementationPlansInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadCreateNestedOneWithoutReportsInput
   purchases?: Prisma.ReportPurchaseCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectCreateNestedManyWithoutAuditReportInput
@@ -1509,6 +1545,7 @@ export type AuditReportUncheckedCreateWithoutImplementationPlansInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedCreateNestedManyWithoutReportInput
   prospects?: Prisma.ProspectUncheckedCreateNestedManyWithoutAuditReportInput
   outreachMessages?: Prisma.OutreachMessageUncheckedCreateNestedManyWithoutAuditReportInput
@@ -1550,6 +1587,7 @@ export type AuditReportUpdateWithoutImplementationPlansInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   lead?: Prisma.LeadUpdateOneWithoutReportsNestedInput
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
@@ -1577,6 +1615,7 @@ export type AuditReportUncheckedUpdateWithoutImplementationPlansInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -1602,6 +1641,7 @@ export type AuditReportCreateManyLeadInput = {
   aiStartedAt?: Date | string | null
   aiGeneratedAt?: Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AuditReportUpdateWithoutLeadInput = {
@@ -1623,6 +1663,7 @@ export type AuditReportUpdateWithoutLeadInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUpdateManyWithoutAuditReportNestedInput
@@ -1649,6 +1690,7 @@ export type AuditReportUncheckedUpdateWithoutLeadInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   purchases?: Prisma.ReportPurchaseUncheckedUpdateManyWithoutReportNestedInput
   prospects?: Prisma.ProspectUncheckedUpdateManyWithoutAuditReportNestedInput
   outreachMessages?: Prisma.OutreachMessageUncheckedUpdateManyWithoutAuditReportNestedInput
@@ -1675,6 +1717,7 @@ export type AuditReportUncheckedUpdateManyWithoutLeadInput = {
   aiStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiGeneratedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   aiInterpretation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -1764,6 +1807,7 @@ export type AuditReportSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   aiStartedAt?: boolean
   aiGeneratedAt?: boolean
   aiInterpretation?: boolean
+  attributionJson?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
   purchases?: boolean | Prisma.AuditReport$purchasesArgs<ExtArgs>
   prospects?: boolean | Prisma.AuditReport$prospectsArgs<ExtArgs>
@@ -1793,6 +1837,7 @@ export type AuditReportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   aiStartedAt?: boolean
   aiGeneratedAt?: boolean
   aiInterpretation?: boolean
+  attributionJson?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
 }, ExtArgs["result"]["auditReport"]>
 
@@ -1816,6 +1861,7 @@ export type AuditReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   aiStartedAt?: boolean
   aiGeneratedAt?: boolean
   aiInterpretation?: boolean
+  attributionJson?: boolean
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
 }, ExtArgs["result"]["auditReport"]>
 
@@ -1839,9 +1885,10 @@ export type AuditReportSelectScalar = {
   aiStartedAt?: boolean
   aiGeneratedAt?: boolean
   aiInterpretation?: boolean
+  attributionJson?: boolean
 }
 
-export type AuditReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "version" | "createdAt" | "website" | "hostname" | "reportMode" | "source" | "overallScore" | "grade" | "criticalIssues" | "quickWins" | "opportunityScore" | "audit" | "leadId" | "aiStatus" | "aiAttemptCount" | "aiStartedAt" | "aiGeneratedAt" | "aiInterpretation", ExtArgs["result"]["auditReport"]>
+export type AuditReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "version" | "createdAt" | "website" | "hostname" | "reportMode" | "source" | "overallScore" | "grade" | "criticalIssues" | "quickWins" | "opportunityScore" | "audit" | "leadId" | "aiStatus" | "aiAttemptCount" | "aiStartedAt" | "aiGeneratedAt" | "aiInterpretation" | "attributionJson", ExtArgs["result"]["auditReport"]>
 export type AuditReportInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.AuditReport$leadArgs<ExtArgs>
   purchases?: boolean | Prisma.AuditReport$purchasesArgs<ExtArgs>
@@ -1892,6 +1939,11 @@ export type $AuditReportPayload<ExtArgs extends runtime.Types.Extensions.Interna
     aiStartedAt: Date | null
     aiGeneratedAt: Date | null
     aiInterpretation: runtime.JsonValue | null
+    /**
+     * Bounded first-party marketing attribution (source/medium/campaign/content/landingPath).
+     * No PII or commercial IDs. Validated by growth attribution parser.
+     */
+    attributionJson: runtime.JsonValue | null
   }, ExtArgs["result"]["auditReport"]>
   composites: {}
 }
@@ -2340,6 +2392,7 @@ export interface AuditReportFieldRefs {
   readonly aiStartedAt: Prisma.FieldRef<"AuditReport", 'DateTime'>
   readonly aiGeneratedAt: Prisma.FieldRef<"AuditReport", 'DateTime'>
   readonly aiInterpretation: Prisma.FieldRef<"AuditReport", 'Json'>
+  readonly attributionJson: Prisma.FieldRef<"AuditReport", 'Json'>
 }
     
 

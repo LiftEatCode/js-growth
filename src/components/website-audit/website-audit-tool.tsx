@@ -22,6 +22,10 @@ import {
   FREE_AUDIT_PRODUCT_NAME,
 } from "@/lib/payments/product";
 import { trackCommercialEvent, COMMERCIAL_EVENTS } from "@/lib/analytics/commercial-events";
+import {
+  GROWTH_EVENTS,
+  trackGrowthEvent,
+} from "@/lib/growth";
 import type { WebsiteAuditSuccessResponse } from "@/lib/website-audit/types";
 
 const categoryIcons = [
@@ -44,6 +48,10 @@ export function WebsiteAuditTool() {
   ): void {
     setResult(auditResult);
     trackCommercialEvent(COMMERCIAL_EVENTS.auditCompleted, {
+      pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
+      site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
+    });
+    trackGrowthEvent(GROWTH_EVENTS.auditCompleted, {
       pages_scanned: auditResult.siteData?.crawl.crawledCount ?? 1,
       site_scan_truncated: Boolean(auditResult.siteData?.crawl.truncated),
     });

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { GrowthTrackedLink } from "@/components/growth/growth-tracked-link";
 import type { BlogPost } from "./types";
 
 export const websiteGrowthAuditLaunchPost: BlogPost = {
@@ -426,9 +427,14 @@ export const websiteGrowthAuditLaunchPost: BlogPost = {
       </p>
 
       <p>
-        <Link href="/website-audit">
+        <GrowthTrackedLink
+          href="/website-audit"
+          growthEvent="blog_cta_clicked"
+          placement="blog"
+          ctaKind="audit"
+        >
           Run the Free Website Growth Audit
-        </Link>
+        </GrowthTrackedLink>
         . No credit card required. You will receive a Website Growth Score,
         category results, prioritized issues, and quick wins based on a
         representative scan of your public site.
@@ -439,7 +445,15 @@ export const websiteGrowthAuditLaunchPost: BlogPost = {
         <Link href="/websites">building a stronger website</Link>, improving{" "}
         <Link href="/local-seo">Local SEO</Link>, or implementing the audit
         recommendations—{" "}
-        <Link href="/contact">contact JS Solutions</Link> to discuss next
+        <GrowthTrackedLink
+          href="/contact"
+          growthEvent="blog_cta_clicked"
+          placement="blog"
+          ctaKind="contact"
+        >
+          contact JS Solutions
+        </GrowthTrackedLink>{" "}
+        to discuss next
         steps. You can also explore our broader{" "}
         <Link href="/services">services</Link> to see how we support local
         businesses beyond the audit itself.

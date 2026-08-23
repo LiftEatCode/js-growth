@@ -7,6 +7,11 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button, GridPattern } from "@/components/ui";
 import { POLICY_ROUTES } from "@/content/legal/policy-meta";
 import { COMMERCIAL_EVENTS, trackCommercialEvent } from "@/lib/analytics/commercial-events";
+import { GrowthTrackedLink } from "@/components/growth/growth-tracked-link";
+import {
+  GROWTH_EVENTS,
+  trackGrowthEvent,
+} from "@/lib/growth";
 import {
   getProfessionalAuditPricePresentation,
   PROFESSIONAL_AUDIT_PRODUCT_NAME,
@@ -102,6 +107,10 @@ export function ReportUpgradeCta({
                 trackCommercialEvent(
                   COMMERCIAL_EVENTS.professionalCheckoutStarted,
                 );
+                trackGrowthEvent(GROWTH_EVENTS.professionalAuditCtaClicked, {
+                  placement: "report",
+                  cta_kind: "professional_audit",
+                });
               }}
             >
               <Button
@@ -118,7 +127,14 @@ export function ReportUpgradeCta({
             <Button
               size="lg"
               nativeButton={false}
-              render={<Link href="/contact" />}
+              render={
+                <GrowthTrackedLink
+                  href="/contact"
+                  growthEvent="professional_audit_cta_clicked"
+                  placement="report"
+                  ctaKind="professional_audit"
+                />
+              }
             >
               Get Full Report
               <ArrowRight aria-hidden="true" className="size-4" />
@@ -180,7 +196,17 @@ export function ReportImplementationCta({
         audit. We do not guarantee rankings, traffic, or revenue.
       </p>
       <div className="mt-6">
-        <Button nativeButton={false} render={<Link href="/contact" />}>
+        <Button
+          nativeButton={false}
+          render={
+            <GrowthTrackedLink
+              href="/contact"
+              growthEvent="contact_cta_clicked"
+              placement="report"
+              ctaKind="consultation"
+            />
+          }
+        >
           Request a Consultation
           <ArrowRight aria-hidden="true" className="size-4" />
         </Button>

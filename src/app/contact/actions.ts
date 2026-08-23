@@ -1,5 +1,7 @@
 "use server";
 import { getResendClient } from "@/lib/email/resend";
+import { parseCampaignAttributionFromFormData } from "@/lib/growth/attribution";
+import type { CampaignAttribution } from "@/lib/growth/attribution";
 
 import { contactFormSchema } from "@/lib/validations/contact";
 
@@ -36,6 +38,7 @@ export async function submitContactForm(
   }
 
   const data = result.data;
+  const attribution = parseCampaignAttributionFromFormData(formData);
 
   // Honeypot spam protection.
   // Return a successful response without sending email when a bot fills this in.
@@ -70,8 +73,8 @@ export async function submitContactForm(
       to: toEmail,
       replyTo: data.email,
       subject: `New JS Solutions lead from ${data.name}`,
-      text: buildLeadNotificationText(data),
-      html: buildLeadNotificationHtml(data),
+      text: buildLeadNotificationText(data, attribution),
+      html: buildLeadNotificationHtml(data, attribution),
     });
 
     if (notificationError) {
@@ -136,7 +139,24 @@ type ContactFormData = {
   companyWebsite?: string;
 };
 
-function buildLeadNotificationText(data: ContactFormData): string {
+function formatAttributionLine(attribution: CampaignAttribution | null): string {
+  if (!attribution) {
+    return "Attribution: (none captured)";
+  }
+
+  return [
+    `Attribution source: ${attribution.source ?? "(none)"}`,
+    `Attribution medium: ${attribution.medium ?? "(none)"}`,
+    `Attribution campaign: ${attribution.campaign ?? "(none)"}`,
+    `Attribution content: ${attribution.content ?? "(none)"}`,
+    `Landing path: ${attribution.landingPath}`,
+  ].join("\n");
+}
+
+function buildLeadNotificationText(
+  data: ContactFormData,
+  attribution: CampaignAttribution | null,
+): string {
   return `
 New website inquiry
 
@@ -148,12 +168,17 @@ Website: ${data.website || "Not provided"}
 Service: ${data.service}
 Budget: ${data.budget || "Not provided"}
 
+${formatAttributionLine(attribution)}
+
 Message:
 ${data.message}
   `.trim();
 }
 
-function buildLeadNotificationHtml(data: ContactFormData): string {
+function buildLeadNotificationHtml(
+  data: ContactFormData,
+  attribution: CampaignAttribution | null,
+): string {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -254,6 +279,22 @@ function buildLeadNotificationHtml(data: ContactFormData): string {
                   ${buildTableRow(
                     "Budget",
                     data.budget || "Not provided"
+                  )}
+                  ${buildTableRow(
+                    "Campaign source",
+                    attribution?.source || "Not captured"
+                  )}
+                  ${buildTableRow(
+                    "Campaign medium",
+                    attribution?.medium || "Not captured"
+                  )}
+                  ${buildTableRow(
+                    "Campaign",
+                    attribution?.campaign || "Not captured"
+                  )}
+                  ${buildTableRow(
+                    "Landing path",
+                    attribution?.landingPath || "Not captured"
                   )}
                 </tbody>
               </table>

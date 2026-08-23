@@ -14,7 +14,13 @@ const links = [
       (pathname.startsWith("/reports/") &&
         !pathname.startsWith("/reports/prospecting") &&
         !pathname.startsWith("/reports/opportunities") &&
-        !pathname.startsWith("/reports/clients")),
+        !pathname.startsWith("/reports/clients") &&
+        !pathname.startsWith("/reports/growth")),
+  },
+  {
+    href: "/reports/growth",
+    label: "Growth",
+    match: (pathname: string) => pathname.startsWith("/reports/growth"),
   },
   {
     href: "/reports/prospecting",

@@ -8,7 +8,12 @@ import {
   submitContactForm,
   type ContactFormState,
 } from "@/app/contact/actions";
+import { GrowthAttributionField } from "@/components/growth/growth-attribution-field";
 import { budgetOptions, serviceOptions } from "@/content/contact";
+import {
+  GROWTH_EVENTS,
+  trackGrowthEvent,
+} from "@/lib/growth";
 
 const initialState: ContactFormState = {
   success: false,
@@ -17,6 +22,7 @@ const initialState: ContactFormState = {
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const started = useRef(false);
 
   const [state, formAction] = useActionState(
     submitContactForm,
@@ -25,16 +31,27 @@ export function ContactForm() {
 
   useEffect(() => {
     if (state.success) {
+      trackGrowthEvent(GROWTH_EVENTS.contactFormSubmitted);
       formRef.current?.reset();
     }
   }, [state.success]);
+
+  function markStarted() {
+    if (started.current) {
+      return;
+    }
+    started.current = true;
+    trackGrowthEvent(GROWTH_EVENTS.contactFormStarted);
+  }
 
   return (
     <form
       ref={formRef}
       action={formAction}
       className="space-y-6"
+      onFocusCapture={markStarted}
     >
+      <GrowthAttributionField />
       <div
         aria-hidden="true"
         className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"

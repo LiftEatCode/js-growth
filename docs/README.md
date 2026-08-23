@@ -43,6 +43,7 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Cost controls | [`development/cost-controls.md`](development/cost-controls.md) |
 | Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
 | Analytics | [`development/analytics.md`](development/analytics.md) |
+| Growth measurement (Sprint 1) | [`growth/README.md`](growth/README.md) |
 | Coding standards | [`development/coding-standards.md`](development/coding-standards.md) |
 | Vercel notes | [`development/vercel.md`](development/vercel.md) |
 
@@ -81,6 +82,8 @@ These are **delivery playbooks**. They are not the same as the Website Growth Au
 
 - [`company/`](company/) — mission, values, branding
 - [`sales/`](sales/), [`marketing/`](marketing/), [`seo/`](seo/), [`playbooks/`](playbooks/), [`templates/`](templates/)
+- [`growth/`](growth/) — Growth phase measurement, UTM, experiments, client talking points
+- [`research/`](research/) — methodology research notes (e.g. measurement & attribution)
 - [`ideas/`](ideas/) — exploratory; not implemented by default
 - [`decisions/`](decisions/) — ADRs
 - [`legal-data-inventory.md`](legal-data-inventory.md)

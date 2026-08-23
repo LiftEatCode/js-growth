@@ -30,6 +30,7 @@ export function createAuditReport(
   reportMode: ReportMode,
   options?: {
     source?: AuditReportSourceValue;
+    attribution?: AuditReport["attribution"];
   },
 ): AuditReport {
   return {
@@ -48,6 +49,8 @@ export function createAuditReport(
     reportMode,
 
     source: options?.source ?? "PUBLIC_FUNNEL",
+
+    attribution: options?.attribution ?? null,
 
     audit,
   };

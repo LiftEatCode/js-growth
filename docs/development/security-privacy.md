@@ -49,7 +49,9 @@ Competitive Growth Analysis is **internal-only** (`noindex`). Not exposed on pub
 - Suppression, bounce, and complaint paths must be respected
 - Existing customer / lead / prior-contact protections in prospecting flows
 - Free audits: **zero** OpenAI
-- Analytics events sanitized — avoid PII in GA payloads
+- Analytics events sanitized — avoid PII and commercial IDs in GA payloads
+- Growth Sprint 1: first-party attribution stores only bounded marketing fields (`source` / `medium` / `campaign` / `content` / `landingPath`); never commercial record IDs
+- Growth dashboard (`/reports/growth`) exposes aggregate counts only
 
 ---
 

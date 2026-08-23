@@ -604,3 +604,13 @@ export const ProjectActivityType = {
 } as const
 
 export type ProjectActivityType = (typeof ProjectActivityType)[keyof typeof ProjectActivityType]
+
+
+export const GrowthSnapshotSource = {
+  GA4: 'GA4',
+  SEARCH_CONSOLE: 'SEARCH_CONSOLE',
+  FACEBOOK: 'FACEBOOK',
+  INTERNAL: 'INTERNAL'
+} as const
+
+export type GrowthSnapshotSource = (typeof GrowthSnapshotSource)[keyof typeof GrowthSnapshotSource]

@@ -62,10 +62,10 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 
 ### Analytics
 
-- **Service:** Google Analytics via `@next/third-parties/google`, loaded only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set.
-- **Potential data:** pages viewed, browser/device characteristics, approximate geography, referral/source information, and interaction events. Custom events currently include `audit_completed`, `professional_checkout_started`, `multi_page_audit_completed`, `competitive_audit_completed` (competitor counts only, not competitor URLs), `ai_interpretation_completed`, and `ai_interpretation_failed` (`model`/`status` only) when `gtag` is present. Report UUIDs, Stripe identifiers, emails, and submitted/competitor URLs are not included in custom events. Report routes send a sanitized `page_path` such as `/report/[id]` instead of the capability UUID.
+- **Service:** Google Analytics 4 via custom sanitized gtag loader (`src/components/analytics/google-analytics.tsx`), loaded only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set.
+- **Potential data:** pages viewed, browser/device characteristics, approximate geography, referral/source information, and interaction events. Custom events include commercial and growth funnel events (e.g. `audit_completed`, `audit_started`, `audit_submitted`, `contact_form_submitted`, `professional_checkout_started`, multi-page/competitive/AI events with bounded params). Report UUIDs, Stripe identifiers, emails, phones, and commercial record IDs are not included in custom events. Report routes send a sanitized `page_path` such as `/report/[id]` instead of the capability UUID.
 - **Purpose:** understand website usage and funnel behavior.
-- **Storage / third parties:** Google Analytics / Google. JS Growth does not persist analytics payloads in the application database.
+- **Storage / third parties:** Google Analytics / Google. Browser GA payloads are not persisted in the application database. Optional bounded first-party marketing attribution (`source` / `medium` / `campaign` / `content` / `landingPath`) may be stored on public `AuditReport.attributionJson` and included in internal contact-notification email only — never commercial IDs or contact PII in analytics params.
 - **Consent:** no cookie-consent or opt-in banner is implemented. Evaluate additional consent tooling before targeting jurisdictions that require opt-in analytics consent.
 
 ### Admin / internal session
@@ -87,7 +87,7 @@ Named because they appear in application code or confirmed configuration:
 
 - Stripe
 - Resend
-- Google Analytics (`@next/third-parties/google`)
+- Google Analytics 4 (custom sanitized gtag; not `@next/third-parties/google` in runtime)
 - Neon / PostgreSQL (`@neondatabase/serverless`, `@prisma/adapter-neon`)
 - OpenAI (`openai` SDK) — Professional AI Interpretation and internal prospecting outreach drafts; compact structured website-audit findings, not payment records or public-report PII
 - Google Places API (New) — internal prospecting business discovery only; server-side key

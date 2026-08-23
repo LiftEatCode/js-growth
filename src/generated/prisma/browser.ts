@@ -263,3 +263,9 @@ export type ProjectOnboardingItem = Prisma.ProjectOnboardingItemModel
  * 
  */
 export type ProjectActivity = Prisma.ProjectActivityModel
+/**
+ * Model GrowthSnapshot
+ * Immutable historical growth baseline snapshot. metricsJson shape is validated
+ * per source in src/lib/growth/snapshot.ts — not a generic analytics dump.
+ */
+export type GrowthSnapshot = Prisma.GrowthSnapshotModel

@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 complete (through Sprint 13.1) + Website Growth Audit commercial product + **Commercial Sprint 1 (Implementation Plan foundation)** implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprint 1 (Measurement, Attribution & Growth Baseline V1)** implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -189,6 +189,22 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 
 ---
 
+## Growth Phase
+
+### Growth Sprint 1 — Measurement, Attribution & Growth Baseline V1 ✅
+
+- Research + methodology docs (`docs/research/growth-measurement-attribution.md`, `docs/growth/*`)
+- Public growth event taxonomy `growth-events-v1` + GA key-event candidates
+- UTM standard `utm-standard-v1` + internal `/reports/growth/utm-builder`
+- First-party bounded audit attribution (`attributionJson`)
+- `GrowthSnapshot` model for immutable GA4 / GSC / Facebook / Internal baselines
+- Internal `/reports/growth` dashboard (DB aggregates; no external analytics APIs on load)
+- Privacy: commercial IDs / PII forbidden in GA4; Stripe/DB remain payment authority
+
+**Not included:** SEO content gen, social automation, paid ads, GBP optimizer SaaS, attribution AI, client analytics portal.
+
+---
+
 ## HARDENING / OPERATIONS (not new features)
 
 - Stripe LIVE go-live checklist and controlled live transaction (if not already complete in your environment)
@@ -202,9 +218,11 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 Prioritize based on business leverage with the **current** stack:
 
 1. Close the commercial audit loop: soft-launch / LIVE payment confidence + consultation conversion from Professional reports
-2. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
-3. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
-4. ~~Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)~~ — **Sprint 7: token-gated delivery + decision (no PDF/e-sign/Stripe yet)**
+2. Execute Growth experiments against Sprint 1 baseline (qualified traffic, Facebook, SEO, audit funnel) — measure before scaling automation
+3. Prospecting reply/follow-up **with human gates** (not autonomous sequences)
+4. CI productization only after operator proof: public/shareable Competitive Growth Analysis and/or PDF
+5. ~~Public proposal delivery / PDF / acceptance (after Sprint 6 internal proof)~~ — **Sprint 7: token-gated delivery + decision (no PDF/e-sign/Stripe yet)**
+6. ~~Measurement / attribution foundation~~ — **Growth Sprint 1 complete**
 
 ## LATER / EXPLORATORY
 

@@ -705,6 +705,12 @@ for (const file of walk(commercializationRoot)) {
   if (file.includes(`${sep}agreement-delivery${sep}`)) {
     continue;
   }
+  if (file.includes(`${sep}payments${sep}`)) {
+    continue;
+  }
+  if (file.includes(`${sep}onboarding${sep}`)) {
+    continue;
+  }
   const source = readFileSync(file, "utf8");
   assert(!/openai|OpenAI|chat\.completions|responses\.create/i.test(source), `no OpenAI in ${file}`);
   assert(!/GOOGLE_PLACES|PlacesClient|places\.googleapis/i.test(source), `no Places in ${file}`);

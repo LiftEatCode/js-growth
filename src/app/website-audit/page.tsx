@@ -4,6 +4,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { AuditLandingBeacon } from "@/components/growth/growth-page-beacon";
 import { CTASection } from "@/components/marketing";
 import { AuditTierComparison } from "@/components/website-audit/audit-tier-comparison";
 import { WebsiteAuditTool } from "@/components/website-audit/website-audit-tool";
@@ -39,6 +40,7 @@ export default function WebsiteAuditPage() {
 
   return (
     <>
+      <AuditLandingBeacon />
       <section className="relative isolate overflow-hidden bg-brand text-white">
         <GridPattern className="opacity-45" />
 

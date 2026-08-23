@@ -443,7 +443,8 @@ export const ModelName = {
   ProjectDeliverable: 'ProjectDeliverable',
   ProjectDeliveryTask: 'ProjectDeliveryTask',
   ProjectOnboardingItem: 'ProjectOnboardingItem',
-  ProjectActivity: 'ProjectActivity'
+  ProjectActivity: 'ProjectActivity',
+  GrowthSnapshot: 'GrowthSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -459,7 +460,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity"
+    modelProps: "auditReport" | "lead" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3941,6 +3942,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GrowthSnapshot: {
+      payload: Prisma.$GrowthSnapshotPayload<ExtArgs>
+      fields: Prisma.GrowthSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GrowthSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GrowthSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.GrowthSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GrowthSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.GrowthSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.GrowthSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.GrowthSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GrowthSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.GrowthSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>
+        }
+        update: {
+          args: Prisma.GrowthSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.GrowthSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GrowthSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GrowthSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.GrowthSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.GrowthSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGrowthSnapshot>
+        }
+        groupBy: {
+          args: Prisma.GrowthSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GrowthSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3999,7 +4074,8 @@ export const AuditReportScalarFieldEnum = {
   aiAttemptCount: 'aiAttemptCount',
   aiStartedAt: 'aiStartedAt',
   aiGeneratedAt: 'aiGeneratedAt',
-  aiInterpretation: 'aiInterpretation'
+  aiInterpretation: 'aiInterpretation',
+  attributionJson: 'attributionJson'
 } as const
 
 export type AuditReportScalarFieldEnum = (typeof AuditReportScalarFieldEnum)[keyof typeof AuditReportScalarFieldEnum]
@@ -5087,6 +5163,19 @@ export const ProjectActivityScalarFieldEnum = {
 export type ProjectActivityScalarFieldEnum = (typeof ProjectActivityScalarFieldEnum)[keyof typeof ProjectActivityScalarFieldEnum]
 
 
+export const GrowthSnapshotScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  source: 'source',
+  metricsJson: 'metricsJson',
+  createdByEmail: 'createdByEmail'
+} as const
+
+export type GrowthSnapshotScalarFieldEnum = (typeof GrowthSnapshotScalarFieldEnum)[keyof typeof GrowthSnapshotScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -5903,6 +5992,20 @@ export type EnumProjectActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
 export type ListEnumProjectActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectActivityType[]'>
     
 
+
+/**
+ * Reference to a field of type 'GrowthSnapshotSource'
+ */
+export type EnumGrowthSnapshotSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSnapshotSource'>
+    
+
+
+/**
+ * Reference to a field of type 'GrowthSnapshotSource[]'
+ */
+export type ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthSnapshotSource[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -6101,6 +6204,7 @@ export type GlobalOmitConfig = {
   projectDeliveryTask?: Prisma.ProjectDeliveryTaskOmit
   projectOnboardingItem?: Prisma.ProjectOnboardingItemOmit
   projectActivity?: Prisma.ProjectActivityOmit
+  growthSnapshot?: Prisma.GrowthSnapshotOmit
 }
 
 /* Types for Logging */

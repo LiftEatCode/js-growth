@@ -18,11 +18,16 @@ import {
 } from "lucide-react";
 
 import { auditWebsite } from "@/app/website-audit/actions";
+import { GrowthAttributionField } from "@/components/growth/growth-attribution-field";
 import {
   Button,
   Card,
   Input,
 } from "@/components/ui";
+import {
+  GROWTH_EVENTS,
+  trackGrowthEvent,
+} from "@/lib/growth";
 import type {
   WebsiteAuditResponse,
   WebsiteAuditSuccessResponse,
@@ -71,6 +76,10 @@ export function AuditForm({
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    trackGrowthEvent(GROWTH_EVENTS.auditStarted, {
+      placement: "audit_landing",
+    });
+
     startTransition(async () => {
       let response: WebsiteAuditResponse;
 
@@ -94,6 +103,10 @@ export function AuditForm({
         return;
       }
 
+      trackGrowthEvent(GROWTH_EVENTS.auditSubmitted, {
+        placement: "audit_landing",
+      });
+
       onAuditComplete(response);
     });
   }
@@ -105,6 +118,7 @@ export function AuditForm({
         className="space-y-5"
         aria-busy={isPending}
       >
+        <GrowthAttributionField />
         <div className="space-y-2">
           <label
             htmlFor="website-audit-url"

@@ -1164,6 +1164,23 @@ export type EnumProjectActivityTypeWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumProjectActivityTypeFilter<$PrismaModel>
 }
 
+export type EnumGrowthSnapshotSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSnapshotSource | Prisma.EnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSnapshotSourceFilter<$PrismaModel> | $Enums.GrowthSnapshotSource
+}
+
+export type EnumGrowthSnapshotSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSnapshotSource | Prisma.EnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSnapshotSourceWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSnapshotSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSnapshotSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSnapshotSourceFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -2260,6 +2277,23 @@ export type NestedEnumProjectActivityTypeWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumProjectActivityTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumProjectActivityTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumGrowthSnapshotSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSnapshotSource | Prisma.EnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSnapshotSourceFilter<$PrismaModel> | $Enums.GrowthSnapshotSource
+}
+
+export type NestedEnumGrowthSnapshotSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrowthSnapshotSource | Prisma.EnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrowthSnapshotSource[] | Prisma.ListEnumGrowthSnapshotSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrowthSnapshotSourceWithAggregatesFilter<$PrismaModel> | $Enums.GrowthSnapshotSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrowthSnapshotSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrowthSnapshotSourceFilter<$PrismaModel>
 }
 
 

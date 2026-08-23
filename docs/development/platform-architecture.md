@@ -128,6 +128,7 @@ Competitive Growth Analysis lives under internal prospecting routes only (`…/c
 | Email / Resend | `src/lib/email/` |
 | Internal auth | `src/lib/internal-auth.ts` |
 | Analytics sanitization | `src/lib/analytics/` |
+| Growth measurement / UTM / snapshots | `src/lib/growth/` · `/reports/growth` |
 
 ---
 

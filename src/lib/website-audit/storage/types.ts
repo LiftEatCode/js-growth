@@ -15,6 +15,16 @@ export type AuditLeadStatus =
 
 export type AuditReportSourceValue = "PUBLIC_FUNNEL" | "PROSPECTING";
 
+/** Bounded marketing attribution stored on public-funnel audits only. */
+export type AuditReportAttribution = {
+  source: string | null;
+  medium: string | null;
+  campaign: string | null;
+  content: string | null;
+  landingPath: string;
+  capturedAt: string;
+};
+
 export interface AuditReport {
   id: string;
 
@@ -33,6 +43,9 @@ export interface AuditReport {
    * Older in-memory reports omit this and are treated as PUBLIC_FUNNEL.
    */
   source?: AuditReportSourceValue;
+
+  /** First-party campaign context — no PII or commercial IDs. */
+  attribution?: AuditReportAttribution | null;
 
   audit: WebsiteAuditResult;
 }

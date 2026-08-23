@@ -1,0 +1,121 @@
+# Growth Measurement Framework
+
+**Versions:** `growth-events-v1` · `attribution-v1` · `qualified-traffic-v1` · `kpi-hierarchy-v1`  
+**Dashboard:** `/reports/growth`
+
+---
+
+## Canonical funnel
+
+```
+VISITOR
+→ ENGAGED VISITOR
+→ AUDIT LANDING PAGE
+→ AUDIT START
+→ AUDIT SUBMITTED
+→ AUDIT COMPLETED
+→ REPORT VIEWED
+→ PROFESSIONAL AUDIT CTA
+→ PURCHASE / LEAD
+→ PROSPECT
+→ OPPORTUNITY
+→ PROPOSAL
+→ AGREEMENT
+→ CLIENT
+```
+
+### Stage ownership
+
+| Stage | Classification |
+|---|---|
+| Visitor → Report viewed, CTAs, contact form | **PUBLIC ANALYTICS EVENTS** (GA4) |
+| Audits created, purchases, prospects, opportunities, proposals, agreements, clients | **SERVER-SIDE BUSINESS METRICS** (DB aggregates) |
+| Record-level prospect/opportunity/client/payment IDs, notes, pricing | **PRIVATE COMMERCIAL METRICS** (never in GA4) |
+
+---
+
+## Public growth events (`growth-events-v1`)
+
+| Event | When |
+|---|---|
+| `audit_landing_view` | `/website-audit` mount |
+| `audit_started` | Audit form submit initiated |
+| `audit_submitted` | Audit server success returned |
+| `audit_completed` | Results rendered |
+| `audit_report_viewed` | `/report/[id]` mount |
+| `professional_audit_cta_clicked` | Pro unlock / get-report CTA |
+| `contact_cta_clicked` | Tracked contact CTA |
+| `contact_form_started` | First focus on contact form |
+| `contact_form_submitted` | Contact form success |
+| `blog_cta_clicked` | Tracked blog CTA (when wired) |
+| `service_cta_clicked` | Tracked service CTA (when wired) |
+| `professional_checkout_started` | Checkout form submit (existing) |
+
+Allowed params (bounded): `placement`, `cta_kind`, crawl count flags. No commercial IDs / PII.
+
+### GA4 key-event candidates
+
+- `audit_submitted`
+- `contact_form_submitted`
+
+**Revenue authority:** Stripe + `ReportPurchase` / commercial payments. Analytics observes marketing behavior only. Do not create a contradictory browser purchase revenue authority.
+
+---
+
+## Attribution
+
+Prefer GA4-native Session source / medium / campaign / landing page.
+
+First-party bounded context (optional on public audits):
+
+- `source`, `medium`, `campaign`, `content`, `landingPath`, `capturedAt`
+
+Stored as `AuditReport.attributionJson`. No query-string dump. No PII. No commercial IDs.
+
+---
+
+## Qualified traffic
+
+Traffic showing meaningful intent (audit start/completion, service pages, Pro CTA, contact action, multi-page intent) — **not** raw sessions alone. See `src/lib/growth/qualified-traffic.ts`.
+
+---
+
+## KPI hierarchy
+
+| Level | Focus |
+|---|---|
+| 1 Business | New clients, qualified opportunities, revenue |
+| 2 Conversion | Agreements, proposals, audit purchases, qualified leads |
+| 3 Intent | Audit starts/completions, contact, service engagement |
+| 4 Acquisition | Qualified traffic, organic clicks, Facebook/GBP link traffic |
+| 5 Visibility | Search impressions, Facebook reach, video views, GBP visibility |
+
+Do not celebrate Level 5 growth if Levels 3–1 do not improve.
+
+---
+
+## Baseline windows
+
+- Last 28 days vs previous 28 days (primary)
+- 7-day directional
+- 90-day context when available
+
+Do not fabricate historical values.
+
+### Website (GA4 + internal)
+
+Users, new users, sessions, engaged sessions, engagement rate, channel sessions, audit starts/submissions, contact submissions, paid audit purchases (authoritative), opportunities (private).
+
+### Search Console
+
+Clicks, impressions, CTR, average position (diagnostic), top queries/pages, brand vs non-brand, local/service/audit-tool intent where classifiable.
+
+### Facebook
+
+Separate **JS Solutions Page** vs **founder/personal**. Followers, reach, views/impressions, engagement, link clicks, page visits, top posts.
+
+---
+
+## Side-effect budget
+
+Page load / growth events: OpenAI 0 · Places 0 · crawl 0 · Resend 0 · Stripe 0.

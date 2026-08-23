@@ -1,5 +1,6 @@
 "use server";
 
+import { parseCampaignAttributionFromFormData } from "@/lib/growth/attribution";
 import { buildCompetitiveIntelligence } from "@/lib/website-audit/competitive/crawl-competitor";
 import {
   collectCompetitorRawUrls,
@@ -71,7 +72,11 @@ export async function auditWebsite(
       console.error("Website audit competitive comparison failed:", error);
     }
 
-    const report = createAuditReport(auditResult, "public");
+    const attribution = parseCampaignAttributionFromFormData(formData);
+
+    const report = createAuditReport(auditResult, "public", {
+      attribution,
+    });
 
     try {
       await auditReportRepository.save(report);

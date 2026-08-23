@@ -71,6 +71,10 @@ model AuditReport {
   aiGeneratedAt    DateTime?
   aiInterpretation Json?
 
+  /// Bounded first-party marketing attribution (source/medium/campaign/content/landingPath).
+  /// No PII or commercial IDs. Validated by growth attribution parser.
+  attributionJson Json?
+
   @@index([hostname])
   @@index([createdAt])
   @@index([overallScore])
@@ -2294,4 +2298,34 @@ model ProjectActivity {
 
   @@index([projectId, createdAt])
   @@index([type, createdAt])
+}
+
+// ─── Growth Sprint 1 — Measurement baselines ────────────────────────────────
+
+enum GrowthSnapshotSource {
+  GA4
+  SEARCH_CONSOLE
+  FACEBOOK
+  INTERNAL
+}
+
+/// Immutable historical growth baseline snapshot. metricsJson shape is validated
+/// per source in src/lib/growth/snapshot.ts — not a generic analytics dump.
+model GrowthSnapshot {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  periodStart DateTime
+  periodEnd   DateTime
+
+  source GrowthSnapshotSource
+
+  /// Validated metrics payload for the source (see growth snapshot schemas).
+  metricsJson Json
+
+  createdByEmail String
+
+  @@index([source, periodStart])
+  @@index([periodStart, periodEnd])
+  @@index([createdAt])
 }

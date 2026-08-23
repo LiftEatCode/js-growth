@@ -1,4 +1,4 @@
-import type { Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { getAuditGrade } from "@/lib/website-audit/grading";
@@ -47,6 +47,31 @@ type StoredAuditReportSummary =
     select: typeof auditReportSummarySelect;
   }>;
 
+function toAuditReportAttribution(
+  value: unknown,
+): AuditReport["attribution"] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  if (typeof record.landingPath !== "string") {
+    return null;
+  }
+
+  return {
+    source: typeof record.source === "string" ? record.source : null,
+    medium: typeof record.medium === "string" ? record.medium : null,
+    campaign: typeof record.campaign === "string" ? record.campaign : null,
+    content: typeof record.content === "string" ? record.content : null,
+    landingPath: record.landingPath,
+    capturedAt:
+      typeof record.capturedAt === "string"
+        ? record.capturedAt
+        : new Date(0).toISOString(),
+  };
+}
+
 function toAuditReport(
   report: StoredAuditReport,
 ): AuditReport {
@@ -67,6 +92,8 @@ function toAuditReport(
 
     source:
       report.source === "PROSPECTING" ? "PROSPECTING" : "PUBLIC_FUNNEL",
+
+    attribution: toAuditReportAttribution(report.attributionJson),
 
     audit:
       report.audit as unknown as AuditReport["audit"],
@@ -203,6 +230,11 @@ export class PrismaAuditReportRepository
 
           audit:
             audit as unknown as Prisma.InputJsonValue,
+
+          attributionJson:
+            report.attribution
+              ? (report.attribution as unknown as Prisma.InputJsonValue)
+              : Prisma.DbNull,
         },
 
         create: {
@@ -250,6 +282,11 @@ export class PrismaAuditReportRepository
 
           audit:
             audit as unknown as Prisma.InputJsonValue,
+
+          attributionJson:
+            report.attribution
+              ? (report.attribution as unknown as Prisma.InputJsonValue)
+              : undefined,
         },
       });
 
