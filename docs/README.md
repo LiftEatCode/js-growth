@@ -43,6 +43,7 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Cost controls | [`development/cost-controls.md`](development/cost-controls.md) |
 | Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
 | Analytics | [`development/analytics.md`](development/analytics.md) |
+| Testing / acceptance | [`development/testing.md`](development/testing.md) |
 | Growth measurement (Sprints 1–9) | [`growth/README.md`](growth/README.md) |
 | Growth Baseline V1 | [`growth/baselines/growth-baseline-v1.md`](growth/baselines/growth-baseline-v1.md) |
 | Search Intelligence V1 | [`growth/search-intelligence.md`](growth/search-intelligence.md) |

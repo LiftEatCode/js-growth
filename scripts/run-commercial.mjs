@@ -125,8 +125,12 @@ const commercialVerifies = [
   "src/lib/commercialization/opportunities/opportunity.verify.ts",
 ];
 
-for (const file of commercialVerifies) {
-  run("npx", ["tsx", file]);
+if (process.env.COMMERCIAL_SKIP_VERIFIES === "1") {
+  console.log("\n[commercial-test] Skipping verifies (COMMERCIAL_SKIP_VERIFIES=1)");
+} else {
+  for (const file of commercialVerifies) {
+    run("npx", ["tsx", file]);
+  }
 }
 
 run("npx", [
@@ -135,6 +139,13 @@ run("npx", [
 ]);
 
 const hasTestDb = ensureCommercialTestDbEnv();
+
+if (!hasTestDb && process.env.ACCEPTANCE_REQUIRE_E2E === "1") {
+  console.error(
+    "\n[commercial-test] ACCEPTANCE_REQUIRE_E2E=1 but no usable test database. Set COMMERCIAL_TEST_DATABASE_URL or COMMERCIAL_E2E_USE_DEV_DB=1.",
+  );
+  process.exit(1);
+}
 
 if (hasTestDb) {
   run(
@@ -239,6 +250,25 @@ if (hasTestDb) {
   );
 }
 
-run("npx", ["playwright", "test"], playwrightEnv);
+const jsonOut =
+  process.env.ACCEPTANCE_PLAYWRIGHT_JSON?.trim() ||
+  process.env.PLAYWRIGHT_JSON_OUTPUT?.trim() ||
+  "";
+
+// Do not pass --reporter on CLI when JSON output is required — CLI reporters
+// replace config reporters and would drop the json outputFile reporter.
+const playwrightArgs = ["playwright", "test", "tests/commercial/e2e"];
+if (!jsonOut) {
+  playwrightArgs.push("--reporter=list");
+}
+
+run(
+  "npx",
+  playwrightArgs,
+  {
+    ...playwrightEnv,
+    ...(jsonOut ? { ACCEPTANCE_PLAYWRIGHT_JSON: jsonOut } : {}),
+  },
+);
 
 console.log("\ntest:commercial PASS");

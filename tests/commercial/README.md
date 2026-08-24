@@ -20,8 +20,9 @@ Set automatically by commercial runners:
 npm run test:verify          # all src/**/*.verify.ts
 npm run test:commercial:integration  # pure commercial integration
 npm run test:commercial:db   # DB-backed integration (requires test DB)
-npm run test:e2e             # Playwright
-npm run test:commercial      # verifies + integration + e2e
+npm run test:e2e             # Playwright (all e2e under tests/**/e2e)
+npm run test:commercial      # verifies + integration + commercial e2e
+npm run test:acceptance      # full deploy gate (commercial + growth + build)
 ```
 
 Install browsers once:

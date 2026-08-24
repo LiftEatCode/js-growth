@@ -23,6 +23,36 @@ export interface DeterministicAuditFromPageOptions {
   discoverSite?: typeof discoverSite;
 }
 
+/** Hosts allowed to use the zero-network fixture audit under test mocks. */
+const GROWTH_TEST_MOCK_AUDIT_HOSTS = new Set([
+  "example.com",
+  "www.example.com",
+  "growth-acceptance.test",
+]);
+
+const GROWTH_TEST_MOCK_AUDIT_HTML = `<!doctype html>
+<html>
+  <head>
+    <title>Growth Acceptance Fixture</title>
+    <meta name="description" content="Deterministic fixture for growth acceptance audits.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <main>
+      <h1>Growth Acceptance Fixture</h1>
+      <p>${Array.from({ length: 120 }, (_, i) => `word${i + 1}`).join(" ")}</p>
+      <p><a href="/contact">Contact</a></p>
+    </main>
+  </body>
+</html>`;
+
+function growthTestMockAuditEnabled(): boolean {
+  return (
+    process.env.GROWTH_TEST_MOCK_AUDIT === "1" ||
+    process.env.COMMERCIAL_TEST_MOCK_EXTERNALS === "1"
+  );
+}
+
 /**
  * Deterministic Website Growth Audit used by the public funnel and
  * internal prospecting. Does not run competitive analysis, Stripe, AI,
@@ -41,6 +71,37 @@ export async function runDeterministicWebsiteAudit(
         message: parsed.error,
       },
     };
+  }
+
+  // Acceptance / E2E: zero live crawl when mocks are enabled for allowlisted hosts.
+  if (growthTestMockAuditEnabled()) {
+    try {
+      const hostname = new URL(parsed.url).hostname.toLowerCase();
+      if (GROWTH_TEST_MOCK_AUDIT_HOSTS.has(hostname)) {
+        const page: FetchedWebsitePage = {
+          requestedUrl: parsed.url,
+          finalUrl: parsed.url.startsWith("http")
+            ? parsed.url
+            : `https://${hostname}/`,
+          statusCode: 200,
+          contentType: "text/html",
+          xRobotsTag: null,
+          html: GROWTH_TEST_MOCK_AUDIT_HTML,
+          fetchedAt: new Date().toISOString(),
+          contentEncoding: null,
+          cacheControl: null,
+          expires: null,
+          etag: null,
+          lastModified: null,
+          advertisedContentLength: null,
+          documentFetchDurationMs: 1,
+        };
+        const audit = await runDeterministicWebsiteAuditFromFetchedPage(page);
+        return { success: true, audit };
+      }
+    } catch (error) {
+      console.error("Growth test mock audit failed:", error);
+    }
   }
 
   const fetchResult = await fetchWebsitePage(parsed.url);

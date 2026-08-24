@@ -12,7 +12,11 @@
     "test:e2e": "playwright test",
     "test:commercial:integration": "tsx tests/commercial/integration/commercial-workflow.integration.ts",
     "test:commercial:db": "COMMERCIAL_TEST_MOCK_RESEND=1 tsx --import ./tests/commercial/shims/register.mjs tests/commercial/integration/commercial-workflow.db.integration.ts",
-    "test:commercial": "node scripts/run-commercial.mjs"
+    "test:commercial": "node scripts/run-commercial.mjs",
+    "test:growth:e2e": "playwright test tests/growth/e2e",
+    "test:growth": "node scripts/run-growth.mjs",
+    "test:acceptance": "node scripts/run-acceptance.mjs",
+    "test:acceptance:fast": "ACCEPTANCE_FAST=1 node scripts/run-acceptance-fast.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

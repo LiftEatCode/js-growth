@@ -6,7 +6,7 @@ import { PrismaClient } from "@/generated/prisma/client";
  * Next.js HMR keeps PrismaClient on globalThis, so a client constructed
  * before `prisma generate` would otherwise reject new select fields.
  */
-const PRISMA_RUNTIME_ID = "growth-sprint-1-measurement-v1";
+const PRISMA_RUNTIME_ID = "growth-sprint-10-contact-submission-v1";
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;

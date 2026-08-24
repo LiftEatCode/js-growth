@@ -103,7 +103,7 @@ export async function submitContactForm(
 
     // First-party attribution persistence — must never block contact success.
     try {
-      await createContactSubmission({
+      const persisted = await createContactSubmission({
         name: data.name,
         email: data.email,
         phone: data.phone,
@@ -114,6 +114,9 @@ export async function submitContactForm(
         message: data.message,
         attribution,
       });
+      if (!persisted.ok) {
+        console.error("Contact attribution persist error:", persisted.error);
+      }
     } catch (persistError) {
       console.error("Contact attribution persist error:", persistError);
     }

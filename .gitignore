@@ -13,8 +13,11 @@
 # testing
 /coverage
 /test-results/
+/acceptance-results/
 /playwright-report/
 /tests/commercial/.e2e-fixture.json
+/tests/commercial/.e2e-payment-fixture.json
+/tests/growth/.e2e-fixture.json
 
 # next.js
 /.next/
