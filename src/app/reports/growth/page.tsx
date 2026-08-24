@@ -56,6 +56,10 @@ import { getFacebookOrganicAttributionSummary } from "@/lib/growth/facebook-attr
 import { summarizeGrowthContentRecords } from "@/lib/growth/content-store";
 import { listContentPlans } from "@/lib/growth/content-plan-store";
 import { buildDueReviewQueue } from "@/lib/growth/content-review";
+import { getLeadConversionIntelligence } from "@/lib/growth/lead-conversion-metrics";
+import {
+  LEAD_CONVERSION_INTELLIGENCE_VERSION,
+} from "@/lib/growth/lead-conversion-intelligence";
 import { listGrowthExperimentDecisions } from "@/lib/growth/experiment-decisions";
 import {
   FACEBOOK_30_DAY_TARGETS,
@@ -196,6 +200,7 @@ export default async function GrowthDashboardPage() {
     experimentDecisions,
     searchOpportunities,
     contentPlans,
+    leadConversion,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -206,6 +211,7 @@ export default async function GrowthDashboardPage() {
     listGrowthExperimentDecisions(10),
     listSearchOpportunities(50),
     listContentPlans(40),
+    getLeadConversionIntelligence(current),
   ]);
 
   const contentDueReviews = buildDueReviewQueue({
@@ -314,6 +320,13 @@ export default async function GrowthDashboardPage() {
             Content Intelligence
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/conversion" />}
+          >
+            Lead Conversion
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
         </div>
 
         <Card className="mt-6 space-y-2 p-5">
@@ -324,6 +337,22 @@ export default async function GrowthDashboardPage() {
             Reviews due: {contentDueReviews.length} · Published/measuring assets:{" "}
             {publishedMeasuring} · Refresh only after human evidence decision.
             Details on Content Intelligence.
+          </p>
+        </Card>
+
+        <Card className="mt-4 space-y-2 p-5">
+          <p className="text-sm font-semibold text-brand">
+            Lead Conversion / Pipeline Intelligence (compact)
+          </p>
+          <p className="text-xs text-muted">
+            v{LEAD_CONVERSION_INTELLIGENCE_VERSION} · 28d inbound leads:{" "}
+            {leadConversion.counts.inboundLeads.value ?? "NOT CAPTURED"} ·
+            outbound prospects:{" "}
+            {leadConversion.counts.outboundProspects.value ?? "NOT CAPTURED"} ·
+            opportunities: {leadConversion.counts.opportunities.value ?? 0} ·
+            attention: {leadConversion.attention.length} · unknown audit
+            attribution: {leadConversion.attributionCoverage.auditsUnknown}.
+            Inbound and outbound are not mixed. Details on Lead Conversion.
           </p>
         </Card>
 
@@ -1329,6 +1358,50 @@ export default async function GrowthDashboardPage() {
 
           <Card className="overflow-hidden p-0">
             <GrowthContentRecordsTable rows={tableRows} />
+          </Card>
+        </section>
+
+        <section className="mt-12 space-y-4">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Lead Conversion Intelligence
+          </h2>
+          <p className="text-sm text-muted">
+            Traffic, followers, and clicks are not the goal. This section
+            observes pipeline facts. ROI {leadConversion.money.roiStatus}. GBP:{" "}
+            {leadConversion.gbp.status}.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <Metric
+              label="Inbound leads (28d)"
+              value={leadConversion.counts.inboundLeads.value ?? 0}
+            />
+            <Metric
+              label="Outbound prospects (28d)"
+              value={leadConversion.counts.outboundProspects.value ?? 0}
+            />
+            <Metric
+              label="Attention queue"
+              value={leadConversion.attention.length}
+            />
+          </div>
+          <Card className="space-y-2 p-5">
+            <p className="text-sm font-semibold text-brand">Business signals</p>
+            <p className="text-sm text-muted">
+              Facebook → pipeline: {leadConversion.facebookPipeline.signal} (
+              {leadConversion.facebookPipeline.attributedAudits} attributed
+              audits). Search /seo: {leadConversion.searchPipeline.signal} (
+              {leadConversion.searchPipeline.seoLandingAudits} landing audits).
+              Not “SEO/Facebook successful.”
+            </p>
+            {leadConversion.priorityActions.slice(0, 4).length > 0 ? (
+              <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
+                {leadConversion.priorityActions.slice(0, 4).map((item) => (
+                  <li key={`${item.band}-${item.reason}`}>
+                    {item.band}: {item.reason}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </Card>
         </section>
 

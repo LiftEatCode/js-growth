@@ -4,6 +4,15 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-24 — Growth Sprint 9 (Lead Conversion Intelligence V1)
+
+- Research: `docs/research/lead-conversion-intelligence-2026.md`
+- `LEAD_CONVERSION_INTELLIGENCE_VERSION = 1`: inbound vs outbound funnel, attribution strength, attention queue, pipeline value semantics, ROI_NOT_AVAILABLE
+- `/reports/growth/conversion` + compact indicators on `/reports/growth`
+- Commercial models remain authoritative (observe-only). No auto-email / auto-status / auto-opportunity
+- Business signals may appear on content review; `/seo` gets no invented outcomes
+- Baseline V1 unchanged; OpenAI/Meta/GSC API = 0 on dashboard load
+
 ## 2026-08-23 — Growth Sprint 8 (Content Performance Review & Optimization Engine V1)
 
 - Research: `docs/research/content-performance-review-2026.md`

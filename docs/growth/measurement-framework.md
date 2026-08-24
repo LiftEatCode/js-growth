@@ -52,8 +52,12 @@ Unknown metrics remain `NOT_CAPTURED` / `INSUFFICIENT_DATA` — never estimated 
 | Stage | Classification |
 |---|---|
 | Visitor → Report viewed, CTAs, contact form | **PUBLIC ANALYTICS EVENTS** (GA4) |
-| Audits created, purchases, prospects, opportunities, proposals, agreements, clients | **SERVER-SIDE BUSINESS METRICS** (DB aggregates) |
+| Audits created, purchases, inbound leads, outbound prospects, opportunities, proposals, agreements, clients | **SERVER-SIDE BUSINESS METRICS** (DB aggregates) |
 | Record-level prospect/opportunity/client/payment IDs, notes, pricing | **PRIVATE COMMERCIAL METRICS** (never in GA4) |
+
+Inbound `Lead` and outbound `Prospect` are separate acquisition systems (Lead Conversion Intelligence V1). Do not add them together.
+
+See [`lead-conversion-intelligence.md`](lead-conversion-intelligence.md). **LEAD_CONVERSION_INTELLIGENCE_VERSION = 1**.
 
 ---
 

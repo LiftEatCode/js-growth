@@ -281,6 +281,7 @@ export function recommendReviewDecision(input: {
   evidenceStrength: EvidenceStrength;
   latestSearch: ManualSearchPerformanceCapture | null;
   now?: Date;
+  businessSignal?: "NONE" | "BUSINESS_SIGNAL" | "INSUFFICIENT_DATA";
 }): {
   decision: ContentReviewDecision;
   observedFacts: string[];
@@ -300,6 +301,16 @@ export function recommendReviewDecision(input: {
   facts.push(`Measurement state: ${input.measurementState}.`);
   facts.push(`Indexing state: ${input.indexingState}.`);
   facts.push(`Evidence strength: ${input.evidenceStrength}.`);
+  if (input.businessSignal === "BUSINESS_SIGNAL") {
+    facts.push(
+      "Attributed inbound business activity observed for this public-safe slug.",
+    );
+    hypotheses.push(
+      "A business signal is not proof that this page caused the outcome.",
+    );
+  } else if (input.businessSignal === "INSUFFICIENT_DATA") {
+    facts.push("Business-join sample is too small to interpret.");
+  }
 
   if (
     input.measurementState === "PUBLISHED_AWAITING_DATA" ||

@@ -27,6 +27,8 @@ import {
   recommendReviewDecision,
 } from "@/lib/growth/content-review";
 import { listContentPlans } from "@/lib/growth/content-plan-store";
+import { getLeadConversionIntelligence } from "@/lib/growth/lead-conversion-metrics";
+import { lastNDaysEndingNow } from "@/lib/growth/funnel-metrics";
 import { requireInternalSession } from "@/lib/internal-auth";
 
 export const metadata: Metadata = {
@@ -41,6 +43,7 @@ export const dynamic = "force-dynamic";
 export default async function GrowthContentIntelligencePage() {
   await requireInternalSession();
   const plans = await listContentPlans(50);
+  const conversion = await getLeadConversionIntelligence(lastNDaysEndingNow(90));
   const recommended = recommendNextContent();
   const acceptance =
     plans.find((p) => p.slug === FIRST_ACCEPTANCE_PLAN_SLUG) ?? null;
@@ -177,6 +180,15 @@ export default async function GrowthContentIntelligencePage() {
                     indexingState: performance.indexingState,
                   })
                 : "NONE";
+              const businessSignal =
+                plan.publishedUrl?.includes("/seo") ||
+                plan.slug.includes("seo-service")
+                  ? conversion.searchPipeline.signal
+                  : (conversion.contentPipeline.find(
+                      (row) =>
+                        row.publicSlug === plan.slug ||
+                        row.landingOrContent === plan.publishedUrl,
+                    )?.signal ?? "NONE");
               const suggestion = performance
                 ? recommendReviewDecision({
                     publishedAt: performance.publishedAt,
@@ -185,6 +197,7 @@ export default async function GrowthContentIntelligencePage() {
                     indexingState: performance.indexingState,
                     evidenceStrength: strength,
                     latestSearch,
+                    businessSignal,
                   })
                 : null;
               const history = getReviewHistory(performance);

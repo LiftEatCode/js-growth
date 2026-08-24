@@ -165,6 +165,11 @@ export const internalSnapshotMetricsSchema = z
     agreementsAccepted: optionalNonNegInt,
     clientsCreated: optionalNonNegInt,
     notes: z.string().max(2000).optional(),
+    inboundLeadsCreated: optionalNonNegInt,
+    outboundProspectsCreated: optionalNonNegInt,
+    attributedAuditCount: optionalNonNegInt,
+    unknownAttributionCount: optionalNonNegInt,
+    conversionIntelligenceVersion: z.number().int().positive().optional(),
   })
   .strict();
 

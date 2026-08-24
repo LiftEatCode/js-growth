@@ -20,6 +20,9 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 
 - “We use campaign attribution to identify which marketing channels actually contribute to website engagement and leads.”
 - “We keep paid and organic social tagging consistent so Facebook and other channels are comparable over time.”
+- “We connect marketing activity to business outcomes where attribution supports it — and we keep unknown attribution visible instead of inventing a story.”
+- “We measure more than traffic: visibility through qualified interest, leads, and opportunities.”
+- “We identify where growth is working and where the funnel needs attention. We do not claim perfect attribution or automatic sales optimization.”
 
 ## SEO & local
 

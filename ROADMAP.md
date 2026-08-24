@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–8** (Measurement → … → Publishing & Performance → Content Review) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–9** (Measurement → … → Content Review → Lead Conversion Intelligence) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -270,11 +270,19 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - Prefer KEEP_MONITORING / INSUFFICIENT_DATA; refresh blocked without evidence
 - Experiment 018 remains QUEUED; Facebook Sprint 4 window untouched
 
-### Growth Sprint 9 — (recommended next)
+### Growth Sprint 9 — Growth Execution & Lead Conversion Intelligence V1 ✅
+
+- Research: `docs/research/lead-conversion-intelligence-2026.md`
+- `LEAD_CONVERSION_INTELLIGENCE_VERSION = 1`: inbound vs outbound, attribution strength, attention queue, ROI_NOT_AVAILABLE
+- `/reports/growth/conversion` + compact dashboard section; commercial observe-only
+- Business signals feed content review without claiming SEO/Facebook “success”
+
+### Growth Sprint 10 — (recommended next)
 
 - First real GSC windows for `/seo` after INDEXED
-- Optional AI advisory review (FACT/INTERPRETATION/HYPOTHESIS labels) on explicit click
+- Optional AI advisory review (FACT/INTERPRETATION/HYPOTHESIS) on explicit click
 - Soft Experiment 018 if measurement event is ready
+- Persist contact-form acquisition context first-party (privacy-safe) if inbound volume justifies it
 - Supporting content briefs only after directional evidence
 
 ---

@@ -27,6 +27,8 @@ Append-only `reviewHistory` inside `performanceJson` (bounded). No new Prisma mo
 
 System recommends. Humans decide. AI does not mutate pages in V1 (OpenAI = 0 for record review).
 
+Attributed inbound activity may appear as a **BUSINESS_SIGNAL** fact. That is not “SEO successful” and does not auto-refresh.
+
 ## Experiment 018
 
 Remains **QUEUED** — no soft follow CTA without dedicated measurement + UX proof.

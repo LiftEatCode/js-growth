@@ -100,6 +100,28 @@ const early = recommendReviewDecision({
   now,
 });
 assert(early.decision === "KEEP_MONITORING", "early keep monitoring");
+const withBusiness = recommendReviewDecision({
+  publishedAt: "2026-08-20T00:00:00.000Z",
+  measurementState: "PUBLISHED_AWAITING_DATA",
+  performanceLabel: "NO_DATA",
+  indexingState: "PUBLISHED_NOT_VERIFIED",
+  evidenceStrength: "NONE",
+  latestSearch: null,
+  now,
+  businessSignal: "BUSINESS_SIGNAL",
+});
+assert(
+  withBusiness.decision === "KEEP_MONITORING",
+  "business signal does not auto-refresh",
+);
+assert(
+  withBusiness.observedFacts.some((f) => f.includes("business")),
+  "business signal recorded as fact",
+);
+assert(
+  withBusiness.hypotheses.some((h) => h.includes("not proof")),
+  "causation boundary on business signal",
+);
 assert(
   refreshBlockedWithoutEvidence({
     decision: "REFRESH_CONTENT",

@@ -275,3 +275,9 @@ export {
   validateSearchCtr,
   type ContentReviewDecision,
 } from "./content-review";
+export {
+  LEAD_CONVERSION_INTELLIGENCE_VERSION,
+  sampleQuality,
+  classifyAttributionChannel,
+  type AttributionChannel,
+} from "./lead-conversion-intelligence";
