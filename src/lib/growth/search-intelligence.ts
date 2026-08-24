@@ -275,6 +275,16 @@ export const SEARCH_PAGE_INVENTORY: SearchPageInventoryItem[] = [
     inSitemap: true,
   },
   {
+    path: "/seo",
+    pageType: "SERVICE",
+    primaryTopic: "SEO",
+    intent: "SERVICE",
+    title: "SEO Services for Small Businesses",
+    notes: "Sprint 7 published service page; measure before refresh",
+    indexable: true,
+    inSitemap: true,
+  },
+  {
     path: "/ai-automation",
     pageType: "SERVICE",
     primaryTopic: "AI_AUTOMATION",
@@ -462,11 +472,11 @@ export type SearchContentGap = {
 export const SEARCH_CONTENT_GAPS: SearchContentGap[] = [
   {
     id: "gap-seo-service",
-    kind: "MISSING_SERVICE",
+    kind: "REFRESH",
     topic: "SEO",
     summary:
-      "No dedicated /seo service page; SEO is implied via Local SEO and websites copy.",
-    evidence: "MANUAL_RESEARCH",
+      "/seo service page is published — awaiting Search/GA4 performance evidence before refresh decisions. Do not create another SEO service page.",
+    evidence: "FIRST_PARTY_DATA",
   },
   {
     id: "gap-gbp-page",
@@ -518,6 +528,24 @@ export type SearchInternalLinkRec = {
 };
 
 export const SEARCH_INTERNAL_LINK_RECS: SearchInternalLinkRec[] = [
+  {
+    fromPath: "/blog/small-business-not-showing-up-on-google",
+    toPath: "/seo",
+    reason: "Visibility problem article → SEO service page",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/local-seo",
+    toPath: "/seo",
+    reason: "Local SEO vs site-wide SEO clarification",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/services",
+    toPath: "/seo",
+    reason: "Services hub → SEO commercial page",
+    evidence: "INFERENCE",
+  },
   {
     fromPath: "/blog/small-business-not-showing-up-on-google",
     toPath: "/website-audit",

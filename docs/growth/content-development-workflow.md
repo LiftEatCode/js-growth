@@ -10,13 +10,15 @@
 6. **Apply or Discard** — Explicit **Apply AI Revision** copies candidate → `humanDraftJson`. Discard clears candidate. Neither auto-approves or publishes. **0 OpenAI**.
 7. **Human edit** — Canonical `humanDraftJson` always wins until explicit Apply.
 8. **Approve** — Operator sets `APPROVED` (AI never does this).
-9. **Publish** — Existing app publish path (blog TSX / page deploy / Facebook manual). Then mark `PUBLISHED` with URL.
-10. **Measure** — GSC / GA4 / Facebook ledger as appropriate.
-11. **Learn** — Future sprints feed observations (not causal ML).
+9. **Publish** — Code/deploy the approved asset (e.g. `/seo`). Requires `APPROVED`. Then mark `PUBLISHED` with URL + `publishedAt`.
+10. **Measure** — Lifecycle starts `PUBLISHED_AWAITING_DATA` / `NO_DATA` (not fabricated zeros). Manual Search + GA4 + first-party when available.
+11. **Distribute** — Deterministic recommendations; optional Facebook derivative **plans** (ledger only after real posts).
+12. **Learn / recommend** — Feedback into Recommended Next Content; published gaps stop screaming “missing page.”
 
-## Core principle
+## Core principles
 
-**AI MAY PROPOSE. HUMANS CONTROL THE CANONICAL DRAFT.**
+**AI MAY PROPOSE. HUMANS CONTROL THE CANONICAL DRAFT.**  
+**WE PUBLISHED IT. NOW WHAT ACTUALLY HAPPENED?** (observation ≠ causation)
 
 - AI call → `candidateDraftJson` (after a human draft exists) → human review → explicit Apply → `humanDraftJson`
 - Never: AI call → automatically replace `humanDraftJson`

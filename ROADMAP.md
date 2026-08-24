@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–6** (Measurement → Audit Funnel → Facebook Engine → 30-day Execution → Search Intelligence → Content Intelligence) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–7** (Measurement → Audit Funnel → Facebook Engine → 30-day Execution → Search Intelligence → Content Intelligence → Publishing & Performance Feedback) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -257,11 +257,18 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - Initial five plans from Sprint 5; acceptance `seo-service-page-v1`
 - Baseline V1 unchanged; Facebook execution continues in parallel
 
-### Growth Sprint 7 — (recommended next)
+### Growth Sprint 7 — Content Publishing, Distribution & Performance Feedback V1 ✅
 
-- Publish SEO service page from approved plan (human)
-- Content performance feedback loop into recommendations
-- Optional AI review pass; Facebook repurposing from approved source assets
+- Research: `docs/research/content-publishing-performance-2026.md`
+- Publish `/seo` from human-governed Sprint 6 plan; sitemap/nav/links; performanceJson lifecycle
+- Recommendation feedback + distribution derivatives; no auto-publish; Baseline V1 unchanged
+
+### Growth Sprint 8 — (recommended next)
+
+- First measured review windows for `/seo` (Search + GA4 + first-party)
+- Optional GSC API only if manual capture proves too costly
+- Soft Website→Facebook (018) if thank-you UX is ready
+- Content refresh candidates from real evidence only
 
 ---
 
@@ -286,7 +293,7 @@ Prioritize based on business leverage with the **current** stack:
 7. ~~Measurement / attribution foundation~~ — **Growth Sprint 1 complete**
 8. ~~Search Intelligence foundation~~ — **Growth Sprint 5 complete**
 9. ~~Content Intelligence foundation~~ — **Growth Sprint 6 complete**
-10. Human-publish SEO service page from approved Sprint 6 plan; feed performance into recommendations (Sprint 7)
+10. Human-publish SEO service page from approved Sprint 6 plan; feed performance into recommendations (Sprint 7) — **complete in code; operator mark PUBLISHED + GSC indexing after deploy**
 
 ## LATER / EXPLORATORY
 

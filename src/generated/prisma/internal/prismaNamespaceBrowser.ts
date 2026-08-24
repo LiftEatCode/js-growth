@@ -1365,6 +1365,8 @@ export const GrowthContentPlanScalarFieldEnum = {
   generationHistoryJson: 'generationHistoryJson',
   aiBusyUntil: 'aiBusyUntil',
   publishedUrl: 'publishedUrl',
+  publishedAt: 'publishedAt',
+  performanceJson: 'performanceJson',
   sourceAssetSlug: 'sourceAssetSlug',
   plannerPromptVersion: 'plannerPromptVersion',
   developerPromptVersion: 'developerPromptVersion',

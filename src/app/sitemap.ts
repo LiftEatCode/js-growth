@@ -32,6 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: getAbsoluteUrl("/seo"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    },
+    {
       url: getAbsoluteUrl("/ai-automation"),
       lastModified: now,
       changeFrequency: "monthly" as const,

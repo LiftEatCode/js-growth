@@ -70,7 +70,10 @@ const collisionClear = detectContentCollision({
   targetPath: "/seo",
   sourceType: "SERVICE_GAP",
 });
-assert(collisionClear.state === "CLEAR", "missing /seo is CLEAR");
+assert(
+  collisionClear.state === "RELATED_EXISTING_CONTENT",
+  "published /seo is RELATED_EXISTING_CONTENT",
+);
 
 const collisionRefresh = detectContentCollision({
   contentType: "BLOG",
@@ -144,10 +147,25 @@ assert(
 const recommended = recommendNextContent();
 assert(
   recommended.some((r) => r.slug === FIRST_ACCEPTANCE_PLAN_SLUG),
-  "SEO acceptance plan recommended",
+  "SEO acceptance plan still listed",
+);
+assert(
+  recommended.find((r) => r.slug === FIRST_ACCEPTANCE_PLAN_SLUG)?.why.some(
+    (w) => /published|awaiting performance/i.test(w),
+  ),
+  "SEO recommendation notes published awaiting evidence",
+);
+assert(
+  recommended.find((r) => r.slug === FIRST_ACCEPTANCE_PLAN_SLUG)
+    ?.priorityBand === "LATER",
+  "published SEO gap is not NOW create",
 );
 assert(recommended[0]!.why.length >= 2, "recommendation explains why");
-assert(recommended[0]!.priorityBand === "NOW", "top recommendation is NOW");
+assert(
+  recommended[0]!.slug !== FIRST_ACCEPTANCE_PLAN_SLUG ||
+    recommended[0]!.priorityBand === "LATER",
+  "top recommendation is not recreate /seo as NOW",
+);
 
 assert(GROWTH_BASELINE_V1.searchConsole.impressions === 2, "baseline immutable");
 

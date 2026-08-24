@@ -2700,6 +2700,10 @@ model GrowthContentPlan {
   aiBusyUntil DateTime?
 
   publishedUrl   String? @db.VarChar(500)
+  /// Operator-recorded publish time (not inventable history).
+  publishedAt    DateTime?
+  /// Measurement / indexing / link / search evidence (CONTENT_PERFORMANCE_VERSION).
+  performanceJson Json?
   sourceAssetSlug String? @db.VarChar(80)
 
   plannerPromptVersion   Int @default(1)

@@ -6,9 +6,11 @@ import { LoaderCircle } from "lucide-react";
 import {
   applyContentCandidateAction,
   approveContentPlanAction,
+  createFacebookDerivativePlanAction,
   discardContentCandidateAction,
   generateContentDraftAction,
   markContentPlanPublishedAction,
+  recordContentSearchPerformanceAction,
   reopenContentPlanForReviewAction,
   saveContentHumanDraftAction,
   seedInitialContentPlansAction,
@@ -50,6 +52,9 @@ export function ContentPlanControls({
   defaultHumanDraft,
   candidateDraftJson,
   aiBusy,
+  publishedUrl,
+  performanceSummary,
+  distributionPreview,
 }: {
   planId: string;
   status: string;
@@ -58,6 +63,9 @@ export function ContentPlanControls({
   defaultHumanDraft: string;
   candidateDraftJson: string | null;
   aiBusy: boolean;
+  publishedUrl?: string | null;
+  performanceSummary?: string | null;
+  distributionPreview?: string | null;
 }) {
   const [genState, genAction, genPending] = useActionState(
     generateContentDraftAction,
@@ -87,9 +95,19 @@ export function ContentPlanControls({
     markContentPlanPublishedAction,
     initial,
   );
+  const [derivState, derivAction, derivPending] = useActionState(
+    createFacebookDerivativePlanAction,
+    initial,
+  );
+  const [searchState, searchAction, searchPending] = useActionState(
+    recordContentSearchPerformanceAction,
+    initial,
+  );
 
   const approvedLocked = status === "APPROVED" || status === "PUBLISHED";
   const aiDisabled = genPending || aiBusy || approvedLocked;
+  const canPublish = status === "APPROVED";
+  const isPublished = status === "PUBLISHED" || status === "MONITORING";
 
   return (
     <div className="space-y-4 border-t border-border pt-4">
@@ -262,7 +280,12 @@ export function ContentPlanControls({
 
       <form action={approveAction} className="flex flex-wrap items-center gap-2">
         <input type="hidden" name="planId" value={planId} />
-        <Button type="submit" disabled={approvePending || status === "APPROVED"}>
+        <Button
+          type="submit"
+          disabled={
+            approvePending || status === "APPROVED" || status === "PUBLISHED"
+          }
+        >
           {approvePending ? "Approving…" : "Approve (human)"}
         </Button>
         <p role="status" className="text-xs text-muted">
@@ -273,21 +296,137 @@ export function ContentPlanControls({
       <form action={pubAction} className="space-y-2">
         <input type="hidden" name="planId" value={planId} />
         <label className="block space-y-1 text-xs">
-          <span className="font-medium">Published URL (manual only)</span>
+          <span className="font-medium">
+            Published URL (manual only — requires APPROVED + live asset)
+          </span>
           <input
             name="publishedUrl"
-            placeholder="https://js-growth.com/seo"
-            disabled={pubPending}
+            defaultValue={publishedUrl ?? "/seo"}
+            placeholder="/seo"
+            disabled={pubPending || !canPublish}
             className="flex h-9 w-full rounded-lg border border-border px-2 disabled:opacity-60"
           />
         </label>
-        <Button type="submit" variant="outline" disabled={pubPending}>
+        <Button type="submit" variant="outline" disabled={pubPending || !canPublish}>
           {pubPending ? "Saving…" : "Mark published"}
         </Button>
+        {!canPublish ? (
+          <p className="text-[11px] text-muted">
+            Publishing handoff blocked until status is APPROVED.
+          </p>
+        ) : null}
         <p role="status" className="text-xs text-muted">
           {pubState.message}
         </p>
       </form>
+
+      {performanceSummary ? (
+        <div className="rounded-xl border border-border bg-slate-50 p-3 text-xs text-muted">
+          <p className="font-semibold text-brand">Content performance</p>
+          <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap font-mono text-[11px]">
+            {performanceSummary}
+          </pre>
+        </div>
+      ) : null}
+
+      {distributionPreview ? (
+        <div className="rounded-xl border border-border bg-white p-3 text-xs text-muted">
+          <p className="font-semibold text-brand">
+            Distribution plan (deterministic · 0 OpenAI)
+          </p>
+          <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap font-mono text-[11px]">
+            {distributionPreview}
+          </pre>
+        </div>
+      ) : null}
+
+      {isPublished || status === "APPROVED" ? (
+        <form action={derivAction} className="flex flex-wrap items-center gap-2">
+          <input type="hidden" name="planId" value={planId} />
+          <input type="hidden" name="derivative" value="FACEBOOK_COMPANY" />
+          <Button type="submit" variant="outline" disabled={derivPending}>
+            {derivPending
+              ? "Creating…"
+              : "Create Facebook company derivative plan"}
+          </Button>
+          <p role="status" className="text-xs text-muted">
+            {derivState.message}
+          </p>
+        </form>
+      ) : null}
+
+      {isPublished ? (
+        <form action={searchAction} className="space-y-2 rounded-xl border border-dashed border-border p-3">
+          <p className="text-xs font-semibold text-brand">
+            Manual Search Console capture (OBSERVED · 0 OpenAI)
+          </p>
+          <input type="hidden" name="planId" value={planId} />
+          <div className="grid gap-2 sm:grid-cols-2">
+            <input
+              name="windowStart"
+              type="date"
+              required
+              disabled={searchPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            />
+            <input
+              name="windowEnd"
+              type="date"
+              required
+              disabled={searchPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            />
+            <input
+              name="impressions"
+              placeholder="impressions (blank = not captured)"
+              disabled={searchPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            />
+            <input
+              name="clicks"
+              placeholder="clicks"
+              disabled={searchPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            />
+            <input
+              name="ctr"
+              placeholder="ctr"
+              disabled={searchPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            />
+            <input
+              name="averagePosition"
+              placeholder="avg position"
+              disabled={searchPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            />
+          </div>
+          <select
+            name="queryDataStatus"
+            defaultValue="NOT_CAPTURED"
+            disabled={searchPending}
+            className="h-9 w-full rounded-lg border border-border px-2 text-xs"
+          >
+            <option value="NO_DATA">NO_DATA</option>
+            <option value="NOT_CAPTURED">NOT_CAPTURED</option>
+            <option value="INSUFFICIENT_DATA">INSUFFICIENT_DATA</option>
+            <option value="AVAILABLE">AVAILABLE</option>
+          </select>
+          <textarea
+            name="notes"
+            rows={2}
+            placeholder="Notes — no private IDs"
+            disabled={searchPending}
+            className="w-full rounded-lg border border-border px-2 py-1 text-xs"
+          />
+          <Button type="submit" disabled={searchPending}>
+            {searchPending ? "Saving…" : "Save search evidence"}
+          </Button>
+          <p role="status" className="text-xs text-muted">
+            {searchState.message}
+          </p>
+        </form>
+      ) : null}
     </div>
   );
 }

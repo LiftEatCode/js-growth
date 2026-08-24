@@ -81,6 +81,59 @@ export function getOrganizationSchema() {
   };
 }
 
+export function getServiceSchema(input: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: input.name,
+    description: input.description,
+    url: getAbsoluteUrl(input.path),
+    provider: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "United States",
+    },
+  };
+}
+
+export function getServiceBreadcrumbSchema(input: {
+  name: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Services",
+        item: getAbsoluteUrl("/services"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: input.name,
+        item: getAbsoluteUrl(input.path),
+      },
+    ],
+  };
+}
+
 export function getWebsiteSchema() {
   return {
     "@context": "https://schema.org",

@@ -4,6 +4,7 @@ import {
   Globe2,
   MapPin,
   Megaphone,
+  Search,
   Workflow,
 } from "lucide-react";
 
@@ -53,6 +54,26 @@ const featuredServices = [
 
     tone:
       "brand" as const,
+  },
+
+  {
+    title:
+      "SEO",
+
+    description:
+      "Strengthen search foundations, service clarity, and measurement — without ranking guarantees.",
+
+    icon:
+      Search,
+
+    href:
+      "/seo",
+
+    eyebrow:
+      "Search",
+
+    tone:
+      "default" as const,
   },
 
   {

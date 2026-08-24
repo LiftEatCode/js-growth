@@ -14,6 +14,11 @@ import {
   recommendNextContent,
   type ContentBriefV1,
 } from "@/lib/growth/content-intelligence";
+import { buildSeoServiceDistributionPlan } from "@/lib/growth/content-distribution";
+import {
+  CONTENT_PERFORMANCE_VERSION,
+  parsePerformanceJson,
+} from "@/lib/growth/content-performance";
 import { listContentPlans } from "@/lib/growth/content-plan-store";
 import { requireInternalSession } from "@/lib/internal-auth";
 
@@ -55,7 +60,8 @@ export default async function GrowthContentIntelligencePage() {
               Decide what the business needs to say next — then develop with
               human review. content-intelligence-v{CONTENT_INTELLIGENCE_VERSION}.
               Dashboard load OpenAI calls: <strong>0</strong>. No auto-publish.
-              No mass generation.
+              No mass generation. content-performance-v
+              {CONTENT_PERFORMANCE_VERSION}.
             </p>
           </div>
           <SeedContentPlansForm />
@@ -123,6 +129,36 @@ export default async function GrowthContentIntelligencePage() {
               const aiBusy =
                 plan.aiBusyUntil != null &&
                 new Date(plan.aiBusyUntil).getTime() > Date.now();
+              const performance = parsePerformanceJson(plan.performanceJson);
+              const performanceSummary = performance
+                ? JSON.stringify(
+                    {
+                      measurementState: performance.measurementState,
+                      indexingState: performance.indexingState,
+                      performanceLabel: performance.performanceLabel,
+                      publishedAt: performance.publishedAt,
+                      ga4Status: performance.ga4Status,
+                      searchCaptures: performance.searchEvidence.length,
+                      implementedLinks: performance.implementedLinks,
+                      recommendedLinks: performance.recommendedLinks,
+                    },
+                    null,
+                    2,
+                  )
+                : plan.status === "PUBLISHED"
+                  ? "PUBLISHED — performanceJson pending operator refresh"
+                  : null;
+              const distributionPreview =
+                plan.slug === FIRST_ACCEPTANCE_PLAN_SLUG ||
+                plan.targetServicePath === "/seo"
+                  ? JSON.stringify(
+                      buildSeoServiceDistributionPlan({
+                        publishedUrl: plan.publishedUrl ?? "/seo",
+                      }),
+                      null,
+                      2,
+                    )
+                  : null;
               return (
                 <Card key={plan.id} className="space-y-3 p-6">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -135,6 +171,9 @@ export default async function GrowthContentIntelligencePage() {
                     <p className="text-xs text-muted">
                       {plan.status} · {plan.priorityBand} · {plan.contentType} ·{" "}
                       {plan.sourceType}
+                      {plan.publishedAt
+                        ? ` · published ${plan.publishedAt.toISOString().slice(0, 10)}`
+                        : ""}
                     </p>
                   </div>
                   {plan.searchOpportunitySlug ? (
@@ -176,6 +215,9 @@ export default async function GrowthContentIntelligencePage() {
                     defaultHumanDraft={defaultHumanDraft}
                     candidateDraftJson={candidateDraftJson}
                     aiBusy={aiBusy}
+                    publishedUrl={plan.publishedUrl}
+                    performanceSummary={performanceSummary}
+                    distributionPreview={distributionPreview}
                   />
                 </Card>
               );

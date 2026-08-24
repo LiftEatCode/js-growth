@@ -196,7 +196,7 @@ export const JS_SOLUTIONS_BUSINESS_FACTS = {
     "invented partnerships",
     "fabricated statistics",
   ],
-  missingPages: [{ path: "/seo", note: "Dedicated SEO service page not yet published" }],
+  missingPages: [],
 } as const;
 
 export type ContentBriefV1 = ContentBriefContract & {
@@ -373,6 +373,19 @@ export function detectContentCollision(input: {
       notes.push("No /seo page in inventory — clear to create.");
       return { state: "CLEAR", notes };
     }
+    if (input.sourceType !== "CONTENT_REFRESH") {
+      return {
+        state: "RELATED_EXISTING_CONTENT",
+        notes: [
+          "/seo is published — do not create another SEO service page.",
+          "Use REFRESH or distribution derivatives; measure performance first.",
+        ],
+      };
+    }
+    return {
+      state: "REFRESH_EXISTING",
+      notes: ["Existing /seo — propose refresh from evidence, do not duplicate."],
+    };
   }
 
   if (input.contentType === "BLOG" && input.searchIntent) {
@@ -547,14 +560,36 @@ export function recommendNextContent(
       const priority = scoreSeed
         ? computeSearchPriorityBand(scoreSeed)
         : { band: plan.priorityBand, score: 28, rationale: "seed" };
+
+      let score = priority.score;
+      let band = priority.band as ContentPriorityBand;
+      const why = [...plan.whyRecommended, `Collision: ${collision.state}`];
+
+      // Published structural gaps must not keep screaming "create missing page".
+      if (
+        collision.state === "RELATED_EXISTING_CONTENT" ||
+        collision.state === "REFRESH_EXISTING" ||
+        collision.state === "POTENTIAL_CANNIBALIZATION"
+      ) {
+        score = Math.min(score, 12);
+        band = "LATER";
+        if (plan.targetServicePath === "/seo") {
+          why.unshift(
+            "Published — awaiting performance evidence (do not recreate /seo).",
+          );
+        } else {
+          why.unshift("Related existing content — prefer refresh or distribution.");
+        }
+      }
+
       return {
         slug: plan.slug,
         title: plan.workingTitle,
         contentType: plan.contentType,
-        priorityBand: priority.band,
-        why: [...plan.whyRecommended, `Collision: ${collision.state}`],
+        priorityBand: band,
+        why,
         collisionState: collision.state,
-        _score: priority.score,
+        _score: score,
       };
     })
     .sort((a, b) => b._score - a._score)

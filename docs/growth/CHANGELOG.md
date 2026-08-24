@@ -4,6 +4,17 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-23 — Growth Sprint 7 (Content Publishing, Distribution & Performance Feedback V1)
+
+- Research: `docs/research/content-publishing-performance-2026.md`
+- `CONTENT_PERFORMANCE_VERSION = 1`: measurement lifecycle, evidence kinds, learning (INSUFFICIENT_DATA for n=1)
+- Production `/seo` service page + sitemap/nav/internal links; Service + BreadcrumbList schema (no FAQ rich-result schema)
+- `GrowthContentPlan.publishedAt` + `performanceJson`; publish requires APPROVED; opportunity preserved as acted-on
+- Recommendation feedback: `/seo` no longer “missing page”; collision `RELATED_EXISTING_CONTENT`
+- Deterministic distribution plan + Facebook company derivative plans (no GrowthContentRecord / no auto-post)
+- Experiment 018 remains QUEUED
+- Baseline V1 unchanged; OpenAI/Meta/GSC API = 0 on dashboard load
+
 ## 2026-08-23 — Sprint 6 hardening: AI candidate vs human canonical draft
 
 - Human drafts remain protected from silent overwrite.

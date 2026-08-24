@@ -1,8 +1,8 @@
 # Growth Phase — Documentation Index
 
-Growth Sprints 1–6 establish measurement, audit conversion, Facebook organic distribution/execution, Search Intelligence, and **Content Intelligence V1**.
+Growth Sprints 1–7 establish measurement, audit conversion, Facebook organic distribution/execution, Search Intelligence, Content Intelligence, and **publishing + performance feedback**.
 
-**Principle:** Do not optimize what we cannot measure. For content: decide what the business needs to say next before asking AI to write.
+**Principle:** Do not optimize what we cannot measure. For content: decide → develop → human approve → publish → observe → recommend (never auto-optimize production pages).
 
 | Document | Purpose |
 |---|---|
@@ -27,34 +27,27 @@ Growth Sprints 1–6 establish measurement, audit conversion, Facebook organic d
 | [search-sprint5-production-acceptance.md](search-sprint5-production-acceptance.md) | Sprint 5 operator acceptance |
 | [content-intelligence.md](content-intelligence.md) | **CONTENT_INTELLIGENCE_VERSION = 1** |
 | [content-development-workflow.md](content-development-workflow.md) | Brief → draft → approve → publish |
+| [content-performance.md](content-performance.md) | **CONTENT_PERFORMANCE_VERSION = 1** |
+| [content-distribution.md](content-distribution.md) | Deterministic distribution recommendations |
 | [content-quality-review.md](content-quality-review.md) | Claim safety + readiness |
 | [content-sprint6-production-acceptance.md](content-sprint6-production-acceptance.md) | Sprint 6 acceptance |
+| [content-sprint7-production-acceptance.md](content-sprint7-production-acceptance.md) | Sprint 7 acceptance |
 | [blog-google-visibility-distribution.md](blog-google-visibility-distribution.md) | FB/GBP/video handoff for visibility article |
 | [experiments/](experiments/) | Sprint 2 (001–004) + Sprint 3 Facebook (010–018) |
 | [../research/audit-conversion-funnel-2026.md](../research/audit-conversion-funnel-2026.md) | Sprint 2 research |
 | [../research/facebook-organic-growth-2026.md](../research/facebook-organic-growth-2026.md) | Sprint 3 Meta research (FACT/HYPOTHESIS/TEST) |
 | [../research/seo-search-intelligence-2026.md](../research/seo-search-intelligence-2026.md) | Sprint 5 Google Search research |
+| [../research/content-intelligence-ai-2026.md](../research/content-intelligence-ai-2026.md) | Sprint 6 AI/content research |
+| [../research/content-publishing-performance-2026.md](../research/content-publishing-performance-2026.md) | Sprint 7 publishing/performance research |
 | [../research/blog-google-visibility-2026.md](../research/blog-google-visibility-2026.md) | Visibility article research note |
 
 ## Internal tools
 
-| Route | Purpose |
-|---|---|
-| `/reports/growth` | Growth dashboard (baseline, funnel, Search Intelligence, Facebook) |
-| `/reports/growth/content` | **Content Intelligence** (plans, briefs, operator-gated drafts) |
-| `/reports/growth/utm-builder` | Consistent campaign URL tagging (company / founder presets) |
+- `/reports/growth` — Growth dashboard (baseline preserved; Facebook + Search Intelligence panels)
+- `/reports/growth/content` — Content Intelligence + performance + distribution
 
-## Code
+## Non-goals (V1)
 
-| Path | Role |
-|---|---|
-| `src/lib/growth/` | Events, UTM, attribution, snapshots, funnel, Facebook, **search-intelligence-v1** |
-| `src/lib/analytics/` | GA sanitizer + page path privacy |
-| `GrowthSnapshot` (Prisma) | Immutable baseline snapshots |
-| `GrowthContentRecord` (Prisma) | Manual Facebook content performance ledger |
-| `GrowthSearchOpportunity` (Prisma) | Search opportunity backlog + Sprint 6 handoff |
-| `GrowthContentPlan` (Prisma) | Content plans, briefs, drafts, human approval |
-
-## Out of scope (through Growth Sprint 6)
-
-Mass SEO content generation, auto-publishing, Facebook/GBP auto-posting, Search Console API OAuth, Meta Graph API sync, Meta Pixel/CAPI, paid ads engine, GBP optimizer SaaS, traffic prediction AI, mass location doorway pages, client-facing analytics portal.
+- Auto-publish / mass generation / autonomous optimization
+- Fabricating Search volumes, rankings, or historical performance
+- Mutating commercial authority objects from the growth engine

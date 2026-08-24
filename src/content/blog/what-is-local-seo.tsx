@@ -461,7 +461,8 @@ export const whatIsLocalSeoPost: BlogPost = {
       </p>
 
       <p>
-        Explore our <Link href="/local-seo">Local SEO services</Link> or{" "}
+        Explore our <Link href="/local-seo">Local SEO services</Link>,{" "}
+        <Link href="/seo">SEO services</Link>, or{" "}
         <Link href="/contact">contact JS Solutions</Link> to discuss a strategy
         built around your market and business goals.
       </p>

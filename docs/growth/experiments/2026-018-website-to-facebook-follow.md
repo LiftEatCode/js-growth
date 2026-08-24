@@ -1,7 +1,11 @@
 # GROWTH-EXP-2026-018 — Website → Facebook follow loop
 
-**Status:** DOCUMENTED (future / limited V1)  
+**Status:** QUEUED (Sprint 7 decision)  
 **Direction:** WEBSITE → FACEBOOK (reverse of primary Sprint 3 loop)
+
+## Sprint 7 decision
+
+Leave 018 queued. Soft thank-you / contact-success follow CTAs are still the right placements, but shipping them without a clear measurement event and UX review would be checkbox theater. Site already exposes Facebook via `sameAs`. Revisit in Sprint 8 after `/seo` indexing + early distribution posts.
 
 ## Objective
 

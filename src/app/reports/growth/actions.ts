@@ -751,8 +751,103 @@ export async function markContentPlanPublishedAction(
   }
 
   revalidatePath("/reports/growth/content");
+  revalidatePath("/reports/growth");
   return {
     success: true,
-    message: "Marked published. No Facebook ledger row auto-created.",
+    message:
+      "Marked published with publishedAt + performance NO_DATA start. Opportunity preserved (acted on ≠ SEO worked). No Facebook ledger.",
+  };
+}
+
+export async function createFacebookDerivativePlanAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  const derivative = String(formData.get("derivative") ?? "FACEBOOK_COMPANY").trim();
+  if (!planId) {
+    return { success: false, message: "Missing plan id." };
+  }
+  if (derivative !== "FACEBOOK_COMPANY" && derivative !== "FACEBOOK_FOUNDER") {
+    return { success: false, message: "Invalid derivative type." };
+  }
+
+  const { createDerivativeContentPlan } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await createDerivativeContentPlan({
+    sourcePlanId: planId,
+    derivative,
+    createdByEmail: session.email,
+  });
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: result.created
+      ? `Derivative plan ${result.slug} created (0 OpenAI). No GrowthContentRecord.`
+      : `Derivative plan ${result.slug} already existed.`,
+  };
+}
+
+export async function recordContentSearchPerformanceAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  if (!planId) {
+    return { success: false, message: "Missing plan id." };
+  }
+
+  const parseNullableInt = (raw: string) => {
+    const t = raw.trim();
+    if (!t) return null;
+    const n = Number(t);
+    return Number.isFinite(n) && n >= 0 ? Math.floor(n) : null;
+  };
+  const parseNullableFloat = (raw: string) => {
+    const t = raw.trim();
+    if (!t) return null;
+    const n = Number(t);
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  };
+
+  const { recordManualSearchPerformance } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await recordManualSearchPerformance({
+    id: planId,
+    updatedByEmail: session.email,
+    capture: {
+      windowStart: String(formData.get("windowStart") ?? "").trim(),
+      windowEnd: String(formData.get("windowEnd") ?? "").trim(),
+      clicks: parseNullableInt(String(formData.get("clicks") ?? "")),
+      impressions: parseNullableInt(String(formData.get("impressions") ?? "")),
+      ctr: parseNullableFloat(String(formData.get("ctr") ?? "")),
+      averagePosition: parseNullableFloat(
+        String(formData.get("averagePosition") ?? ""),
+      ),
+      queryDataStatus: (String(formData.get("queryDataStatus") ?? "NOT_CAPTURED").trim() ||
+        "NOT_CAPTURED") as
+        | "NO_DATA"
+        | "NOT_CAPTURED"
+        | "INSUFFICIENT_DATA"
+        | "AVAILABLE",
+      notes: String(formData.get("notes") ?? "").trim() || undefined,
+    },
+  });
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: "Search performance capture saved (0 OpenAI). OBSERVED evidence only.",
   };
 }

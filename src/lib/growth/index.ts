@@ -255,3 +255,16 @@ export {
   discardCandidateInMemory,
   type ContentAiHistoryOperation,
 } from "./content-plan-revision";
+export {
+  CONTENT_PERFORMANCE_VERSION,
+  SEO_SERVICE_PAGE_PUBLIC_SLUG,
+  canEnterPublishingHandoff,
+  canMarkPlanPublished,
+  resolveCanonicalDraftSource,
+  buildContentLearningSummary,
+  type ContentPerformanceStateV1,
+} from "./content-performance";
+export {
+  CONTENT_DISTRIBUTION_VERSION,
+  buildSeoServiceDistributionPlan,
+} from "./content-distribution";

@@ -163,7 +163,8 @@ export const smallBusinessNotShowingUpOnGooglePost: BlogPost = {
         results. A complete, accurate{" "}
         <Link href="/local-seo">Google Business Profile</Link> can support that
         discovery when categories, hours, services, photos, and contact details
-        match how the business actually operates.
+        match how the business actually operates. Site-wide foundations are
+        covered on our <Link href="/seo">SEO services</Link> page.
       </p>
 
       <p>Useful GBP hygiene includes:</p>

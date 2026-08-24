@@ -40,8 +40,11 @@ History operations in `generationHistoryJson`: `INITIAL_GENERATE`, `REGENERATE_F
 6. Further AI: **Regenerate from Brief** / **Revise with AI** → `candidateDraftJson` only (human preserved)
 7. Explicit **Apply** or **Discard** candidate (0 OpenAI)
 8. Human approve → `APPROVED` (reopen required before more AI/edits)
-9. Human marks `PUBLISHED` with URL after real publish
-10. Facebook `GrowthContentRecord` only after actual Facebook publish (not from this engine)
+9. Human implements asset in code/deploy; marks `PUBLISHED` with URL + `publishedAt` (Sprint 7)
+10. Performance lifecycle + distribution recommendations (Sprint 7)
+11. Facebook `GrowthContentRecord` only after actual Facebook publish
+
+See also: [content-performance.md](content-performance.md), [content-distribution.md](content-distribution.md).
 
 ## Side-effect budget
 

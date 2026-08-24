@@ -136,14 +136,79 @@ export async function updateContentPlanStatus(input: {
     };
   }
 
+  if (input.status === "PUBLISHED") {
+    const { canMarkPlanPublished, resolveCanonicalDraftSource } = await import(
+      "@/lib/growth/content-performance"
+    );
+    const canonical = resolveCanonicalDraftSource({
+      humanDraftJson: existing.humanDraftJson,
+      generationJson: existing.generationJson,
+      candidateDraftJson: existing.candidateDraftJson,
+    });
+    const gate = canMarkPlanPublished({
+      status: existing.status,
+      publishedUrl: input.publishedUrl ?? existing.publishedUrl,
+      hasCanonicalDraft: canonical.source !== "none",
+    });
+    if (!gate.ok) {
+      return { ok: false, error: gate.error! };
+    }
+  }
+
+  const publishedAt =
+    input.status === "PUBLISHED" ? new Date() : existing.publishedAt;
+
+  let performanceJson: Prisma.InputJsonValue | undefined;
+  if (input.status === "PUBLISHED") {
+    const {
+      performanceStateAfterPublish,
+      parsePerformanceJson,
+      SEO_PAGE_IMPLEMENTED_LINKS,
+      SEO_PAGE_RECOMMENDED_LINKS,
+      SEO_SERVICE_PAGE_PUBLIC_SLUG,
+    } = await import("@/lib/growth/content-performance");
+    const prev = parsePerformanceJson(existing.performanceJson);
+    performanceJson = performanceStateAfterPublish({
+      previous: prev,
+      publishedAt: publishedAt!,
+      publicContentSlug:
+        existing.slug === "seo-service-page-v1"
+          ? SEO_SERVICE_PAGE_PUBLIC_SLUG
+          : existing.slug.replace(/-/g, "_").slice(0, 80),
+      recommendedLinks: [...SEO_PAGE_RECOMMENDED_LINKS],
+      implementedLinks: [...SEO_PAGE_IMPLEMENTED_LINKS],
+    }) as unknown as Prisma.InputJsonValue;
+  }
+
   await prisma.growthContentPlan.update({
     where: { id: input.id },
     data: {
       status: input.status,
       publishedUrl: input.publishedUrl?.trim() || existing.publishedUrl,
+      publishedAt: input.status === "PUBLISHED" ? publishedAt : existing.publishedAt,
+      ...(performanceJson ? { performanceJson } : {}),
       updatedByEmail: input.updatedByEmail,
     },
   });
+
+  // Preserve search opportunity; mark PUBLISHED = we acted (not "SEO worked").
+  if (
+    input.status === "PUBLISHED" &&
+    existing.searchOpportunitySlug
+  ) {
+    await prisma.growthSearchOpportunity.updateMany({
+      where: { slug: existing.searchOpportunitySlug },
+      data: {
+        status: "PUBLISHED",
+        currentPagePath:
+          input.publishedUrl?.trim() || existing.publishedUrl || undefined,
+        notes:
+          "CONTENT_PUBLISHED: opportunity acted on. Not proof that SEO worked.",
+        updatedByEmail: input.updatedByEmail,
+      },
+    });
+  }
+
   return { ok: true };
 }
 
@@ -544,6 +609,191 @@ export async function updateContentPlanPriority(input: {
     where: { id: input.id },
     data: {
       priorityBand: input.priorityBand,
+      updatedByEmail: input.updatedByEmail,
+    },
+  });
+  return { ok: true };
+}
+
+/**
+ * Create a Facebook derivative plan from a published (or approved) source plan.
+ * Does NOT create GrowthContentRecord.
+ */
+export async function createDerivativeContentPlan(input: {
+  sourcePlanId: string;
+  derivative: "FACEBOOK_COMPANY" | "FACEBOOK_FOUNDER";
+  createdByEmail: string;
+}): Promise<
+  | { ok: true; id: string; slug: string; created: boolean }
+  | { ok: false; error: string }
+> {
+  const source = await prisma.growthContentPlan.findUnique({
+    where: { id: input.sourcePlanId },
+  });
+  if (!source) {
+    return { ok: false, error: "Source plan not found" };
+  }
+  if (source.status !== "PUBLISHED" && source.status !== "APPROVED") {
+    return {
+      ok: false,
+      error: "Derivative plans require APPROVED or PUBLISHED source.",
+    };
+  }
+
+  const { facebookCompanyDerivativeSeed, facebookFounderDerivativeSeed } =
+    await import("@/lib/growth/content-distribution");
+  const seedBase =
+    input.derivative === "FACEBOOK_FOUNDER"
+      ? facebookFounderDerivativeSeed({
+          sourcePlanSlug: source.slug,
+          sourcePublishedUrl: source.publishedUrl ?? source.targetServicePath ?? "/seo",
+        })
+      : facebookCompanyDerivativeSeed({
+          sourcePlanSlug: source.slug,
+          sourcePublishedUrl: source.publishedUrl ?? source.targetServicePath ?? "/seo",
+        });
+
+  if (!isValidContentPlanSlug(seedBase.slug)) {
+    return { ok: false, error: "Invalid derivative slug" };
+  }
+
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { slug: seedBase.slug },
+    select: { id: true },
+  });
+  if (existing) {
+    return {
+      ok: true,
+      id: existing.id,
+      slug: seedBase.slug,
+      created: false,
+    };
+  }
+
+  const { buildDeterministicBrief, requiresFounderInput } = await import(
+    "@/lib/growth/content-intelligence"
+  );
+
+  const seed: SeedContentPlan = {
+    slug: seedBase.slug,
+    contentType: seedBase.contentType,
+    sourceType: "CONTENT_REFRESH",
+    sourceOpportunitySlug: null,
+    topic: seedBase.topic,
+    workingTitle: seedBase.workingTitle,
+    audience: seedBase.audience,
+    primaryObjective: seedBase.primaryObjective,
+    searchIntent: null,
+    pageType: null,
+    targetServicePath: seedBase.targetServicePath,
+    publisher: seedBase.publisher,
+    priorityBand: seedBase.priorityBand,
+    whyRecommended: seedBase.whyRecommended,
+  };
+
+  const brief = buildDeterministicBrief(seed);
+  if (requiresFounderInput(seed.contentType)) {
+    // Brief validation will block generation until founder input — expected.
+  }
+
+  const row = await prisma.growthContentPlan.create({
+    data: {
+      slug: seed.slug,
+      contentType: seed.contentType,
+      sourceType: seed.sourceType,
+      status: "BRIEF_READY",
+      priorityBand: seed.priorityBand,
+      publisher: seed.publisher,
+      topic: seed.topic,
+      workingTitle: seed.workingTitle,
+      audience: seed.audience,
+      primaryObjective: seed.primaryObjective,
+      searchIntent: seed.searchIntent,
+      pageType: seed.pageType,
+      targetServicePath: seed.targetServicePath,
+      searchOpportunitySlug: null,
+      sourceAssetSlug: source.slug,
+      whyRecommendedJson: seed.whyRecommended,
+      briefJson: brief as unknown as Prisma.InputJsonValue,
+      plannerPromptVersion: CONTENT_PLANNER_PROMPT_VERSION,
+      createdByEmail: input.createdByEmail,
+    },
+    select: { id: true, slug: true },
+  });
+
+  return { ok: true, id: row.id, slug: row.slug, created: true };
+}
+
+export async function recordManualSearchPerformance(input: {
+  id: string;
+  capture: {
+    windowStart: string;
+    windowEnd: string;
+    clicks: number | null;
+    impressions: number | null;
+    ctr: number | null;
+    averagePosition: number | null;
+    queryDataStatus: "NO_DATA" | "NOT_CAPTURED" | "INSUFFICIENT_DATA" | "AVAILABLE";
+    notes?: string;
+  };
+  updatedByEmail: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) {
+    return { ok: false, error: "Plan not found" };
+  }
+  if (existing.status !== "PUBLISHED" && existing.status !== "MONITORING") {
+    return {
+      ok: false,
+      error: "Search performance capture requires PUBLISHED (or MONITORING) plan.",
+    };
+  }
+
+  const {
+    deriveMeasurementAndLabel,
+    parsePerformanceJson,
+    performanceStateAfterPublish,
+    SEO_PAGE_IMPLEMENTED_LINKS,
+    SEO_PAGE_RECOMMENDED_LINKS,
+    SEO_SERVICE_PAGE_PUBLIC_SLUG,
+  } = await import("@/lib/growth/content-performance");
+
+  let state = parsePerformanceJson(existing.performanceJson);
+  if (!state) {
+    state = performanceStateAfterPublish({
+      previous: null,
+      publishedAt: existing.publishedAt ?? new Date(),
+      publicContentSlug:
+        existing.slug === "seo-service-page-v1"
+          ? SEO_SERVICE_PAGE_PUBLIC_SLUG
+          : existing.slug.replace(/-/g, "_").slice(0, 80),
+      recommendedLinks: [...SEO_PAGE_RECOMMENDED_LINKS],
+      implementedLinks: [...SEO_PAGE_IMPLEMENTED_LINKS],
+    });
+  }
+
+  const capture = {
+    ...input.capture,
+    capturedAt: new Date().toISOString(),
+    evidenceKind: "OBSERVED" as const,
+  };
+  const searchEvidence = [...state.searchEvidence, capture].slice(-24);
+  const derived = deriveMeasurementAndLabel({
+    publishedAt: existing.publishedAt ?? state.publishedAt,
+    latestSearch: capture,
+  });
+
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data: {
+      performanceJson: {
+        ...state,
+        searchEvidence,
+        measurementState: derived.measurementState,
+        performanceLabel: derived.performanceLabel,
+      } as unknown as Prisma.InputJsonValue,
       updatedByEmail: input.updatedByEmail,
     },
   });

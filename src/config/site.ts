@@ -43,6 +43,13 @@ export const siteConfig = {
         },
 
         {
+          name: "SEO",
+          description:
+            "Practical SEO foundations for small businesses — without ranking guarantees.",
+          href: "/seo",
+        },
+
+        {
           name: "AI Automation",
           description:
             "Use AI and automation to reduce repetitive work and improve operations.",
