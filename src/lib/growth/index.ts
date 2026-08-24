@@ -268,3 +268,10 @@ export {
   CONTENT_DISTRIBUTION_VERSION,
   buildSeoServiceDistributionPlan,
 } from "./content-distribution";
+export {
+  CONTENT_REVIEW_VERSION,
+  buildDueReviewQueue,
+  recommendReviewDecision,
+  validateSearchCtr,
+  type ContentReviewDecision,
+} from "./content-review";

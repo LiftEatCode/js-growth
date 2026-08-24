@@ -54,6 +54,8 @@ import {
 } from "@/lib/growth";
 import { getFacebookOrganicAttributionSummary } from "@/lib/growth/facebook-attribution-metrics";
 import { summarizeGrowthContentRecords } from "@/lib/growth/content-store";
+import { listContentPlans } from "@/lib/growth/content-plan-store";
+import { buildDueReviewQueue } from "@/lib/growth/content-review";
 import { listGrowthExperimentDecisions } from "@/lib/growth/experiment-decisions";
 import {
   FACEBOOK_30_DAY_TARGETS,
@@ -193,6 +195,7 @@ export default async function GrowthDashboardPage() {
     facebookAttribution,
     experimentDecisions,
     searchOpportunities,
+    contentPlans,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -202,7 +205,22 @@ export default async function GrowthDashboardPage() {
     getFacebookOrganicAttributionSummary(current),
     listGrowthExperimentDecisions(10),
     listSearchOpportunities(50),
+    listContentPlans(40),
   ]);
+
+  const contentDueReviews = buildDueReviewQueue({
+    plans: contentPlans.map((p) => ({
+      id: p.id,
+      slug: p.slug,
+      status: p.status,
+      publishedUrl: p.publishedUrl,
+      publishedAt: p.publishedAt,
+      performanceJson: p.performanceJson,
+    })),
+  });
+  const publishedMeasuring = contentPlans.filter(
+    (p) => p.status === "PUBLISHED" || p.status === "MONITORING",
+  ).length;
 
   const searchSnapshots = snapshots.filter((s) => s.source === "SEARCH_CONSOLE");
   const latestSearchSnapshot = searchSnapshots[0] ?? null;
@@ -297,6 +315,17 @@ export default async function GrowthDashboardPage() {
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
+
+        <Card className="mt-6 space-y-2 p-5">
+          <p className="text-sm font-semibold text-brand">
+            Content performance review (compact)
+          </p>
+          <p className="text-xs text-muted">
+            Reviews due: {contentDueReviews.length} · Published/measuring assets:{" "}
+            {publishedMeasuring} · Refresh only after human evidence decision.
+            Details on Content Intelligence.
+          </p>
+        </Card>
 
         <section className="mt-10 space-y-4">
           <div className="flex items-center gap-2">

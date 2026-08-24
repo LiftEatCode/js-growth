@@ -25,3 +25,9 @@ Weekly (or biweekly while Stage 0).
 - Export zeros ≠ known zeros without context.
 - Facebook metrics stay separate.
 - No ranking guarantees in notes or client updates.
+
+## Sprint 8 — page reviews
+
+Operator checkpoints (`DAY_7` / `DAY_28` / `DAY_90`) are **not** ranking SLAs.
+Use `/reports/growth/content` due queue + Record Review. Prefer KEEP_MONITORING when data is thin.
+See [content-review.md](content-review.md).

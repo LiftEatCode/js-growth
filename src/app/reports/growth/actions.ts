@@ -851,3 +851,92 @@ export async function recordContentSearchPerformanceAction(
     message: "Search performance capture saved (0 OpenAI). OBSERVED evidence only.",
   };
 }
+
+export async function updateContentIndexingStateAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  const indexingState = String(formData.get("indexingState") ?? "").trim();
+  if (!planId || !indexingState) {
+    return { success: false, message: "planId and indexingState required." };
+  }
+  const { updateContentIndexingState } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await updateContentIndexingState({
+    id: planId,
+    indexingState,
+    updatedByEmail: session.email,
+  });
+  if (!result.ok) return { success: false, message: result.error };
+  revalidatePath("/reports/growth/content");
+  revalidatePath("/reports/growth");
+  return {
+    success: true,
+    message: `Indexing state → ${indexingState} (0 OpenAI). Not auto-claimed.`,
+  };
+}
+
+export async function recordContentReviewAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  const checkpoint = String(formData.get("checkpoint") ?? "").trim();
+  const decision = String(formData.get("decision") ?? "").trim();
+  const notes = String(formData.get("notes") ?? "").trim() || undefined;
+  if (!planId || !checkpoint || !decision) {
+    return {
+      success: false,
+      message: "planId, checkpoint, and decision required.",
+    };
+  }
+  const { recordContentPerformanceReview } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await recordContentPerformanceReview({
+    id: planId,
+    checkpoint,
+    decision,
+    notes,
+    updatedByEmail: session.email,
+  });
+  if (!result.ok) return { success: false, message: result.error };
+  revalidatePath("/reports/growth/content");
+  revalidatePath("/reports/growth");
+  return {
+    success: true,
+    message: `Review recorded: ${result.decision} (0 OpenAI). History append-only.`,
+  };
+}
+
+export async function createRefreshPlanFromReviewAction(
+  _previous: ContentPlanActionState,
+  formData: FormData,
+): Promise<ContentPlanActionState> {
+  const session = await requireInternalSession();
+  const planId = String(formData.get("planId") ?? "").trim();
+  const reason =
+    String(formData.get("reason") ?? "").trim() ||
+    "Human refresh after performance review";
+  if (!planId) return { success: false, message: "Missing plan id." };
+  const { createRefreshPlanFromReview } = await import(
+    "@/lib/growth/content-plan-store"
+  );
+  const result = await createRefreshPlanFromReview({
+    sourcePlanId: planId,
+    createdByEmail: session.email,
+    reason,
+  });
+  if (!result.ok) return { success: false, message: result.error };
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: result.created
+      ? `Refresh plan ${result.slug} created (0 OpenAI). Does not mutate live pages.`
+      : `Refresh plan ${result.slug} already existed.`,
+  };
+}

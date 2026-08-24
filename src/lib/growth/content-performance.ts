@@ -26,6 +26,7 @@ export const CONTENT_INDEXING_STATES = [
   "PUBLISHED_NOT_VERIFIED",
   "INDEXING_REQUESTED",
   "INDEXED",
+  "INDEXING_ISSUE",
   "UNKNOWN",
 ] as const;
 export type ContentIndexingState = (typeof CONTENT_INDEXING_STATES)[number];

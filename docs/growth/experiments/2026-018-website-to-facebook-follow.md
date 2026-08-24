@@ -1,11 +1,15 @@
 # GROWTH-EXP-2026-018 — Website → Facebook follow loop
 
-**Status:** QUEUED (Sprint 7 decision)  
+**Status:** QUEUED (Sprint 8 confirmation)  
 **Direction:** WEBSITE → FACEBOOK (reverse of primary Sprint 3 loop)
 
-## Sprint 7 decision
+## Sprint 8 decision
 
-Leave 018 queued. Soft thank-you / contact-success follow CTAs are still the right placements, but shipping them without a clear measurement event and UX review would be checkbox theater. Site already exposes Facebook via `sameAs`. Revisit in Sprint 8 after `/seo` indexing + early distribution posts.
+Leave 018 queued. `/seo` may still be awaiting indexing/evidence; there is still no dedicated privacy-safe “follow CTA clicked” event wiring on thank-you/contact-success, and shipping a soft link without measurement would not improve the experiment. Revisit in Sprint 9 after first INDEXED + early Search windows and a scoped CTA event design.
+
+## Follower attribution safety
+
+Do **not** claim website placement caused follower gain. If a CTA is added later, measure **website follow CTA click**, not “follower acquired,” unless Facebook evidence supports it.
 
 ## Objective
 

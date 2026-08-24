@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–7** (Measurement → Audit Funnel → Facebook Engine → 30-day Execution → Search Intelligence → Content Intelligence → Publishing & Performance Feedback) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–8** (Measurement → … → Publishing & Performance → Content Review) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -263,12 +263,19 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - Publish `/seo` from human-governed Sprint 6 plan; sitemap/nav/links; performanceJson lifecycle
 - Recommendation feedback + distribution derivatives; no auto-publish; Baseline V1 unchanged
 
-### Growth Sprint 8 — (recommended next)
+### Growth Sprint 8 — Content Performance Review & Optimization Engine V1 ✅
 
-- First measured review windows for `/seo` (Search + GA4 + first-party)
-- Optional GSC API only if manual capture proves too costly
-- Soft Website→Facebook (018) if thank-you UX is ready
-- Content refresh candidates from real evidence only
+- Research: `docs/research/content-performance-review-2026.md`
+- `CONTENT_REVIEW_VERSION = 1`: windows, evidence strength, decisions, due queue, human review history
+- Prefer KEEP_MONITORING / INSUFFICIENT_DATA; refresh blocked without evidence
+- Experiment 018 remains QUEUED; Facebook Sprint 4 window untouched
+
+### Growth Sprint 9 — (recommended next)
+
+- First real GSC windows for `/seo` after INDEXED
+- Optional AI advisory review (FACT/INTERPRETATION/HYPOTHESIS labels) on explicit click
+- Soft Experiment 018 if measurement event is ready
+- Supporting content briefs only after directional evidence
 
 ---
 

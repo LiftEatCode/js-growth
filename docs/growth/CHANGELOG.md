@@ -4,6 +4,16 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-23 — Growth Sprint 8 (Content Performance Review & Optimization Engine V1)
+
+- Research: `docs/research/content-performance-review-2026.md`
+- `CONTENT_REVIEW_VERSION = 1` on existing performance contract (no Baseline rewrite)
+- Review windows, evidence strength, decisions, due queue, CTR validation, refresh-plan workflow
+- Append-only review history in `performanceJson`; UI on `/reports/growth/content`
+- Prefer KEEP_MONITORING / INSUFFICIENT_DATA; block weak REFRESH
+- Experiment 018 remains QUEUED
+- OpenAI/Meta/GSC API = 0 on dashboard + record review
+
 ## 2026-08-23 — Growth Sprint 7 (Content Publishing, Distribution & Performance Feedback V1)
 
 - Research: `docs/research/content-publishing-performance-2026.md`

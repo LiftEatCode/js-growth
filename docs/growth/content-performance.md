@@ -27,9 +27,13 @@ Canonical draft authority: `humanDraftJson` > `generationJson`. AI candidate is 
 
 `NOT_PUBLISHED` → `PUBLISHED_AWAITING_DATA` → `EARLY_DATA` → `MEASURING` → `ENOUGH_DATA_FOR_REVIEW` → optional `REFRESH_CANDIDATE`
 
-Indexing states: `PUBLISHED_NOT_VERIFIED` | `INDEXING_REQUESTED` | `INDEXED` | …
+Indexing states: `PUBLISHED_NOT_VERIFIED` | `INDEXING_REQUESTED` | `INDEXED` | `INDEXING_ISSUE` | …
 
 Pre-measurement metrics use **NO_DATA**, not fabricated historical zeros.
+
+## Review (Sprint 8)
+
+See [content-review.md](content-review.md). Reviews append to `performanceJson.reviewHistory` and never auto-mutate production pages.
 
 ## Evidence kinds
 

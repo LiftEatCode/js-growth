@@ -759,6 +759,25 @@ export async function recordManualSearchPerformance(input: {
     SEO_PAGE_RECOMMENDED_LINKS,
     SEO_SERVICE_PAGE_PUBLIC_SLUG,
   } = await import("@/lib/growth/content-performance");
+  const { validateSearchCtr } = await import("@/lib/growth/content-review");
+
+  const ctrCheck = validateSearchCtr({
+    clicks: input.capture.clicks,
+    impressions: input.capture.impressions,
+    ctr: input.capture.ctr,
+  });
+  if (!ctrCheck.ok) {
+    return { ok: false, error: ctrCheck.warning ?? "CTR validation failed" };
+  }
+  if (
+    input.capture.averagePosition != null &&
+    !(input.capture.averagePosition > 0)
+  ) {
+    return {
+      ok: false,
+      error: "averagePosition must be a positive number when captured.",
+    };
+  }
 
   let state = parsePerformanceJson(existing.performanceJson);
   if (!state) {
@@ -798,4 +817,276 @@ export async function recordManualSearchPerformance(input: {
     },
   });
   return { ok: true };
+}
+
+export async function updateContentIndexingState(input: {
+  id: string;
+  indexingState: string;
+  updatedByEmail: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const { REVIEW_INDEXING_STATES } = await import("@/lib/growth/content-review");
+  if (
+    !(REVIEW_INDEXING_STATES as readonly string[]).includes(input.indexingState)
+  ) {
+    return { ok: false, error: "Invalid indexing state" };
+  }
+
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) return { ok: false, error: "Plan not found" };
+  if (existing.status !== "PUBLISHED" && existing.status !== "MONITORING") {
+    return { ok: false, error: "Indexing state requires published plan." };
+  }
+
+  const {
+    parsePerformanceJson,
+    performanceStateAfterPublish,
+    SEO_PAGE_IMPLEMENTED_LINKS,
+    SEO_PAGE_RECOMMENDED_LINKS,
+    SEO_SERVICE_PAGE_PUBLIC_SLUG,
+  } = await import("@/lib/growth/content-performance");
+
+  let state = parsePerformanceJson(existing.performanceJson);
+  if (!state) {
+    state = performanceStateAfterPublish({
+      previous: null,
+      publishedAt: existing.publishedAt ?? new Date(),
+      publicContentSlug:
+        existing.slug === "seo-service-page-v1"
+          ? SEO_SERVICE_PAGE_PUBLIC_SLUG
+          : existing.slug.replace(/-/g, "_").slice(0, 80),
+      recommendedLinks: [...SEO_PAGE_RECOMMENDED_LINKS],
+      implementedLinks: [...SEO_PAGE_IMPLEMENTED_LINKS],
+    });
+  }
+
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data: {
+      performanceJson: {
+        ...state,
+        indexingState: input.indexingState,
+      } as unknown as Prisma.InputJsonValue,
+      updatedByEmail: input.updatedByEmail,
+    },
+  });
+  return { ok: true };
+}
+
+export async function recordContentPerformanceReview(input: {
+  id: string;
+  checkpoint: string;
+  decision: string;
+  notes?: string;
+  updatedByEmail: string;
+}): Promise<{ ok: true; decision: string } | { ok: false; error: string }> {
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { id: input.id },
+  });
+  if (!existing) return { ok: false, error: "Plan not found" };
+
+  const {
+    appendReviewHistory,
+    canReviewPerformance,
+    computeEvidenceStrength,
+    isContentReviewCheckpoint,
+    isContentReviewDecision,
+    recommendReviewDecision,
+    refreshBlockedWithoutEvidence,
+  } = await import("@/lib/growth/content-review");
+  const { parsePerformanceJson } = await import(
+    "@/lib/growth/content-performance"
+  );
+
+  if (!isContentReviewCheckpoint(input.checkpoint)) {
+    return { ok: false, error: "Invalid checkpoint" };
+  }
+  if (!isContentReviewDecision(input.decision)) {
+    return { ok: false, error: "Invalid decision" };
+  }
+
+  const state = parsePerformanceJson(existing.performanceJson);
+  if (!state) {
+    return { ok: false, error: "performanceJson missing — mark published first." };
+  }
+
+  const eligible = canReviewPerformance({
+    planStatus: existing.status,
+    measurementState: state.measurementState,
+    publishedAt: state.publishedAt,
+  });
+  if (!eligible.ok) {
+    return { ok: false, error: eligible.reason };
+  }
+
+  const latestSearch =
+    state.searchEvidence[state.searchEvidence.length - 1] ?? null;
+  const strength = computeEvidenceStrength({
+    publishedAt: state.publishedAt,
+    latestSearch,
+    indexingState: state.indexingState,
+  });
+  const recommended = recommendReviewDecision({
+    publishedAt: state.publishedAt,
+    measurementState: state.measurementState,
+    performanceLabel: state.performanceLabel,
+    indexingState: state.indexingState,
+    evidenceStrength: strength,
+    latestSearch,
+  });
+
+  const decision = input.decision;
+  const refreshGate = refreshBlockedWithoutEvidence({
+    decision,
+    evidenceStrength: strength,
+    performanceLabel: state.performanceLabel,
+  });
+  if (refreshGate.blocked) {
+    return { ok: false, error: refreshGate.reason };
+  }
+
+  const review = {
+    reviewVersion: 1 as const,
+    id: `rev_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+    checkpoint: input.checkpoint,
+    createdAt: new Date().toISOString(),
+    createdByEmail: input.updatedByEmail,
+    decision,
+    evidenceStrength: strength,
+    performanceLabel: state.performanceLabel,
+    measurementState: state.measurementState,
+    indexingState: state.indexingState,
+    observedFacts: recommended.observedFacts,
+    interpretations: recommended.interpretations,
+    hypotheses: recommended.hypotheses,
+    recommendations: recommended.recommendations,
+    notes: input.notes,
+    searchWindowStart: latestSearch?.windowStart,
+    searchWindowEnd: latestSearch?.windowEnd,
+    comparedToPrevious: false,
+  };
+
+  const nextState = appendReviewHistory(state, review);
+
+  await prisma.growthContentPlan.update({
+    where: { id: input.id },
+    data: {
+      performanceJson: nextState as unknown as Prisma.InputJsonValue,
+      updatedByEmail: input.updatedByEmail,
+    },
+  });
+
+  if (existing.searchOpportunitySlug) {
+    const opportunityUpdate: {
+      notes: string;
+      updatedByEmail: string;
+      status?: "MONITORING";
+    } = {
+      notes: `Review ${decision} @ ${input.checkpoint}; strength=${strength}. Original provenance preserved.`,
+      updatedByEmail: input.updatedByEmail,
+    };
+    if (decision === "KEEP_MONITORING" || decision === "NO_CHANGE") {
+      opportunityUpdate.status = "MONITORING";
+    }
+    await prisma.growthSearchOpportunity.updateMany({
+      where: { slug: existing.searchOpportunitySlug },
+      data: opportunityUpdate,
+    });
+  }
+
+  return { ok: true, decision };
+}
+
+export async function createRefreshPlanFromReview(input: {
+  sourcePlanId: string;
+  createdByEmail: string;
+  reason: string;
+}): Promise<
+  | { ok: true; id: string; slug: string; created: boolean }
+  | { ok: false; error: string }
+> {
+  const source = await prisma.growthContentPlan.findUnique({
+    where: { id: input.sourcePlanId },
+  });
+  if (!source) return { ok: false, error: "Source plan not found" };
+  if (source.status !== "PUBLISHED" && source.status !== "MONITORING") {
+    return { ok: false, error: "Refresh requires published source asset." };
+  }
+
+  const { getReviewHistory } = await import("@/lib/growth/content-review");
+  const { parsePerformanceJson } = await import(
+    "@/lib/growth/content-performance"
+  );
+  const state = parsePerformanceJson(source.performanceJson);
+  const history = getReviewHistory(state);
+  const last = history[history.length - 1];
+  if (!last || last.decision !== "REFRESH_CONTENT") {
+    return {
+      ok: false,
+      error:
+        "Record a REFRESH_CONTENT review decision before creating a refresh plan.",
+    };
+  }
+
+  const slug = `refresh-${source.slug}`.slice(0, 80);
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { slug },
+    select: { id: true },
+  });
+  if (existing) {
+    return { ok: true, id: existing.id, slug, created: false };
+  }
+
+  const seed: SeedContentPlan = {
+    slug,
+    contentType: source.contentType as SeedContentPlan["contentType"],
+    sourceType: "CONTENT_REFRESH",
+    sourceOpportunitySlug: source.searchOpportunitySlug,
+    topic: source.topic as SeedContentPlan["topic"],
+    workingTitle: `Refresh: ${source.workingTitle}`.slice(0, 200),
+    audience: source.audience,
+    primaryObjective:
+      source.primaryObjective as SeedContentPlan["primaryObjective"],
+    searchIntent:
+      (source.searchIntent as SeedContentPlan["searchIntent"]) ?? null,
+    pageType: (source.pageType as SeedContentPlan["pageType"]) ?? null,
+    targetServicePath: source.targetServicePath ?? source.publishedUrl,
+    publisher: source.publisher as SeedContentPlan["publisher"],
+    priorityBand: "NEXT",
+    whyRecommended: [
+      input.reason.slice(0, 300),
+      `Source asset: ${source.slug}`,
+      `Review id: ${last.id}`,
+      "Do not create a duplicate URL — refresh existing published path.",
+    ],
+  };
+
+  const brief = buildDeterministicBrief(seed);
+  const row = await prisma.growthContentPlan.create({
+    data: {
+      slug: seed.slug,
+      contentType: seed.contentType,
+      sourceType: seed.sourceType,
+      status: "BRIEF_READY",
+      priorityBand: seed.priorityBand,
+      publisher: seed.publisher,
+      topic: seed.topic,
+      workingTitle: seed.workingTitle,
+      audience: seed.audience,
+      primaryObjective: seed.primaryObjective,
+      searchIntent: seed.searchIntent,
+      pageType: seed.pageType,
+      targetServicePath: seed.targetServicePath,
+      searchOpportunitySlug: seed.sourceOpportunitySlug,
+      sourceAssetSlug: source.slug,
+      whyRecommendedJson: seed.whyRecommended,
+      briefJson: brief as unknown as Prisma.InputJsonValue,
+      plannerPromptVersion: CONTENT_PLANNER_PROMPT_VERSION,
+      createdByEmail: input.createdByEmail,
+    },
+    select: { id: true, slug: true },
+  });
+
+  return { ok: true, id: row.id, slug: row.slug, created: true };
 }

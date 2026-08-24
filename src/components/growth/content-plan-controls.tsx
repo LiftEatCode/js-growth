@@ -7,13 +7,16 @@ import {
   applyContentCandidateAction,
   approveContentPlanAction,
   createFacebookDerivativePlanAction,
+  createRefreshPlanFromReviewAction,
   discardContentCandidateAction,
   generateContentDraftAction,
   markContentPlanPublishedAction,
+  recordContentReviewAction,
   recordContentSearchPerformanceAction,
   reopenContentPlanForReviewAction,
   saveContentHumanDraftAction,
   seedInitialContentPlansAction,
+  updateContentIndexingStateAction,
   type ContentPlanActionState,
 } from "@/app/reports/growth/actions";
 import { Button } from "@/components/ui";
@@ -55,6 +58,8 @@ export function ContentPlanControls({
   publishedUrl,
   performanceSummary,
   distributionPreview,
+  suggestedReviewDecision,
+  reviewHistorySummary,
 }: {
   planId: string;
   status: string;
@@ -66,6 +71,8 @@ export function ContentPlanControls({
   publishedUrl?: string | null;
   performanceSummary?: string | null;
   distributionPreview?: string | null;
+  suggestedReviewDecision?: string | null;
+  reviewHistorySummary?: string | null;
 }) {
   const [genState, genAction, genPending] = useActionState(
     generateContentDraftAction,
@@ -103,11 +110,24 @@ export function ContentPlanControls({
     recordContentSearchPerformanceAction,
     initial,
   );
+  const [indexState, indexAction, indexPending] = useActionState(
+    updateContentIndexingStateAction,
+    initial,
+  );
+  const [reviewState, reviewAction, reviewPending] = useActionState(
+    recordContentReviewAction,
+    initial,
+  );
+  const [refreshState, refreshAction, refreshPending] = useActionState(
+    createRefreshPlanFromReviewAction,
+    initial,
+  );
 
   const approvedLocked = status === "APPROVED" || status === "PUBLISHED";
   const aiDisabled = genPending || aiBusy || approvedLocked;
   const canPublish = status === "APPROVED";
   const isPublished = status === "PUBLISHED" || status === "MONITORING";
+  const suggestedDecision = suggestedReviewDecision ?? "KEEP_MONITORING";
 
   return (
     <div className="space-y-4 border-t border-border pt-4">
@@ -424,6 +444,125 @@ export function ContentPlanControls({
           </Button>
           <p role="status" className="text-xs text-muted">
             {searchState.message}
+          </p>
+        </form>
+      ) : null}
+
+      {isPublished ? (
+        <form
+          action={indexAction}
+          className="flex flex-wrap items-end gap-2 rounded-xl border border-border p-3"
+        >
+          <input type="hidden" name="planId" value={planId} />
+          <label className="block space-y-1 text-xs">
+            <span className="font-medium">Indexing state (manual / GSC)</span>
+            <select
+              name="indexingState"
+              defaultValue="PUBLISHED_NOT_VERIFIED"
+              disabled={indexPending}
+              className="flex h-9 rounded-lg border border-border px-2 text-xs"
+            >
+              <option value="PUBLISHED_NOT_VERIFIED">PUBLISHED_NOT_VERIFIED</option>
+              <option value="INDEXING_REQUESTED">INDEXING_REQUESTED</option>
+              <option value="INDEXED">INDEXED</option>
+              <option value="INDEXING_ISSUE">INDEXING_ISSUE</option>
+              <option value="UNKNOWN">UNKNOWN</option>
+            </select>
+          </label>
+          <Button type="submit" variant="outline" disabled={indexPending}>
+            {indexPending ? "Saving…" : "Save indexing state"}
+          </Button>
+          <p role="status" className="w-full text-xs text-muted">
+            {indexState.message}
+          </p>
+        </form>
+      ) : null}
+
+      {isPublished ? (
+        <form
+          action={reviewAction}
+          className="space-y-2 rounded-xl border border-border bg-slate-50/80 p-3"
+        >
+          <p className="text-xs font-semibold text-brand">
+            Record content review (human decision · 0 OpenAI)
+          </p>
+          <p className="text-[11px] text-muted">
+            Suggested decision from evidence rules:{" "}
+            <code>{suggestedDecision}</code>. Prefer KEEP_MONITORING when data is
+            thin. Windows are operator checkpoints — not ranking SLAs.
+          </p>
+          <input type="hidden" name="planId" value={planId} />
+          <div className="grid gap-2 sm:grid-cols-2">
+            <select
+              name="checkpoint"
+              defaultValue="INDEXING_CHECK"
+              disabled={reviewPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            >
+              <option value="POST_PUBLISH_QA">POST_PUBLISH_QA</option>
+              <option value="INDEXING_CHECK">INDEXING_CHECK</option>
+              <option value="DAY_7">DAY_7</option>
+              <option value="DAY_28">DAY_28</option>
+              <option value="DAY_90">DAY_90</option>
+              <option value="MANUAL_REVIEW">MANUAL_REVIEW</option>
+            </select>
+            <select
+              name="decision"
+              defaultValue={suggestedDecision}
+              disabled={reviewPending}
+              className="h-9 rounded-lg border border-border px-2 text-xs"
+            >
+              <option value="KEEP_MONITORING">KEEP_MONITORING</option>
+              <option value="NO_CHANGE">NO_CHANGE</option>
+              <option value="DISTRIBUTE_MORE">DISTRIBUTE_MORE</option>
+              <option value="ADD_INTERNAL_LINKS">ADD_INTERNAL_LINKS</option>
+              <option value="IMPROVE_CTA">IMPROVE_CTA</option>
+              <option value="EXPAND_CONTENT">EXPAND_CONTENT</option>
+              <option value="REFRESH_CONTENT">REFRESH_CONTENT</option>
+              <option value="REPURPOSE">REPURPOSE</option>
+              <option value="CONSOLIDATE">CONSOLIDATE</option>
+              <option value="ARCHIVE">ARCHIVE</option>
+              <option value="INVESTIGATE">INVESTIGATE</option>
+            </select>
+          </div>
+          <textarea
+            name="notes"
+            rows={2}
+            placeholder="Optional notes — FACT / INTERPRETATION / HYPOTHESIS preferred"
+            disabled={reviewPending}
+            className="w-full rounded-lg border border-border px-2 py-1 text-xs"
+          />
+          <Button type="submit" disabled={reviewPending}>
+            {reviewPending ? "Saving…" : "Record review"}
+          </Button>
+          <p role="status" className="text-xs text-muted">
+            {reviewState.message}
+          </p>
+          {reviewHistorySummary ? (
+            <pre className="max-h-32 overflow-auto whitespace-pre-wrap font-mono text-[11px] text-muted">
+              {reviewHistorySummary}
+            </pre>
+          ) : null}
+        </form>
+      ) : null}
+
+      {isPublished ? (
+        <form action={refreshAction} className="flex flex-wrap items-center gap-2">
+          <input type="hidden" name="planId" value={planId} />
+          <input
+            type="hidden"
+            name="reason"
+            value="Human refresh after REFRESH_CONTENT review"
+          />
+          <Button
+            type="submit"
+            variant="outline"
+            disabled={refreshPending}
+          >
+            {refreshPending ? "Creating…" : "Create refresh plan (after REFRESH decision)"}
+          </Button>
+          <p role="status" className="text-xs text-muted">
+            {refreshState.message}
           </p>
         </form>
       ) : null}

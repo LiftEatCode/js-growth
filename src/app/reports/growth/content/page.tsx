@@ -19,6 +19,13 @@ import {
   CONTENT_PERFORMANCE_VERSION,
   parsePerformanceJson,
 } from "@/lib/growth/content-performance";
+import {
+  CONTENT_REVIEW_VERSION,
+  buildDueReviewQueue,
+  computeEvidenceStrength,
+  getReviewHistory,
+  recommendReviewDecision,
+} from "@/lib/growth/content-review";
 import { listContentPlans } from "@/lib/growth/content-plan-store";
 import { requireInternalSession } from "@/lib/internal-auth";
 
@@ -37,6 +44,16 @@ export default async function GrowthContentIntelligencePage() {
   const recommended = recommendNextContent();
   const acceptance =
     plans.find((p) => p.slug === FIRST_ACCEPTANCE_PLAN_SLUG) ?? null;
+  const dueReviews = buildDueReviewQueue({
+    plans: plans.map((p) => ({
+      id: p.id,
+      slug: p.slug,
+      status: p.status,
+      publishedUrl: p.publishedUrl,
+      publishedAt: p.publishedAt,
+      performanceJson: p.performanceJson,
+    })),
+  });
 
   return (
     <main className="min-h-screen bg-slate-50/70">
@@ -61,11 +78,30 @@ export default async function GrowthContentIntelligencePage() {
               human review. content-intelligence-v{CONTENT_INTELLIGENCE_VERSION}.
               Dashboard load OpenAI calls: <strong>0</strong>. No auto-publish.
               No mass generation. content-performance-v
-              {CONTENT_PERFORMANCE_VERSION}.
+              {CONTENT_PERFORMANCE_VERSION} · content-review-v
+              {CONTENT_REVIEW_VERSION}.
             </p>
           </div>
           <SeedContentPlansForm />
         </div>
+
+        {dueReviews.length > 0 ? (
+          <section className="mt-8">
+            <Card className="space-y-2 p-5">
+              <p className="text-sm font-semibold text-brand">
+                Due review queue ({dueReviews.length})
+              </p>
+              <ul className="list-disc space-y-1 pl-5 text-xs text-muted">
+                {dueReviews.slice(0, 12).map((item) => (
+                  <li key={`${item.planId}-${item.kind}-${item.dueAt}`}>
+                    {item.kind} · {item.slug} · due{" "}
+                    {item.dueAt.slice(0, 10)} — {item.reason}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </section>
+        ) : null}
 
         <section className="mt-8 space-y-3">
           <h2 className="font-heading text-xl font-semibold text-brand">
@@ -130,23 +166,61 @@ export default async function GrowthContentIntelligencePage() {
                 plan.aiBusyUntil != null &&
                 new Date(plan.aiBusyUntil).getTime() > Date.now();
               const performance = parsePerformanceJson(plan.performanceJson);
+              const latestSearch =
+                performance?.searchEvidence[
+                  performance.searchEvidence.length - 1
+                ] ?? null;
+              const strength = performance
+                ? computeEvidenceStrength({
+                    publishedAt: performance.publishedAt,
+                    latestSearch,
+                    indexingState: performance.indexingState,
+                  })
+                : "NONE";
+              const suggestion = performance
+                ? recommendReviewDecision({
+                    publishedAt: performance.publishedAt,
+                    measurementState: performance.measurementState,
+                    performanceLabel: performance.performanceLabel,
+                    indexingState: performance.indexingState,
+                    evidenceStrength: strength,
+                    latestSearch,
+                  })
+                : null;
+              const history = getReviewHistory(performance);
               const performanceSummary = performance
                 ? JSON.stringify(
                     {
                       measurementState: performance.measurementState,
                       indexingState: performance.indexingState,
                       performanceLabel: performance.performanceLabel,
+                      evidenceStrength: strength,
                       publishedAt: performance.publishedAt,
                       ga4Status: performance.ga4Status,
                       searchCaptures: performance.searchEvidence.length,
-                      implementedLinks: performance.implementedLinks,
-                      recommendedLinks: performance.recommendedLinks,
+                      nextReviewDueAt: (
+                        performance as { nextReviewDueAt?: string }
+                      ).nextReviewDueAt,
+                      suggestedDecision: suggestion?.decision,
                     },
                     null,
                     2,
                   )
                 : plan.status === "PUBLISHED"
                   ? "PUBLISHED — performanceJson pending operator refresh"
+                  : null;
+              const reviewHistorySummary =
+                history.length > 0
+                  ? JSON.stringify(
+                      history.slice(-5).map((r) => ({
+                        at: r.createdAt,
+                        checkpoint: r.checkpoint,
+                        decision: r.decision,
+                        strength: r.evidenceStrength,
+                      })),
+                      null,
+                      2,
+                    )
                   : null;
               const distributionPreview =
                 plan.slug === FIRST_ACCEPTANCE_PLAN_SLUG ||
@@ -218,6 +292,8 @@ export default async function GrowthContentIntelligencePage() {
                     publishedUrl={plan.publishedUrl}
                     performanceSummary={performanceSummary}
                     distributionPreview={distributionPreview}
+                    suggestedReviewDecision={suggestion?.decision ?? null}
+                    reviewHistorySummary={reviewHistorySummary}
                   />
                 </Card>
               );

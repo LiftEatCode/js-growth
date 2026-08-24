@@ -1,6 +1,6 @@
 # Growth Phase — Documentation Index
 
-Growth Sprints 1–7 establish measurement, audit conversion, Facebook organic distribution/execution, Search Intelligence, Content Intelligence, and **publishing + performance feedback**.
+Growth Sprints 1–8 establish measurement through content review: publish → observe → interpret carefully → human decide.
 
 **Principle:** Do not optimize what we cannot measure. For content: decide → develop → human approve → publish → observe → recommend (never auto-optimize production pages).
 
@@ -28,10 +28,13 @@ Growth Sprints 1–7 establish measurement, audit conversion, Facebook organic d
 | [content-intelligence.md](content-intelligence.md) | **CONTENT_INTELLIGENCE_VERSION = 1** |
 | [content-development-workflow.md](content-development-workflow.md) | Brief → draft → approve → publish |
 | [content-performance.md](content-performance.md) | **CONTENT_PERFORMANCE_VERSION = 1** |
+| [content-review.md](content-review.md) | **CONTENT_REVIEW_VERSION = 1** |
+| [content-learning.md](content-learning.md) | Small-sample learning safeguards |
 | [content-distribution.md](content-distribution.md) | Deterministic distribution recommendations |
 | [content-quality-review.md](content-quality-review.md) | Claim safety + readiness |
 | [content-sprint6-production-acceptance.md](content-sprint6-production-acceptance.md) | Sprint 6 acceptance |
 | [content-sprint7-production-acceptance.md](content-sprint7-production-acceptance.md) | Sprint 7 acceptance |
+| [content-sprint8-production-acceptance.md](content-sprint8-production-acceptance.md) | Sprint 8 acceptance |
 | [blog-google-visibility-distribution.md](blog-google-visibility-distribution.md) | FB/GBP/video handoff for visibility article |
 | [experiments/](experiments/) | Sprint 2 (001–004) + Sprint 3 Facebook (010–018) |
 | [../research/audit-conversion-funnel-2026.md](../research/audit-conversion-funnel-2026.md) | Sprint 2 research |
