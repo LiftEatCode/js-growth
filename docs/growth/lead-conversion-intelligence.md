@@ -25,7 +25,9 @@ VISITOR → QUALIFIED_VISIT → AUDIT_STARTED → AUDIT_SUBMITTED → AUDIT_COMP
 
 Inbound `Lead` and outbound `Prospect` are never summed into one “leads” KPI.
 
-QUALIFIED_VISIT and CONTACT remain **NOT_CAPTURED** in this first-party join (GA4 / email-only contact attribution).
+QUALIFIED_VISIT remains **NOT_CAPTURED** in this first-party join (GA4).
+
+**CONTACT** attributions are persisted on `ContactSubmission` (Sprint 10). Contact does not auto-create CRM `Lead`.
 
 ## Sample safety (JS Solutions operating rules)
 
@@ -39,11 +41,11 @@ Rates require denominator ≥ 5. Unknown ≠ zero.
 
 ## Attribution
 
-Reuse `attribution-v1`. Strength: DIRECT_FIRST_PARTY · STRONG · DIRECTIONAL · INFERRED · UNKNOWN.
+Reuse `attribution-v1` + Acquisition Capture V1. Strength: DIRECT_FIRST_PARTY · STRONG · DIRECTIONAL · INFERRED · UNKNOWN.
 
-First/latest touch are **not modeled** in first-party storage (tab-session UTM capture only). Do not backfill journeys.
+First-observed (localStorage 90d) and current-session (sessionStorage) are modeled going forward. Cross-device remains **NOT_MODELED**. Do not backfill historical journeys.
 
-GBP: classify only when `google_business_profile` / `organic_local` UTMs exist; otherwise **NOT_CAPTURED** (no GBP API).
+GBP: classify only when `google_business_profile` / `organic_local` UTMs exist; historical GBP stays **NOT_CAPTURED** without evidence.
 
 ## Money
 

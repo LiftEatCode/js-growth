@@ -18,12 +18,16 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 
 ## Attribution
 
+- “We preserve acquisition context where it is available.”
+- “We can connect tagged campaigns to downstream actions using first-party attribution.”
+- “Unknown traffic remains unknown rather than being artificially assigned.”
+- “We distinguish traffic source from landing page and business outcome.”
 - “We use campaign attribution to identify which marketing channels actually contribute to website engagement and leads.”
 - “We keep paid and organic social tagging consistent so Facebook and other channels are comparable over time.”
 - “We connect marketing activity to business outcomes where attribution supports it — and we keep unknown attribution visible instead of inventing a story.”
 - “We measure more than traffic: visibility through qualified interest, leads, and opportunities.”
 - “We identify where growth is working and where the funnel needs attention. We do not claim perfect attribution or automatic sales optimization.”
-
+- Unsafe to claim: perfect attribution, cross-device tracking, “this post caused the sale,” or proof that marketing caused revenue.
 ## SEO & local
 
 - “Search visibility metrics like impressions help us understand opportunity, but we judge success by qualified clicks, landing-page engagement, and downstream leads.”

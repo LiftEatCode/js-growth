@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { captureAcquisitionInBrowser } from "@/lib/growth/acquisition-capture";
 import {
-  captureCampaignAttributionInBrowser,
   GROWTH_EVENTS,
   trackAuditFunnelEvent,
   type GrowthEventName,
@@ -12,7 +12,7 @@ import {
 
 /**
  * Fires a one-shot growth event on mount (e.g. landing / report view).
- * Also captures first-party UTM context when present.
+ * Captures acquisition context (UTM / referrer / direct) for the session.
  */
 export function GrowthPageBeacon({
   event,
@@ -32,7 +32,7 @@ export function GrowthPageBeacon({
       return;
     }
     fired.current = true;
-    captureCampaignAttributionInBrowser();
+    captureAcquisitionInBrowser();
     trackAuditFunnelEvent(event, params, {
       dedupeKey,
       recordMilestone,
@@ -72,4 +72,17 @@ export function AuditReportViewBeacon({
       dedupeKey={`audit_report_viewed-${reportContext}`}
     />
   );
+}
+
+/** Lightweight capture on public pages without a funnel event. */
+export function AcquisitionCaptureBeacon() {
+  const fired = useRef(false);
+  useEffect(() => {
+    if (fired.current) {
+      return;
+    }
+    fired.current = true;
+    captureAcquisitionInBrowser();
+  }, []);
+  return null;
 }

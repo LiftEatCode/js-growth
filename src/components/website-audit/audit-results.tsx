@@ -7,6 +7,7 @@ import {
   MapPin,
 } from "lucide-react";
 
+import { SoftFacebookFollowCta } from "@/components/growth/soft-facebook-follow-cta";
 import { AuditExecutiveDashboard } from "@/components/website-audit/audit-executive-dashboard";
 import { AuditReportViewBeacon } from "@/components/growth/growth-page-beacon";
 import { AuditFindingsFilter } from "@/components/website-audit/audit-findings-filter";
@@ -65,6 +66,9 @@ export function AuditResults({
     <div className="space-y-10">
       <AuditReportViewBeacon reportContext={reportContext} />
       <AuditExecutiveDashboard view={view} reportId={reportId} />
+      {reportContext === "inline_landing" ? (
+        <SoftFacebookFollowCta surface="audit_complete" />
+      ) : null}
 
       <ReportNav view={view} showAiInterpretation={Boolean(interpretation && interpretation.status !== "hidden")} />
 

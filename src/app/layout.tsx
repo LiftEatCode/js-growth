@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { AcquisitionCaptureBeacon } from "@/components/growth/growth-page-beacon";
 
 import "./globals.css";
 
@@ -76,6 +77,7 @@ export default function RootLayout({
           <SiteFooter />
         </div>
         {gaMeasurementId ? <GoogleAnalytics gaId={gaMeasurementId} /> : null}
+        <AcquisitionCaptureBeacon />
       </body>
     </html>
   );

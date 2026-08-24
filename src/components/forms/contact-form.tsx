@@ -4,11 +4,13 @@ import { useActionState, useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { CheckCircle2, Loader2, Send } from "lucide-react";
 
+import { SoftFacebookFollowCta } from "@/components/growth/soft-facebook-follow-cta";
 import {
   submitContactForm,
   type ContactFormState,
 } from "@/app/contact/actions";
 import { GrowthAttributionField } from "@/components/growth/growth-attribution-field";
+import { AcquisitionCaptureBeacon } from "@/components/growth/growth-page-beacon";
 import { budgetOptions, serviceOptions } from "@/content/contact";
 import {
   GROWTH_EVENTS,
@@ -58,6 +60,8 @@ export function ContactForm() {
   }
 
   return (
+    <>
+      <AcquisitionCaptureBeacon />
     <form
       ref={formRef}
       action={formAction}
@@ -232,15 +236,19 @@ export function ContactForm() {
           role={state.success ? "status" : "alert"}
           className={
             state.success
-              ? "flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800"
+              ? "space-y-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800"
               : "rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"
           }
         >
+          <div className="flex items-start gap-3">
+            {state.success ? (
+              <CheckCircle2 className="mt-0.5 size-5 shrink-0" />
+            ) : null}
+            <p>{state.message}</p>
+          </div>
           {state.success ? (
-            <CheckCircle2 className="mt-0.5 size-5 shrink-0" />
+            <SoftFacebookFollowCta surface="contact_success" />
           ) : null}
-
-          <p>{state.message}</p>
         </div>
       ) : null}
 
@@ -252,6 +260,7 @@ export function ContactForm() {
         </p>
       </div>
     </form>
+    </>
   );
 }
 

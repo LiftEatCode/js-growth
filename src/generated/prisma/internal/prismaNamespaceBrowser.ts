@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   AuditReport: 'AuditReport',
   Lead: 'Lead',
+  ContactSubmission: 'ContactSubmission',
   LeadActivity: 'LeadActivity',
   ReportPurchase: 'ReportPurchase',
   Campaign: 'Campaign',
@@ -165,6 +166,24 @@ export const LeadScalarFieldEnum = {
 } as const
 
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+export const ContactSubmissionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  businessName: 'businessName',
+  website: 'website',
+  service: 'service',
+  budget: 'budget',
+  message: 'message',
+  attributionJson: 'attributionJson',
+  leadOrigin: 'leadOrigin'
+} as const
+
+export type ContactSubmissionScalarFieldEnum = (typeof ContactSubmissionScalarFieldEnum)[keyof typeof ContactSubmissionScalarFieldEnum]
 
 
 export const LeadActivityScalarFieldEnum = {

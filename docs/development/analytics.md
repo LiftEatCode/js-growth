@@ -28,9 +28,10 @@
   - `/reports/clients/{clientId}/projects/{projectId}` → `/reports/clients/[id]/projects/[id]`
   - `/reports/opportunities/{id}/scope/{id}` → `/reports/opportunities/[id]/scope/[id]`
   - `/reports/prospecting/{campaignId}/prospects/{prospectId}` → `/reports/prospecting/[id]/prospects/[id]`
-  - Static feature paths preserved: `/reports/growth`, `/reports/clients`, `/reports/opportunities`, `/reports/prospecting`
+  - Static feature paths preserved: `/reports/growth`, `/reports/growth/utm-builder`, `/reports/growth/conversion`, `/reports/growth/attribution`, `/reports/growth/content`, `/reports/clients`, `/reports/opportunities`, `/reports/prospecting`
   - `/payment/return?session_id=…` → path kept; Stripe session / payment_intent query stripped
 - Public/private boundary documented in growth measurement framework.
+- Acquisition Capture V1 stores bounded marketing fields in first-party DB / browser storage only — never PII, commercial IDs, or secure tokens in attribution JSON or GA4.
 
 ## Authority boundaries
 
@@ -43,5 +44,7 @@
 
 ## Internal tools
 
-- `/reports/growth` — funnel aggregates + manual baseline snapshots
-- `/reports/growth/utm-builder` — campaign URL tagging
+- `/reports/growth` — funnel aggregates + manual baseline snapshots + acquisition coverage
+- `/reports/growth/utm-builder` — campaign URL tagging (Facebook / GBP / generic)
+- `/reports/growth/attribution` — privacy-safe recent acquisition observations
+- `/reports/growth/conversion` — Lead Conversion Intelligence detail

@@ -1,6 +1,6 @@
 # Growth Measurement Framework
 
-**Versions:** `growth-events-v1` · `attribution-v1` · `qualified-traffic-v1` · `kpi-hierarchy-v1`  
+**Versions:** `growth-events-v1` · `attribution-v1` · `qualified-traffic-v1` · `kpi-hierarchy-v1` · `acquisition-capture-v1`  
 **Dashboard:** `/reports/growth`
 
 ---
@@ -91,13 +91,14 @@ Allowed params (bounded): `placement`, `cta_kind`, crawl count flags. No commerc
 
 ## Attribution
 
-Prefer GA4-native Session source / medium / campaign / landing page.
+Prefer GA4-native Session source / medium / campaign / landing page for analytics observation.
 
-First-party bounded context (optional on public audits):
+First-party Acquisition Capture V1 (new journeys):
 
-- `source`, `medium`, `campaign`, `content`, `landingPath`, `capturedAt`
+- Browser: first-observed (localStorage, 90-day TTL) + current session (sessionStorage)
+- Conversion: `source`, `medium`, `campaign`, `content`, `landingPath`, `capturedAt`, `referrerClass`, `entryType`, `acquisitionCaptureVersion`
 
-Stored as `AuditReport.attributionJson`. No query-string dump. No PII. No commercial IDs.
+Stored as `AuditReport.attributionJson` and `ContactSubmission.attributionJson`. No query-string dump. No PII. No commercial IDs. No historical UNKNOWN backfill.
 
 ---
 

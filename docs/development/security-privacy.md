@@ -53,7 +53,8 @@ Competitive Growth Analysis is **internal-only** (`noindex`). Not exposed on pub
 - Capability-bearing public URLs redacted in analytics only (`/proposal/[secure]`, `/agreement/[secure]`, `/report/[id]`); raw share tokens and Stripe session IDs must never appear in `page_path` / `page_location`
 - Internal commercial `/reports/**` paths send **route families** to GA4 (e.g. `/reports/clients/[id]/projects/[id]`), never concrete client/prospect/opportunity/project/proposal/agreement/payment record IDs
 - Growth Sprint 1: first-party attribution stores only bounded marketing fields (`source` / `medium` / `campaign` / `content` / `landingPath`); never commercial record IDs
-- Growth dashboard (`/reports/growth`) exposes aggregate counts only
+- Growth Sprint 10: Acquisition Capture V1 adds first-observed (localStorage, 90-day TTL) + sessionStorage current session + `ContactSubmission.attributionJson`. No PII/tokens in attribution storage. Attribution failure must not block contact/audit success. No fingerprinting / cross-device identity.
+- Growth dashboard (`/reports/growth`) exposes aggregate counts only; attribution debug view shows no PII
 
 ---
 

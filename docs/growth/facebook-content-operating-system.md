@@ -99,8 +99,12 @@ Builder: `/reports/growth/utm-builder`
 1. Publish.  
 2. Create **one** `GrowthContentRecord` on `/reports/growth` (blank FB metrics = NOT_CAPTURED).  
 3. After ~72h (and again ~7d), **update Insights numbers on the same record** — do not create another row for metric maturity.  
-4. Check first-party Facebook attribution on growth dashboard.  
+4. Check first-party Facebook attribution on growth dashboard / attribution view.  
 5. Weekly review doc.
+
+### Operator rule (website traffic jobs)
+
+When a Facebook post’s job includes **website traffic / audit**, use the canonical tagged URL from the UTM builder. When a post is native engagement/authority with no link, do not force a website link merely for tracking.
 
 ### Duplicate-submit protection
 

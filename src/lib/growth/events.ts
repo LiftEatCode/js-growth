@@ -25,6 +25,8 @@ export const GROWTH_EVENTS = {
   contactFormSubmitted: "contact_form_submitted",
   blogCtaClicked: "blog_cta_clicked",
   serviceCtaClicked: "service_cta_clicked",
+  /** Experiment 018 — website→Facebook follow CTA click (not follower acquired). */
+  facebookFollowCtaClicked: "facebook_follow_cta_clicked",
   /** Existing checkout intent — marketing observation only; Stripe is payment authority. */
   professionalCheckoutStarted: "professional_checkout_started",
 } as const;
@@ -53,6 +55,7 @@ export const GROWTH_CTA_PLACEMENTS = [
   "nav",
   "footer",
   "home",
+  "contact",
 ] as const;
 
 export type GrowthCtaPlacement = (typeof GROWTH_CTA_PLACEMENTS)[number];
@@ -80,6 +83,8 @@ export const GROWTH_CTA_LOCATIONS = [
   "report_nav",
   "landing_footer",
   "contact_page",
+  "audit_complete",
+  "contact_success",
 ] as const;
 
 export type GrowthCtaLocation = (typeof GROWTH_CTA_LOCATIONS)[number];
@@ -97,6 +102,8 @@ export type GrowthEventParams = {
   competitor_count?: number;
   successful_competitor_count?: number;
   form_name?: string;
+  surface?: string;
+  experiment_id?: string;
 };
 
 export function isGrowthEventName(name: string): name is GrowthEventName {
@@ -116,7 +123,9 @@ export function isAllowedGrowthEventParamKey(key: string): boolean {
     key === "truncated" ||
     key === "competitor_count" ||
     key === "successful_competitor_count" ||
-    key === "form_name"
+    key === "form_name" ||
+    key === "surface" ||
+    key === "experiment_id"
   );
 }
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { parseCampaignAttributionFromFormData } from "@/lib/growth/attribution";
+import { normalizeAcquisitionForPersistence } from "@/lib/growth/acquisition-capture";
 import {
   mergeAttributionWithFunnelContext,
   parseAuditFunnelContextFromFormData,
@@ -76,7 +76,19 @@ export async function auditWebsite(
       console.error("Website audit competitive comparison failed:", error);
     }
 
-    const campaignAttribution = parseCampaignAttributionFromFormData(formData);
+    let campaignAttribution = null as ReturnType<
+      typeof normalizeAcquisitionForPersistence
+    >;
+    const rawAttribution = formData.get("growth_attribution");
+    if (typeof rawAttribution === "string" && rawAttribution.trim()) {
+      try {
+        campaignAttribution = normalizeAcquisitionForPersistence(
+          JSON.parse(rawAttribution),
+        );
+      } catch {
+        campaignAttribution = null;
+      }
+    }
     const funnelContext = parseAuditFunnelContextFromFormData(formData);
     const attribution = mergeAttributionWithFunnelContext(
       campaignAttribution,

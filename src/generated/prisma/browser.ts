@@ -28,6 +28,12 @@ export type AuditReport = Prisma.AuditReportModel
  */
 export type Lead = Prisma.LeadModel
 /**
+ * Model ContactSubmission
+ * Growth Sprint 10 — inbound contact-form submissions (not CRM Lead).
+ * Commercial first-party may store PII. attributionJson must never contain PII.
+ */
+export type ContactSubmission = Prisma.ContactSubmissionModel
+/**
  * Model LeadActivity
  * 
  */

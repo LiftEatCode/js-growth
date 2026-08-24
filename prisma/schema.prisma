@@ -125,6 +125,31 @@ model Lead {
   @@index([followUpAt])
 }
 
+/// Growth Sprint 10 — inbound contact-form submissions (not CRM Lead).
+/// Commercial first-party may store PII. attributionJson must never contain PII.
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  name         String
+  email        String
+  phone        String?
+  businessName String?
+  website      String?
+  service      String
+  budget       String?
+  message      String
+
+  /// Bounded acquisition context (attribution-v1 + acquisition-capture-v1). No PII.
+  attributionJson Json?
+
+  /// Always CONTACT for this model. Distinct from acquisition channel.
+  leadOrigin String @default("CONTACT")
+
+  @@index([createdAt])
+  @@index([email])
+}
+
 model LeadActivity {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())

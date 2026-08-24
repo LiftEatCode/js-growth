@@ -327,6 +327,13 @@ export default async function GrowthDashboardPage() {
             Lead Conversion
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/attribution" />}
+          >
+            Attribution
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
         </div>
 
         <Card className="mt-6 space-y-2 p-5">
@@ -337,6 +344,21 @@ export default async function GrowthDashboardPage() {
             Reviews due: {contentDueReviews.length} · Published/measuring assets:{" "}
             {publishedMeasuring} · Refresh only after human evidence decision.
             Details on Content Intelligence.
+          </p>
+        </Card>
+
+        <Card className="mt-4 space-y-2 p-5">
+          <p className="text-sm font-semibold text-brand">
+            Acquisition Coverage (compact)
+          </p>
+          <p className="text-xs text-muted">
+            acquisition-capture-v1 · Known channels:{" "}
+            {leadConversion.attributionCoverage.coverage.knownChannel} · Direct:{" "}
+            {leadConversion.attributionCoverage.coverage.direct} · Unknown:{" "}
+            {leadConversion.attributionCoverage.coverage.unknown} · Contact
+            submissions (28d):{" "}
+            {leadConversion.counts.contactSubmissions.value ?? 0}. Historical
+            UNKNOWN audits are not rewritten. Details on Attribution.
           </p>
         </Card>
 

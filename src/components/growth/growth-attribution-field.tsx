@@ -3,19 +3,18 @@
 import { useEffect, useRef } from "react";
 
 import {
-  readCampaignAttributionFromBrowser,
-  serializeCampaignAttributionForForm,
-} from "@/lib/growth";
+  readAcquisitionForForm,
+  serializeAcquisitionForForm,
+} from "@/lib/growth/acquisition-capture";
 
-/** Hidden field that posts first-party campaign context with a form. */
+/** Hidden field that posts first-party acquisition context with a form. */
 export function GrowthAttributionField() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const attribution = readCampaignAttributionFromBrowser();
+    const attribution = readAcquisitionForForm();
     if (inputRef.current) {
-      inputRef.current.value =
-        serializeCampaignAttributionForForm(attribution);
+      inputRef.current.value = serializeAcquisitionForForm(attribution);
     }
   }, []);
 

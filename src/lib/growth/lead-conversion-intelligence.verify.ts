@@ -248,11 +248,15 @@ assert(
 );
 
 assert(
-  TOUCH_SEMANTICS.FIRST_TOUCH === "NOT_MODELED_IN_FIRST_PARTY",
-  "no invented first touch",
+  TOUCH_SEMANTICS.FIRST_OBSERVED.includes("90D"),
+  "first observed modeled with retention",
 );
 assert(
-  TOUCH_SEMANTICS.LATEST_TOUCH === "NOT_MODELED_IN_FIRST_PARTY",
+  TOUCH_SEMANTICS.CROSS_DEVICE === "NOT_MODELED",
+  "no cross-device claims",
+);
+assert(
+  TOUCH_SEMANTICS.LATEST_TOUCH === "NOT_MODELED_AS_GA4_LAST_CLICK",
   "no invented latest touch",
 );
 

@@ -153,4 +153,5 @@ export const FACEBOOK_FOUNDER_UTM = {
 export const GBP_UTM = {
   source: "google_business_profile",
   medium: "organic_local",
+  campaign: "gbp_profile",
 } as const;

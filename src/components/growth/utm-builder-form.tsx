@@ -7,10 +7,13 @@ import {
   buildUtmUrl,
   FACEBOOK_FOUNDER_UTM,
   FACEBOOK_PAGE_UTM,
-  GBP_UTM,
   UTM_MEDIUMS,
   UTM_SOURCES,
 } from "@/lib/growth";
+import {
+  GBP_POST_UTM,
+  GBP_WEBSITE_UTM,
+} from "@/lib/growth/acquisition-capture";
 
 const SITE_DEFAULT = "https://jsgrowth.com";
 
@@ -20,7 +23,7 @@ export function UtmBuilderForm() {
   );
   const [source, setSource] = useState<string>("facebook");
   const [medium, setMedium] = useState<string>("organic_social");
-  const [campaign, setCampaign] = useState("website_growth");
+  const [campaign, setCampaign] = useState("page_organic");
   const [content, setContent] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -49,25 +52,64 @@ export function UtmBuilderForm() {
     }
   }
 
+  async function copyQuick(url: string) {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
+
   function applyPreset(
-    preset: "facebook_page" | "facebook_founder" | "gbp",
+    preset:
+      | "facebook_page"
+      | "facebook_founder"
+      | "gbp_website"
+      | "gbp_post",
   ) {
     if (preset === "facebook_page") {
+      setDestinationUrl(`${SITE_DEFAULT}/website-audit`);
       setSource(FACEBOOK_PAGE_UTM.source);
       setMedium(FACEBOOK_PAGE_UTM.medium);
       setCampaign(FACEBOOK_PAGE_UTM.campaign);
+      setContent("company_audit");
       return;
     }
     if (preset === "facebook_founder") {
+      setDestinationUrl(`${SITE_DEFAULT}/website-audit`);
       setSource(FACEBOOK_FOUNDER_UTM.source);
       setMedium(FACEBOOK_FOUNDER_UTM.medium);
       setCampaign(FACEBOOK_FOUNDER_UTM.campaign);
+      setContent("founder_audit");
       return;
     }
-    setSource(GBP_UTM.source);
-    setMedium(GBP_UTM.medium);
-    setCampaign("gbp_website");
+    if (preset === "gbp_website") {
+      setDestinationUrl(`${SITE_DEFAULT}/`);
+      setSource(GBP_WEBSITE_UTM.source);
+      setMedium(GBP_WEBSITE_UTM.medium);
+      setCampaign(GBP_WEBSITE_UTM.campaign);
+      setContent(GBP_WEBSITE_UTM.content);
+      return;
+    }
+    setDestinationUrl(`${SITE_DEFAULT}/website-audit`);
+    setSource(GBP_POST_UTM.source);
+    setMedium(GBP_POST_UTM.medium);
+    setCampaign(GBP_POST_UTM.campaign);
+    setContent("post_example");
   }
+
+  const companyAuditQuick = buildUtmUrl({
+    destinationUrl: `${SITE_DEFAULT}/website-audit`,
+    ...FACEBOOK_PAGE_UTM,
+    content: "company_audit",
+  });
+  const founderAuditQuick = buildUtmUrl({
+    destinationUrl: `${SITE_DEFAULT}/website-audit`,
+    ...FACEBOOK_FOUNDER_UTM,
+    content: "founder_audit",
+  });
 
   return (
     <div className="space-y-6">
@@ -92,9 +134,38 @@ export function UtmBuilderForm() {
           type="button"
           size="sm"
           variant="outline"
-          onClick={() => applyPreset("gbp")}
+          onClick={() => applyPreset("gbp_website")}
         >
-          Google Business Profile
+          GBP Website
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          onClick={() => applyPreset("gbp_post")}
+        >
+          GBP Post
+        </Button>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          size="sm"
+          onClick={() =>
+            companyAuditQuick.ok && copyQuick(companyAuditQuick.url)
+          }
+        >
+          Copy FB Company Audit URL
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          onClick={() =>
+            founderAuditQuick.ok && copyQuick(founderAuditQuick.url)
+          }
+        >
+          Copy FB Founder Audit URL
         </Button>
       </div>
 

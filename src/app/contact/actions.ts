@@ -1,7 +1,8 @@
 "use server";
 import { getResendClient } from "@/lib/email/resend";
-import { parseCampaignAttributionFromFormData } from "@/lib/growth/attribution";
+import { normalizeAcquisitionForPersistence } from "@/lib/growth/acquisition-capture";
 import type { CampaignAttribution } from "@/lib/growth/attribution";
+import { createContactSubmission } from "@/lib/growth/contact-submission-store";
 
 import { contactFormSchema } from "@/lib/validations/contact";
 
@@ -38,7 +39,18 @@ export async function submitContactForm(
   }
 
   const data = result.data;
-  const attribution = parseCampaignAttributionFromFormData(formData);
+
+  let attribution: CampaignAttribution | null = null;
+  const rawAttribution = formData.get("growth_attribution");
+  if (typeof rawAttribution === "string" && rawAttribution.trim()) {
+    try {
+      attribution = normalizeAcquisitionForPersistence(
+        JSON.parse(rawAttribution),
+      );
+    } catch {
+      attribution = null;
+    }
+  }
 
   // Honeypot spam protection.
   // Return a successful response without sending email when a bot fills this in.
@@ -87,6 +99,23 @@ export async function submitContactForm(
         success: false,
         message: "Your message could not be sent. Please try again.",
       };
+    }
+
+    // First-party attribution persistence — must never block contact success.
+    try {
+      await createContactSubmission({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        businessName: data.businessName,
+        website: data.website,
+        service: data.service,
+        budget: data.budget,
+        message: data.message,
+        attribution,
+      });
+    } catch (persistError) {
+      console.error("Contact attribution persist error:", persistError);
     }
 
     /*

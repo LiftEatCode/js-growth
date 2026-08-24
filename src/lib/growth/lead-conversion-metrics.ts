@@ -5,11 +5,16 @@ import { Prisma as PrismaNamespace } from "@/generated/prisma/client";
 import { getAuditFunnelDashboardMetrics } from "@/lib/growth/audit-funnel-metrics";
 import { getFacebookOrganicAttributionSummary } from "@/lib/growth/facebook-attribution-metrics";
 import {
+  channelFromAcquisition,
+  parseAcquisitionContextFromUnknown,
+  computeAttributionCoverage,
+} from "@/lib/growth/acquisition-capture";
+import { countContactSubmissionsInWindow } from "@/lib/growth/contact-submission-store";
+import {
   LEAD_CONVERSION_INTELLIGENCE_VERSION,
   LEAD_CONVERSION_THRESHOLDS,
   TOUCH_SEMANTICS,
   buildPriorityActions,
-  classifyAttributionChannel,
   classifyAttributionStrength,
   classifyLeadAge,
   classifyOutboundProspectSource,
@@ -133,6 +138,10 @@ export type LeadConversionIntelligenceReport = {
     auditsWithUtm: number;
     auditsUnknown: number;
     strengthDirectFirstParty: number;
+    /** Sprint 10: knownChannel + direct classified / eligible audits */
+    coverage: ReturnType<typeof computeAttributionCoverage>;
+    contactSubmissions: number;
+    contactNotCaptured: boolean;
   };
   inboundVsOutbound: {
     inboundLeads: number;
@@ -207,6 +216,7 @@ export async function getLeadConversionIntelligence(input: {
     paidPayments,
     facebookAttribution,
     auditFunnel,
+    contactSubmissionsCreated,
   ] = await Promise.all([
     prisma.auditReport.count({
       where: { source: "PUBLIC_FUNNEL", createdAt },
@@ -366,6 +376,10 @@ export async function getLeadConversionIntelligence(input: {
       periodStart: input.periodStart,
       periodEnd: input.periodEnd,
     }),
+    countContactSubmissionsInWindow({
+      periodStart: input.periodStart,
+      periodEnd: input.periodEnd,
+    }),
   ]);
 
   const channelCounts = new Map<AttributionChannel, number>();
@@ -387,6 +401,11 @@ export async function getLeadConversionIntelligence(input: {
     const content = stringField(parsed?.content);
     const landingPath = stringField(parsed?.landingPath);
     const hasUtm = Boolean(source || medium);
+    const ctx = parseAcquisitionContextFromUnknown(row.attributionJson);
+    const isSprint10Capture =
+      ctx != null &&
+      (row.attributionJson as { acquisitionCaptureVersion?: number } | null)
+        ?.acquisitionCaptureVersion === 1;
 
     if (!parsed) {
       auditsUnknown += 1;
@@ -394,11 +413,30 @@ export async function getLeadConversionIntelligence(input: {
         "UNKNOWN",
         (channelCounts.get("UNKNOWN") ?? 0) + 1,
       );
+    } else if (isSprint10Capture && ctx) {
+      const channel = channelFromAcquisition(ctx);
+      channelCounts.set(channel, (channelCounts.get(channel) ?? 0) + 1);
+      if (ctx.entryType === "UTM") {
+        auditsWithUtm += 1;
+      }
+      if (channel === "UNKNOWN") {
+        auditsUnknown += 1;
+      }
+      const strength = classifyAttributionStrength({
+        hasFirstPartyUtm: ctx.entryType === "UTM",
+        hasSourceAndMedium: Boolean(source && medium),
+        linkedToAudit: true,
+        path: "INBOUND",
+      });
+      if (strength === "DIRECT_FIRST_PARTY") {
+        strengthDirectFirstParty += 1;
+      }
     } else if (!hasUtm) {
+      // Sprint 9 legacy: present JSON without UTM counted as DIRECT.
       channelCounts.set("DIRECT", (channelCounts.get("DIRECT") ?? 0) + 1);
     } else {
       auditsWithUtm += 1;
-      const channel = classifyAttributionChannel({ source, medium });
+      const channel = channelFromAcquisition(ctx);
       channelCounts.set(channel, (channelCounts.get(channel) ?? 0) + 1);
       const strength = classifyAttributionStrength({
         hasFirstPartyUtm: true,
@@ -711,7 +749,7 @@ export async function getLeadConversionIntelligence(input: {
       paymentsPaid: observeCount(paymentsPaid),
       clients: observeCount(clientsCreated),
       professionalPurchases: observeCount(professionalPurchases),
-      contactSubmissions: { status: "NOT_CAPTURED", value: null },
+      contactSubmissions: observeCount(contactSubmissionsCreated),
       qualifiedVisits: { status: "NOT_CAPTURED", value: null },
     },
     rates: {
@@ -770,6 +808,13 @@ export async function getLeadConversionIntelligence(input: {
       auditsWithUtm,
       auditsUnknown,
       strengthDirectFirstParty,
+      coverage: computeAttributionCoverage(
+        [...channelCounts.entries()].flatMap(([channel, count]) =>
+          Array.from({ length: count }, () => channel),
+        ),
+      ),
+      contactSubmissions: contactSubmissionsCreated,
+      contactNotCaptured: false,
     },
     inboundVsOutbound: {
       inboundLeads: inboundLeadsCreated,

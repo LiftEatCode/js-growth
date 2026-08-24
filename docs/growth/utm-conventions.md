@@ -38,8 +38,15 @@ Never UTM ordinary internal navigation.
 
 ## Google Business Profile
 
-`utm_source=google_business_profile&utm_medium=organic_local&utm_campaign=gbp_website`  
-(when the website URL field can be tagged)
+Canonical website link:
+
+`utm_source=google_business_profile&utm_medium=organic_local&utm_campaign=gbp_profile&utm_content=website`
+
+GBP post / service content values: `post_<slug>` · `service_<slug>`
+
+Do **not** classify Google organic referrer as GBP. Historical GBP remains NOT_CAPTURED until tagged evidence exists.
+
+Presets: `GBP_WEBSITE_UTM` / `GBP_POST_UTM` in acquisition-capture.
 
 GBP Audit/Optimizer SaaS is **not** part of Growth Sprint 1.
 

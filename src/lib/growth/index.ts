@@ -13,6 +13,7 @@ export {
   type GrowthEventParams,
   type GrowthCtaPlacement,
   type GrowthCtaKind,
+  type GrowthCtaLocation,
 } from "./events";
 
 export {
@@ -281,3 +282,14 @@ export {
   classifyAttributionChannel,
   type AttributionChannel,
 } from "./lead-conversion-intelligence";
+export {
+  ACQUISITION_CAPTURE_VERSION,
+  FIRST_OBSERVED_RETENTION_DAYS,
+  GBP_WEBSITE_UTM,
+  GBP_POST_UTM,
+  JS_SOLUTIONS_FACEBOOK_PAGE_URL,
+  captureAcquisitionInBrowser,
+  channelFromAcquisition,
+  computeAttributionCoverage,
+  type AcquisitionContextV1,
+} from "./acquisition-capture";

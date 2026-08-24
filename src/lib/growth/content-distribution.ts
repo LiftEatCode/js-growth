@@ -101,7 +101,7 @@ export function buildSeoServiceDistributionPlan(input: {
     notes: [
       "Distribution plan is recommendation only — no auto-posting.",
       "GrowthContentRecord is created only after an actual Facebook publish.",
-      "Experiment 018 (Website→Facebook follow) remains QUEUED — no intrusive CTAs this sprint.",
+      "Experiment 018 (Website→Facebook follow) is ACTIVE — soft CTA on audit completion / contact success only; click ≠ follower acquired.",
     ],
   };
 }

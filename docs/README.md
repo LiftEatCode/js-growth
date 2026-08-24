@@ -94,9 +94,8 @@ These are **delivery playbooks**. They are not the same as the Website Growth Au
 
 - [`company/`](company/) — mission, values, branding
 - [`sales/`](sales/), [`marketing/`](marketing/), [`seo/`](seo/), [`playbooks/`](playbooks/), [`templates/`](templates/)
-- [`growth/`](growth/) — Growth phase measurement, UTM, experiments, client talking points
-- [`research/`](research/) — methodology research notes (e.g. measurement & attribution)
-- [`ideas/`](ideas/) — exploratory; not implemented by default
+- [`growth/`](growth/) — Growth phase measurement, UTM, acquisition capture, experiments, client talking points
+- [`research/`](research/) — methodology research notes (e.g. measurement & attribution, acquisition capture)- [`ideas/`](ideas/) — exploratory; not implemented by default
 - [`decisions/`](decisions/) — ADRs
 - [`legal-data-inventory.md`](legal-data-inventory.md)
 

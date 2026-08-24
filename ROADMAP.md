@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–9** (Measurement → … → Content Review → Lead Conversion Intelligence) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–10** (Measurement → … → Lead Conversion → Acquisition Capture) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -277,14 +277,21 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - `/reports/growth/conversion` + compact dashboard section; commercial observe-only
 - Business signals feed content review without claiming SEO/Facebook “success”
 
-### Growth Sprint 10 — (recommended next)
+### Growth Sprint 10 — Acquisition Capture & Attribution Completion V1 ✅
+
+- Research: `docs/research/acquisition-capture-attribution-2026.md`
+- `ACQUISITION_CAPTURE_VERSION = 1`: first-observed + session + conversion; extends attribution-v1
+- Contact `ContactSubmission` persistence; no historical UNKNOWN backfill
+- `/reports/growth/attribution` + Acquisition Coverage; Experiment 018 ACTIVE (soft CTA)
+- Acceptance: `docs/growth/growth-sprint10-production-acceptance.md`
+
+### Growth Sprint 11 — (recommended next)
 
 - First real GSC windows for `/seo` after INDEXED
 - Optional AI advisory review (FACT/INTERPRETATION/HYPOTHESIS) on explicit click
-- Soft Experiment 018 if measurement event is ready
-- Persist contact-form acquisition context first-party (privacy-safe) if inbound volume justifies it
+- Measure Experiment 018 click volume vs Insights follows (directional only)
 - Supporting content briefs only after directional evidence
-
+- Operator production acceptance of tagged Facebook/GBP journeys
 ---
 
 ## HARDENING / OPERATIONS (not new features)

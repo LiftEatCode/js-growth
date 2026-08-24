@@ -43,6 +43,9 @@ const INTERNAL_REPORTS_STATIC_SEGMENTS = new Set([
   "competitive-report",
   "growth",
   "utm-builder",
+  "conversion",
+  "attribution",
+  "content",
   "new",
 ]);
 

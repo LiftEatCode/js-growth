@@ -26,6 +26,10 @@ export type AuditReportAttribution = {
   landingPath: string;
   capturedAt: string;
   funnel?: AuditFunnelMilestone;
+  /** Sprint 10 additive fields when acquisition-capture-v1 wrote the row. */
+  acquisitionCaptureVersion?: 1;
+  referrerClass?: string | null;
+  entryType?: "UTM" | "REFERRER" | "DIRECT" | "UNKNOWN";
 };
 
 export interface AuditReport {

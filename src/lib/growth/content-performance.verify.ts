@@ -160,7 +160,7 @@ assert(
   dist.items.find((i) => i.channel === "FACEBOOK_FOUNDER")?.founderInputRequired,
   "founder safety",
 );
-assert(dist.notes.some((n) => /018|QUEUED/i.test(n)), "018 queued");
+assert(dist.notes.some((n) => /018|ACTIVE|QUEUED/i.test(n)), "018 noted");
 
 // /seo page artifacts
 const seoPage = readFileSync(join(here, "../../app/seo/page.tsx"), "utf8");

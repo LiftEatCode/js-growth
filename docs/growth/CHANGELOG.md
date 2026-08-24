@@ -4,6 +4,17 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-24 — Growth Sprint 10 (Acquisition Capture & Attribution Completion V1)
+
+- Research: `docs/research/acquisition-capture-attribution-2026.md`
+- `ACQUISITION_CAPTURE_VERSION = 1`: first-observed (localStorage 90d) + session (sessionStorage) + conversion persistence
+- Extends `attribution-v1` (no v2); no historical UNKNOWN backfill
+- `ContactSubmission` model for durable contact attribution (no auto-Lead)
+- `/reports/growth/attribution` debug view + Acquisition Coverage card
+- GBP canonical UTMs (`gbp_profile`); Facebook company/founder presets preserved
+- Experiment 018 ACTIVE — soft follow CTA + `facebook_follow_cta_clicked` (click ≠ follower)
+- Baseline V1 unchanged; OpenAI/Meta/GSC/Places/Crawl = 0 on dashboard load
+
 ## 2026-08-24 — Growth Sprint 9 (Lead Conversion Intelligence V1)
 
 - Research: `docs/research/lead-conversion-intelligence-2026.md`

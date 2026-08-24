@@ -556,8 +556,8 @@ export function scheduleToday(now = new Date()): ScheduledFacebookPost[] {
 
 export const WEBSITE_TO_FACEBOOK_DECISION = {
   experimentId: "2026-018",
-  status: "QUEUED" as const,
+  status: "ACTIVE" as const,
   reason:
-    "Defer soft website→Facebook placement until Week 2+ when content ledger + 72h/7d checkpoints are in routine use. Site already exposes Facebook via structured data sameAs. Avoid sitewide prompts.",
-  candidatePlacement: "Audit completion / thank-you (single soft follow link)",
+    "Sprint 10: soft follow CTA on audit completion (inline) and contact success with facebook_follow_cta_clicked. Click ≠ follower acquired. No popup/modal/sitewide banner.",
+  candidatePlacement: "Audit completion + contact success (soft link)",
 } as const;

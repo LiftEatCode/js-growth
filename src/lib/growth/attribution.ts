@@ -1,15 +1,14 @@
 /**
  * Growth Sprint 1 — first-party campaign context (bounded).
+ * Growth Sprint 10 — form parse normalizes via acquisition-capture helpers without
+ * circular browser imports (browser capture lives in acquisition-capture.ts).
  *
  * Stores only marketing attribution fields for aggregate funnel analysis.
  * Never stores PII, commercial IDs, or arbitrary query strings.
  */
 
 import { sanitizeAnalyticsPagePath } from "@/lib/analytics/page-path";
-import {
-  isValidUtmValue,
-  normalizeUtmValue,
-} from "@/lib/growth/utm";
+import { isValidUtmValue, normalizeUtmValue } from "@/lib/growth/utm";
 
 export const FIRST_PARTY_ATTRIBUTION_VERSION = "first-party-attribution-v1";
 export const ATTRIBUTION_STORAGE_KEY = "jsg-growth-attribution-v1";
@@ -53,7 +52,7 @@ export function parseCampaignAttribution(
     return null;
   }
 
-  const attribution: CampaignAttribution = {
+  return {
     source: optionalUtm(input.source),
     medium: optionalUtm(input.medium),
     campaign: optionalUtm(input.campaign),
@@ -64,8 +63,6 @@ export function parseCampaignAttribution(
         ? input.capturedAt.trim().slice(0, 40)
         : new Date().toISOString(),
   };
-
-  return attribution;
 }
 
 export function parseCampaignAttributionFromSearchParams(
@@ -101,6 +98,11 @@ export function parseCampaignAttributionFromUnknown(
   });
 }
 
+/**
+ * Form parse — dynamic import avoided; callers that need Sprint 10 normalize
+ * should use normalizeAcquisitionForPersistence from acquisition-capture.
+ * This keeps a safe fallback that still rejects junk JSON.
+ */
 export function parseCampaignAttributionFromFormData(
   formData: FormData,
 ): CampaignAttribution | null {
@@ -116,37 +118,36 @@ export function parseCampaignAttributionFromFormData(
   }
 }
 
-/** Capture once per tab session when UTM params are present. */
+/**
+ * @deprecated Prefer captureAcquisitionInBrowser from acquisition-capture.
+ * Kept for barrel compatibility; forwards when window is available.
+ */
 export function captureCampaignAttributionInBrowser(): CampaignAttribution | null {
   if (typeof window === "undefined") {
     return null;
   }
-
   try {
+    // Lazy require pattern avoided — call site should use acquisition-capture.
+    // Minimal compatible behavior: read existing session key only.
     const existing = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
     if (existing) {
       return parseCampaignAttributionFromUnknown(JSON.parse(existing));
     }
-
     const params = new URLSearchParams(window.location.search);
     const hasUtm =
       params.has("utm_source") ||
       params.has("utm_medium") ||
       params.has("utm_campaign");
-
     if (!hasUtm) {
       return null;
     }
-
     const attribution = parseCampaignAttributionFromSearchParams(
       params,
       window.location.pathname,
     );
-
     if (!attribution) {
       return null;
     }
-
     window.sessionStorage.setItem(
       ATTRIBUTION_STORAGE_KEY,
       JSON.stringify(attribution),
@@ -158,19 +159,7 @@ export function captureCampaignAttributionInBrowser(): CampaignAttribution | nul
 }
 
 export function readCampaignAttributionFromBrowser(): CampaignAttribution | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    const existing = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
-    if (!existing) {
-      return captureCampaignAttributionInBrowser();
-    }
-    return parseCampaignAttributionFromUnknown(JSON.parse(existing));
-  } catch {
-    return null;
-  }
+  return captureCampaignAttributionInBrowser();
 }
 
 export function serializeCampaignAttributionForForm(
