@@ -655,7 +655,8 @@ export const GrowthSnapshotSource = {
   GA4: 'GA4',
   SEARCH_CONSOLE: 'SEARCH_CONSOLE',
   FACEBOOK: 'FACEBOOK',
-  INTERNAL: 'INTERNAL'
+  INTERNAL: 'INTERNAL',
+  GOOGLE_BUSINESS_PROFILE: 'GOOGLE_BUSINESS_PROFILE'
 } as const
 
 export type GrowthSnapshotSource = (typeof GrowthSnapshotSource)[keyof typeof GrowthSnapshotSource]
@@ -900,3 +901,23 @@ export const GrowthContentPlanPublisher = {
 } as const
 
 export type GrowthContentPlanPublisher = (typeof GrowthContentPlanPublisher)[keyof typeof GrowthContentPlanPublisher]
+
+
+export const LocalGbpChecklistStatus = {
+  NOT_REVIEWED: 'NOT_REVIEWED',
+  OK: 'OK',
+  NEEDS_ATTENTION: 'NEEDS_ATTENTION',
+  NOT_APPLICABLE: 'NOT_APPLICABLE'
+} as const
+
+export type LocalGbpChecklistStatus = (typeof LocalGbpChecklistStatus)[keyof typeof LocalGbpChecklistStatus]
+
+
+export const LocalGbpFactMatch = {
+  MATCH: 'MATCH',
+  MISMATCH: 'MISMATCH',
+  NOT_CAPTURED: 'NOT_CAPTURED',
+  NOT_APPLICABLE: 'NOT_APPLICABLE'
+} as const
+
+export type LocalGbpFactMatch = (typeof LocalGbpFactMatch)[keyof typeof LocalGbpFactMatch]

@@ -63,6 +63,8 @@ Follow-up operations (Sprint 11): server-side **`FollowUpActivity`** counts and 
 
 See [`lead-followup-operations.md`](lead-followup-operations.md). **LEAD_FOLLOWUP_VERSION = 1**.
 
+Local / GBP (Sprint 12): manual `GrowthSnapshot` source **`GOOGLE_BUSINESS_PROFILE`**. Blank metrics = `NOT_CAPTURED`; entered `0` = observed zero. Eight evidence layers — no fake GBP score. GSC ≠ GBP Insights. See [`local-growth-intelligence.md`](local-growth-intelligence.md). **LOCAL_GROWTH_VERSION = 1**.
+
 ---
 
 ## Public growth events (`growth-events-v1`)
@@ -146,8 +148,12 @@ Clicks, impressions, CTR, average position (diagnostic), top queries/pages, bran
 
 Separate **JS Solutions Page** vs **founder/personal**. Followers, reach, views/impressions, engagement, link clicks, page visits, top posts.
 
+### Google Business Profile (manual)
+
+Profile / Search / Maps views, website clicks, call clicks, directions, messages, review count/rating when captured from Insights. Blank = NOT_CAPTURED. Do not invent rankings. Side-effect budget: GBP API = 0 (`FUTURE_GBP_API`).
+
 ---
 
 ## Side-effect budget
 
-Page load / growth events: OpenAI 0 · Places 0 · crawl 0 · Resend 0 · Stripe 0.
+Page load / growth events: OpenAI 0 · Places 0 · crawl 0 · Resend 0 · Stripe 0 · GBP API 0.

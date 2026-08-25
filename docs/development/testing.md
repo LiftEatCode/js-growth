@@ -59,9 +59,11 @@ Missing Chromium fails clearly (does not silently skip).
 Reuse existing Playwright config (`playwright.config.ts`). Suites live under:
 
 - `tests/commercial/e2e/**`
-- `tests/growth/e2e/**` — includes Sprint 11 follow-up acceptance (`follow-up.spec.ts`)
+- `tests/growth/e2e/**` — includes Sprint 11 follow-up (`follow-up.spec.ts`) and Sprint 12 local/GBP (`local-growth.spec.ts`)
 
-Growth follow-up E2E covers attention queue, activity recording, nurture scheduling, suppression, contact→lead idempotency, and GA4 privacy on `/reports/growth/follow-up` and `/reports/leads/[leadId]`. Runs as part of `npm run test:acceptance` via `test:growth`.
+Growth follow-up E2E covers attention queue, activity recording, nurture scheduling, suppression, contact→lead idempotency, and GA4 privacy on `/reports/growth/follow-up` and `/reports/leads/[leadId]`.
+
+Growth local/GBP E2E covers `/reports/growth/local` auth, blank vs zero snapshot honesty, checklist persistence without mutating business facts, canonical GBP UTMs, GBP vs ORGANIC_SEARCH attribution, GBP_POST plan without auto-publish, GBP-001 active, and static-route privacy smoke. Runs as part of `npm run test:acceptance` via `test:growth`.
 
 If `npm run dev` is already on `:3000`, runners attach to it. For contact/audit acceptance, start that server with mocks:
 
@@ -82,7 +84,7 @@ Acceptance forces:
 - LIVE OpenAI = 0
 - LIVE Resend = 0 (mocked)
 - LIVE Stripe = 0 (mocked / no `sk_live_`)
-- LIVE Meta / GSC / Places = 0
+- LIVE Meta / GSC / Places / GBP API = 0
 - LIVE crawl = 0 for allowlisted growth audit hosts under `GROWTH_TEST_MOCK_AUDIT=1`
 
 ## Failure artifacts

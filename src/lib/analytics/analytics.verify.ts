@@ -514,6 +514,7 @@ for (const staticPath of [
   "/reports/growth/attribution",
   "/reports/growth/content",
   "/reports/growth/follow-up",
+  "/reports/growth/local",
   "/reports/opportunities",
   "/reports/clients",
   "/reports/prospecting",

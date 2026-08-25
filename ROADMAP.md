@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–11** (Measurement → … → Lead Conversion → Acquisition Capture → Follow-up Operations) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–12** (Measurement → … → Follow-up Operations → Local / GBP Intelligence) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -293,8 +293,17 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - `/reports/growth/follow-up` + `/reports/leads/[leadId]`; templates code-side only
 - Acceptance: `docs/growth/growth-sprint11-production-acceptance.md`
 
-### Growth Sprint 12 — (recommended next)
+### Growth Sprint 12 — Local Search / GBP Intelligence V1 ✅
 
+- Research: `docs/research/local-search-gbp-intelligence-2026.md`
+- `LOCAL_GROWTH_VERSION = 1`: eight evidence layers; manual `GOOGLE_BUSINESS_PROFILE` snapshots; checklist model
+- Blank = NOT_CAPTURED, `0` = observed zero; `FUTURE_GBP_API = 0`; Magnolia `TEST_LATER`; website→GBP `DEFER`
+- Experiments GBP-001…010 (GBP-001 ACTIVE); `/reports/growth/local`; side-effect budget 0
+- Acceptance: `docs/growth/growth-sprint12-production-acceptance.md`
+
+### Growth Sprint 13 — (recommended next)
+
+- `CROSS_CHANNEL_INTELLIGENCE_VERSION = 1` — combine Facebook · Search · GBP · Content · Website · Conversion · Follow-up evidence **without** collapsing models
 - Optional AI draft assist for follow-up templates (explicit operator apply — no auto-send)
 - Operator calendar digest / weekly follow-up summary email (internal only)
 - Inbound → Opportunity path without forcing Prospect creation

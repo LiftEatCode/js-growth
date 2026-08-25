@@ -451,7 +451,8 @@ export const ModelName = {
   GrowthContentMetricSnapshot: 'GrowthContentMetricSnapshot',
   GrowthExperimentDecision: 'GrowthExperimentDecision',
   GrowthSearchOpportunity: 'GrowthSearchOpportunity',
-  GrowthContentPlan: 'GrowthContentPlan'
+  GrowthContentPlan: 'GrowthContentPlan',
+  LocalGbpProfileChecklistItem: 'LocalGbpProfileChecklistItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -467,7 +468,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "contactSubmission" | "leadActivity" | "followUpActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan"
+    modelProps: "auditReport" | "lead" | "contactSubmission" | "leadActivity" | "followUpActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan" | "localGbpProfileChecklistItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4541,6 +4542,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LocalGbpProfileChecklistItem: {
+      payload: Prisma.$LocalGbpProfileChecklistItemPayload<ExtArgs>
+      fields: Prisma.LocalGbpProfileChecklistItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LocalGbpProfileChecklistItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LocalGbpProfileChecklistItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>
+        }
+        findFirst: {
+          args: Prisma.LocalGbpProfileChecklistItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LocalGbpProfileChecklistItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>
+        }
+        findMany: {
+          args: Prisma.LocalGbpProfileChecklistItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>[]
+        }
+        create: {
+          args: Prisma.LocalGbpProfileChecklistItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>
+        }
+        createMany: {
+          args: Prisma.LocalGbpProfileChecklistItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LocalGbpProfileChecklistItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>[]
+        }
+        delete: {
+          args: Prisma.LocalGbpProfileChecklistItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>
+        }
+        update: {
+          args: Prisma.LocalGbpProfileChecklistItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.LocalGbpProfileChecklistItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LocalGbpProfileChecklistItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LocalGbpProfileChecklistItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.LocalGbpProfileChecklistItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocalGbpProfileChecklistItemPayload>
+        }
+        aggregate: {
+          args: Prisma.LocalGbpProfileChecklistItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLocalGbpProfileChecklistItem>
+        }
+        groupBy: {
+          args: Prisma.LocalGbpProfileChecklistItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LocalGbpProfileChecklistItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LocalGbpProfileChecklistItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LocalGbpProfileChecklistItemCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5878,6 +5953,22 @@ export const GrowthContentPlanScalarFieldEnum = {
 export type GrowthContentPlanScalarFieldEnum = (typeof GrowthContentPlanScalarFieldEnum)[keyof typeof GrowthContentPlanScalarFieldEnum]
 
 
+export const LocalGbpProfileChecklistItemScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  itemKey: 'itemKey',
+  status: 'status',
+  observation: 'observation',
+  factMatch: 'factMatch',
+  observedValue: 'observedValue',
+  reviewedByEmail: 'reviewedByEmail',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type LocalGbpProfileChecklistItemScalarFieldEnum = (typeof LocalGbpProfileChecklistItemScalarFieldEnum)[keyof typeof LocalGbpProfileChecklistItemScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -7016,6 +7107,34 @@ export type EnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel> = FieldRef
 export type ListEnumGrowthContentPlanPublisherFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GrowthContentPlanPublisher[]'>
     
 
+
+/**
+ * Reference to a field of type 'LocalGbpChecklistStatus'
+ */
+export type EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpChecklistStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'LocalGbpChecklistStatus[]'
+ */
+export type ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpChecklistStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LocalGbpFactMatch'
+ */
+export type EnumLocalGbpFactMatchFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpFactMatch'>
+    
+
+
+/**
+ * Reference to a field of type 'LocalGbpFactMatch[]'
+ */
+export type ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpFactMatch[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -7222,6 +7341,7 @@ export type GlobalOmitConfig = {
   growthExperimentDecision?: Prisma.GrowthExperimentDecisionOmit
   growthSearchOpportunity?: Prisma.GrowthSearchOpportunityOmit
   growthContentPlan?: Prisma.GrowthContentPlanOmit
+  localGbpProfileChecklistItem?: Prisma.LocalGbpProfileChecklistItemOmit
 }
 
 /* Types for Logging */

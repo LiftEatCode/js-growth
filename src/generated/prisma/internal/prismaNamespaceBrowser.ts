@@ -105,7 +105,8 @@ export const ModelName = {
   GrowthContentMetricSnapshot: 'GrowthContentMetricSnapshot',
   GrowthExperimentDecision: 'GrowthExperimentDecision',
   GrowthSearchOpportunity: 'GrowthSearchOpportunity',
-  GrowthContentPlan: 'GrowthContentPlan'
+  GrowthContentPlan: 'GrowthContentPlan',
+  LocalGbpProfileChecklistItem: 'LocalGbpProfileChecklistItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1420,6 +1421,22 @@ export const GrowthContentPlanScalarFieldEnum = {
 } as const
 
 export type GrowthContentPlanScalarFieldEnum = (typeof GrowthContentPlanScalarFieldEnum)[keyof typeof GrowthContentPlanScalarFieldEnum]
+
+
+export const LocalGbpProfileChecklistItemScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  itemKey: 'itemKey',
+  status: 'status',
+  observation: 'observation',
+  factMatch: 'factMatch',
+  observedValue: 'observedValue',
+  reviewedByEmail: 'reviewedByEmail',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type LocalGbpProfileChecklistItemScalarFieldEnum = (typeof LocalGbpProfileChecklistItemScalarFieldEnum)[keyof typeof LocalGbpProfileChecklistItemScalarFieldEnum]
 
 
 export const SortOrder = {

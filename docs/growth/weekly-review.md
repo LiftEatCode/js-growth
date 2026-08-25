@@ -18,6 +18,9 @@ Do not manufacture daily busywork. Review weekly (or when a window matures).
 12. Any stale inbound leads (age band STALE) or qualified leads without opportunities?
 13. Any contact submissions still awaiting explicit Create Lead?
 14. Did we record activities without confusing acquisition channel with activity type?
+15. Did we capture this week’s lightweight GBP Insights snapshot (`/reports/growth/local`)? Blank = NOT_CAPTURED; `0` = observed zero.
+16. Any GBP checklist items NEEDS_ATTENTION / MISMATCH vs business facts?
+17. Is GBP-001 still the active experiment — or is it time to advance the sequence?
 
 ## Rules
 
@@ -28,5 +31,6 @@ Do not manufacture daily busywork. Review weekly (or when a window matures).
 - Growth Baseline V1 remains immutable.
 - No auto-email, auto-status, auto-opportunity.
 - Do not rewrite historical UNKNOWN audits.
+- Do not invent GBP metrics or Map pack rankings. GSC ≠ GBP Insights.
 
-Operator UI: `/reports/growth/conversion` · `/reports/growth/attribution` · `/reports/growth/follow-up` · UTM builder
+Operator UI: `/reports/growth/conversion` · `/reports/growth/attribution` · `/reports/growth/follow-up` · `/reports/growth/local` · UTM builder

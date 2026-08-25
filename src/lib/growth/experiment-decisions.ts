@@ -20,8 +20,11 @@ export async function createGrowthExperimentDecision(input: {
   createdByEmail: string;
 }): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
   const experimentId = input.experimentId.trim();
-  if (!/^[0-9]{4}-[0-9]{3}$/.test(experimentId)) {
-    return { ok: false, error: "experimentId must look like 2026-012" };
+  if (!/^([0-9]{4}-[0-9]{3}|GBP-[0-9]{3})$/.test(experimentId)) {
+    return {
+      ok: false,
+      error: "experimentId must look like 2026-012 or GBP-001",
+    };
   }
   if (!isGrowthExperimentDecisionKind(input.decision)) {
     return { ok: false, error: "Invalid decision" };

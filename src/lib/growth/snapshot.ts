@@ -17,6 +17,7 @@ export const GROWTH_SNAPSHOT_SOURCES = [
   "SEARCH_CONSOLE",
   "FACEBOOK",
   "INTERNAL",
+  "GOOGLE_BUSINESS_PROFILE",
 ] as const;
 
 export type GrowthSnapshotSource = (typeof GROWTH_SNAPSHOT_SOURCES)[number];
@@ -173,6 +174,42 @@ export const internalSnapshotMetricsSchema = z
   })
   .strict();
 
+/**
+ * Google Business Profile Insights — manual V1 capture.
+ * Field names align with Google Help (Views, Calls, Website clicks, Directions,
+ * Messages, Bookings) and Performance API DailyMetric readiness (FUTURE_GBP_API).
+ * Optional ints: omitted/undefined = NOT_CAPTURED; 0 = observed zero.
+ * Do not coerce blank form fields to 0.
+ */
+export const gbpSnapshotMetricsSchema = z
+  .object({
+    ...baselineMetaSchema,
+    localGrowthVersion: z.number().int().positive().optional(),
+    /** MANUAL now; API later — interpretation ignores capture path. */
+    provenance: z.enum(["MANUAL", "API"]).optional(),
+    /** Aggregate unique profile views (Search + Maps) when only total is available. */
+    profileViews: optionalNonNegInt,
+    searchViews: optionalNonNegInt,
+    mapsViews: optionalNonNegInt,
+    websiteClicks: optionalNonNegInt,
+    callClicks: optionalNonNegInt,
+    directionRequests: optionalNonNegInt,
+    messages: optionalNonNegInt,
+    bookings: optionalNonNegInt,
+    /** Searches metric updates monthly per Google Help — may be INSUFFICIENT mid-month. */
+    searchesStatus: dataStatusSchema.optional(),
+    reviewCount: optionalNonNegInt,
+    /** Average star rating 0–5 when captured from Insights. */
+    averageRating: z.number().nonnegative().max(5).optional(),
+    newReviews: optionalNonNegInt,
+    unansweredReviews: optionalNonNegInt,
+    photoCount: optionalNonNegInt,
+    notes: z.string().max(2000).optional(),
+    /** Operator correction of a prior snapshot id — never silent overwrite. */
+    correctsSnapshotId: z.string().max(40).optional(),
+  })
+  .strict();
+
 export type Ga4SnapshotMetrics = z.infer<typeof ga4SnapshotMetricsSchema>;
 export type SearchConsoleSnapshotMetrics = z.infer<
   typeof searchConsoleSnapshotMetricsSchema
@@ -183,6 +220,7 @@ export type FacebookSnapshotMetrics = z.infer<
 export type InternalSnapshotMetrics = z.infer<
   typeof internalSnapshotMetricsSchema
 >;
+export type GbpSnapshotMetrics = z.infer<typeof gbpSnapshotMetricsSchema>;
 
 export function validateGrowthSnapshotMetrics(
   source: GrowthSnapshotSource,
@@ -197,7 +235,9 @@ export function validateGrowthSnapshotMetrics(
         ? searchConsoleSnapshotMetricsSchema
         : source === "FACEBOOK"
           ? facebookSnapshotMetricsSchema
-          : internalSnapshotMetricsSchema;
+          : source === "GOOGLE_BUSINESS_PROFILE"
+            ? gbpSnapshotMetricsSchema
+            : internalSnapshotMetricsSchema;
 
   const parsed = schema.safeParse(metrics);
   if (!parsed.success) {

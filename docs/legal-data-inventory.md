@@ -82,6 +82,14 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 - **Storage:** PostgreSQL via Prisma (`FollowUpActivity`). Append-only; not sent to GA4.
 - **Third parties:** none beyond Neon (database). Operators send email/phone/SMS outside the app; the system records what they log.
 
+### Local / GBP intelligence (Growth Sprint 12)
+
+- **GBP snapshots:** aggregate Insights metrics on `GrowthSnapshot` with source `GOOGLE_BUSINESS_PROFILE` (views, clicks, calls, directions, review count/rating, notes). Blank = not captured; `0` = observed zero. No reviewer names or review text.
+- **Checklist:** `LocalGbpProfileChecklistItem` — item key, status (`NOT_REVIEWED` / `OK` / `NEEDS_ATTENTION` / `NOT_APPLICABLE`), fact match, optional observed value / observation, reviewer email + reviewedAt.
+- **Purpose:** manual local-presence measurement and profile hygiene; not a ranking product.
+- **Storage:** PostgreSQL via Prisma. Not sent to GA4.
+- **Third parties:** none for V1 (`FUTURE_GBP_API = 0`). Operators read Google Business Profile Insights in Google’s UI and enter aggregates manually.
+
 ### Admin / internal session
 
 - **Fields:** staff email in a signed session cookie (`js-growth-internal-session`); configured admin email/password used only for authentication (not stored as customer lead data).

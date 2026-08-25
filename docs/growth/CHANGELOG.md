@@ -4,6 +4,18 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-24/25 — Growth Sprint 12 (Local Search / GBP Intelligence V1)
+
+- Research: `docs/research/local-search-gbp-intelligence-2026.md`
+- `LOCAL_GROWTH_VERSION = 1`: eight evidence layers (no fake GBP score); manual Insights only
+- `GrowthSnapshot` source `GOOGLE_BUSINESS_PROFILE`; blank = NOT_CAPTURED, `0` = observed zero
+- Prisma `LocalGbpProfileChecklistItem` (status + factMatch); migration `20260825010000_growth_sprint12_local_gbp`
+- Cadence `JS_SOLUTIONS_OPERATING_RULE` weekly light / monthly deep; experiments GBP-001…010 (GBP-001 ACTIVE)
+- Magnolia page `TEST_LATER` + doorway protection; website→GBP `DEFER`; `FUTURE_GBP_API = 0`
+- Canonical UTMs: `google_business_profile` / `organic_local` / `gbp_profile` / `website` \| `post_<slug>`
+- `/reports/growth/local` + compact LOCAL/GBP card; side-effect budget 0 on load
+- Acceptance: `docs/growth/growth-sprint12-production-acceptance.md`
+
 ## 2026-08-24 — Growth Sprint 11 (Lead Follow-up & Nurture Operations V1)
 
 - Research: `docs/research/lead-followup-nurture-operations-2026.md`

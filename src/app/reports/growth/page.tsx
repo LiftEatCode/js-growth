@@ -64,6 +64,10 @@ import {
   buildFollowUpAttentionQueue,
   LEAD_FOLLOWUP_VERSION,
 } from "@/lib/follow-up";
+import {
+  LOCAL_GROWTH_VERSION,
+} from "@/lib/growth/local-growth";
+import { getLocalGrowthCompactCard } from "@/lib/growth/local-growth-metrics";
 import { listGrowthExperimentDecisions } from "@/lib/growth/experiment-decisions";
 import {
   FACEBOOK_30_DAY_TARGETS,
@@ -206,6 +210,7 @@ export default async function GrowthDashboardPage() {
     contentPlans,
     leadConversion,
     followUpQueue,
+    localGrowthCard,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -218,6 +223,7 @@ export default async function GrowthDashboardPage() {
     listContentPlans(40),
     getLeadConversionIntelligence(current),
     buildFollowUpAttentionQueue({ limit: 20 }),
+    getLocalGrowthCompactCard(),
   ]);
 
   const contentDueReviews = buildDueReviewQueue({
@@ -347,7 +353,37 @@ export default async function GrowthDashboardPage() {
             Follow-Up Queue
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/local" />}
+          >
+            Local / GBP
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
         </div>
+
+        <Card className="mt-6 space-y-2 p-5" data-testid="local-growth-compact-card">
+          <p className="text-sm font-semibold text-brand">
+            LOCAL / GBP (compact) · v{LOCAL_GROWTH_VERSION}
+          </p>
+          <p className="text-xs text-muted">
+            State: {localGrowthCard.performanceState} · Reviews:{" "}
+            {localGrowthCard.reviewCount} · Rating:{" "}
+            {localGrowthCard.averageRating} · Website clicks:{" "}
+            {localGrowthCard.websiteClicks} · GBP audits:{" "}
+            {localGrowthCard.attributedAudits} · GBP leads:{" "}
+            {localGrowthCard.attributedLeads} · Profile issues:{" "}
+            {localGrowthCard.profileIssues} · Experiment:{" "}
+            {localGrowthCard.activeExperiment}. Unknown stays NOT_CAPTURED.
+          </p>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/local" />}
+          >
+            Open Local Growth
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
+        </Card>
 
         <Card className="mt-6 space-y-2 p-5" data-testid="follow-up-compact-card">
           <p className="text-sm font-semibold text-brand">

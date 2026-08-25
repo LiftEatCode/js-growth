@@ -1,0 +1,266 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+
+import { requireInternalSession } from "@/lib/internal-auth";
+import {
+  createGbpSnapshot,
+  parseOptionalMetricFloat,
+  parseOptionalMetricInt,
+  upsertChecklistItem,
+} from "@/lib/growth/local-growth-store";
+import {
+  createContentPlanFromSeed,
+  isValidContentPlanSlug,
+} from "@/lib/growth/content-plan-store";
+import {
+  CONTENT_PLANNER_PROMPT_VERSION,
+  INITIAL_CONTENT_PLAN_SEEDS,
+  buildDeterministicBrief,
+  type SeedContentPlan,
+} from "@/lib/growth/content-intelligence";
+import { GBP_SUPPORT_CONTENT_SEED } from "@/lib/growth/local-growth";
+import type { GbpSnapshotMetrics } from "@/lib/growth/snapshot";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/generated/prisma/client";
+
+export type GbpSnapshotFormState = {
+  success: boolean;
+  message: string;
+};
+
+export type GbpChecklistFormState = {
+  success: boolean;
+  message: string;
+};
+
+export type GbpContentPlanFormState = {
+  success: boolean;
+  message: string;
+  planId?: string;
+};
+
+export async function createGbpSnapshotAction(
+  _previous: GbpSnapshotFormState,
+  formData: FormData,
+): Promise<GbpSnapshotFormState> {
+  const session = await requireInternalSession();
+
+  try {
+    const periodStartRaw = String(formData.get("periodStart") ?? "");
+    const periodEndRaw = String(formData.get("periodEnd") ?? "");
+    const periodStart = new Date(`${periodStartRaw}T00:00:00.000Z`);
+    const periodEnd = new Date(`${periodEndRaw}T23:59:59.999Z`);
+    if (Number.isNaN(periodStart.getTime()) || Number.isNaN(periodEnd.getTime())) {
+      return { success: false, message: "Invalid period dates" };
+    }
+
+    const metrics: GbpSnapshotMetrics = {
+      provenance: "MANUAL",
+      profileViews: parseOptionalMetricInt(formData.get("profileViews")),
+      searchViews: parseOptionalMetricInt(formData.get("searchViews")),
+      mapsViews: parseOptionalMetricInt(formData.get("mapsViews")),
+      websiteClicks: parseOptionalMetricInt(formData.get("websiteClicks")),
+      callClicks: parseOptionalMetricInt(formData.get("callClicks")),
+      directionRequests: parseOptionalMetricInt(
+        formData.get("directionRequests"),
+      ),
+      messages: parseOptionalMetricInt(formData.get("messages")),
+      bookings: parseOptionalMetricInt(formData.get("bookings")),
+      reviewCount: parseOptionalMetricInt(formData.get("reviewCount")),
+      averageRating: parseOptionalMetricFloat(formData.get("averageRating")),
+      newReviews: parseOptionalMetricInt(formData.get("newReviews")),
+      unansweredReviews: parseOptionalMetricInt(
+        formData.get("unansweredReviews"),
+      ),
+      photoCount: parseOptionalMetricInt(formData.get("photoCount")),
+    };
+
+    const notes = String(formData.get("notes") ?? "").trim();
+    if (notes) {
+      metrics.notes = notes.slice(0, 2000);
+    }
+    const corrects = String(formData.get("correctsSnapshotId") ?? "").trim();
+    if (corrects) {
+      metrics.correctsSnapshotId = corrects.slice(0, 40);
+    }
+
+    // Strip undefined so Zod optional fields stay omitted (NOT_CAPTURED).
+    const cleaned = Object.fromEntries(
+      Object.entries(metrics).filter(([, v]) => v !== undefined),
+    ) as GbpSnapshotMetrics;
+
+    const result = await createGbpSnapshot({
+      periodStart,
+      periodEnd,
+      metrics: cleaned,
+      createdByEmail: session.email,
+      idempotencyKey: String(formData.get("idempotencyKey") ?? "") || null,
+    });
+
+    if (!result.ok) {
+      return { success: false, message: result.error };
+    }
+
+    revalidatePath("/reports/growth/local");
+    revalidatePath("/reports/growth");
+    return {
+      success: true,
+      message: result.deduplicated
+        ? `Snapshot already recorded (duplicate submit ignored): ${result.id}`
+        : `Snapshot saved: ${result.id}`,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to save snapshot",
+    };
+  }
+}
+
+export async function upsertGbpChecklistAction(
+  _previous: GbpChecklistFormState,
+  formData: FormData,
+): Promise<GbpChecklistFormState> {
+  const session = await requireInternalSession();
+
+  const result = await upsertChecklistItem({
+    itemKey: String(formData.get("itemKey") ?? ""),
+    status: String(formData.get("status") ?? ""),
+    factMatch: String(formData.get("factMatch") ?? "") || null,
+    observation: String(formData.get("observation") ?? "") || null,
+    observedValue: String(formData.get("observedValue") ?? "") || null,
+    reviewedByEmail: session.email,
+  });
+
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/local");
+  revalidatePath("/reports/growth");
+  return { success: true, message: "Checklist item saved" };
+}
+
+/**
+ * Operator-triggered ContentPlan for GBP support content.
+ * Reuses Sprint 6 seed gbp-support-content-v1 — no auto-publish.
+ * No GrowthContentRecord until publish semantics require it.
+ */
+export async function createGbpSupportContentPlanAction(
+  _previous: GbpContentPlanFormState,
+  formData: FormData,
+): Promise<GbpContentPlanFormState> {
+  const session = await requireInternalSession();
+  void formData;
+
+  const seed = INITIAL_CONTENT_PLAN_SEEDS.find(
+    (s) => s.slug === GBP_SUPPORT_CONTENT_SEED.id,
+  );
+  if (!seed) {
+    return { success: false, message: "GBP support content seed missing" };
+  }
+
+  const result = await createContentPlanFromSeed(seed, session.email);
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+
+  revalidatePath("/reports/growth/local");
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: result.created
+      ? "GBP support content plan created — no automatic publish"
+      : "GBP support content plan already exists — no automatic publish",
+    planId: result.id,
+  };
+}
+
+/**
+ * Create a GBP_POST plan from a published site asset slug (repurposing).
+ * Manual publish only — no GrowthContentRecord until operator publishes.
+ */
+export async function createGbpPostPlanAction(
+  _previous: GbpContentPlanFormState,
+  formData: FormData,
+): Promise<GbpContentPlanFormState> {
+  const session = await requireInternalSession();
+  const sourceAssetSlug = String(formData.get("sourceAssetSlug") ?? "")
+    .trim()
+    .slice(0, 80);
+  if (!sourceAssetSlug) {
+    return { success: false, message: "sourceAssetSlug required" };
+  }
+
+  const slug = `gbp-post-${sourceAssetSlug}`.slice(0, 80).replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+  if (!isValidContentPlanSlug(slug)) {
+    return { success: false, message: "Invalid derived slug" };
+  }
+
+  const existing = await prisma.growthContentPlan.findUnique({
+    where: { slug },
+    select: { id: true },
+  });
+  if (existing) {
+    return {
+      success: true,
+      message: "GBP_POST plan already exists — no automatic publish",
+      planId: existing.id,
+    };
+  }
+
+  const seed: SeedContentPlan = {
+    slug,
+    contentType: "GBP_POST",
+    sourceType: "REPURPOSE",
+    sourceOpportunitySlug: null,
+    topic: "GBP",
+    workingTitle: `GBP post from ${sourceAssetSlug}`,
+    audience: "Local customers discovering JS Solutions on Google",
+    primaryObjective: "EDUCATION",
+    searchIntent: null,
+    pageType: null,
+    targetServicePath: "/local-seo",
+    publisher: "NONE",
+    priorityBand: "NEXT",
+    whyRecommended: [
+      `Repurpose published asset ${sourceAssetSlug}`,
+      "Manual GBP publish only",
+      "Use canonical post_<slug> UTM when linking",
+    ],
+  };
+
+  const brief = buildDeterministicBrief(seed);
+  const row = await prisma.growthContentPlan.create({
+    data: {
+      slug: seed.slug,
+      contentType: seed.contentType,
+      sourceType: seed.sourceType,
+      status: "BRIEF_READY",
+      priorityBand: seed.priorityBand,
+      publisher: seed.publisher,
+      topic: seed.topic,
+      workingTitle: seed.workingTitle,
+      audience: seed.audience,
+      primaryObjective: seed.primaryObjective,
+      searchIntent: seed.searchIntent,
+      pageType: seed.pageType,
+      targetServicePath: seed.targetServicePath,
+      sourceAssetSlug,
+      whyRecommendedJson: seed.whyRecommended,
+      briefJson: brief as unknown as Prisma.InputJsonValue,
+      plannerPromptVersion: CONTENT_PLANNER_PROMPT_VERSION,
+      createdByEmail: session.email,
+    },
+    select: { id: true },
+  });
+
+  revalidatePath("/reports/growth/local");
+  revalidatePath("/reports/growth/content");
+  return {
+    success: true,
+    message: "GBP_POST plan created — no automatic publish",
+    planId: row.id,
+  };
+}

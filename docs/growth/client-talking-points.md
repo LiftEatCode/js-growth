@@ -46,6 +46,31 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 - “We do not promise rankings, traffic numbers, or timelines. Average position is a diagnostic signal, not a sales claim.”
 - “We do not claim AI guarantees rankings, proprietary Google data, or causal proof from weak attribution.”
 
+## Google Business Profile / local (client-safe)
+
+Safe:
+
+- “Google Business Profile activity is being measured.”
+- “We can attribute tagged website actions back to the profile.”
+- “Reviews and profile engagement are monitored over time.”
+- “We use profile, search, website, and commercial evidence separately.”
+- “We keep Business Profile information accurate and complete so customers and Google can understand what you do and where you serve.”
+- “We ask for honest Google reviews and reply thoughtfully; we do not incentivize or filter reviews.”
+- “We measure profile interactions (views, calls, directions, website clicks) separately from website Search Console metrics.”
+- “When local search is relevant, we prefer useful, distinct local information over thin city doorway pages.”
+- “We do not promise Map pack rankings, timelines, or guaranteed call volume.”
+
+Unsafe:
+
+- Guaranteed #1 / Map pack / “we control Google’s local algorithm”
+- “More GBP posts automatically improve ranking” / “reviews directly cause ranking increases”
+- “We know every call came from Google” / “we dominate local search”
+- Incentivized or gated review programs framed as best practice
+- Equating Search Console clicks with GBP directions/calls
+- Claiming Performance API / Places insights we do not operate
+- Inventing zeros for missing Insights periods
+- Doorway / multi-city thin pages as “local SEO coverage”
+
 ## Funnel clarity
 
 - “We map the customer journey from first visit through audit usage and contact actions, then into our private commercial pipeline.”

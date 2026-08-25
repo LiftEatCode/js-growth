@@ -1555,6 +1555,40 @@ export type EnumGrowthContentPlanPublisherWithAggregatesFilter<$PrismaModel = ne
   _max?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
 }
 
+export type EnumLocalGbpChecklistStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpChecklistStatus | Prisma.EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel> | $Enums.LocalGbpChecklistStatus
+}
+
+export type EnumLocalGbpFactMatchFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpFactMatch | Prisma.EnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel> | $Enums.LocalGbpFactMatch
+}
+
+export type EnumLocalGbpChecklistStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpChecklistStatus | Prisma.EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpChecklistStatusWithAggregatesFilter<$PrismaModel> | $Enums.LocalGbpChecklistStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel>
+}
+
+export type EnumLocalGbpFactMatchWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpFactMatch | Prisma.EnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpFactMatchWithAggregatesFilter<$PrismaModel> | $Enums.LocalGbpFactMatch
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -3042,6 +3076,40 @@ export type NestedEnumGrowthContentPlanPublisherWithAggregatesFilter<$PrismaMode
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGrowthContentPlanPublisherFilter<$PrismaModel>
+}
+
+export type NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpChecklistStatus | Prisma.EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel> | $Enums.LocalGbpChecklistStatus
+}
+
+export type NestedEnumLocalGbpFactMatchFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpFactMatch | Prisma.EnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel> | $Enums.LocalGbpFactMatch
+}
+
+export type NestedEnumLocalGbpChecklistStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpChecklistStatus | Prisma.EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpChecklistStatusWithAggregatesFilter<$PrismaModel> | $Enums.LocalGbpChecklistStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocalGbpChecklistStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumLocalGbpFactMatchWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpFactMatch | Prisma.EnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  in?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocalGbpFactMatch[] | Prisma.ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocalGbpFactMatchWithAggregatesFilter<$PrismaModel> | $Enums.LocalGbpFactMatch
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
 }
 
 

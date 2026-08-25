@@ -5,6 +5,7 @@
  *   npx tsx --import ./tests/commercial/shims/register.mjs tests/growth/fixtures/assert-cli.ts <command> [args...]
  *
  * Commands:
+ *   assert-gbp-snapshot-zero-vs-null
  *   assert-historical-unknown <auditId>
  *   assert-audit-channel <hostnameContains> <expectedChannel>
  *   assert-contact <email> <expectedChannel>
@@ -62,6 +63,44 @@ async function withPrisma<T>(
   } finally {
     await prisma.$disconnect();
   }
+}
+
+async function assertGbpSnapshotZeroVsNull() {
+  await withPrisma(async (prisma) => {
+    const rows = await prisma.growthSnapshot.findMany({
+      where: { source: "GOOGLE_BUSINESS_PROFILE" },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    });
+    assert(rows.length > 0, "expected a GOOGLE_BUSINESS_PROFILE snapshot");
+    const row =
+      rows.find((candidate) => {
+        const metrics = candidate.metricsJson as Record<string, unknown>;
+        return metrics.websiteClicks === 0 && metrics.reviewCount === 3;
+      }) ?? null;
+    assert(
+      row,
+      "expected a snapshot with websiteClicks=0 and reviewCount=3",
+    );
+    const metrics = row.metricsJson as Record<string, unknown>;
+    assert(
+      metrics.websiteClicks === 0,
+      `websiteClicks should be observed 0, got ${String(metrics.websiteClicks)}`,
+    );
+    assert(
+      metrics.callClicks === undefined || metrics.callClicks === null,
+      `callClicks blank should be NOT_CAPTURED (undefined/null), got ${String(metrics.callClicks)}`,
+    );
+    assert(
+      metrics.reviewCount === 3,
+      `reviewCount should be 3, got ${String(metrics.reviewCount)}`,
+    );
+    assert(
+      !attributionHasPii(metrics),
+      "GBP snapshot metrics must not contain PII keys",
+    );
+    console.log("OK gbp snapshot zero vs null", row.id);
+  });
 }
 
 async function assertHistoricalUnknown(auditId: string) {
@@ -346,6 +385,9 @@ async function main() {
     throw new Error("assert-cli requires a command");
   }
   switch (command) {
+    case "assert-gbp-snapshot-zero-vs-null":
+      await assertGbpSnapshotZeroVsNull();
+      break;
     case "assert-historical-unknown":
       await assertHistoricalUnknown(args[0]!);
       break;

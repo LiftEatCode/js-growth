@@ -56,6 +56,7 @@ Competitive Growth Analysis is **internal-only** (`noindex`). Not exposed on pub
 - Growth Sprint 10: Acquisition Capture V1 adds first-observed (localStorage, 90-day TTL) + sessionStorage current session + `ContactSubmission.attributionJson`. No PII/tokens in attribution storage. Attribution failure must not block contact/audit success. No fingerprinting / cross-device identity.
 - Growth dashboard (`/reports/growth`) exposes aggregate counts only; attribution debug view shows no PII
 - Growth Sprint 11: **`FollowUpActivity`** summaries, operator emails, and commercial record IDs are internal-only — never GA4 params. `/reports/leads/[id]` and `/reports/growth/follow-up` use sanitized route-family paths (same pattern as other `/reports/**` routes)
+- Growth Sprint 12: GBP snapshots store **aggregate** Insights only — no reviewer names, review text, or customer PII. `/reports/growth/local` is a static analytics path (preserved as-is). No GBP internal IDs in GA4. Dashboard load: GBP API = 0
 
 ---
 

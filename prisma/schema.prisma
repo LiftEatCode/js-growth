@@ -2423,6 +2423,7 @@ enum GrowthSnapshotSource {
   SEARCH_CONSOLE
   FACEBOOK
   INTERNAL
+  GOOGLE_BUSINESS_PROFILE
 }
 
 /// Immutable historical growth baseline snapshot. metricsJson shape is validated
@@ -2836,4 +2837,49 @@ model GrowthContentPlan {
   @@index([contentType, status])
   @@index([searchOpportunitySlug])
   @@index([createdAt])
+}
+
+// ─── Growth Sprint 12 — Local / GBP profile checklist ───────────────────────
+
+enum LocalGbpChecklistStatus {
+  NOT_REVIEWED
+  OK
+  NEEDS_ATTENTION
+  NOT_APPLICABLE
+}
+
+enum LocalGbpFactMatch {
+  MATCH
+  MISMATCH
+  NOT_CAPTURED
+  NOT_APPLICABLE
+}
+
+/// Durable operator checklist for Google Business Profile configuration.
+/// Compares observations to JS_SOLUTIONS_BUSINESS_FACTS — never mutates facts.
+/// Blank checklist state = NOT_REVIEWED. Snapshots remain separate evidence.
+model LocalGbpProfileChecklistItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  /// Stable checklist key (e.g. PRIMARY_CATEGORY, WEBSITE_UTM).
+  itemKey String @unique @db.VarChar(80)
+
+  status LocalGbpChecklistStatus @default(NOT_REVIEWED)
+
+  /// Operator observation (no reviewer PII / review text).
+  observation String? @db.VarChar(1000)
+
+  /// Comparison vs canonical business facts when applicable.
+  factMatch LocalGbpFactMatch @default(NOT_CAPTURED)
+
+  /// Observed GBP value for NAP / category / URL fields (aggregate, no PII).
+  observedValue String? @db.VarChar(300)
+
+  reviewedByEmail String?
+  reviewedAt      DateTime?
+
+  @@index([status])
+  @@index([updatedAt])
 }

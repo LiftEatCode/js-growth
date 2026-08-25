@@ -309,3 +309,10 @@ export type GrowthSearchOpportunity = Prisma.GrowthSearchOpportunityModel
  * AI must not set PUBLISHED. Generation history lives in generationHistoryJson.
  */
 export type GrowthContentPlan = Prisma.GrowthContentPlanModel
+/**
+ * Model LocalGbpProfileChecklistItem
+ * Durable operator checklist for Google Business Profile configuration.
+ * Compares observations to JS_SOLUTIONS_BUSINESS_FACTS — never mutates facts.
+ * Blank checklist state = NOT_REVIEWED. Snapshots remain separate evidence.
+ */
+export type LocalGbpProfileChecklistItem = Prisma.LocalGbpProfileChecklistItemModel

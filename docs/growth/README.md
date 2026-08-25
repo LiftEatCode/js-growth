@@ -1,6 +1,6 @@
 # Growth Phase — Documentation Index
 
-Growth Sprints 1–11 establish measurement through content review, pipeline observation, first-party acquisition capture, and operator follow-up discipline: publish → observe → interpret carefully → connect tagged campaigns to inbound conversions where evidence exists → record human follow-up → human decide.
+Growth Sprints 1–12 establish measurement through content review, pipeline observation, first-party acquisition capture, operator follow-up, and manual Local/GBP intelligence: publish → observe → interpret carefully → connect tagged campaigns to inbound conversions where evidence exists → record human follow-up → measure GBP honestly → human decide.
 
 **Principle:** Do not optimize what we cannot measure. Capture what we observe; preserve what we know; label what we do not know. Never rewrite historical UNKNOWN to improve coverage.
 
@@ -31,6 +31,7 @@ Growth Sprints 1–11 establish measurement through content review, pipeline obs
 | [content-review.md](content-review.md) | **CONTENT_REVIEW_VERSION = 1** |
 | [lead-conversion-intelligence.md](lead-conversion-intelligence.md) | **LEAD_CONVERSION_INTELLIGENCE_VERSION = 1** |
 | [lead-followup-operations.md](lead-followup-operations.md) | **LEAD_FOLLOWUP_VERSION = 1** — FollowUpActivity, attention queue, nurture (no auto-send) |
+| [local-growth-intelligence.md](local-growth-intelligence.md) | **LOCAL_GROWTH_VERSION = 1** — manual GBP snapshots, checklist, experiments GBP-001…010 |
 | [attribution.md](attribution.md) | Channel + strength + Acquisition Capture V1 scopes |
 | [weekly-review.md](weekly-review.md) | Weekly conversion review questions |
 | [content-learning.md](content-learning.md) | Small-sample learning safeguards |
@@ -42,6 +43,7 @@ Growth Sprints 1–11 establish measurement through content review, pipeline obs
 | [growth-sprint9-production-acceptance.md](growth-sprint9-production-acceptance.md) | Sprint 9 acceptance |
 | [growth-sprint10-production-acceptance.md](growth-sprint10-production-acceptance.md) | Sprint 10 acceptance |
 | [growth-sprint11-production-acceptance.md](growth-sprint11-production-acceptance.md) | Sprint 11 acceptance |
+| [growth-sprint12-production-acceptance.md](growth-sprint12-production-acceptance.md) | Sprint 12 acceptance |
 | [blog-google-visibility-distribution.md](blog-google-visibility-distribution.md) | FB/GBP/video handoff for visibility article |
 | [experiments/](experiments/) | Sprint 2 (001–004) + Sprint 3 Facebook (010–018) |
 | [../research/audit-conversion-funnel-2026.md](../research/audit-conversion-funnel-2026.md) | Sprint 2 research |
@@ -52,6 +54,7 @@ Growth Sprints 1–11 establish measurement through content review, pipeline obs
 | [../research/lead-conversion-intelligence-2026.md](../research/lead-conversion-intelligence-2026.md) | Sprint 9 GA4/attribution research |
 | [../research/acquisition-capture-attribution-2026.md](../research/acquisition-capture-attribution-2026.md) | Sprint 10 acquisition capture research |
 | [../research/lead-followup-nurture-operations-2026.md](../research/lead-followup-nurture-operations-2026.md) | Sprint 11 follow-up / nurture research |
+| [../research/local-search-gbp-intelligence-2026.md](../research/local-search-gbp-intelligence-2026.md) | Sprint 12 Local / GBP research |
 | [../research/blog-google-visibility-2026.md](../research/blog-google-visibility-2026.md) | Visibility article research note |
 
 ## Internal tools
@@ -62,9 +65,11 @@ Growth Sprints 1–11 establish measurement through content review, pipeline obs
 - `/reports/growth/attribution` — Privacy-safe acquisition observations (no PII)
 - `/reports/growth/utm-builder` — Canonical tagged URL builder (FB / GBP / generic)
 - `/reports/growth/follow-up` — Follow-up attention queue + metrics (no auto-send)
+- `/reports/growth/local` — Local / GBP Intelligence (manual snapshots + checklist)
 - `/reports/leads/[leadId]` — Lead detail + activity timeline
 ## Non-goals (V1)
 
 - Auto-publish / mass generation / autonomous optimization
 - Fabricating Search volumes, rankings, or historical performance
+- GBP Performance API / Places API automation (`FUTURE_GBP_API = 0`)
 - Mutating commercial authority objects from the growth engine

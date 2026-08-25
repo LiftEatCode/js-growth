@@ -47,6 +47,7 @@ const INTERNAL_REPORTS_STATIC_SEGMENTS = new Set([
   "attribution",
   "content",
   "follow-up",
+  "local",
   "leads",
   "new",
 ]);

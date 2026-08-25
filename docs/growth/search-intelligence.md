@@ -61,7 +61,15 @@ Manual `GrowthSnapshot` source `SEARCH_CONSOLE`. Preserve NOT_CAPTURED / INSUFFI
 
 ## Side-effect budget (dashboard)
 
-Google APIs: 0 · Meta: 0 · OpenAI: 0 · Places: 0 · paid crawl: 0 · Resend: 0 · Stripe: 0
+Google APIs: 0 · Meta: 0 · OpenAI: 0 · Places: 0 · GBP API: 0 · paid crawl: 0 · Resend: 0 · Stripe: 0
+
+## Local search + anti-doorway (Sprint 12)
+
+Local / GBP Intelligence extends Search with **LOCAL_SEARCH** evidence separate from GSC. Magnolia-specific page decision: **`TEST_LATER`** with doorway protection — no thin city factories (`/seo-magnolia`, multi-city clones). Local opportunities must pass DISTINCT_USER_VALUE · INTENT · COLLISION · BUSINESS_RELEVANCE. Prefer strengthening `/local-seo` + accurate GBP over doorway expansion.
+
+GSC measures website Search performance — **not** Maps/GBP profile actions. Do not infer Map pack rank from Search Console.
+
+See [`local-growth-intelligence.md`](local-growth-intelligence.md). **LOCAL_GROWTH_VERSION = 1**.
 
 ## Code
 
@@ -75,4 +83,6 @@ Google APIs: 0 · Meta: 0 · OpenAI: 0 · Places: 0 · paid crawl: 0 · Resend: 
 - [search-weekly-review.md](search-weekly-review.md)
 - [content-brief-contract.md](content-brief-contract.md)
 - [search-sprint5-production-acceptance.md](search-sprint5-production-acceptance.md)
+- [local-growth-intelligence.md](local-growth-intelligence.md)
 - [../research/seo-search-intelligence-2026.md](../research/seo-search-intelligence-2026.md)
+- [../research/local-search-gbp-intelligence-2026.md](../research/local-search-gbp-intelligence-2026.md)

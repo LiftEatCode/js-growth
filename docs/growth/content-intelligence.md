@@ -20,6 +20,10 @@ AI helps develop the answer. It does not decide what is true, and it never silen
 
 SERVICE_PAGE · BLOG · FACEBOOK_COMPANY · FACEBOOK_FOUNDER · GBP_POST · VIDEO_BRIEF
 
+### GBP_POST (Sprint 12)
+
+Local Growth may recommend or create a `GBP_POST` plan from published site assets / opportunities. Operator publishes on Google Business Profile manually — **no automatic publish**, no GrowthContentRecord until actual publish semantics require it. Use canonical post UTMs (`post_<slug>`). Formats: Update / Offer / Event. See [`local-growth-intelligence.md`](local-growth-intelligence.md).
+
 ## Draft layers on `GrowthContentPlan`
 
 | Field | Role |
@@ -58,7 +62,7 @@ See also: [content-performance.md](content-performance.md), [content-distributio
 | Discard candidate | 0 |
 | Save human edits | 0 |
 
-Meta / GSC API / Places / crawl / Resend / Stripe = 0
+Meta / GSC API / Places / crawl / Resend / Stripe / GBP API = 0
 
 ## Concurrency
 

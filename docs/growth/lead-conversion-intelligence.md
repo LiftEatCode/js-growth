@@ -74,3 +74,14 @@ Lead Conversion Intelligence **observes** pipeline facts; Sprint 11 adds **opera
 - ContactSubmission → explicit Create Lead (no auto-Lead)
 
 See [`lead-followup-operations.md`](lead-followup-operations.md). **LEAD_FOLLOWUP_VERSION = 1**.
+
+## Sprint 12 — GBP attribution feedback
+
+Local Growth surfaces GBP-attributed audits / contacts / inbound leads as **read-only** conversion feedback (ATTRIBUTED / OBSERVED / DIRECTIONAL / UNKNOWN). Platform Insights (calls, directions, website clicks) stay separate from CRM Lead counts.
+
+- Classify GBP only with canonical UTMs (`google_business_profile` / `organic_local`)
+- Generic Google referrer ≠ GBP
+- Do not claim “GBP caused $X” without evidence-contract support
+- No commercial mutation from the local dashboard
+
+See [`local-growth-intelligence.md`](local-growth-intelligence.md). **LOCAL_GROWTH_VERSION = 1**.
