@@ -35,6 +35,7 @@ export type LocalGbpProfileChecklistItemMinAggregateOutputType = {
   observation: string | null
   factMatch: $Enums.LocalGbpFactMatch | null
   observedValue: string | null
+  observationSource: $Enums.LocalGbpObservationSource | null
   reviewedByEmail: string | null
   reviewedAt: Date | null
 }
@@ -48,6 +49,7 @@ export type LocalGbpProfileChecklistItemMaxAggregateOutputType = {
   observation: string | null
   factMatch: $Enums.LocalGbpFactMatch | null
   observedValue: string | null
+  observationSource: $Enums.LocalGbpObservationSource | null
   reviewedByEmail: string | null
   reviewedAt: Date | null
 }
@@ -61,6 +63,7 @@ export type LocalGbpProfileChecklistItemCountAggregateOutputType = {
   observation: number
   factMatch: number
   observedValue: number
+  observationSource: number
   reviewedByEmail: number
   reviewedAt: number
   _all: number
@@ -76,6 +79,7 @@ export type LocalGbpProfileChecklistItemMinAggregateInputType = {
   observation?: true
   factMatch?: true
   observedValue?: true
+  observationSource?: true
   reviewedByEmail?: true
   reviewedAt?: true
 }
@@ -89,6 +93,7 @@ export type LocalGbpProfileChecklistItemMaxAggregateInputType = {
   observation?: true
   factMatch?: true
   observedValue?: true
+  observationSource?: true
   reviewedByEmail?: true
   reviewedAt?: true
 }
@@ -102,6 +107,7 @@ export type LocalGbpProfileChecklistItemCountAggregateInputType = {
   observation?: true
   factMatch?: true
   observedValue?: true
+  observationSource?: true
   reviewedByEmail?: true
   reviewedAt?: true
   _all?: true
@@ -188,6 +194,7 @@ export type LocalGbpProfileChecklistItemGroupByOutputType = {
   observation: string | null
   factMatch: $Enums.LocalGbpFactMatch
   observedValue: string | null
+  observationSource: $Enums.LocalGbpObservationSource | null
   reviewedByEmail: string | null
   reviewedAt: Date | null
   _count: LocalGbpProfileChecklistItemCountAggregateOutputType | null
@@ -222,6 +229,7 @@ export type LocalGbpProfileChecklistItemWhereInput = {
   observation?: Prisma.StringNullableFilter<"LocalGbpProfileChecklistItem"> | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchFilter<"LocalGbpProfileChecklistItem"> | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.StringNullableFilter<"LocalGbpProfileChecklistItem"> | string | null
+  observationSource?: Prisma.EnumLocalGbpObservationSourceNullableFilter<"LocalGbpProfileChecklistItem"> | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.StringNullableFilter<"LocalGbpProfileChecklistItem"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"LocalGbpProfileChecklistItem"> | Date | string | null
 }
@@ -235,6 +243,7 @@ export type LocalGbpProfileChecklistItemOrderByWithRelationInput = {
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
   factMatch?: Prisma.SortOrder
   observedValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  observationSource?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedByEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
 }
@@ -251,6 +260,7 @@ export type LocalGbpProfileChecklistItemWhereUniqueInput = Prisma.AtLeast<{
   observation?: Prisma.StringNullableFilter<"LocalGbpProfileChecklistItem"> | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchFilter<"LocalGbpProfileChecklistItem"> | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.StringNullableFilter<"LocalGbpProfileChecklistItem"> | string | null
+  observationSource?: Prisma.EnumLocalGbpObservationSourceNullableFilter<"LocalGbpProfileChecklistItem"> | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.StringNullableFilter<"LocalGbpProfileChecklistItem"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"LocalGbpProfileChecklistItem"> | Date | string | null
 }, "id" | "itemKey">
@@ -264,6 +274,7 @@ export type LocalGbpProfileChecklistItemOrderByWithAggregationInput = {
   observation?: Prisma.SortOrderInput | Prisma.SortOrder
   factMatch?: Prisma.SortOrder
   observedValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  observationSource?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedByEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LocalGbpProfileChecklistItemCountOrderByAggregateInput
@@ -283,6 +294,7 @@ export type LocalGbpProfileChecklistItemScalarWhereWithAggregatesInput = {
   observation?: Prisma.StringNullableWithAggregatesFilter<"LocalGbpProfileChecklistItem"> | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchWithAggregatesFilter<"LocalGbpProfileChecklistItem"> | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.StringNullableWithAggregatesFilter<"LocalGbpProfileChecklistItem"> | string | null
+  observationSource?: Prisma.EnumLocalGbpObservationSourceNullableWithAggregatesFilter<"LocalGbpProfileChecklistItem"> | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.StringNullableWithAggregatesFilter<"LocalGbpProfileChecklistItem"> | string | null
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LocalGbpProfileChecklistItem"> | Date | string | null
 }
@@ -296,6 +308,7 @@ export type LocalGbpProfileChecklistItemCreateInput = {
   observation?: string | null
   factMatch?: $Enums.LocalGbpFactMatch
   observedValue?: string | null
+  observationSource?: $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: string | null
   reviewedAt?: Date | string | null
 }
@@ -309,6 +322,7 @@ export type LocalGbpProfileChecklistItemUncheckedCreateInput = {
   observation?: string | null
   factMatch?: $Enums.LocalGbpFactMatch
   observedValue?: string | null
+  observationSource?: $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: string | null
   reviewedAt?: Date | string | null
 }
@@ -322,6 +336,7 @@ export type LocalGbpProfileChecklistItemUpdateInput = {
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchFieldUpdateOperationsInput | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  observationSource?: Prisma.NullableEnumLocalGbpObservationSourceFieldUpdateOperationsInput | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -335,6 +350,7 @@ export type LocalGbpProfileChecklistItemUncheckedUpdateInput = {
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchFieldUpdateOperationsInput | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  observationSource?: Prisma.NullableEnumLocalGbpObservationSourceFieldUpdateOperationsInput | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -348,6 +364,7 @@ export type LocalGbpProfileChecklistItemCreateManyInput = {
   observation?: string | null
   factMatch?: $Enums.LocalGbpFactMatch
   observedValue?: string | null
+  observationSource?: $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: string | null
   reviewedAt?: Date | string | null
 }
@@ -361,6 +378,7 @@ export type LocalGbpProfileChecklistItemUpdateManyMutationInput = {
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchFieldUpdateOperationsInput | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  observationSource?: Prisma.NullableEnumLocalGbpObservationSourceFieldUpdateOperationsInput | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -374,6 +392,7 @@ export type LocalGbpProfileChecklistItemUncheckedUpdateManyInput = {
   observation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   factMatch?: Prisma.EnumLocalGbpFactMatchFieldUpdateOperationsInput | $Enums.LocalGbpFactMatch
   observedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  observationSource?: Prisma.NullableEnumLocalGbpObservationSourceFieldUpdateOperationsInput | $Enums.LocalGbpObservationSource | null
   reviewedByEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -387,6 +406,7 @@ export type LocalGbpProfileChecklistItemCountOrderByAggregateInput = {
   observation?: Prisma.SortOrder
   factMatch?: Prisma.SortOrder
   observedValue?: Prisma.SortOrder
+  observationSource?: Prisma.SortOrder
   reviewedByEmail?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
 }
@@ -400,6 +420,7 @@ export type LocalGbpProfileChecklistItemMaxOrderByAggregateInput = {
   observation?: Prisma.SortOrder
   factMatch?: Prisma.SortOrder
   observedValue?: Prisma.SortOrder
+  observationSource?: Prisma.SortOrder
   reviewedByEmail?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
 }
@@ -413,6 +434,7 @@ export type LocalGbpProfileChecklistItemMinOrderByAggregateInput = {
   observation?: Prisma.SortOrder
   factMatch?: Prisma.SortOrder
   observedValue?: Prisma.SortOrder
+  observationSource?: Prisma.SortOrder
   reviewedByEmail?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
 }
@@ -423,6 +445,10 @@ export type EnumLocalGbpChecklistStatusFieldUpdateOperationsInput = {
 
 export type EnumLocalGbpFactMatchFieldUpdateOperationsInput = {
   set?: $Enums.LocalGbpFactMatch
+}
+
+export type NullableEnumLocalGbpObservationSourceFieldUpdateOperationsInput = {
+  set?: $Enums.LocalGbpObservationSource | null
 }
 
 
@@ -436,6 +462,7 @@ export type LocalGbpProfileChecklistItemSelect<ExtArgs extends runtime.Types.Ext
   observation?: boolean
   factMatch?: boolean
   observedValue?: boolean
+  observationSource?: boolean
   reviewedByEmail?: boolean
   reviewedAt?: boolean
 }, ExtArgs["result"]["localGbpProfileChecklistItem"]>
@@ -449,6 +476,7 @@ export type LocalGbpProfileChecklistItemSelectCreateManyAndReturn<ExtArgs extend
   observation?: boolean
   factMatch?: boolean
   observedValue?: boolean
+  observationSource?: boolean
   reviewedByEmail?: boolean
   reviewedAt?: boolean
 }, ExtArgs["result"]["localGbpProfileChecklistItem"]>
@@ -462,6 +490,7 @@ export type LocalGbpProfileChecklistItemSelectUpdateManyAndReturn<ExtArgs extend
   observation?: boolean
   factMatch?: boolean
   observedValue?: boolean
+  observationSource?: boolean
   reviewedByEmail?: boolean
   reviewedAt?: boolean
 }, ExtArgs["result"]["localGbpProfileChecklistItem"]>
@@ -475,11 +504,12 @@ export type LocalGbpProfileChecklistItemSelectScalar = {
   observation?: boolean
   factMatch?: boolean
   observedValue?: boolean
+  observationSource?: boolean
   reviewedByEmail?: boolean
   reviewedAt?: boolean
 }
 
-export type LocalGbpProfileChecklistItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "itemKey" | "status" | "observation" | "factMatch" | "observedValue" | "reviewedByEmail" | "reviewedAt", ExtArgs["result"]["localGbpProfileChecklistItem"]>
+export type LocalGbpProfileChecklistItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "itemKey" | "status" | "observation" | "factMatch" | "observedValue" | "observationSource" | "reviewedByEmail" | "reviewedAt", ExtArgs["result"]["localGbpProfileChecklistItem"]>
 
 export type $LocalGbpProfileChecklistItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LocalGbpProfileChecklistItem"
@@ -505,6 +535,10 @@ export type $LocalGbpProfileChecklistItemPayload<ExtArgs extends runtime.Types.E
      * Observed GBP value for NAP / category / URL fields (aggregate, no PII).
      */
     observedValue: string | null
+    /**
+     * Sprint 12.1 — API vs MANUAL observation provenance.
+     */
+    observationSource: $Enums.LocalGbpObservationSource | null
     reviewedByEmail: string | null
     reviewedAt: Date | null
   }, ExtArgs["result"]["localGbpProfileChecklistItem"]>
@@ -938,6 +972,7 @@ export interface LocalGbpProfileChecklistItemFieldRefs {
   readonly observation: Prisma.FieldRef<"LocalGbpProfileChecklistItem", 'String'>
   readonly factMatch: Prisma.FieldRef<"LocalGbpProfileChecklistItem", 'LocalGbpFactMatch'>
   readonly observedValue: Prisma.FieldRef<"LocalGbpProfileChecklistItem", 'String'>
+  readonly observationSource: Prisma.FieldRef<"LocalGbpProfileChecklistItem", 'LocalGbpObservationSource'>
   readonly reviewedByEmail: Prisma.FieldRef<"LocalGbpProfileChecklistItem", 'String'>
   readonly reviewedAt: Prisma.FieldRef<"LocalGbpProfileChecklistItem", 'DateTime'>
 }

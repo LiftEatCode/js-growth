@@ -85,6 +85,7 @@ export default defineConfig({
           COMMERCIAL_TEST_MOCK_EXTERNALS: "1",
           COMMERCIAL_TEST_MOCK_STRIPE: "1",
           GROWTH_TEST_MOCK_AUDIT: "1",
+          GROWTH_TEST_MOCK_GBP: "1",
           PORT: String(port),
           NEXT_PUBLIC_SITE_URL: baseURL,
         },

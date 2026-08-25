@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–12** (Measurement → … → Follow-up Operations → Local / GBP Intelligence) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–12.1** (Measurement → … → Local / GBP Intelligence → GBP Read Integration) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -296,10 +296,19 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 ### Growth Sprint 12 — Local Search / GBP Intelligence V1 ✅
 
 - Research: `docs/research/local-search-gbp-intelligence-2026.md`
-- `LOCAL_GROWTH_VERSION = 1`: eight evidence layers; manual `GOOGLE_BUSINESS_PROFILE` snapshots; checklist model
-- Blank = NOT_CAPTURED, `0` = observed zero; `FUTURE_GBP_API = 0`; Magnolia `TEST_LATER`; website→GBP `DEFER`
-- Experiments GBP-001…010 (GBP-001 ACTIVE); `/reports/growth/local`; side-effect budget 0
+- `LOCAL_GROWTH_VERSION = 1`: eight evidence layers; `GOOGLE_BUSINESS_PROFILE` snapshots; checklist model
+- Blank = NOT_CAPTURED, `0` = observed zero; Magnolia `TEST_LATER`; website→GBP `DEFER`
+- Experiments GBP-001…010 (GBP-001 ACTIVE); `/reports/growth/local`; side-effect budget 0 on load
 - Acceptance: `docs/growth/growth-sprint12-production-acceptance.md`
+
+### Growth Sprint 12.1 — GBP Read Integration V1 ✅
+
+- Research: `docs/research/google-business-profile-api-2026.md`
+- `GBP_READ_INTEGRATION_VERSION = 1`: OAuth READ-ONLY sync (scope `business.manage`; app rejects writes)
+- `GoogleBusinessProfileConnection` + encrypted refresh tokens; Sync Profile / Sync Performance
+- Dashboard-load GBP API = 0; manual baselines preserved; reviews aggregates only
+- Unsupported V1: photos/logo/cover/posts (manual). Write automation / scheduled sync deferred
+- Acceptance: `docs/growth/growth-sprint12-1-production-acceptance.md`
 
 ### Growth Sprint 13 — (recommended next)
 
@@ -309,6 +318,7 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - Inbound → Opportunity path without forcing Prospect creation
 - `responseRate` metric when FollowUpActivity history is mature enough for honest measurement
 - Continue GSC windows for `/seo`, Experiment 018 directional review, tagged Facebook/GBP journey acceptance
+- GBP write/publish automation remains **deferred** (not Sprint 13 scope by default)
 
 ---
 

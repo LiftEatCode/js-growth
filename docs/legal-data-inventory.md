@@ -86,9 +86,18 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 
 - **GBP snapshots:** aggregate Insights metrics on `GrowthSnapshot` with source `GOOGLE_BUSINESS_PROFILE` (views, clicks, calls, directions, review count/rating, notes). Blank = not captured; `0` = observed zero. No reviewer names or review text.
 - **Checklist:** `LocalGbpProfileChecklistItem` — item key, status (`NOT_REVIEWED` / `OK` / `NEEDS_ATTENTION` / `NOT_APPLICABLE`), fact match, optional observed value / observation, reviewer email + reviewedAt.
-- **Purpose:** manual local-presence measurement and profile hygiene; not a ranking product.
+- **Purpose:** local-presence measurement and profile hygiene; not a ranking product.
 - **Storage:** PostgreSQL via Prisma. Not sent to GA4.
-- **Third parties:** none for V1 (`FUTURE_GBP_API = 0`). Operators read Google Business Profile Insights in Google’s UI and enter aggregates manually.
+- **Third parties (Sprint 12):** none for manual capture. Operators may read Insights in Google’s UI and enter aggregates manually.
+
+### GBP Read connection (Growth Sprint 12.1)
+
+- **Model:** `GoogleBusinessProfileConnection` — OAuth connection status, Google account/location resource names (server), scopes JSON, sync timestamps/status/errors, sync lock.
+- **Secrets:** `encryptedRefreshToken` + `tokenIv` + `tokenAuthTag` (AES-GCM). Access tokens are short-lived in memory during sync — not persisted as plaintext columns for client use.
+- **Synced aggregates:** profile observations on checklist rows (`observationSource: API` where applicable); Performance windows on `GrowthSnapshot` with `provenance: API`; review **count/rating aggregates only**.
+- **Purpose:** READ-ONLY sync into Local Growth. No automatic profile writes, posts, or review replies.
+- **Storage:** PostgreSQL via Prisma. Not sent to GA4. Tokens never rendered to the browser.
+- **Third parties:** Google OAuth + Business Profile APIs (Account Management, Business Information, Performance, v4 reviews list). Separate from Google Places (prospecting).
 
 ### Admin / internal session
 
@@ -113,6 +122,7 @@ Named because they appear in application code or confirmed configuration:
 - Neon / PostgreSQL (`@neondatabase/serverless`, `@prisma/adapter-neon`)
 - OpenAI (`openai` SDK) — Professional AI Interpretation and internal prospecting outreach drafts; compact structured website-audit findings, not payment records or public-report PII
 - Google Places API (New) — internal prospecting business discovery only; server-side key
+- Google Business Profile APIs (OAuth) — internal Local Growth READ sync (Sprint 12.1); encrypted refresh tokens; no client exposure
 
 Not currently used as product integrations (do not disclose as active vendors in customer policies unless that changes):
 - Meta / Facebook Pixel

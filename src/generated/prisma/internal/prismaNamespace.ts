@@ -452,7 +452,8 @@ export const ModelName = {
   GrowthExperimentDecision: 'GrowthExperimentDecision',
   GrowthSearchOpportunity: 'GrowthSearchOpportunity',
   GrowthContentPlan: 'GrowthContentPlan',
-  LocalGbpProfileChecklistItem: 'LocalGbpProfileChecklistItem'
+  LocalGbpProfileChecklistItem: 'LocalGbpProfileChecklistItem',
+  GoogleBusinessProfileConnection: 'GoogleBusinessProfileConnection'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -468,7 +469,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "contactSubmission" | "leadActivity" | "followUpActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan" | "localGbpProfileChecklistItem"
+    modelProps: "auditReport" | "lead" | "contactSubmission" | "leadActivity" | "followUpActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan" | "localGbpProfileChecklistItem" | "googleBusinessProfileConnection"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4616,6 +4617,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GoogleBusinessProfileConnection: {
+      payload: Prisma.$GoogleBusinessProfileConnectionPayload<ExtArgs>
+      fields: Prisma.GoogleBusinessProfileConnectionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GoogleBusinessProfileConnectionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GoogleBusinessProfileConnectionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>
+        }
+        findFirst: {
+          args: Prisma.GoogleBusinessProfileConnectionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GoogleBusinessProfileConnectionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>
+        }
+        findMany: {
+          args: Prisma.GoogleBusinessProfileConnectionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>[]
+        }
+        create: {
+          args: Prisma.GoogleBusinessProfileConnectionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>
+        }
+        createMany: {
+          args: Prisma.GoogleBusinessProfileConnectionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GoogleBusinessProfileConnectionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>[]
+        }
+        delete: {
+          args: Prisma.GoogleBusinessProfileConnectionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>
+        }
+        update: {
+          args: Prisma.GoogleBusinessProfileConnectionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>
+        }
+        deleteMany: {
+          args: Prisma.GoogleBusinessProfileConnectionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GoogleBusinessProfileConnectionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GoogleBusinessProfileConnectionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>[]
+        }
+        upsert: {
+          args: Prisma.GoogleBusinessProfileConnectionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleBusinessProfileConnectionPayload>
+        }
+        aggregate: {
+          args: Prisma.GoogleBusinessProfileConnectionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGoogleBusinessProfileConnection>
+        }
+        groupBy: {
+          args: Prisma.GoogleBusinessProfileConnectionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoogleBusinessProfileConnectionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GoogleBusinessProfileConnectionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoogleBusinessProfileConnectionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5962,11 +6037,42 @@ export const LocalGbpProfileChecklistItemScalarFieldEnum = {
   observation: 'observation',
   factMatch: 'factMatch',
   observedValue: 'observedValue',
+  observationSource: 'observationSource',
   reviewedByEmail: 'reviewedByEmail',
   reviewedAt: 'reviewedAt'
 } as const
 
 export type LocalGbpProfileChecklistItemScalarFieldEnum = (typeof LocalGbpProfileChecklistItemScalarFieldEnum)[keyof typeof LocalGbpProfileChecklistItemScalarFieldEnum]
+
+
+export const GoogleBusinessProfileConnectionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  status: 'status',
+  googleAccountResourceName: 'googleAccountResourceName',
+  googleAccountDisplayName: 'googleAccountDisplayName',
+  locationResourceName: 'locationResourceName',
+  locationTitle: 'locationTitle',
+  googleAccountId: 'googleAccountId',
+  googleLocationId: 'googleLocationId',
+  scopesJson: 'scopesJson',
+  encryptedRefreshToken: 'encryptedRefreshToken',
+  tokenIv: 'tokenIv',
+  tokenAuthTag: 'tokenAuthTag',
+  connectedByEmail: 'connectedByEmail',
+  connectedAt: 'connectedAt',
+  lastProfileSyncAt: 'lastProfileSyncAt',
+  lastPerformanceSyncAt: 'lastPerformanceSyncAt',
+  lastSyncOperation: 'lastSyncOperation',
+  lastSyncStatus: 'lastSyncStatus',
+  lastSyncError: 'lastSyncError',
+  lastSyncSummaryJson: 'lastSyncSummaryJson',
+  syncLockUntil: 'syncLockUntil',
+  syncLockOperation: 'syncLockOperation'
+} as const
+
+export type GoogleBusinessProfileConnectionScalarFieldEnum = (typeof GoogleBusinessProfileConnectionScalarFieldEnum)[keyof typeof GoogleBusinessProfileConnectionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -7135,6 +7241,34 @@ export type EnumLocalGbpFactMatchFieldRefInput<$PrismaModel> = FieldRefInputType
 export type ListEnumLocalGbpFactMatchFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpFactMatch[]'>
     
 
+
+/**
+ * Reference to a field of type 'LocalGbpObservationSource'
+ */
+export type EnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpObservationSource'>
+    
+
+
+/**
+ * Reference to a field of type 'LocalGbpObservationSource[]'
+ */
+export type ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocalGbpObservationSource[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GbpConnectionStatus'
+ */
+export type EnumGbpConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GbpConnectionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'GbpConnectionStatus[]'
+ */
+export type ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GbpConnectionStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -7342,6 +7476,7 @@ export type GlobalOmitConfig = {
   growthSearchOpportunity?: Prisma.GrowthSearchOpportunityOmit
   growthContentPlan?: Prisma.GrowthContentPlanOmit
   localGbpProfileChecklistItem?: Prisma.LocalGbpProfileChecklistItemOmit
+  googleBusinessProfileConnection?: Prisma.GoogleBusinessProfileConnectionOmit
 }
 
 /* Types for Logging */

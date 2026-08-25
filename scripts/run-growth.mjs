@@ -174,6 +174,7 @@ if (existsSync(integration)) {
       COMMERCIAL_TEST_MOCK_RESEND: "1",
       COMMERCIAL_TEST_MOCK_EXTERNALS: "1",
       GROWTH_TEST_MOCK_AUDIT: "1",
+      GROWTH_TEST_MOCK_GBP: "1",
     },
   );
 }
@@ -199,6 +200,7 @@ const playwrightEnv = {
   COMMERCIAL_TEST_MOCK_EXTERNALS: "1",
   COMMERCIAL_TEST_MOCK_STRIPE: "1",
   GROWTH_TEST_MOCK_AUDIT: "1",
+  GROWTH_TEST_MOCK_GBP: "1",
   ...(hasTestDb &&
   !process.env.GROWTH_TEST_DATABASE_URL?.trim() &&
   !process.env.ACCEPTANCE_TEST_DATABASE_URL?.trim() &&

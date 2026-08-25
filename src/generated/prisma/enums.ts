@@ -921,3 +921,23 @@ export const LocalGbpFactMatch = {
 } as const
 
 export type LocalGbpFactMatch = (typeof LocalGbpFactMatch)[keyof typeof LocalGbpFactMatch]
+
+
+export const LocalGbpObservationSource = {
+  API: 'API',
+  MANUAL: 'MANUAL'
+} as const
+
+export type LocalGbpObservationSource = (typeof LocalGbpObservationSource)[keyof typeof LocalGbpObservationSource]
+
+
+export const GbpConnectionStatus = {
+  CONNECTED: 'CONNECTED',
+  SYNCING: 'SYNCING',
+  SYNCED: 'SYNCED',
+  AUTH_EXPIRED: 'AUTH_EXPIRED',
+  ERROR: 'ERROR',
+  DISCONNECTED: 'DISCONNECTED'
+} as const
+
+export type GbpConnectionStatus = (typeof GbpConnectionStatus)[keyof typeof GbpConnectionStatus]

@@ -63,7 +63,9 @@ Follow-up operations (Sprint 11): server-side **`FollowUpActivity`** counts and 
 
 See [`lead-followup-operations.md`](lead-followup-operations.md). **LEAD_FOLLOWUP_VERSION = 1**.
 
-Local / GBP (Sprint 12): manual `GrowthSnapshot` source **`GOOGLE_BUSINESS_PROFILE`**. Blank metrics = `NOT_CAPTURED`; entered `0` = observed zero. Eight evidence layers — no fake GBP score. GSC ≠ GBP Insights. See [`local-growth-intelligence.md`](local-growth-intelligence.md). **LOCAL_GROWTH_VERSION = 1**.
+Local / GBP (Sprint 12): `GrowthSnapshot` source **`GOOGLE_BUSINESS_PROFILE`**. Blank metrics = `NOT_CAPTURED`; entered `0` = observed zero. Eight evidence layers — no fake GBP score. GSC ≠ GBP Insights. See [`local-growth-intelligence.md`](local-growth-intelligence.md). **LOCAL_GROWTH_VERSION = 1**.
+
+GBP Read (Sprint 12.1): explicit **Sync Profile** / **Sync Performance** may call Google Business Profile APIs; dashboard load GBP API = **0**. API snapshots use `provenance: API`; manual baselines preserved. Reviews = aggregates only. Unsupported V1: photos/logo/cover/posts (manual). See [`gbp-api-integration.md`](gbp-api-integration.md). **GBP_READ_INTEGRATION_VERSION = 1**.
 
 ---
 

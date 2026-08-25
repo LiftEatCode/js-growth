@@ -59,11 +59,13 @@ Missing Chromium fails clearly (does not silently skip).
 Reuse existing Playwright config (`playwright.config.ts`). Suites live under:
 
 - `tests/commercial/e2e/**`
-- `tests/growth/e2e/**` — includes Sprint 11 follow-up (`follow-up.spec.ts`) and Sprint 12 local/GBP (`local-growth.spec.ts`)
+- `tests/growth/e2e/**` — includes Sprint 11 follow-up (`follow-up.spec.ts`), Sprint 12 local/GBP (`local-growth.spec.ts`), and Sprint 12.1 GBP Read (`gbp-read.spec.ts`)
 
 Growth follow-up E2E covers attention queue, activity recording, nurture scheduling, suppression, contact→lead idempotency, and GA4 privacy on `/reports/growth/follow-up` and `/reports/leads/[leadId]`.
 
 Growth local/GBP E2E covers `/reports/growth/local` auth, blank vs zero snapshot honesty, checklist persistence without mutating business facts, canonical GBP UTMs, GBP vs ORGANIC_SEARCH attribution, GBP_POST plan without auto-publish, GBP-001 active, and static-route privacy smoke. Runs as part of `npm run test:acceptance` via `test:growth`.
+
+GBP Read E2E (`gbp-read.spec.ts`) uses `GROWTH_TEST_MOCK_GBP=1` so live Google = 0. Covers connection panel, mock OAuth → location → Sync Profile / Sync Performance, UTM detection without auto-write, disconnect preserving history, and no tokens/ciphertext in HTML.
 
 If `npm run dev` is already on `:3000`, runners attach to it. For contact/audit acceptance, start that server with mocks:
 
@@ -72,6 +74,7 @@ COMMERCIAL_TEST_MOCK_RESEND=1 \
 COMMERCIAL_TEST_MOCK_STRIPE=1 \
 COMMERCIAL_TEST_MOCK_EXTERNALS=1 \
 GROWTH_TEST_MOCK_AUDIT=1 \
+GROWTH_TEST_MOCK_GBP=1 \
 npm run dev
 ```
 

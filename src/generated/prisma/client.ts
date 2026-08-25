@@ -340,3 +340,10 @@ export type GrowthContentPlan = Prisma.GrowthContentPlanModel
  * Blank checklist state = NOT_REVIEWED. Snapshots remain separate evidence.
  */
 export type LocalGbpProfileChecklistItem = Prisma.LocalGbpProfileChecklistItemModel
+/**
+ * Model GoogleBusinessProfileConnection
+ * Single active Google Business Profile connection for this deployment.
+ * Refresh token encrypted at rest. Never expose tokens to client/GA4.
+ * Historical GrowthSnapshots and checklist rows survive disconnect.
+ */
+export type GoogleBusinessProfileConnection = Prisma.GoogleBusinessProfileConnectionModel

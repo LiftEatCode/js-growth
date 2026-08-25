@@ -25,6 +25,7 @@ export function GbpChecklistItemForm({
   factMatch,
   observation,
   observedValue,
+  observationSource,
   canonicalHint,
 }: {
   itemKey: LocalChecklistItemKey;
@@ -33,6 +34,7 @@ export function GbpChecklistItemForm({
   factMatch: string;
   observation: string | null;
   observedValue: string | null;
+  observationSource?: string | null;
   canonicalHint?: string | null;
 }) {
   const [state, formAction] = useActionState(
@@ -58,6 +60,7 @@ export function GbpChecklistItemForm({
       <p className="text-xs text-muted">
         {section}
         {canonicalHint ? ` · Canonical: ${canonicalHint}` : ""}
+        {observationSource ? ` · Source: ${observationSource}` : ""}
       </p>
       <div className="grid gap-2 sm:grid-cols-2">
         <label className="block space-y-1 text-xs">

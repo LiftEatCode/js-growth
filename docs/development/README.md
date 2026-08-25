@@ -19,6 +19,7 @@ Canonical index: [`../README.md`](../README.md).
 | [competitive-intelligence-v1.md](competitive-intelligence-v1.md) | **Public audit** optional competitor URLs (different product) |
 | [ai-architecture.md](ai-architecture.md) | All OpenAI paths |
 | [external-services.md](external-services.md) | APIs / env categories |
+| [google-business-profile.md](google-business-profile.md) | GBP OAuth / Cloud setup (Sprint 12.1) |
 | [database-guide.md](database-guide.md) | Prisma entity guide |
 | [security-privacy.md](security-privacy.md) | Boundaries & safety rules |
 | [cost-controls.md](cost-controls.md) | Caps & spend |

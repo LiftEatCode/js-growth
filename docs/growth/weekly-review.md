@@ -18,9 +18,9 @@ Do not manufacture daily busywork. Review weekly (or when a window matures).
 12. Any stale inbound leads (age band STALE) or qualified leads without opportunities?
 13. Any contact submissions still awaiting explicit Create Lead?
 14. Did we record activities without confusing acquisition channel with activity type?
-15. Did we capture this week’s lightweight GBP Insights snapshot (`/reports/growth/local`)? Blank = NOT_CAPTURED; `0` = observed zero.
-16. Any GBP checklist items NEEDS_ATTENTION / MISMATCH vs business facts?
-17. Is GBP-001 still the active experiment — or is it time to advance the sequence?
+15. Did we run **Sync Profile** + **Sync Performance** on `/reports/growth/local` this week (when connected)? Fall back to manual Insights only if disconnected. Blank = NOT_CAPTURED; `0` = observed zero.
+16. Any GBP checklist exceptions (NEEDS_ATTENTION / MISMATCH / subjective NOT_REVIEWED) vs business facts?
+17. Is GBP-001 still the active experiment — reviewing sync exceptions only, not re-typing API fields?
 
 ## Rules
 

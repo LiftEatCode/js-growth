@@ -291,8 +291,9 @@ export const GBP_EXPERIMENTS: readonly GbpExperimentDef[] = [
     id: "GBP-001",
     label: "GBP-001",
     title: "Profile completeness / accuracy review",
-    goal: "Ensure JS Solutions GBP accurately represents the current business.",
-    measurement: "Checklist before/after — not ranking claims.",
+    goal: "Sync Profile from Google, then review exceptions and subjective fields only.",
+    measurement:
+      "Checklist auto-populated from API where supported; operator completes mismatches and subjective reviews — not ranking claims.",
     defaultStatus: "ACTIVE",
   },
   {

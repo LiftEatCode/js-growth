@@ -1,6 +1,6 @@
 # JS Growth / JS Solutions — Documentation Index
 
-> **Code is the source of truth.** These docs describe what is implemented in the repository as of Competitive Intelligence V1 (through Sprint 13.1).
+> **Code is the source of truth.** These docs describe what is implemented in the repository as of Competitive Intelligence V1 (through Sprint 13.1) and Growth Sprints 1–12.1.
 
 JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-growth.com`): marketing site + Website Growth Audit product + internal growth/prospecting/competitive tools.
 
@@ -44,7 +44,8 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
 | Analytics | [`development/analytics.md`](development/analytics.md) |
 | Testing / acceptance | [`development/testing.md`](development/testing.md) |
-| Growth measurement (Sprints 1–12) | [`growth/README.md`](growth/README.md) |
+| Google Business Profile (OAuth / Cloud setup) | [`development/google-business-profile.md`](development/google-business-profile.md) |
+| Growth measurement (Sprints 1–12.1) | [`growth/README.md`](growth/README.md) |
 | Growth Baseline V1 | [`growth/baselines/growth-baseline-v1.md`](growth/baselines/growth-baseline-v1.md) |
 | Search Intelligence V1 | [`growth/search-intelligence.md`](growth/search-intelligence.md) |
 | Content Intelligence V1 | [`growth/content-intelligence.md`](growth/content-intelligence.md) |
@@ -53,12 +54,14 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Lead Conversion Intelligence V1 | [`growth/lead-conversion-intelligence.md`](growth/lead-conversion-intelligence.md) |
 | Lead Follow-up Operations V1 | [`growth/lead-followup-operations.md`](growth/lead-followup-operations.md) |
 | Local / GBP Intelligence V1 | [`growth/local-growth-intelligence.md`](growth/local-growth-intelligence.md) |
+| GBP Read Integration V1 | [`growth/gbp-api-integration.md`](growth/gbp-api-integration.md) |
 | SEO research (2026) | [`research/seo-search-intelligence-2026.md`](research/seo-search-intelligence-2026.md) |
 | Content publishing research (2026) | [`research/content-publishing-performance-2026.md`](research/content-publishing-performance-2026.md) |
 | Content performance review research (2026) | [`research/content-performance-review-2026.md`](research/content-performance-review-2026.md) |
 | Lead conversion research (2026) | [`research/lead-conversion-intelligence-2026.md`](research/lead-conversion-intelligence-2026.md) |
 | Lead follow-up research (2026) | [`research/lead-followup-nurture-operations-2026.md`](research/lead-followup-nurture-operations-2026.md) |
 | Local / GBP research (2026) | [`research/local-search-gbp-intelligence-2026.md`](research/local-search-gbp-intelligence-2026.md) |
+| GBP API research (2026) | [`research/google-business-profile-api-2026.md`](research/google-business-profile-api-2026.md) |
 | Content AI research (2026) | [`research/content-intelligence-ai-2026.md`](research/content-intelligence-ai-2026.md) |
 | Facebook organic research (2026) | [`research/facebook-organic-growth-2026.md`](research/facebook-organic-growth-2026.md) |
 | Coding standards | [`development/coding-standards.md`](development/coding-standards.md) |

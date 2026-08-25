@@ -1569,6 +1569,13 @@ export type EnumLocalGbpFactMatchFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel> | $Enums.LocalGbpFactMatch
 }
 
+export type EnumLocalGbpObservationSourceNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpObservationSource | Prisma.EnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel> | $Enums.LocalGbpObservationSource | null
+}
+
 export type EnumLocalGbpChecklistStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.LocalGbpChecklistStatus | Prisma.EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
   in?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
@@ -1587,6 +1594,33 @@ export type EnumLocalGbpFactMatchWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
   _max?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
+}
+
+export type EnumLocalGbpObservationSourceNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpObservationSource | Prisma.EnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumLocalGbpObservationSourceNullableWithAggregatesFilter<$PrismaModel> | $Enums.LocalGbpObservationSource | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel>
+}
+
+export type EnumGbpConnectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.GbpConnectionStatus | Prisma.EnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGbpConnectionStatusFilter<$PrismaModel> | $Enums.GbpConnectionStatus
+}
+
+export type EnumGbpConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GbpConnectionStatus | Prisma.EnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGbpConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.GbpConnectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGbpConnectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGbpConnectionStatusFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -3092,6 +3126,13 @@ export type NestedEnumLocalGbpFactMatchFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel> | $Enums.LocalGbpFactMatch
 }
 
+export type NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpObservationSource | Prisma.EnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel> | $Enums.LocalGbpObservationSource | null
+}
+
 export type NestedEnumLocalGbpChecklistStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.LocalGbpChecklistStatus | Prisma.EnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
   in?: $Enums.LocalGbpChecklistStatus[] | Prisma.ListEnumLocalGbpChecklistStatusFieldRefInput<$PrismaModel>
@@ -3110,6 +3151,33 @@ export type NestedEnumLocalGbpFactMatchWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
   _max?: Prisma.NestedEnumLocalGbpFactMatchFilter<$PrismaModel>
+}
+
+export type NestedEnumLocalGbpObservationSourceNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocalGbpObservationSource | Prisma.EnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  in?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.LocalGbpObservationSource[] | Prisma.ListEnumLocalGbpObservationSourceFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumLocalGbpObservationSourceNullableWithAggregatesFilter<$PrismaModel> | $Enums.LocalGbpObservationSource | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocalGbpObservationSourceNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumGbpConnectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.GbpConnectionStatus | Prisma.EnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGbpConnectionStatusFilter<$PrismaModel> | $Enums.GbpConnectionStatus
+}
+
+export type NestedEnumGbpConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GbpConnectionStatus | Prisma.EnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GbpConnectionStatus[] | Prisma.ListEnumGbpConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGbpConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.GbpConnectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGbpConnectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGbpConnectionStatusFilter<$PrismaModel>
 }
 
 

@@ -264,3 +264,184 @@ export async function createGbpPostPlanAction(
     planId: row.id,
   };
 }
+
+export type GbpSyncActionState = {
+  success: boolean;
+  message: string;
+};
+
+export async function syncGbpProfileAction(
+  _previous: GbpSyncActionState,
+  formData: FormData,
+): Promise<GbpSyncActionState> {
+  const session = await requireInternalSession();
+  void formData;
+  const { syncGbpProfile } = await import("@/lib/gbp/sync-profile");
+  const result = await syncGbpProfile({
+    operatorEmail: session.email,
+    websiteWithoutUtm: process.env.GROWTH_TEST_GBP_WEBSITE_NO_UTM === "1",
+  });
+  revalidatePath("/reports/growth/local");
+  revalidatePath("/reports/growth");
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+  return {
+    success: true,
+    message: `Profile synced (${result.itemsUpdated} checklist items). Mismatches: ${
+      result.mismatches.length ? result.mismatches.join(", ") : "none"
+    }. No Google writes performed.`,
+  };
+}
+
+export async function syncGbpPerformanceAction(
+  _previous: GbpSyncActionState,
+  formData: FormData,
+): Promise<GbpSyncActionState> {
+  const session = await requireInternalSession();
+  void formData;
+  const { syncGbpPerformance } = await import("@/lib/gbp/sync-performance");
+  const result = await syncGbpPerformance({
+    operatorEmail: session.email,
+  });
+  revalidatePath("/reports/growth/local");
+  revalidatePath("/reports/growth");
+  if (!result.ok) {
+    return { success: false, message: result.error };
+  }
+  return {
+    success: true,
+    message: result.deduplicated
+      ? `Performance snapshot already present for window (${result.snapshotId})`
+      : `API performance snapshot saved (${result.snapshotId}). Manual baseline preserved.`,
+  };
+}
+
+export async function syncGbpAllAction(
+  _previous: GbpSyncActionState,
+  formData: FormData,
+): Promise<GbpSyncActionState> {
+  const session = await requireInternalSession();
+  void formData;
+  const { syncGbpProfile } = await import("@/lib/gbp/sync-profile");
+  const { syncGbpPerformance } = await import("@/lib/gbp/sync-performance");
+  const profile = await syncGbpProfile({ operatorEmail: session.email });
+  if (!profile.ok) {
+    revalidatePath("/reports/growth/local");
+    return { success: false, message: `Profile: ${profile.error}` };
+  }
+  const perf = await syncGbpPerformance({ operatorEmail: session.email });
+  revalidatePath("/reports/growth/local");
+  revalidatePath("/reports/growth");
+  if (!perf.ok) {
+    return {
+      success: false,
+      message: `Profile OK; Performance: ${perf.error}`,
+    };
+  }
+  return {
+    success: true,
+    message: `Sync All complete. Profile items=${profile.itemsUpdated}. Snapshot=${perf.snapshotId}.`,
+  };
+}
+
+export async function disconnectGbpAction(
+  _previous: GbpSyncActionState,
+  _formData: FormData,
+): Promise<GbpSyncActionState> {
+  await requireInternalSession();
+  const {
+    getActiveGbpConnection,
+    disconnectGbpConnection,
+  } = await import("@/lib/gbp/connection-store");
+  const row = await getActiveGbpConnection();
+  if (!row) {
+    return { success: false, message: "No active GBP connection" };
+  }
+  await disconnectGbpConnection(row.id);
+  revalidatePath("/reports/growth/local");
+  return {
+    success: true,
+    message:
+      "Disconnected. Refresh token removed. Historical snapshots and checklist preserved.",
+  };
+}
+
+export async function selectGbpLocationAction(
+  _previous: GbpSyncActionState,
+  formData: FormData,
+): Promise<GbpSyncActionState> {
+  await requireInternalSession();
+  const {
+    getActiveGbpConnection,
+    selectGbpLocation,
+  } = await import("@/lib/gbp/connection-store");
+  const row = await getActiveGbpConnection();
+  if (!row) {
+    return { success: false, message: "Connect Google first" };
+  }
+  await selectGbpLocation({
+    connectionId: row.id,
+    accountResourceName: String(formData.get("accountResourceName") ?? ""),
+    accountDisplayName: String(formData.get("accountDisplayName") ?? ""),
+    accountId: String(formData.get("accountId") ?? ""),
+    locationResourceName: String(formData.get("locationResourceName") ?? ""),
+    locationTitle: String(formData.get("locationTitle") ?? ""),
+    locationId: String(formData.get("locationId") ?? ""),
+  });
+  revalidatePath("/reports/growth/local");
+  return { success: true, message: "GBP location selected" };
+}
+
+export async function loadGbpLocationsAction(): Promise<{
+  success: boolean;
+  message: string;
+  accounts?: Array<{
+    resourceName: string;
+    accountName: string;
+    accountId: string;
+  }>;
+  locations?: Array<{
+    resourceName: string;
+    locationId: string;
+    title: string;
+    accountId: string;
+  }>;
+}> {
+  const session = await requireInternalSession();
+  void session;
+  const {
+    getActiveGbpConnection,
+    getDecryptedRefreshToken,
+  } = await import("@/lib/gbp/connection-store");
+  const { refreshGbpAccessToken } = await import("@/lib/gbp/oauth");
+  const { getGbpProvider } = await import("@/lib/gbp/google-provider");
+
+  const row = await getActiveGbpConnection();
+  if (!row) {
+    return { success: false, message: "Not connected" };
+  }
+  const refresh = getDecryptedRefreshToken(row);
+  if (!refresh) {
+    return { success: false, message: "Reconnect required" };
+  }
+  try {
+    const tokens = await refreshGbpAccessToken(refresh);
+    const provider = getGbpProvider();
+    const accounts = await provider.listAccounts(tokens.access_token);
+    const locations = [];
+    for (const account of accounts) {
+      const locs = await provider.listLocations(
+        tokens.access_token,
+        account.accountId,
+      );
+      locations.push(...locs);
+    }
+    return { success: true, message: "OK", accounts, locations };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to list locations",
+    };
+  }
+}

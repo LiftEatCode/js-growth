@@ -172,6 +172,7 @@ export async function upsertChecklistItem(input: {
   observation?: string | null;
   factMatch?: string | null;
   observedValue?: string | null;
+  observationSource?: "API" | "MANUAL" | null;
   reviewedByEmail: string;
 }): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
   if (!isLocalChecklistItemKey(input.itemKey)) {
@@ -191,6 +192,10 @@ export async function upsertChecklistItem(input: {
   const observedValue = input.observedValue?.trim()
     ? input.observedValue.trim().slice(0, 300)
     : null;
+  const observationSource =
+    input.observationSource === "API" || input.observationSource === "MANUAL"
+      ? input.observationSource
+      : undefined;
 
   const row = await prisma.localGbpProfileChecklistItem.upsert({
     where: { itemKey: input.itemKey },
@@ -200,6 +205,7 @@ export async function upsertChecklistItem(input: {
       observation,
       factMatch,
       observedValue,
+      ...(observationSource ? { observationSource } : {}),
       reviewedByEmail: input.reviewedByEmail,
       reviewedAt: new Date(),
     },
@@ -208,6 +214,7 @@ export async function upsertChecklistItem(input: {
       observation,
       factMatch,
       observedValue,
+      ...(observationSource ? { observationSource } : {}),
       reviewedByEmail: input.reviewedByEmail,
       reviewedAt: new Date(),
     },

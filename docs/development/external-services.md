@@ -30,6 +30,20 @@ Inventory of production dependencies used by JS Growth. **Never commit secret va
 
 ---
 
+## Google Business Profile APIs (OAuth)
+
+| | |
+|---|---|
+| **Purpose** | Local Growth READ sync (Sprint 12.1) |
+| **Usage** | Server-only; explicit Sync Profile / Sync Performance |
+| **Env** | `GOOGLE_GBP_CLIENT_ID`, `GOOGLE_GBP_CLIENT_SECRET`, `GOOGLE_GBP_REDIRECT_URI`, `GOOGLE_GBP_TOKEN_ENCRYPTION_KEY` |
+| **Scope** | `https://www.googleapis.com/auth/business.manage` (app READ-ONLY) |
+| **Redirect** | `/api/gbp/oauth/callback` |
+| **Safeguards** | Dashboard-load GBP API = 0; encrypted refresh tokens; no client exposure; reviews aggregates only |
+| **Docs** | [google-business-profile.md](google-business-profile.md), [../growth/gbp-api-integration.md](../growth/gbp-api-integration.md) |
+
+---
+
 ## Resend
 
 | | |

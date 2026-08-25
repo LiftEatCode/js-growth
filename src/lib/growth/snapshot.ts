@@ -207,6 +207,10 @@ export const gbpSnapshotMetricsSchema = z
     notes: z.string().max(2000).optional(),
     /** Operator correction of a prior snapshot id — never silent overwrite. */
     correctsSnapshotId: z.string().max(40).optional(),
+    /** Sprint 12.1 API sync window identity (idempotency). */
+    apiWindowKey: z.string().max(160).optional(),
+    /** Selected GBP location resource — not sent to GA4. */
+    locationResourceName: z.string().max(120).optional(),
   })
   .strict();
 

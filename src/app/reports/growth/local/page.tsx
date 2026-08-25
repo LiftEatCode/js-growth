@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { GbpChecklistItemForm } from "@/components/growth/gbp-checklist-form";
+import { GbpConnectionPanel } from "@/components/growth/gbp-connection-panel";
 import { GbpSnapshotForm } from "@/components/growth/gbp-snapshot-form";
 import { GbpUtmPresets } from "@/components/growth/gbp-utm-presets";
 import { CreateGbpContentButtons } from "@/components/growth/gbp-content-actions";
@@ -19,6 +20,8 @@ import {
   REVIEW_RESPONSE_TEMPLATES,
 } from "@/lib/growth/local-growth";
 import { getLocalGrowthDashboardModel } from "@/lib/growth/local-growth-metrics";
+import { getGbpConnectionPanelModel } from "@/lib/gbp/connection-store";
+import { GBP_READ_INTEGRATION_VERSION } from "@/lib/gbp/constants";
 import { requireInternalSession } from "@/lib/internal-auth";
 
 export const metadata: Metadata = {
@@ -40,7 +43,10 @@ function StatusBadge({ status }: { status: string }) {
 
 export default async function LocalGrowthPage() {
   await requireInternalSession();
-  const model = await getLocalGrowthDashboardModel();
+  const [model, gbpConnection] = await Promise.all([
+    getLocalGrowthDashboardModel(),
+    getGbpConnectionPanelModel(),
+  ]);
 
   const canonicalHints: Record<string, string | null> = {
     BUSINESS_NAME: JS_SOLUTIONS_LOCAL_FACTS.companyName,
@@ -56,15 +62,16 @@ export default async function LocalGrowthPage() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">
-              Growth · Local / GBP · v{LOCAL_GROWTH_VERSION}
+              Growth · Local / GBP · v{LOCAL_GROWTH_VERSION} · Read Integration v
+              {GBP_READ_INTEGRATION_VERSION}
             </p>
             <h1 className="font-heading text-3xl font-semibold text-brand">
               Local Growth Intelligence
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-muted">
-              Manual Google Business Profile operating system. No GBP API, Places
-              API, GSC, OpenAI, or Meta on this page. Blank metrics stay
-              NOT_CAPTURED; 0 means observed zero.
+              Read-first Google Business Profile integration. Sync Profile /
+              Performance on demand — never on dashboard load. Blank metrics stay
+              NOT_CAPTURED; 0 means observed zero. No automatic GBP writes.
             </p>
           </div>
           <Button
@@ -74,6 +81,8 @@ export default async function LocalGrowthPage() {
             Back to Growth
           </Button>
         </div>
+
+        <GbpConnectionPanel model={gbpConnection} />
 
         <Card className="space-y-3 p-6" data-testid="local-growth-overview">
           <h2 className="font-heading text-xl font-semibold text-brand">
@@ -197,6 +206,7 @@ export default async function LocalGrowthPage() {
                 factMatch={item.factMatch}
                 observation={item.observation}
                 observedValue={item.observedValue}
+                observationSource={item.observationSource}
                 canonicalHint={canonicalHints[item.key] ?? null}
               />
             ))}

@@ -106,7 +106,8 @@ export const ModelName = {
   GrowthExperimentDecision: 'GrowthExperimentDecision',
   GrowthSearchOpportunity: 'GrowthSearchOpportunity',
   GrowthContentPlan: 'GrowthContentPlan',
-  LocalGbpProfileChecklistItem: 'LocalGbpProfileChecklistItem'
+  LocalGbpProfileChecklistItem: 'LocalGbpProfileChecklistItem',
+  GoogleBusinessProfileConnection: 'GoogleBusinessProfileConnection'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1432,11 +1433,42 @@ export const LocalGbpProfileChecklistItemScalarFieldEnum = {
   observation: 'observation',
   factMatch: 'factMatch',
   observedValue: 'observedValue',
+  observationSource: 'observationSource',
   reviewedByEmail: 'reviewedByEmail',
   reviewedAt: 'reviewedAt'
 } as const
 
 export type LocalGbpProfileChecklistItemScalarFieldEnum = (typeof LocalGbpProfileChecklistItemScalarFieldEnum)[keyof typeof LocalGbpProfileChecklistItemScalarFieldEnum]
+
+
+export const GoogleBusinessProfileConnectionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  status: 'status',
+  googleAccountResourceName: 'googleAccountResourceName',
+  googleAccountDisplayName: 'googleAccountDisplayName',
+  locationResourceName: 'locationResourceName',
+  locationTitle: 'locationTitle',
+  googleAccountId: 'googleAccountId',
+  googleLocationId: 'googleLocationId',
+  scopesJson: 'scopesJson',
+  encryptedRefreshToken: 'encryptedRefreshToken',
+  tokenIv: 'tokenIv',
+  tokenAuthTag: 'tokenAuthTag',
+  connectedByEmail: 'connectedByEmail',
+  connectedAt: 'connectedAt',
+  lastProfileSyncAt: 'lastProfileSyncAt',
+  lastPerformanceSyncAt: 'lastPerformanceSyncAt',
+  lastSyncOperation: 'lastSyncOperation',
+  lastSyncStatus: 'lastSyncStatus',
+  lastSyncError: 'lastSyncError',
+  lastSyncSummaryJson: 'lastSyncSummaryJson',
+  syncLockUntil: 'syncLockUntil',
+  syncLockOperation: 'syncLockOperation'
+} as const
+
+export type GoogleBusinessProfileConnectionScalarFieldEnum = (typeof GoogleBusinessProfileConnectionScalarFieldEnum)[keyof typeof GoogleBusinessProfileConnectionScalarFieldEnum]
 
 
 export const SortOrder = {

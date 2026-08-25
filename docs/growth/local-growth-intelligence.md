@@ -7,8 +7,9 @@ Research: [`../research/local-search-gbp-intelligence-2026.md`](../research/loca
 
 ## Principle
 
-Manual, measurement-honest local/GBP operations. Capture Insights by hand. Keep evidence layers separate. **No fake GBP score. No ranking guarantees. No API in V1.**
+Measurement-honest local/GBP operations. Keep evidence layers separate. **No fake GBP score. No ranking guarantees.**
 
+Sprint 12 established manual Insights + checklist. **Sprint 12.1** adds READ-ONLY API sync (`GBP_READ_INTEGRATION_VERSION = 1`) — see [`gbp-api-integration.md`](gbp-api-integration.md).
 ## Evidence layers
 
 Never collapse into one score:
@@ -39,10 +40,10 @@ Manual Insights capture via operator form. Schema: `gbpSnapshotMetricsSchema` (`
 
 Do not coerce blank form fields to `0`. Do not invent metrics Google does not show. Searches update monthly — wait or leave NOT_CAPTURED; do not invent zeros.
 
-Provenance: `MANUAL` now · `API` later (`FUTURE_GBP_API`). Interpretation ignores capture path once validated.
+Provenance: `MANUAL` (operator form) · `API` (Sync Performance). Interpretation ignores capture path once validated. Never rewrite historical MANUAL rows.
 
-Migration: `prisma/migrations/20260825010000_growth_sprint12_local_gbp`.
-
+Migration (Sprint 12): `prisma/migrations/20260825010000_growth_sprint12_local_gbp`.  
+Migration (Sprint 12.1): `prisma/migrations/20260825120000_growth_sprint12_1_gbp_read` (`GoogleBusinessProfileConnection`).
 ## Profile checklist — `LocalGbpProfileChecklistItem`
 
 Durable rows keyed by checklist item (`BUSINESS_NAME`, `PRIMARY_CATEGORY`, `WEBSITE_UTM`, …).
@@ -58,9 +59,9 @@ Compares observed GBP config to `JS_SOLUTIONS_LOCAL_FACTS` / `JS_SOLUTIONS_BUSIN
 
 **`JS_SOLUTIONS_OPERATING_RULE`** (not Google ranking advice):
 
-- **Weekly:** lightweight Insights snapshot + review/reply triage + accuracy spot-check  
+- **Weekly:** Sync Profile + Sync Performance (when connected) · review/reply triage · accuracy spot-check on exceptions  
 - **Monthly:** deeper review (Searches when available, categories/attributes, post/review quality, UTM evidence)  
-- **Posts:** experimental **1–2 Updates/week** (`EXPERIMENTAL_OPERATING_CADENCE`) — pause if quality drops  
+- **Posts:** experimental **1–2 Updates/week** (`EXPERIMENTAL_OPERATING_CADENCE`) — pause if quality drops · still **manual** in Google (unsupported for V1 API write)
 
 Post formats modeled: `UPDATE` · `OFFER` · `EVENT` (photo is media on an Update, not a separate post type).
 
@@ -70,8 +71,7 @@ IDs use `GBP-NNN` on existing experiment decision architecture. Default: **only 
 
 | ID | Title |
 |---|---|
-| GBP-001 | Profile completeness / accuracy review (**ACTIVE**) |
-| GBP-002 | UTM website link |
+| GBP-001 | Profile completeness / accuracy review (**ACTIVE**) — Sync Profile → review exceptions only || GBP-002 | UTM website link |
 | GBP-003 | GBP content cadence |
 | GBP-004 | Photo / content mix |
 | GBP-005 | Service inventory clarity |
@@ -102,12 +102,23 @@ Canonical (Acquisition Capture V1):
 
 Tagged GBP → first-party GBP channel. Generic Google referrer → **ORGANIC_SEARCH**, not GBP. Historical UNKNOWN stays UNKNOWN.
 
-## APIs
+## Sprint 12.1 — GBP Read Integration
 
-| Flag | V1 |
+When connected:
+
+1. **Pause** bulk manual typing for GBP-001 profile fields the API can observe.
+2. **Sync Profile** → checklist auto-populates objective fields; subjective / unsupported stay for human review.
+3. **Sync Performance** → API snapshot for the sync window (idempotent).
+4. Review **exceptions** only; change Google in Google’s UI (no app writes).
+
+Unsupported V1 (manual): photos, logo, cover, posts, Q&A, social, attributes, review responses. Reviews: **aggregates only**.
+
+| Integration | Status |
 |---|---|
-| `FUTURE_GBP_API` | **0** — manual Insights only |
+| `GBP_READ_INTEGRATION_VERSION` | **1** — READ-ONLY OAuth sync |
+| Dashboard-load GBP API | **0** |
 | Places / GSC / Meta / OpenAI on load | **0** |
+| Write / publish / scheduled sync | Deferred |
 
 ## Side-effect budget
 
@@ -115,18 +126,24 @@ Dashboard / local page load:
 
 OpenAI 0 · Meta 0 · GSC API 0 · GBP API 0 · Places 0 · Crawl 0 · Resend 0 · Stripe 0 · Twilio 0
 
+Explicit Sync Profile / Sync Performance may call Google; never on render.
+
 ## Privacy
 
-Aggregate snapshot metrics only. No reviewer names/review text. No GBP internal IDs in GA4. `/reports/growth/local` is a **static** analytics path.
+Aggregate snapshot metrics only. No reviewer names/review text. Refresh tokens encrypted server-side — never client-exposed. No GBP internal IDs in GA4. `/reports/growth/local` is a **static** analytics path.
 
 ## Code
 
 - `src/lib/growth/local-growth.ts`
 - `src/lib/growth/local-growth-store.ts`
 - `src/lib/growth/local-growth-metrics.ts`
+- `src/lib/gbp/*` · `/api/gbp/oauth/*`
 - `/reports/growth/local` · compact card on `/reports/growth`
 
 ## Docs
 
+- [gbp-api-integration.md](gbp-api-integration.md)
 - [growth-sprint12-production-acceptance.md](growth-sprint12-production-acceptance.md)
+- [growth-sprint12-1-production-acceptance.md](growth-sprint12-1-production-acceptance.md)
 - [../research/local-search-gbp-intelligence-2026.md](../research/local-search-gbp-intelligence-2026.md)
+- [../research/google-business-profile-api-2026.md](../research/google-business-profile-api-2026.md)

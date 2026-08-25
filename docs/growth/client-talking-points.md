@@ -59,6 +59,8 @@ Safe:
 - “We measure profile interactions (views, calls, directions, website clicks) separately from website Search Console metrics.”
 - “When local search is relevant, we prefer useful, distinct local information over thin city doorway pages.”
 - “We do not promise Map pack rankings, timelines, or guaranteed call volume.”
+- “Where available, we read profile and performance data from Google’s Business Profile APIs into our internal dashboard — operators still decide any changes in Google.”
+- “We store review totals and average rating only — not customer review text or reviewer identities.”
 
 Unsafe:
 
@@ -67,7 +69,8 @@ Unsafe:
 - “We know every call came from Google” / “we dominate local search”
 - Incentivized or gated review programs framed as best practice
 - Equating Search Console clicks with GBP directions/calls
-- Claiming Performance API / Places insights we do not operate
+- Claiming we auto-update, auto-post, or auto-reply on Google Business Profile
+- Claiming Places API discovery insights as GBP Performance data
 - Inventing zeros for missing Insights periods
 - Doorway / multi-city thin pages as “local SEO coverage”
 

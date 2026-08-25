@@ -57,6 +57,7 @@ export type LocalGrowthDashboardModel = {
       factMatch: string;
       observation: string | null;
       observedValue: string | null;
+      observationSource: string | null;
     }>;
   };
   attribution: {
@@ -305,6 +306,9 @@ export async function getLocalGrowthDashboardModel(): Promise<LocalGrowthDashboa
       factMatch: row?.factMatch ?? d.factMatch,
       observation: row?.observation ?? null,
       observedValue: row?.observedValue ?? null,
+      observationSource:
+        (row as { observationSource?: string | null } | undefined)
+          ?.observationSource ?? null,
     };
   });
 

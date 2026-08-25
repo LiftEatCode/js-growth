@@ -4,6 +4,18 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-25 — Growth Sprint 12.1 (GBP Read Integration V1)
+
+- Research: `docs/research/google-business-profile-api-2026.md`
+- `GBP_READ_INTEGRATION_VERSION = 1`: READ-ONLY OAuth sync into Local Growth
+- Scope: `https://www.googleapis.com/auth/business.manage` (app enforces no writes)
+- Prisma `GoogleBusinessProfileConnection` (encrypted refresh token); migration `20260825120000_growth_sprint12_1_gbp_read`
+- Sync Profile / Sync Performance on `/reports/growth/local`; dashboard-load GBP API = 0
+- Manual baselines preserved; reviews = aggregates only; photos/logo/cover/posts unsupported (manual)
+- GBP-001: Sync Profile → review exceptions (pause bulk manual typing)
+- Acceptance: `docs/growth/growth-sprint12-1-production-acceptance.md`
+- Setup: `docs/development/google-business-profile.md` · ops: `docs/growth/gbp-api-integration.md`
+
 ## 2026-08-24/25 — Growth Sprint 12 (Local Search / GBP Intelligence V1)
 
 - Research: `docs/research/local-search-gbp-intelligence-2026.md`

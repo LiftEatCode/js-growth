@@ -2877,8 +2877,74 @@ model LocalGbpProfileChecklistItem {
   /// Observed GBP value for NAP / category / URL fields (aggregate, no PII).
   observedValue String? @db.VarChar(300)
 
+  /// Sprint 12.1 — API vs MANUAL observation provenance.
+  observationSource LocalGbpObservationSource?
+
   reviewedByEmail String?
   reviewedAt      DateTime?
+
+  @@index([status])
+  @@index([updatedAt])
+}
+
+enum LocalGbpObservationSource {
+  API
+  MANUAL
+}
+
+// ─── Growth Sprint 12.1 — GBP Read Integration (OAuth connection) ───────────
+
+enum GbpConnectionStatus {
+  CONNECTED
+  SYNCING
+  SYNCED
+  AUTH_EXPIRED
+  ERROR
+  DISCONNECTED
+}
+
+/// Single active Google Business Profile connection for this deployment.
+/// Refresh token encrypted at rest. Never expose tokens to client/GA4.
+/// Historical GrowthSnapshots and checklist rows survive disconnect.
+model GoogleBusinessProfileConnection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status GbpConnectionStatus @default(CONNECTED)
+
+  /// accounts/{accountId}
+  googleAccountResourceName String? @db.VarChar(120)
+  googleAccountDisplayName  String? @db.VarChar(200)
+
+  /// locations/{locationId} — Business Information API form
+  locationResourceName String? @db.VarChar(120)
+  locationTitle        String? @db.VarChar(200)
+
+  /// accountId segment for v4 paths accounts/{id}/locations/{id}
+  googleAccountId  String? @db.VarChar(80)
+  googleLocationId String? @db.VarChar(80)
+
+  scopesJson Json?
+
+  /// AES-256-GCM ciphertext (base64) — refresh token only
+  encryptedRefreshToken String? @db.Text
+  tokenIv               String? @db.VarChar(64)
+  tokenAuthTag          String? @db.VarChar(64)
+
+  connectedByEmail String?
+  connectedAt      DateTime?
+
+  lastProfileSyncAt      DateTime?
+  lastPerformanceSyncAt  DateTime?
+  lastSyncOperation      String?   @db.VarChar(40)
+  lastSyncStatus         String?   @db.VarChar(40)
+  lastSyncError          String?   @db.VarChar(500)
+  lastSyncSummaryJson    Json?
+
+  /// Short server lock to prevent concurrent syncs
+  syncLockUntil     DateTime?
+  syncLockOperation String?   @db.VarChar(40)
 
   @@index([status])
   @@index([updatedAt])
