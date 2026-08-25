@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–10** (Measurement → … → Lead Conversion → Acquisition Capture) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–11** (Measurement → … → Lead Conversion → Acquisition Capture → Follow-up Operations) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -285,13 +285,22 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - `/reports/growth/attribution` + Acquisition Coverage; Experiment 018 ACTIVE (soft CTA)
 - Acceptance: `docs/growth/growth-sprint10-production-acceptance.md`
 
-### Growth Sprint 11 — (recommended next)
+### Growth Sprint 11 — Lead Follow-up & Nurture Operations V1 ✅
 
-- First real GSC windows for `/seo` after INDEXED
-- Optional AI advisory review (FACT/INTERPRETATION/HYPOTHESIS) on explicit click
-- Measure Experiment 018 click volume vs Insights follows (directional only)
-- Supporting content briefs only after directional evidence
-- Operator production acceptance of tagged Facebook/GBP journeys
+- Research: `docs/research/lead-followup-nurture-operations-2026.md`
+- `LEAD_FOLLOWUP_VERSION = 1`: append-only `FollowUpActivity`; attention queue V2; no auto-send
+- Explicit ContactSubmission → Create Lead; suppression via `SuppressionEntry` / prospect SUPPRESSED
+- `/reports/growth/follow-up` + `/reports/leads/[leadId]`; templates code-side only
+- Acceptance: `docs/growth/growth-sprint11-production-acceptance.md`
+
+### Growth Sprint 12 — (recommended next)
+
+- Optional AI draft assist for follow-up templates (explicit operator apply — no auto-send)
+- Operator calendar digest / weekly follow-up summary email (internal only)
+- Inbound → Opportunity path without forcing Prospect creation
+- `responseRate` metric when FollowUpActivity history is mature enough for honest measurement
+- Continue GSC windows for `/seo`, Experiment 018 directional review, tagged Facebook/GBP journey acceptance
+
 ---
 
 ## HARDENING / OPERATIONS (not new features)

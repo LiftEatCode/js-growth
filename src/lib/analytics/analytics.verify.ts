@@ -422,6 +422,12 @@ const internalRouteMatrix: Array<{
     label: "campaign prospect",
   },
   {
+    input: `/reports/leads/${CLIENT_ID}`,
+    expected: "/reports/leads/[id]",
+    ids: [CLIENT_ID],
+    label: "lead detail",
+  },
+  {
     input: `/reports/prospecting/${CAMPAIGN_ID}/prospects/new`,
     expected: "/reports/prospecting/[id]/prospects/new",
     ids: [CAMPAIGN_ID],
@@ -507,6 +513,7 @@ for (const staticPath of [
   "/reports/growth/conversion",
   "/reports/growth/attribution",
   "/reports/growth/content",
+  "/reports/growth/follow-up",
   "/reports/opportunities",
   "/reports/clients",
   "/reports/prospecting",

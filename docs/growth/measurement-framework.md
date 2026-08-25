@@ -59,6 +59,10 @@ Inbound `Lead` and outbound `Prospect` are separate acquisition systems (Lead Co
 
 See [`lead-conversion-intelligence.md`](lead-conversion-intelligence.md). **LEAD_CONVERSION_INTELLIGENCE_VERSION = 1**.
 
+Follow-up operations (Sprint 11): server-side **`FollowUpActivity`** counts and first-response median on `/reports/growth/follow-up`. `responseRate = NOT_CAPTURED` until history supports honest measurement. Follow-up metrics never enter GA4.
+
+See [`lead-followup-operations.md`](lead-followup-operations.md). **LEAD_FOLLOWUP_VERSION = 1**.
+
 ---
 
 ## Public growth events (`growth-events-v1`)

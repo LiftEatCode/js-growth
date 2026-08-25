@@ -62,3 +62,15 @@ System recommends NOW / NEXT / WATCH. Operator acts in commercial pages.
 ## Snapshots
 
 Optional INTERNAL snapshot fields may record inbound/outbound/attribution coverage. No new `LEAD_CONVERSION` source in V1.
+
+## Sprint 11 — Follow-up operations (commercial)
+
+Lead Conversion Intelligence **observes** pipeline facts; Sprint 11 adds **operator follow-up capture**:
+
+- Append-only **`FollowUpActivity`** on Lead / Prospect / Opportunity (not GrowthSnapshot)
+- Attention queue **V2** on `/reports/growth/follow-up` — deterministic NOW / NEXT / WATCH ordering
+- Follow-up authority: `Lead.followUpAt`, `Prospect.followUpAt`, `Opportunity.nextActionAt`
+- Templates are copy helpers only; **no auto-send**. Nurture ≠ drip.
+- ContactSubmission → explicit Create Lead (no auto-Lead)
+
+See [`lead-followup-operations.md`](lead-followup-operations.md). **LEAD_FOLLOWUP_VERSION = 1**.

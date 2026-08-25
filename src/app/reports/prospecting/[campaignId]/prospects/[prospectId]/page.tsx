@@ -26,8 +26,14 @@ import { loadLatestImplementationPlan } from "@/lib/commercialization/implementa
 import { loadOpportunityForProspect } from "@/lib/commercialization/opportunities/load";
 import type { GeographyMode } from "@/lib/competitive-intelligence/types";
 import { ProspectEditor } from "@/components/prospecting/prospect-editor";
+import { RecordFollowUpActivityForm } from "@/components/follow-up/record-activity-form";
+import { NurtureScheduleForm } from "@/components/follow-up/nurture-schedule-form";
 import { Button, Card, Container } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
+import {
+  dueStateForAuthority,
+  listFollowUpActivities,
+} from "@/lib/follow-up";
 import { findExistingLeadByHostname } from "@/lib/prospecting/leads/find-existing";
 import { selectProspectOutreachChannel } from "@/lib/prospecting/contacts/select-channel";
 import type { DetectedContactFormFields } from "@/lib/prospecting/contacts/form-types";
@@ -288,17 +294,28 @@ export default async function CampaignProspectDetailPage({
       )
     : null;
   const latestOutcome = prospect.outreachOutcomes[0]?.outcome ?? null;
-  const [existingLead, suppression, contactSuppression] = await Promise.all([
-    findExistingLeadByHostname(prospect.hostname),
-    loadProspectSuppressionState({
-      hostname: prospect.hostname,
-      emails: prospect.contacts.map((contact) => contact.normalizedEmail),
-    }),
-    loadContactSuppressionContext({
-      hostname: prospect.hostname,
-      emails: prospect.contacts.map((contact) => contact.normalizedEmail),
-    }),
-  ]);
+  const [existingLead, suppression, contactSuppression, followUpActivities] =
+    await Promise.all([
+      findExistingLeadByHostname(prospect.hostname),
+      loadProspectSuppressionState({
+        hostname: prospect.hostname,
+        emails: prospect.contacts.map((contact) => contact.normalizedEmail),
+      }),
+      loadContactSuppressionContext({
+        hostname: prospect.hostname,
+        emails: prospect.contacts.map((contact) => contact.normalizedEmail),
+      }),
+      listFollowUpActivities({
+        subjectKind: "PROSPECT",
+        subjectId: prospect.id,
+        limit: 30,
+      }),
+    ]);
+  const outboundBlocked =
+    prospect.outreachStatus === "SUPPRESSED" ||
+    suppression.hostnameSuppressed ||
+    suppression.emailSuppressed.length > 0;
+  const followUpDue = dueStateForAuthority(prospect.followUpAt);
   const outreachChannel = selectProspectOutreachChannel({
     hostname: prospect.hostname,
     leadId: prospect.leadId,
@@ -965,6 +982,47 @@ export default async function CampaignProspectDetailPage({
               existingLead && !prospect.leadId ? existingLead : null
             }
           />
+        </Card>
+
+        <Card variant="elevated" padding="lg" data-testid="prospect-follow-up">
+          <h2 className="font-heading text-xl font-semibold text-brand">
+            Follow-up activity
+          </h2>
+          <p className="mt-2 text-sm text-muted">
+            Next follow-up:{" "}
+            {prospect.followUpAt
+              ? prospect.followUpAt.toISOString()
+              : "No follow-up scheduled"}{" "}
+            · {followUpDue}
+          </p>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <RecordFollowUpActivityForm
+              subjectKind="PROSPECT"
+              subjectId={prospect.id}
+              outboundBlocked={outboundBlocked}
+            />
+            <NurtureScheduleForm
+              subjectKind="PROSPECT"
+              subjectId={prospect.id}
+            />
+          </div>
+          <div className="mt-4 space-y-2" data-testid="prospect-activity-timeline">
+            {followUpActivities.length === 0 ? (
+              <p className="text-sm text-muted">NO_RECORDED_ACTIVITY</p>
+            ) : (
+              followUpActivities.map((a) => (
+                <div key={a.id} className="border-t border-border pt-2 text-sm">
+                  <p className="font-medium">
+                    {a.activityType} · {a.direction} · {a.outcome}
+                  </p>
+                  <p className="text-xs text-muted">
+                    {a.occurredAt.toISOString()}
+                  </p>
+                  <p className="whitespace-pre-wrap">{a.summary}</p>
+                </div>
+              ))
+            )}
+          </div>
         </Card>
 
         <Card variant="elevated" padding="lg">

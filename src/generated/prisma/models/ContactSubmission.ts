@@ -37,6 +37,7 @@ export type ContactSubmissionMinAggregateOutputType = {
   budget: string | null
   message: string | null
   leadOrigin: string | null
+  leadId: string | null
 }
 
 export type ContactSubmissionMaxAggregateOutputType = {
@@ -51,6 +52,7 @@ export type ContactSubmissionMaxAggregateOutputType = {
   budget: string | null
   message: string | null
   leadOrigin: string | null
+  leadId: string | null
 }
 
 export type ContactSubmissionCountAggregateOutputType = {
@@ -66,6 +68,7 @@ export type ContactSubmissionCountAggregateOutputType = {
   message: number
   attributionJson: number
   leadOrigin: number
+  leadId: number
   _all: number
 }
 
@@ -82,6 +85,7 @@ export type ContactSubmissionMinAggregateInputType = {
   budget?: true
   message?: true
   leadOrigin?: true
+  leadId?: true
 }
 
 export type ContactSubmissionMaxAggregateInputType = {
@@ -96,6 +100,7 @@ export type ContactSubmissionMaxAggregateInputType = {
   budget?: true
   message?: true
   leadOrigin?: true
+  leadId?: true
 }
 
 export type ContactSubmissionCountAggregateInputType = {
@@ -111,6 +116,7 @@ export type ContactSubmissionCountAggregateInputType = {
   message?: true
   attributionJson?: true
   leadOrigin?: true
+  leadId?: true
   _all?: true
 }
 
@@ -199,6 +205,7 @@ export type ContactSubmissionGroupByOutputType = {
   message: string
   attributionJson: runtime.JsonValue | null
   leadOrigin: string
+  leadId: string | null
   _count: ContactSubmissionCountAggregateOutputType | null
   _min: ContactSubmissionMinAggregateOutputType | null
   _max: ContactSubmissionMaxAggregateOutputType | null
@@ -235,6 +242,8 @@ export type ContactSubmissionWhereInput = {
   message?: Prisma.StringFilter<"ContactSubmission"> | string
   attributionJson?: Prisma.JsonNullableFilter<"ContactSubmission">
   leadOrigin?: Prisma.StringFilter<"ContactSubmission"> | string
+  leadId?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+  lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
 }
 
 export type ContactSubmissionOrderByWithRelationInput = {
@@ -250,6 +259,8 @@ export type ContactSubmissionOrderByWithRelationInput = {
   message?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
   leadOrigin?: Prisma.SortOrder
+  leadId?: Prisma.SortOrderInput | Prisma.SortOrder
+  lead?: Prisma.LeadOrderByWithRelationInput
 }
 
 export type ContactSubmissionWhereUniqueInput = Prisma.AtLeast<{
@@ -268,6 +279,8 @@ export type ContactSubmissionWhereUniqueInput = Prisma.AtLeast<{
   message?: Prisma.StringFilter<"ContactSubmission"> | string
   attributionJson?: Prisma.JsonNullableFilter<"ContactSubmission">
   leadOrigin?: Prisma.StringFilter<"ContactSubmission"> | string
+  leadId?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+  lead?: Prisma.XOR<Prisma.LeadNullableScalarRelationFilter, Prisma.LeadWhereInput> | null
 }, "id">
 
 export type ContactSubmissionOrderByWithAggregationInput = {
@@ -283,6 +296,7 @@ export type ContactSubmissionOrderByWithAggregationInput = {
   message?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
   leadOrigin?: Prisma.SortOrder
+  leadId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ContactSubmissionCountOrderByAggregateInput
   _max?: Prisma.ContactSubmissionMaxOrderByAggregateInput
   _min?: Prisma.ContactSubmissionMinOrderByAggregateInput
@@ -304,6 +318,7 @@ export type ContactSubmissionScalarWhereWithAggregatesInput = {
   message?: Prisma.StringWithAggregatesFilter<"ContactSubmission"> | string
   attributionJson?: Prisma.JsonNullableWithAggregatesFilter<"ContactSubmission">
   leadOrigin?: Prisma.StringWithAggregatesFilter<"ContactSubmission"> | string
+  leadId?: Prisma.StringNullableWithAggregatesFilter<"ContactSubmission"> | string | null
 }
 
 export type ContactSubmissionCreateInput = {
@@ -319,6 +334,7 @@ export type ContactSubmissionCreateInput = {
   message: string
   attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   leadOrigin?: string
+  lead?: Prisma.LeadCreateNestedOneWithoutContactSubmissionsInput
 }
 
 export type ContactSubmissionUncheckedCreateInput = {
@@ -334,6 +350,7 @@ export type ContactSubmissionUncheckedCreateInput = {
   message: string
   attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   leadOrigin?: string
+  leadId?: string | null
 }
 
 export type ContactSubmissionUpdateInput = {
@@ -349,6 +366,7 @@ export type ContactSubmissionUpdateInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   leadOrigin?: Prisma.StringFieldUpdateOperationsInput | string
+  lead?: Prisma.LeadUpdateOneWithoutContactSubmissionsNestedInput
 }
 
 export type ContactSubmissionUncheckedUpdateInput = {
@@ -364,6 +382,7 @@ export type ContactSubmissionUncheckedUpdateInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   leadOrigin?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactSubmissionCreateManyInput = {
@@ -379,6 +398,7 @@ export type ContactSubmissionCreateManyInput = {
   message: string
   attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   leadOrigin?: string
+  leadId?: string | null
 }
 
 export type ContactSubmissionUpdateManyMutationInput = {
@@ -409,6 +429,17 @@ export type ContactSubmissionUncheckedUpdateManyInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   leadOrigin?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ContactSubmissionListRelationFilter = {
+  every?: Prisma.ContactSubmissionWhereInput
+  some?: Prisma.ContactSubmissionWhereInput
+  none?: Prisma.ContactSubmissionWhereInput
+}
+
+export type ContactSubmissionOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type ContactSubmissionCountOrderByAggregateInput = {
@@ -424,6 +455,7 @@ export type ContactSubmissionCountOrderByAggregateInput = {
   message?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
   leadOrigin?: Prisma.SortOrder
+  leadId?: Prisma.SortOrder
 }
 
 export type ContactSubmissionMaxOrderByAggregateInput = {
@@ -438,6 +470,7 @@ export type ContactSubmissionMaxOrderByAggregateInput = {
   budget?: Prisma.SortOrder
   message?: Prisma.SortOrder
   leadOrigin?: Prisma.SortOrder
+  leadId?: Prisma.SortOrder
 }
 
 export type ContactSubmissionMinOrderByAggregateInput = {
@@ -452,6 +485,184 @@ export type ContactSubmissionMinOrderByAggregateInput = {
   budget?: Prisma.SortOrder
   message?: Prisma.SortOrder
   leadOrigin?: Prisma.SortOrder
+  leadId?: Prisma.SortOrder
+}
+
+export type ContactSubmissionCreateNestedManyWithoutLeadInput = {
+  create?: Prisma.XOR<Prisma.ContactSubmissionCreateWithoutLeadInput, Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput> | Prisma.ContactSubmissionCreateWithoutLeadInput[] | Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput[]
+  connectOrCreate?: Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput | Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput[]
+  createMany?: Prisma.ContactSubmissionCreateManyLeadInputEnvelope
+  connect?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+}
+
+export type ContactSubmissionUncheckedCreateNestedManyWithoutLeadInput = {
+  create?: Prisma.XOR<Prisma.ContactSubmissionCreateWithoutLeadInput, Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput> | Prisma.ContactSubmissionCreateWithoutLeadInput[] | Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput[]
+  connectOrCreate?: Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput | Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput[]
+  createMany?: Prisma.ContactSubmissionCreateManyLeadInputEnvelope
+  connect?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+}
+
+export type ContactSubmissionUpdateManyWithoutLeadNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactSubmissionCreateWithoutLeadInput, Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput> | Prisma.ContactSubmissionCreateWithoutLeadInput[] | Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput[]
+  connectOrCreate?: Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput | Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput[]
+  upsert?: Prisma.ContactSubmissionUpsertWithWhereUniqueWithoutLeadInput | Prisma.ContactSubmissionUpsertWithWhereUniqueWithoutLeadInput[]
+  createMany?: Prisma.ContactSubmissionCreateManyLeadInputEnvelope
+  set?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  disconnect?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  delete?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  connect?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  update?: Prisma.ContactSubmissionUpdateWithWhereUniqueWithoutLeadInput | Prisma.ContactSubmissionUpdateWithWhereUniqueWithoutLeadInput[]
+  updateMany?: Prisma.ContactSubmissionUpdateManyWithWhereWithoutLeadInput | Prisma.ContactSubmissionUpdateManyWithWhereWithoutLeadInput[]
+  deleteMany?: Prisma.ContactSubmissionScalarWhereInput | Prisma.ContactSubmissionScalarWhereInput[]
+}
+
+export type ContactSubmissionUncheckedUpdateManyWithoutLeadNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactSubmissionCreateWithoutLeadInput, Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput> | Prisma.ContactSubmissionCreateWithoutLeadInput[] | Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput[]
+  connectOrCreate?: Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput | Prisma.ContactSubmissionCreateOrConnectWithoutLeadInput[]
+  upsert?: Prisma.ContactSubmissionUpsertWithWhereUniqueWithoutLeadInput | Prisma.ContactSubmissionUpsertWithWhereUniqueWithoutLeadInput[]
+  createMany?: Prisma.ContactSubmissionCreateManyLeadInputEnvelope
+  set?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  disconnect?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  delete?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  connect?: Prisma.ContactSubmissionWhereUniqueInput | Prisma.ContactSubmissionWhereUniqueInput[]
+  update?: Prisma.ContactSubmissionUpdateWithWhereUniqueWithoutLeadInput | Prisma.ContactSubmissionUpdateWithWhereUniqueWithoutLeadInput[]
+  updateMany?: Prisma.ContactSubmissionUpdateManyWithWhereWithoutLeadInput | Prisma.ContactSubmissionUpdateManyWithWhereWithoutLeadInput[]
+  deleteMany?: Prisma.ContactSubmissionScalarWhereInput | Prisma.ContactSubmissionScalarWhereInput[]
+}
+
+export type ContactSubmissionCreateWithoutLeadInput = {
+  id?: string
+  createdAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  businessName?: string | null
+  website?: string | null
+  service: string
+  budget?: string | null
+  message: string
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  leadOrigin?: string
+}
+
+export type ContactSubmissionUncheckedCreateWithoutLeadInput = {
+  id?: string
+  createdAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  businessName?: string | null
+  website?: string | null
+  service: string
+  budget?: string | null
+  message: string
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  leadOrigin?: string
+}
+
+export type ContactSubmissionCreateOrConnectWithoutLeadInput = {
+  where: Prisma.ContactSubmissionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactSubmissionCreateWithoutLeadInput, Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput>
+}
+
+export type ContactSubmissionCreateManyLeadInputEnvelope = {
+  data: Prisma.ContactSubmissionCreateManyLeadInput | Prisma.ContactSubmissionCreateManyLeadInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContactSubmissionUpsertWithWhereUniqueWithoutLeadInput = {
+  where: Prisma.ContactSubmissionWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContactSubmissionUpdateWithoutLeadInput, Prisma.ContactSubmissionUncheckedUpdateWithoutLeadInput>
+  create: Prisma.XOR<Prisma.ContactSubmissionCreateWithoutLeadInput, Prisma.ContactSubmissionUncheckedCreateWithoutLeadInput>
+}
+
+export type ContactSubmissionUpdateWithWhereUniqueWithoutLeadInput = {
+  where: Prisma.ContactSubmissionWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContactSubmissionUpdateWithoutLeadInput, Prisma.ContactSubmissionUncheckedUpdateWithoutLeadInput>
+}
+
+export type ContactSubmissionUpdateManyWithWhereWithoutLeadInput = {
+  where: Prisma.ContactSubmissionScalarWhereInput
+  data: Prisma.XOR<Prisma.ContactSubmissionUpdateManyMutationInput, Prisma.ContactSubmissionUncheckedUpdateManyWithoutLeadInput>
+}
+
+export type ContactSubmissionScalarWhereInput = {
+  AND?: Prisma.ContactSubmissionScalarWhereInput | Prisma.ContactSubmissionScalarWhereInput[]
+  OR?: Prisma.ContactSubmissionScalarWhereInput[]
+  NOT?: Prisma.ContactSubmissionScalarWhereInput | Prisma.ContactSubmissionScalarWhereInput[]
+  id?: Prisma.StringFilter<"ContactSubmission"> | string
+  createdAt?: Prisma.DateTimeFilter<"ContactSubmission"> | Date | string
+  name?: Prisma.StringFilter<"ContactSubmission"> | string
+  email?: Prisma.StringFilter<"ContactSubmission"> | string
+  phone?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+  businessName?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+  website?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+  service?: Prisma.StringFilter<"ContactSubmission"> | string
+  budget?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+  message?: Prisma.StringFilter<"ContactSubmission"> | string
+  attributionJson?: Prisma.JsonNullableFilter<"ContactSubmission">
+  leadOrigin?: Prisma.StringFilter<"ContactSubmission"> | string
+  leadId?: Prisma.StringNullableFilter<"ContactSubmission"> | string | null
+}
+
+export type ContactSubmissionCreateManyLeadInput = {
+  id?: string
+  createdAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  businessName?: string | null
+  website?: string | null
+  service: string
+  budget?: string | null
+  message: string
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  leadOrigin?: string
+}
+
+export type ContactSubmissionUpdateWithoutLeadInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  service?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  leadOrigin?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ContactSubmissionUncheckedUpdateWithoutLeadInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  service?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  leadOrigin?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ContactSubmissionUncheckedUpdateManyWithoutLeadInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  service?: Prisma.StringFieldUpdateOperationsInput | string
+  budget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  attributionJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  leadOrigin?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -469,6 +680,8 @@ export type ContactSubmissionSelect<ExtArgs extends runtime.Types.Extensions.Int
   message?: boolean
   attributionJson?: boolean
   leadOrigin?: boolean
+  leadId?: boolean
+  lead?: boolean | Prisma.ContactSubmission$leadArgs<ExtArgs>
 }, ExtArgs["result"]["contactSubmission"]>
 
 export type ContactSubmissionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -484,6 +697,8 @@ export type ContactSubmissionSelectCreateManyAndReturn<ExtArgs extends runtime.T
   message?: boolean
   attributionJson?: boolean
   leadOrigin?: boolean
+  leadId?: boolean
+  lead?: boolean | Prisma.ContactSubmission$leadArgs<ExtArgs>
 }, ExtArgs["result"]["contactSubmission"]>
 
 export type ContactSubmissionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -499,6 +714,8 @@ export type ContactSubmissionSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   message?: boolean
   attributionJson?: boolean
   leadOrigin?: boolean
+  leadId?: boolean
+  lead?: boolean | Prisma.ContactSubmission$leadArgs<ExtArgs>
 }, ExtArgs["result"]["contactSubmission"]>
 
 export type ContactSubmissionSelectScalar = {
@@ -514,13 +731,25 @@ export type ContactSubmissionSelectScalar = {
   message?: boolean
   attributionJson?: boolean
   leadOrigin?: boolean
+  leadId?: boolean
 }
 
-export type ContactSubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "name" | "email" | "phone" | "businessName" | "website" | "service" | "budget" | "message" | "attributionJson" | "leadOrigin", ExtArgs["result"]["contactSubmission"]>
+export type ContactSubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "name" | "email" | "phone" | "businessName" | "website" | "service" | "budget" | "message" | "attributionJson" | "leadOrigin" | "leadId", ExtArgs["result"]["contactSubmission"]>
+export type ContactSubmissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  lead?: boolean | Prisma.ContactSubmission$leadArgs<ExtArgs>
+}
+export type ContactSubmissionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  lead?: boolean | Prisma.ContactSubmission$leadArgs<ExtArgs>
+}
+export type ContactSubmissionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  lead?: boolean | Prisma.ContactSubmission$leadArgs<ExtArgs>
+}
 
 export type $ContactSubmissionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ContactSubmission"
-  objects: {}
+  objects: {
+    lead: Prisma.$LeadPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     createdAt: Date
@@ -540,6 +769,10 @@ export type $ContactSubmissionPayload<ExtArgs extends runtime.Types.Extensions.I
      * Always CONTACT for this model. Distinct from acquisition channel.
      */
     leadOrigin: string
+    /**
+     * Optional link after explicit Create Lead (Sprint 11). Null until linked.
+     */
+    leadId: string | null
   }, ExtArgs["result"]["contactSubmission"]>
   composites: {}
 }
@@ -934,6 +1167,7 @@ readonly fields: ContactSubmissionFieldRefs;
  */
 export interface Prisma__ContactSubmissionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  lead<T extends Prisma.ContactSubmission$leadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContactSubmission$leadArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -975,6 +1209,7 @@ export interface ContactSubmissionFieldRefs {
   readonly message: Prisma.FieldRef<"ContactSubmission", 'String'>
   readonly attributionJson: Prisma.FieldRef<"ContactSubmission", 'Json'>
   readonly leadOrigin: Prisma.FieldRef<"ContactSubmission", 'String'>
+  readonly leadId: Prisma.FieldRef<"ContactSubmission", 'String'>
 }
     
 
@@ -991,6 +1226,10 @@ export type ContactSubmissionFindUniqueArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the ContactSubmission
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
   /**
    * Filter, which ContactSubmission to fetch.
    */
@@ -1010,6 +1249,10 @@ export type ContactSubmissionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
+  /**
    * Filter, which ContactSubmission to fetch.
    */
   where: Prisma.ContactSubmissionWhereUniqueInput
@@ -1027,6 +1270,10 @@ export type ContactSubmissionFindFirstArgs<ExtArgs extends runtime.Types.Extensi
    * Omit specific fields from the ContactSubmission
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
   /**
    * Filter, which ContactSubmission to fetch.
    */
@@ -1076,6 +1323,10 @@ export type ContactSubmissionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
+  /**
    * Filter, which ContactSubmission to fetch.
    */
   where?: Prisma.ContactSubmissionWhereInput
@@ -1123,6 +1374,10 @@ export type ContactSubmissionFindManyArgs<ExtArgs extends runtime.Types.Extensio
    * Omit specific fields from the ContactSubmission
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
   /**
    * Filter, which ContactSubmissions to fetch.
    */
@@ -1172,6 +1427,10 @@ export type ContactSubmissionCreateArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
+  /**
    * The data needed to create a ContactSubmission.
    */
   data: Prisma.XOR<Prisma.ContactSubmissionCreateInput, Prisma.ContactSubmissionUncheckedCreateInput>
@@ -1205,6 +1464,10 @@ export type ContactSubmissionCreateManyAndReturnArgs<ExtArgs extends runtime.Typ
    */
   data: Prisma.ContactSubmissionCreateManyInput | Prisma.ContactSubmissionCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1219,6 +1482,10 @@ export type ContactSubmissionUpdateArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the ContactSubmission
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
   /**
    * The data needed to update a ContactSubmission.
    */
@@ -1271,6 +1538,10 @@ export type ContactSubmissionUpdateManyAndReturnArgs<ExtArgs extends runtime.Typ
    * Limit how many ContactSubmissions to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1285,6 +1556,10 @@ export type ContactSubmissionUpsertArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the ContactSubmission
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
   /**
    * The filter to search for the ContactSubmission to update in case it exists.
    */
@@ -1312,6 +1587,10 @@ export type ContactSubmissionDeleteArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
+  /**
    * Filter which ContactSubmission to delete.
    */
   where: Prisma.ContactSubmissionWhereUniqueInput
@@ -1332,6 +1611,25 @@ export type ContactSubmissionDeleteManyArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
+ * ContactSubmission.lead
+ */
+export type ContactSubmission$leadArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lead
+   */
+  select?: Prisma.LeadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lead
+   */
+  omit?: Prisma.LeadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadInclude<ExtArgs> | null
+  where?: Prisma.LeadWhereInput
+}
+
+/**
  * ContactSubmission without action
  */
 export type ContactSubmissionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1343,4 +1641,8 @@ export type ContactSubmissionDefaultArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the ContactSubmission
    */
   omit?: Prisma.ContactSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactSubmissionInclude<ExtArgs> | null
 }

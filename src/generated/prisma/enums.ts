@@ -40,6 +40,51 @@ export const AuditReportSource = {
 export type AuditReportSource = (typeof AuditReportSource)[keyof typeof AuditReportSource]
 
 
+export const FollowUpActivityType = {
+  EMAIL: 'EMAIL',
+  PHONE_CALL: 'PHONE_CALL',
+  TEXT_MESSAGE: 'TEXT_MESSAGE',
+  FACEBOOK_MESSAGE: 'FACEBOOK_MESSAGE',
+  IN_PERSON: 'IN_PERSON',
+  MEETING: 'MEETING',
+  NOTE: 'NOTE',
+  FOLLOW_UP: 'FOLLOW_UP',
+  OTHER: 'OTHER'
+} as const
+
+export type FollowUpActivityType = (typeof FollowUpActivityType)[keyof typeof FollowUpActivityType]
+
+
+export const FollowUpDirection = {
+  INBOUND: 'INBOUND',
+  OUTBOUND: 'OUTBOUND',
+  INTERNAL: 'INTERNAL'
+} as const
+
+export type FollowUpDirection = (typeof FollowUpDirection)[keyof typeof FollowUpDirection]
+
+
+export const FollowUpOutcome = {
+  SENT: 'SENT',
+  REPLIED: 'REPLIED',
+  CONNECTED: 'CONNECTED',
+  NO_ANSWER: 'NO_ANSWER',
+  LEFT_VOICEMAIL: 'LEFT_VOICEMAIL',
+  BOUNCED: 'BOUNCED',
+  INTERESTED: 'INTERESTED',
+  NOT_INTERESTED: 'NOT_INTERESTED',
+  FOLLOW_UP_REQUIRED: 'FOLLOW_UP_REQUIRED',
+  MEETING_SCHEDULED: 'MEETING_SCHEDULED',
+  QUALIFIED: 'QUALIFIED',
+  DISQUALIFIED: 'DISQUALIFIED',
+  DO_NOT_CONTACT: 'DO_NOT_CONTACT',
+  NO_RESPONSE: 'NO_RESPONSE',
+  OTHER: 'OTHER'
+} as const
+
+export type FollowUpOutcome = (typeof FollowUpOutcome)[keyof typeof FollowUpOutcome]
+
+
 export const PurchaseStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',

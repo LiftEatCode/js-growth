@@ -4,7 +4,7 @@ These policies are operational drafts based on the application's current functio
 
 This document is for internal legal and engineering review. It does not include customer data, secrets, or API keys.
 
-Last reviewed against the codebase: August 20, 2026.
+Last reviewed against the codebase: August 24, 2026.
 
 ## Public policy pages
 
@@ -74,6 +74,13 @@ Privacy requests and refund/payment issues use the published Contact page (`/con
 - **Purpose:** durable first-party inbound contact + acquisition evidence. Does not auto-create CRM Lead/Opportunity.
 - **Storage:** PostgreSQL via Prisma (`ContactSubmission`).
 - **Third parties:** Resend for existing notification + auto-reply emails (unchanged commercial behavior).
+
+### Follow-up activity (Growth Sprint 11)
+
+- **Fields:** activity type, direction, outcome, operator summary (internal note), occurred timestamp, optional next follow-up timestamp, operator email (`createdByEmail`), optional idempotency key; relations to `Lead`, `Prospect`, and/or `Opportunity` (one subject per row).
+- **Purpose:** durable operator contact history and follow-up scheduling; suppression enforcement for outbound prospect attempts.
+- **Storage:** PostgreSQL via Prisma (`FollowUpActivity`). Append-only; not sent to GA4.
+- **Third parties:** none beyond Neon (database). Operators send email/phone/SMS outside the app; the system records what they log.
 
 ### Admin / internal session
 

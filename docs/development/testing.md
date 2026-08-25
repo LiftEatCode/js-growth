@@ -59,7 +59,9 @@ Missing Chromium fails clearly (does not silently skip).
 Reuse existing Playwright config (`playwright.config.ts`). Suites live under:
 
 - `tests/commercial/e2e/**`
-- `tests/growth/e2e/**`
+- `tests/growth/e2e/**` — includes Sprint 11 follow-up acceptance (`follow-up.spec.ts`)
+
+Growth follow-up E2E covers attention queue, activity recording, nurture scheduling, suppression, contact→lead idempotency, and GA4 privacy on `/reports/growth/follow-up` and `/reports/leads/[leadId]`. Runs as part of `npm run test:acceptance` via `test:growth`.
 
 If `npm run dev` is already on `:3000`, runners attach to it. For contact/audit acceptance, start that server with mocks:
 

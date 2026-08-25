@@ -4,6 +4,18 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-24 — Growth Sprint 11 (Lead Follow-up & Nurture Operations V1)
+
+- Research: `docs/research/lead-followup-nurture-operations-2026.md`
+- `LEAD_FOLLOWUP_VERSION = 1`: append-only `FollowUpActivity` on Lead / Prospect / Opportunity
+- Attention queue V2 (NOW / NEXT / WATCH); follow-up authority on `followUpAt` / `nextActionAt`
+- Code-side templates only — **no auto-send**; nurture = operator schedule, nurture ≠ drip
+- Explicit ContactSubmission → Create Lead; mark QUALIFIED without auto-opportunity
+- Suppression via existing `SuppressionEntry` + prospect `SUPPRESSED`; idempotency via `idempotencyKey`
+- `/reports/growth/follow-up` + `/reports/leads/[leadId]`; GA4 route-family sanitization
+- Metrics: first-response median; `responseRate = NOT_CAPTURED`
+- Acceptance: `docs/growth/growth-sprint11-production-acceptance.md`
+
 ## 2026-08-24 — Growth Sprint 10 (Acquisition Capture & Attribution Completion V1)
 
 - Research: `docs/research/acquisition-capture-attribution-2026.md`

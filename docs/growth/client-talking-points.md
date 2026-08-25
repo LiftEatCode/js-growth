@@ -63,6 +63,14 @@ Purpose: explain JS Solutions measurement expertise professionally **without** e
 - “Campaign links use consistent tagging so Facebook traffic can be compared to other channels over time.”
 - “We measure social content at intervals after publish so we can see what grew over a few days versus what stalled — then we change the next posts based on that feedback.”
 
+## Follow-up & nurture (client-safe)
+
+- “Inbound leads get a human follow-up — we track response timing and next steps internally without blasting automated email sequences.”
+- “We distinguish how someone found us from how we contacted them — a Facebook inquiry might get a phone call, and both facts stay separate in our records.”
+- “Nurture means scheduling a future check-in when timing isn’t right — not an unattended drip campaign.”
+- “We respect do-not-contact and suppression rules before any outbound outreach.”
+- Unsafe to claim: “automated follow-up sequences,” “AI qualifies your leads,” “instant AI replies,” “we auto-email every lead,” or guaranteed response-time SLAs we do not operate.
+
 ## Privacy & trust
 
 - “We do not put customer personal information or internal commercial record identifiers into public analytics tools.”

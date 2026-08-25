@@ -60,6 +60,10 @@ import { getLeadConversionIntelligence } from "@/lib/growth/lead-conversion-metr
 import {
   LEAD_CONVERSION_INTELLIGENCE_VERSION,
 } from "@/lib/growth/lead-conversion-intelligence";
+import {
+  buildFollowUpAttentionQueue,
+  LEAD_FOLLOWUP_VERSION,
+} from "@/lib/follow-up";
 import { listGrowthExperimentDecisions } from "@/lib/growth/experiment-decisions";
 import {
   FACEBOOK_30_DAY_TARGETS,
@@ -201,6 +205,7 @@ export default async function GrowthDashboardPage() {
     searchOpportunities,
     contentPlans,
     leadConversion,
+    followUpQueue,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -212,6 +217,7 @@ export default async function GrowthDashboardPage() {
     listSearchOpportunities(50),
     listContentPlans(40),
     getLeadConversionIntelligence(current),
+    buildFollowUpAttentionQueue({ limit: 20 }),
   ]);
 
   const contentDueReviews = buildDueReviewQueue({
@@ -334,9 +340,36 @@ export default async function GrowthDashboardPage() {
             Attribution
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/follow-up" />}
+          >
+            Follow-Up Queue
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
         </div>
 
-        <Card className="mt-6 space-y-2 p-5">
+        <Card className="mt-6 space-y-2 p-5" data-testid="follow-up-compact-card">
+          <p className="text-sm font-semibold text-brand">
+            FOLLOW-UP (compact) · v{LEAD_FOLLOWUP_VERSION}
+          </p>
+          <p className="text-xs text-muted">
+            Overdue: {followUpQueue.counts.overdue} · Due today:{" "}
+            {followUpQueue.counts.dueToday} · New inbound:{" "}
+            {followUpQueue.counts.newInbound} · Nurture:{" "}
+            {followUpQueue.counts.nurture}. Human-controlled activity history —
+            no autonomous outreach.
+          </p>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/follow-up" />}
+          >
+            Open Follow-Up Queue
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
+        </Card>
+
+        <Card className="mt-4 space-y-2 p-5">
           <p className="text-sm font-semibold text-brand">
             Content performance review (compact)
           </p>

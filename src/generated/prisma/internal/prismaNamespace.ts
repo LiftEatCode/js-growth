@@ -401,6 +401,7 @@ export const ModelName = {
   Lead: 'Lead',
   ContactSubmission: 'ContactSubmission',
   LeadActivity: 'LeadActivity',
+  FollowUpActivity: 'FollowUpActivity',
   ReportPurchase: 'ReportPurchase',
   Campaign: 'Campaign',
   Prospect: 'Prospect',
@@ -466,7 +467,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "auditReport" | "lead" | "contactSubmission" | "leadActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan"
+    modelProps: "auditReport" | "lead" | "contactSubmission" | "leadActivity" | "followUpActivity" | "reportPurchase" | "campaign" | "prospect" | "campaignProspect" | "prospectContact" | "prospectContactForm" | "outreachMessage" | "outreachDeliveryEvent" | "suppressionEntry" | "prospectDiscoveryRun" | "prospectDiscoveryCandidate" | "prospectQualificationRun" | "prospectContactDiscoveryRun" | "prospectOutreachDraftRun" | "outreachOutcome" | "prospectCompetitor" | "competitorAudit" | "competitiveComparisonSnapshot" | "competitiveInterpretation" | "competitorAuditRun" | "competitorDiscoveryRun" | "implementationPlan" | "implementationPlanWorkstream" | "implementationPlanInterpretation" | "opportunity" | "opportunityActivity" | "commercialScope" | "commercialScopeSection" | "commercialScopeDeliverable" | "commercialPricing" | "commercialPricingLineItem" | "commercialProposal" | "commercialAgreement" | "commercialPayment" | "agreementAcceptance" | "agreementDelivery" | "proposalDelivery" | "client" | "clientProject" | "projectWorkstream" | "projectDeliverable" | "projectDeliveryTask" | "projectOnboardingItem" | "projectActivity" | "growthSnapshot" | "growthContentRecord" | "growthContentMetricSnapshot" | "growthExperimentDecision" | "growthSearchOpportunity" | "growthContentPlan"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -763,6 +764,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.LeadActivityCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.LeadActivityCountAggregateOutputType> | number
+        }
+      }
+    }
+    FollowUpActivity: {
+      payload: Prisma.$FollowUpActivityPayload<ExtArgs>
+      fields: Prisma.FollowUpActivityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FollowUpActivityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FollowUpActivityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>
+        }
+        findFirst: {
+          args: Prisma.FollowUpActivityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FollowUpActivityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>
+        }
+        findMany: {
+          args: Prisma.FollowUpActivityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>[]
+        }
+        create: {
+          args: Prisma.FollowUpActivityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>
+        }
+        createMany: {
+          args: Prisma.FollowUpActivityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FollowUpActivityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>[]
+        }
+        delete: {
+          args: Prisma.FollowUpActivityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>
+        }
+        update: {
+          args: Prisma.FollowUpActivityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>
+        }
+        deleteMany: {
+          args: Prisma.FollowUpActivityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FollowUpActivityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FollowUpActivityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>[]
+        }
+        upsert: {
+          args: Prisma.FollowUpActivityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowUpActivityPayload>
+        }
+        aggregate: {
+          args: Prisma.FollowUpActivityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFollowUpActivity>
+        }
+        groupBy: {
+          args: Prisma.FollowUpActivityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FollowUpActivityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FollowUpActivityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FollowUpActivityCountAggregateOutputType> | number
         }
       }
     }
@@ -4562,7 +4637,8 @@ export const ContactSubmissionScalarFieldEnum = {
   budget: 'budget',
   message: 'message',
   attributionJson: 'attributionJson',
-  leadOrigin: 'leadOrigin'
+  leadOrigin: 'leadOrigin',
+  leadId: 'leadId'
 } as const
 
 export type ContactSubmissionScalarFieldEnum = (typeof ContactSubmissionScalarFieldEnum)[keyof typeof ContactSubmissionScalarFieldEnum]
@@ -4579,6 +4655,25 @@ export const LeadActivityScalarFieldEnum = {
 } as const
 
 export type LeadActivityScalarFieldEnum = (typeof LeadActivityScalarFieldEnum)[keyof typeof LeadActivityScalarFieldEnum]
+
+
+export const FollowUpActivityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  activityType: 'activityType',
+  direction: 'direction',
+  outcome: 'outcome',
+  summary: 'summary',
+  occurredAt: 'occurredAt',
+  nextFollowUpAt: 'nextFollowUpAt',
+  createdByEmail: 'createdByEmail',
+  idempotencyKey: 'idempotencyKey',
+  leadId: 'leadId',
+  prospectId: 'prospectId',
+  opportunityId: 'opportunityId'
+} as const
+
+export type FollowUpActivityScalarFieldEnum = (typeof FollowUpActivityScalarFieldEnum)[keyof typeof FollowUpActivityScalarFieldEnum]
 
 
 export const ReportPurchaseScalarFieldEnum = {
@@ -4642,7 +4737,8 @@ export const ProspectScalarFieldEnum = {
   lastContactDiscoveryAt: 'lastContactDiscoveryAt',
   lastCompetitorDiscoveryAt: 'lastCompetitorDiscoveryAt',
   auditReportId: 'auditReportId',
-  leadId: 'leadId'
+  leadId: 'leadId',
+  followUpAt: 'followUpAt'
 } as const
 
 export type ProspectScalarFieldEnum = (typeof ProspectScalarFieldEnum)[keyof typeof ProspectScalarFieldEnum]
@@ -5956,6 +6052,48 @@ export type ListEnumLeadActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'FollowUpActivityType'
+ */
+export type EnumFollowUpActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowUpActivityType'>
+    
+
+
+/**
+ * Reference to a field of type 'FollowUpActivityType[]'
+ */
+export type ListEnumFollowUpActivityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowUpActivityType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FollowUpDirection'
+ */
+export type EnumFollowUpDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowUpDirection'>
+    
+
+
+/**
+ * Reference to a field of type 'FollowUpDirection[]'
+ */
+export type ListEnumFollowUpDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowUpDirection[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FollowUpOutcome'
+ */
+export type EnumFollowUpOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowUpOutcome'>
+    
+
+
+/**
+ * Reference to a field of type 'FollowUpOutcome[]'
+ */
+export type ListEnumFollowUpOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowUpOutcome[]'>
+    
+
+
+/**
  * Reference to a field of type 'PurchaseStatus'
  */
 export type EnumPurchaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseStatus'>
@@ -7033,6 +7171,7 @@ export type GlobalOmitConfig = {
   lead?: Prisma.LeadOmit
   contactSubmission?: Prisma.ContactSubmissionOmit
   leadActivity?: Prisma.LeadActivityOmit
+  followUpActivity?: Prisma.FollowUpActivityOmit
   reportPurchase?: Prisma.ReportPurchaseOmit
   campaign?: Prisma.CampaignOmit
   prospect?: Prisma.ProspectOmit

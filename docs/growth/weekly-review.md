@@ -13,6 +13,11 @@ Do not manufacture daily busywork. Review weekly (or when a window matures).
 7. Which channels show a business signal — with sample label visible?
 8. Are Facebook/GBP posts that need website traffic using canonical tagged URLs?
 9. What should we do NEXT week (bounded NOW / NEXT / WATCH)?
+10. Which follow-ups are overdue or due today (`/reports/growth/follow-up`)?
+11. What is first-response median (28d)? Is sample `INSUFFICIENT_DATA` or usable?
+12. Any stale inbound leads (age band STALE) or qualified leads without opportunities?
+13. Any contact submissions still awaiting explicit Create Lead?
+14. Did we record activities without confusing acquisition channel with activity type?
 
 ## Rules
 
@@ -24,4 +29,4 @@ Do not manufacture daily busywork. Review weekly (or when a window matures).
 - No auto-email, auto-status, auto-opportunity.
 - Do not rewrite historical UNKNOWN audits.
 
-Operator UI: `/reports/growth/conversion` · `/reports/growth/attribution` · UTM builder
+Operator UI: `/reports/growth/conversion` · `/reports/growth/attribution` · `/reports/growth/follow-up` · UTM builder

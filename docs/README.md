@@ -44,17 +44,19 @@ JS **Solutions** is the company. JS **Growth** is this Next.js application (`js-
 | Product catalog | [`development/product-catalog.md`](development/product-catalog.md) |
 | Analytics | [`development/analytics.md`](development/analytics.md) |
 | Testing / acceptance | [`development/testing.md`](development/testing.md) |
-| Growth measurement (Sprints 1–9) | [`growth/README.md`](growth/README.md) |
+| Growth measurement (Sprints 1–11) | [`growth/README.md`](growth/README.md) |
 | Growth Baseline V1 | [`growth/baselines/growth-baseline-v1.md`](growth/baselines/growth-baseline-v1.md) |
 | Search Intelligence V1 | [`growth/search-intelligence.md`](growth/search-intelligence.md) |
 | Content Intelligence V1 | [`growth/content-intelligence.md`](growth/content-intelligence.md) |
 | Content Performance V1 | [`growth/content-performance.md`](growth/content-performance.md) |
 | Content Review V1 | [`growth/content-review.md`](growth/content-review.md) |
 | Lead Conversion Intelligence V1 | [`growth/lead-conversion-intelligence.md`](growth/lead-conversion-intelligence.md) |
+| Lead Follow-up Operations V1 | [`growth/lead-followup-operations.md`](growth/lead-followup-operations.md) |
 | SEO research (2026) | [`research/seo-search-intelligence-2026.md`](research/seo-search-intelligence-2026.md) |
 | Content publishing research (2026) | [`research/content-publishing-performance-2026.md`](research/content-publishing-performance-2026.md) |
 | Content performance review research (2026) | [`research/content-performance-review-2026.md`](research/content-performance-review-2026.md) |
 | Lead conversion research (2026) | [`research/lead-conversion-intelligence-2026.md`](research/lead-conversion-intelligence-2026.md) |
+| Lead follow-up research (2026) | [`research/lead-followup-nurture-operations-2026.md`](research/lead-followup-nurture-operations-2026.md) |
 | Content AI research (2026) | [`research/content-intelligence-ai-2026.md`](research/content-intelligence-ai-2026.md) |
 | Facebook organic research (2026) | [`research/facebook-organic-growth-2026.md`](research/facebook-organic-growth-2026.md) |
 | Coding standards | [`development/coding-standards.md`](development/coding-standards.md) |
@@ -95,7 +97,7 @@ These are **delivery playbooks**. They are not the same as the Website Growth Au
 
 - [`company/`](company/) — mission, values, branding
 - [`sales/`](sales/), [`marketing/`](marketing/), [`seo/`](seo/), [`playbooks/`](playbooks/), [`templates/`](templates/)
-- [`growth/`](growth/) — Growth phase measurement, UTM, acquisition capture, experiments, client talking points
+- [`growth/`](growth/) — Growth phase measurement, UTM, acquisition capture, follow-up operations, experiments, client talking points
 - [`research/`](research/) — methodology research notes (e.g. measurement & attribution, acquisition capture)- [`ideas/`](ideas/) — exploratory; not implemented by default
 - [`decisions/`](decisions/) — ADRs
 - [`legal-data-inventory.md`](legal-data-inventory.md)

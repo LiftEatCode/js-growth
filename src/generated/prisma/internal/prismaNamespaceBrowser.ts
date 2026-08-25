@@ -55,6 +55,7 @@ export const ModelName = {
   Lead: 'Lead',
   ContactSubmission: 'ContactSubmission',
   LeadActivity: 'LeadActivity',
+  FollowUpActivity: 'FollowUpActivity',
   ReportPurchase: 'ReportPurchase',
   Campaign: 'Campaign',
   Prospect: 'Prospect',
@@ -180,7 +181,8 @@ export const ContactSubmissionScalarFieldEnum = {
   budget: 'budget',
   message: 'message',
   attributionJson: 'attributionJson',
-  leadOrigin: 'leadOrigin'
+  leadOrigin: 'leadOrigin',
+  leadId: 'leadId'
 } as const
 
 export type ContactSubmissionScalarFieldEnum = (typeof ContactSubmissionScalarFieldEnum)[keyof typeof ContactSubmissionScalarFieldEnum]
@@ -197,6 +199,25 @@ export const LeadActivityScalarFieldEnum = {
 } as const
 
 export type LeadActivityScalarFieldEnum = (typeof LeadActivityScalarFieldEnum)[keyof typeof LeadActivityScalarFieldEnum]
+
+
+export const FollowUpActivityScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  activityType: 'activityType',
+  direction: 'direction',
+  outcome: 'outcome',
+  summary: 'summary',
+  occurredAt: 'occurredAt',
+  nextFollowUpAt: 'nextFollowUpAt',
+  createdByEmail: 'createdByEmail',
+  idempotencyKey: 'idempotencyKey',
+  leadId: 'leadId',
+  prospectId: 'prospectId',
+  opportunityId: 'opportunityId'
+} as const
+
+export type FollowUpActivityScalarFieldEnum = (typeof FollowUpActivityScalarFieldEnum)[keyof typeof FollowUpActivityScalarFieldEnum]
 
 
 export const ReportPurchaseScalarFieldEnum = {
@@ -260,7 +281,8 @@ export const ProspectScalarFieldEnum = {
   lastContactDiscoveryAt: 'lastContactDiscoveryAt',
   lastCompetitorDiscoveryAt: 'lastCompetitorDiscoveryAt',
   auditReportId: 'auditReportId',
-  leadId: 'leadId'
+  leadId: 'leadId',
+  followUpAt: 'followUpAt'
 } as const
 
 export type ProspectScalarFieldEnum = (typeof ProspectScalarFieldEnum)[keyof typeof ProspectScalarFieldEnum]

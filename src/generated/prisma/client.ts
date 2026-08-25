@@ -63,6 +63,11 @@ export type ContactSubmission = Prisma.ContactSubmissionModel
  */
 export type LeadActivity = Prisma.LeadActivityModel
 /**
+ * Model FollowUpActivity
+ * 
+ */
+export type FollowUpActivity = Prisma.FollowUpActivityModel
+/**
  * Model ReportPurchase
  * 
  */

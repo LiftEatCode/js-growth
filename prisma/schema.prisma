@@ -119,6 +119,10 @@ model Lead {
 
   opportunities Opportunity[]
 
+  contactSubmissions ContactSubmission[]
+
+  followUpActivities FollowUpActivity[]
+
   @@index([email])
   @@index([website])
   @@index([status])
@@ -146,8 +150,13 @@ model ContactSubmission {
   /// Always CONTACT for this model. Distinct from acquisition channel.
   leadOrigin String @default("CONTACT")
 
+  /// Optional link after explicit Create Lead (Sprint 11). Null until linked.
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
   @@index([createdAt])
   @@index([email])
+  @@index([leadId])
 }
 
 model LeadActivity {
@@ -169,6 +178,82 @@ model LeadActivity {
   @@index([leadId])
   @@index([createdAt])
   @@index([type])
+}
+
+/// Sprint 11 — durable operator follow-up / contact history.
+/// Exactly one of leadId / prospectId / opportunityId must be set (enforced in app).
+/// Append-only for completed activities. Does not rewrite acquisition attribution.
+enum FollowUpActivityType {
+  EMAIL
+  PHONE_CALL
+  TEXT_MESSAGE
+  FACEBOOK_MESSAGE
+  IN_PERSON
+  MEETING
+  NOTE
+  FOLLOW_UP
+  OTHER
+}
+
+enum FollowUpDirection {
+  INBOUND
+  OUTBOUND
+  INTERNAL
+}
+
+enum FollowUpOutcome {
+  SENT
+  REPLIED
+  CONNECTED
+  NO_ANSWER
+  LEFT_VOICEMAIL
+  BOUNCED
+  INTERESTED
+  NOT_INTERESTED
+  FOLLOW_UP_REQUIRED
+  MEETING_SCHEDULED
+  QUALIFIED
+  DISQUALIFIED
+  DO_NOT_CONTACT
+  NO_RESPONSE
+  OTHER
+}
+
+model FollowUpActivity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  activityType FollowUpActivityType
+  direction    FollowUpDirection
+  outcome      FollowUpOutcome
+
+  /// Internal operator summary. Never sent to GA4.
+  summary String
+
+  occurredAt DateTime
+
+  /// Optional next follow-up chosen by operator when recording this activity.
+  nextFollowUpAt DateTime?
+
+  createdByEmail String?
+
+  /// Idempotency key for rapid double-submit protection (optional).
+  idempotencyKey String? @unique
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  prospectId String?
+  prospect   Prospect? @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  opportunityId String?
+  opportunity   Opportunity? @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([leadId, occurredAt])
+  @@index([prospectId, occurredAt])
+  @@index([opportunityId, occurredAt])
+  @@index([occurredAt])
+  @@index([createdAt])
 }
 
 enum PurchaseStatus {
@@ -424,6 +509,9 @@ model Prospect {
   leadId String?
   lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
+  /// Sprint 11 — authoritative outbound follow-up schedule (operator-set).
+  followUpAt DateTime?
+
   campaignProspects           CampaignProspect[]
   contacts                    ProspectContact[]
   contactForms                ProspectContactForm[]
@@ -441,6 +529,7 @@ model Prospect {
   implementationInterpretations ImplementationPlanInterpretation[]
   opportunities               Opportunity[]
   client                      Client?
+  followUpActivities          FollowUpActivity[]
 
   @@index([hostname])
   @@index([sourceRef])
@@ -449,6 +538,7 @@ model Prospect {
   @@index([discoveredAt])
   @@index([auditReportId])
   @@index([leadId])
+  @@index([followUpAt])
 }
 
 model CampaignProspect {
@@ -1400,6 +1490,7 @@ model Opportunity {
   createdByEmail String
 
   activities OpportunityActivity[]
+  followUpActivities FollowUpActivity[]
   scopes     CommercialScope[]
   pricings   CommercialPricing[]
   proposals  CommercialProposal[]
