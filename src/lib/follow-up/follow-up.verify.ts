@@ -26,6 +26,11 @@ import {
   fillFollowUpTemplate,
 } from "./templates";
 import { sanitizeAnalyticsPagePath } from "@/lib/analytics/page-path";
+import {
+  followUpLeadHref,
+  followUpOpportunityHref,
+  followUpProspectHref,
+} from "./routing";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -122,6 +127,64 @@ assert(
   "follow-up static path",
 );
 
+const leadId = "cl_lead_abc123";
+const reportId = "5984c94a-025a-47f9-8c2b-2b3372520bde";
+const prospectId = "cl_prospect_xyz";
+const campaignId = "cl_campaign_1";
+const opportunityId = "cl_opp_9";
+
+assert(
+  followUpLeadHref(leadId) === `/reports/leads/${leadId}`,
+  "LEAD queue href is Lead detail",
+);
+assert(
+  !followUpLeadHref(leadId).includes(reportId),
+  "audit-generated Lead does not use AuditReport URL",
+);
+assert(
+  followUpProspectHref({ prospectId, campaignId }) ===
+    `/reports/prospecting/${campaignId}/prospects/${prospectId}`,
+  "PROSPECT queue href is Prospect detail",
+);
+assert(
+  followUpProspectHref({ prospectId, campaignId: null }) ===
+    "/reports/prospecting",
+  "PROSPECT without campaign falls back to prospecting index",
+);
+assert(
+  followUpOpportunityHref(opportunityId) ===
+    `/reports/opportunities/${opportunityId}`,
+  "OPPORTUNITY queue href is Opportunity detail",
+);
+
+assert(
+  sanitizeAnalyticsPagePath(`/reports/leads/${leadId}`) ===
+    "/reports/leads/[id]",
+  "lead detail GA4 sanitized",
+);
+assert(
+  sanitizeAnalyticsPagePath(
+    `/reports/prospecting/${campaignId}/prospects/${prospectId}`,
+  ) === "/reports/prospecting/[id]/prospects/[id]",
+  "prospect detail GA4 sanitized",
+);
+assert(
+  sanitizeAnalyticsPagePath(`/reports/opportunities/${opportunityId}`) ===
+    "/reports/opportunities/[id]",
+  "opportunity detail GA4 sanitized",
+);
+assert(
+  sanitizeAnalyticsPagePath(`/reports/${reportId}`) === "/reports/[id]",
+  "audit report path still sanitized when used outside queue",
+);
+
+const queueSource = readFileSync(join(here, "queue.ts"), "utf8");
+assert(queueSource.includes("followUpLeadHref"), "queue uses lead routing helper");
+assert(
+  !queueSource.includes("return `/reports/${reportId}`"),
+  "queue never prefers audit report as primary Open href",
+);
+
 const schema = readFileSync(join(root, "prisma/schema.prisma"), "utf8");
 assert(schema.includes("model FollowUpActivity"), "schema model");
 assert(schema.includes("followUpAt DateTime?"), "prospect followUpAt");
@@ -153,6 +216,15 @@ const leadPage = readFileSync(
 );
 assert(leadPage.includes("requireInternalSession"), "lead detail gated");
 assert(leadPage.includes("Acquisition (not activity channel)"), "acquisition vs activity");
+assert(leadPage.includes("lead-audit-context"), "audit context retained on lead detail");
+assert(
+  leadPage.includes("RecordFollowUpActivityForm"),
+  "record activity on lead detail",
+);
+assert(
+  leadPage.includes("`/reports/${report.id}`"),
+  "audit report link remains on lead detail",
+);
 
 const actions = readFileSync(
   join(root, "src/app/reports/growth/follow-up/actions.ts"),

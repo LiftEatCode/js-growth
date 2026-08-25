@@ -21,6 +21,7 @@ type FollowUpFixture = {
   runId: string;
   marker: string;
   fbLeadId: string;
+  auditReportId: string;
   overdueLeadId: string;
   suppressedProspectId: string;
   campaignId: string;
@@ -135,6 +136,7 @@ async function assertNoPiiInGa(page: Page, fixture: FollowUpFixture) {
   });
   const blob = JSON.stringify(events).toLowerCase();
   expect(blob.includes(fixture.fbLeadId.toLowerCase())).toBeFalsy();
+  expect(blob.includes(fixture.auditReportId.toLowerCase())).toBeFalsy();
   expect(blob.includes("@example.com")).toBeFalsy();
   expect(blob.includes("fu-inbound")).toBeFalsy();
 }
@@ -224,6 +226,39 @@ test.describe("Growth Sprint 11 follow-up acceptance", () => {
       "assert-followup-not-overdue",
       fixture.overdueLeadId,
     ]);
+
+    await assertNoPiiInGa(page, fixture);
+  });
+
+  test("queue Open routes audit-generated Lead to Lead detail", async ({
+    page,
+  }) => {
+    const token = await mintInternalSessionToken();
+    test.skip(!token, "internal auth env required");
+    const fixture = loadFixture();
+    await page.context().addCookies([internalAuthCookie(token!)]);
+    await installAnalyticsSpy(page);
+
+    await page.goto("/reports/growth/follow-up");
+    await expect(page.getByTestId("follow-up-queue-heading")).toBeVisible();
+
+    const openLead = page.getByTestId(`queue-open-lead-${fixture.fbLeadId}`);
+    await expect(openLead).toBeVisible({ timeout: 15_000 });
+    await expect(openLead).toHaveAttribute(
+      "href",
+      `/reports/leads/${fixture.fbLeadId}`,
+    );
+    await openLead.click();
+
+    await expect(page).toHaveURL(
+      new RegExp(`/reports/leads/${fixture.fbLeadId}`),
+      { timeout: 20_000 },
+    );
+    expect(page.url()).not.toContain(fixture.auditReportId);
+
+    await expect(page.getByTestId("lead-detail-heading")).toBeVisible();
+    await expect(page.getByTestId("lead-audit-context")).toBeVisible();
+    await expect(page.getByTestId("record-follow-up-activity")).toBeVisible();
 
     await assertNoPiiInGa(page, fixture);
   });

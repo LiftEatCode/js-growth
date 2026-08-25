@@ -57,6 +57,12 @@ export {
 export { buildFollowUpAttentionQueue } from "./queue";
 
 export {
+  followUpLeadHref,
+  followUpProspectHref,
+  followUpOpportunityHref,
+} from "./routing";
+
+export {
   getFollowUpMetrics,
   formatFollowUpDueLabel,
   type FollowUpMetricsReport,

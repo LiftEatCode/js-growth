@@ -45,9 +45,10 @@ async function main() {
       },
     });
 
+    const auditReportId = randomUUID();
     await prisma.auditReport.create({
       data: {
-        id: randomUUID(),
+        id: auditReportId,
         version: 1,
         website: fbLead.website,
         hostname: `fu-inbound-${runId}.example.com`,
@@ -163,6 +164,7 @@ async function main() {
       runId,
       marker,
       fbLeadId: fbLead.id,
+      auditReportId,
       overdueLeadId: overdueLead.id,
       suppressedProspectId: suppressedProspect.id,
       campaignId: campaign.id,

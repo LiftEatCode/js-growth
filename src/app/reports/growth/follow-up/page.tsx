@@ -42,7 +42,10 @@ function QueueSection({
       ) : (
         <ul className="space-y-2">
           {items.map((item) => (
-            <li key={`${item.subjectKind}-${item.subjectId}`}>
+            <li
+              key={`${item.subjectKind}-${item.subjectId}`}
+              data-testid={`queue-item-${item.subjectKind.toLowerCase()}-${item.subjectId}`}
+            >
               <Card className="flex flex-col gap-1 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-brand">{item.title}</p>
@@ -56,7 +59,12 @@ function QueueSection({
                 </div>
                 <Button
                   nativeButton={false}
-                  render={<Link href={item.href} />}
+                  render={
+                    <Link
+                      href={item.href}
+                      data-testid={`queue-open-${item.subjectKind.toLowerCase()}-${item.subjectId}`}
+                    />
+                  }
                 >
                   Open
                 </Button>

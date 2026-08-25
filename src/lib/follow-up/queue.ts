@@ -16,13 +16,11 @@ import {
   dueStateForAuthority,
   type FollowUpAttentionItem,
 } from "./attention";
-
-function leadHref(leadId: string, reportId: string | null): string {
-  if (reportId) {
-    return `/reports/${reportId}`;
-  }
-  return `/reports/leads/${leadId}`;
-}
+import {
+  followUpLeadHref,
+  followUpOpportunityHref,
+  followUpProspectHref,
+} from "./routing";
 
 export async function buildFollowUpAttentionQueue(input?: {
   now?: Date;
@@ -169,7 +167,7 @@ export async function buildFollowUpAttentionQueue(input?: {
         [lead.firstName, lead.lastName].filter(Boolean).join(" ") ||
         lead.company ||
         lead.email,
-      href: leadHref(lead.id, report?.id ?? null),
+      href: followUpLeadHref(lead.id),
       priority: bandFromWeight(weight),
       reason: describeLeadReason({
         inboundReplyAwaiting,
@@ -202,14 +200,15 @@ export async function buildFollowUpAttentionQueue(input?: {
     if (dueState === "OVERDUE") overdue += 1;
     if (dueState === "DUE_TODAY") dueToday += 1;
 
-    const campaignId = prospect.campaignProspects[0]?.campaignId;
+    const campaignId = prospect.campaignProspects[0]?.campaignId ?? null;
     items.push({
       subjectKind: "PROSPECT",
       subjectId: prospect.id,
       title: prospect.businessName,
-      href: campaignId
-        ? `/reports/prospecting/${campaignId}/prospects/${prospect.id}`
-        : `/reports/prospecting`,
+      href: followUpProspectHref({
+        prospectId: prospect.id,
+        campaignId,
+      }),
       priority: bandFromWeight(weight),
       reason:
         dueState === "OVERDUE"
@@ -250,7 +249,7 @@ export async function buildFollowUpAttentionQueue(input?: {
       subjectKind: "OPPORTUNITY",
       subjectId: opportunity.id,
       title: opportunity.name,
-      href: `/reports/opportunities/${opportunity.id}`,
+      href: followUpOpportunityHref(opportunity.id),
       priority: bandFromWeight(weight),
       reason: noNext
         ? "Opportunity has no next action"
