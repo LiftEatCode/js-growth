@@ -21,7 +21,7 @@ Every initiative in this roadmap should support one or more of the following goa
 
 # Current Status
 
-**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–12.1** (Measurement → … → Local / GBP Intelligence → GBP Read Integration) implemented.
+**Platform milestone:** Competitive Intelligence V1 + Website Growth Audit commercial product + Commercial Sprints 1–10 + **Growth Sprints 1–13** (Measurement → … → Local / GBP → GBP Read → Cross-Channel Intelligence) implemented.
 
 **Code is source of truth.** See [`docs/README.md`](docs/README.md), [`docs/development/product-catalog.md`](docs/development/product-catalog.md), and [`docs/development/platform-architecture.md`](docs/development/platform-architecture.md).
 
@@ -310,15 +310,26 @@ Client-readable proposal snapshots from **APPROVED** Commercial Scope + **APPROV
 - Unsupported V1: photos/logo/cover/posts (manual). Write automation / scheduled sync deferred
 - Acceptance: `docs/growth/growth-sprint12-1-production-acceptance.md`
 
-### Growth Sprint 13 — (recommended next)
+### Growth Sprint 13 — Cross-Channel Growth Intelligence V1 ✅
 
-- `CROSS_CHANNEL_INTELLIGENCE_VERSION = 1` — combine Facebook · Search · GBP · Content · Website · Conversion · Follow-up evidence **without** collapsing models
+- Research: `docs/research/cross-channel-growth-intelligence-2026.md`
+- `CROSS_CHANNEL_INTELLIGENCE_VERSION = 1`: deterministic evidence → signals → bottlenecks → NOW/NEXT/WATCH (no fake score, no AI)
+- Consolidates Facebook · Search · GBP · Content · Website · Conversion · Follow-up · Commercial attention
+- Attribution health first-class; commercial proximity outranks marketing busywork; active experiments protected
+- `GBP_API_APPROVAL_PENDING` as WATCH/dependency (manual Local Growth continues)
+- Derived-only persistence (no new Prisma table); `/reports/growth` + `/reports/growth/intelligence`
+- Acceptance: `docs/growth/growth-sprint13-production-acceptance.md`
+
+### Growth Sprint 14 — (recommended next)
+
 - Optional AI draft assist for follow-up templates (explicit operator apply — no auto-send)
 - Operator calendar digest / weekly follow-up summary email (internal only)
 - Inbound → Opportunity path without forcing Prospect creation
 - `responseRate` metric when FollowUpActivity history is mature enough for honest measurement
 - Continue GSC windows for `/seo`, Experiment 018 directional review, tagged Facebook/GBP journey acceptance
-- GBP write/publish automation remains **deferred** (not Sprint 13 scope by default)
+- GBP write/publish automation remains **deferred** (not default)
+- Optional INTERNAL weekly cross-channel snapshot summaries (still no composite score)
+- Google GBP API allowlisting completion → schedule Sync Performance cadence
 
 ---
 

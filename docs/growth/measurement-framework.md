@@ -67,6 +67,8 @@ Local / GBP (Sprint 12): `GrowthSnapshot` source **`GOOGLE_BUSINESS_PROFILE`**. 
 
 GBP Read (Sprint 12.1): explicit **Sync Profile** / **Sync Performance** may call Google Business Profile APIs; dashboard load GBP API = **0**. API snapshots use `provenance: API`; manual baselines preserved. Reviews = aggregates only. Unsupported V1: photos/logo/cover/posts (manual). See [`gbp-api-integration.md`](gbp-api-integration.md). **GBP_READ_INTEGRATION_VERSION = 1**.
 
+Cross-Channel (Sprint 13): deterministic NOW/NEXT/WATCH across channels from persisted evidence; no composite score; OPENAI/META/GSC/GBP = **0** on load. See [`cross-channel-intelligence.md`](cross-channel-intelligence.md). **CROSS_CHANNEL_INTELLIGENCE_VERSION = 1**.
+
 ---
 
 ## Public growth events (`growth-events-v1`)

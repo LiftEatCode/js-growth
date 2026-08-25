@@ -4,6 +4,15 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-25 — Growth Sprint 13 (Cross-Channel Growth Intelligence V1)
+
+- Research: `docs/research/cross-channel-growth-intelligence-2026.md`
+- `CROSS_CHANNEL_INTELLIGENCE_VERSION = 1`: deterministic cross-channel decision layer (no Growth Score, no AI)
+- Evidence domains + strength + leading/mid/lagging; channel states; signals; bottlenecks; NOW≤3 / NEXT≤5 / WATCH≤5
+- Attribution health; commercial proximity ranking; experiment protection; `GBP_API_APPROVAL_PENDING` WATCH
+- Derived-only (no new Prisma table); `/reports/growth` compact + `/reports/growth/intelligence`
+- Weekly review updated; acceptance: `docs/growth/growth-sprint13-production-acceptance.md`
+
 ## 2026-08-25 — Growth Sprint 12.1 (GBP Read Integration V1)
 
 - Research: `docs/research/google-business-profile-api-2026.md`

@@ -302,6 +302,12 @@ export {
   JS_SOLUTIONS_LOCAL_FACTS,
 } from "./local-growth";
 export {
+  CROSS_CHANNEL_INTELLIGENCE_VERSION,
+  CROSS_CHANNEL_SIDE_EFFECT_BUDGET,
+  CHANNEL_HEALTH_STATES,
+  type ChannelHealthState,
+} from "./cross-channel-intelligence";
+export {
   gbpSnapshotMetricsSchema,
   type GbpSnapshotMetrics,
 } from "./snapshot";

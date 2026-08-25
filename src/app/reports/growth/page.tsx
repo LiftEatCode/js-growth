@@ -68,6 +68,13 @@ import {
   LOCAL_GROWTH_VERSION,
 } from "@/lib/growth/local-growth";
 import { getLocalGrowthCompactCard } from "@/lib/growth/local-growth-metrics";
+import {
+  CROSS_CHANNEL_INTELLIGENCE_VERSION,
+} from "@/lib/growth/cross-channel-intelligence";
+import {
+  getCrossChannelCompactCard,
+  getCrossChannelIntelligence,
+} from "@/lib/growth/cross-channel-metrics";
 import { listGrowthExperimentDecisions } from "@/lib/growth/experiment-decisions";
 import {
   FACEBOOK_30_DAY_TARGETS,
@@ -211,6 +218,8 @@ export default async function GrowthDashboardPage() {
     leadConversion,
     followUpQueue,
     localGrowthCard,
+    crossChannelCard,
+    crossChannel,
   ] = await Promise.all([
     getInternalFunnelMetrics(current),
     getInternalFunnelMetrics(previous),
@@ -224,6 +233,8 @@ export default async function GrowthDashboardPage() {
     getLeadConversionIntelligence(current),
     buildFollowUpAttentionQueue({ limit: 20 }),
     getLocalGrowthCompactCard(),
+    getCrossChannelCompactCard(),
+    getCrossChannelIntelligence(current),
   ]);
 
   const contentDueReviews = buildDueReviewQueue({
@@ -360,7 +371,51 @@ export default async function GrowthDashboardPage() {
             Local / GBP
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/intelligence" />}
+          >
+            Cross-Channel
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
         </div>
+
+        <Card
+          className="mt-6 space-y-3 p-5"
+          data-testid="cross-channel-compact-card"
+        >
+          <p className="text-sm font-semibold text-brand">
+            Cross-Channel Intelligence (compact) · v
+            {CROSS_CHANNEL_INTELLIGENCE_VERSION}
+          </p>
+          <p className="text-xs text-muted">
+            Top bottleneck: {crossChannelCard.topBottleneck} · NOW:{" "}
+            {crossChannelCard.nowCount} · NEXT: {crossChannelCard.nextCount} ·
+            WATCH: {crossChannelCard.watchCount} · Attribution:{" "}
+            {crossChannelCard.attributionHealth}
+            {crossChannelCard.gbpDependency
+              ? ` · ${crossChannelCard.gbpDependency}`
+              : ""}
+            . No composite Growth Score. Persisted evidence only (external APIs
+            = 0 on load).
+          </p>
+          {crossChannel.recommendations.now.length > 0 ? (
+            <ul className="space-y-1 text-xs text-muted">
+              {crossChannel.recommendations.now.map((r) => (
+                <li key={`now-${r.action}-${r.title}`}>
+                  NOW — {r.action}: {r.title}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <Button
+            nativeButton={false}
+            render={<Link href="/reports/growth/intelligence" />}
+          >
+            Open Cross-Channel Intelligence
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
+        </Card>
 
         <Card className="mt-6 space-y-2 p-5" data-testid="local-growth-compact-card">
           <p className="text-sm font-semibold text-brand">

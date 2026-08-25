@@ -1,8 +1,8 @@
 # Growth Phase — Documentation Index
 
-Growth Sprints 1–12.1 establish measurement through content review, pipeline observation, first-party acquisition capture, operator follow-up, Local/GBP intelligence, and READ-ONLY GBP API sync: publish → observe → interpret carefully → connect tagged campaigns to inbound conversions where evidence exists → record human follow-up → measure GBP honestly (sync + exceptions) → human decide.
+Growth Sprints 1–13 establish measurement through content review, pipeline observation, first-party acquisition capture, operator follow-up, Local/GBP intelligence, READ-ONLY GBP API sync, and **Cross-Channel Intelligence**: publish → observe → interpret carefully → connect tagged campaigns to inbound conversions where evidence exists → record human follow-up → measure GBP honestly → **decide what deserves attention next across channels** → human decide.
 
-**Principle:** Do not optimize what we cannot measure. Capture what we observe; preserve what we know; label what we do not know. Never rewrite historical UNKNOWN to improve coverage.
+**Principle:** Do not optimize what we cannot measure. Capture what we observe; preserve what we know; label what we do not know. Never rewrite historical UNKNOWN to improve coverage. No fake Growth Score.
 
 | Document | Purpose |
 |---|---|
@@ -33,7 +33,9 @@ Growth Sprints 1–12.1 establish measurement through content review, pipeline o
 | [lead-followup-operations.md](lead-followup-operations.md) | **LEAD_FOLLOWUP_VERSION = 1** — FollowUpActivity, attention queue, nurture (no auto-send) |
 | [local-growth-intelligence.md](local-growth-intelligence.md) | **LOCAL_GROWTH_VERSION = 1** — GBP snapshots, checklist, experiments GBP-001…010 |
 | [gbp-api-integration.md](gbp-api-integration.md) | **GBP_READ_INTEGRATION_VERSION = 1** — READ-ONLY OAuth sync |
-| [attribution.md](attribution.md) | Channel + strength + Acquisition Capture V1 scopes || [weekly-review.md](weekly-review.md) | Weekly conversion review questions |
+| [cross-channel-intelligence.md](cross-channel-intelligence.md) | **CROSS_CHANNEL_INTELLIGENCE_VERSION = 1** — bottlenecks + NOW/NEXT/WATCH across channels |
+| [attribution.md](attribution.md) | Channel + strength + Acquisition Capture V1 scopes |
+| [weekly-review.md](weekly-review.md) | Weekly growth review questions (incl. cross-channel) |
 | [content-learning.md](content-learning.md) | Small-sample learning safeguards |
 | [content-distribution.md](content-distribution.md) | Deterministic distribution recommendations |
 | [content-quality-review.md](content-quality-review.md) | Claim safety + readiness |
@@ -45,6 +47,7 @@ Growth Sprints 1–12.1 establish measurement through content review, pipeline o
 | [growth-sprint11-production-acceptance.md](growth-sprint11-production-acceptance.md) | Sprint 11 acceptance |
 | [growth-sprint12-production-acceptance.md](growth-sprint12-production-acceptance.md) | Sprint 12 acceptance |
 | [growth-sprint12-1-production-acceptance.md](growth-sprint12-1-production-acceptance.md) | Sprint 12.1 acceptance |
+| [growth-sprint13-production-acceptance.md](growth-sprint13-production-acceptance.md) | Sprint 13 acceptance |
 | [blog-google-visibility-distribution.md](blog-google-visibility-distribution.md) | FB/GBP/video handoff for visibility article || [experiments/](experiments/) | Sprint 2 (001–004) + Sprint 3 Facebook (010–018) |
 | [../research/audit-conversion-funnel-2026.md](../research/audit-conversion-funnel-2026.md) | Sprint 2 research |
 | [../research/facebook-organic-growth-2026.md](../research/facebook-organic-growth-2026.md) | Sprint 3 Meta research (FACT/HYPOTHESIS/TEST) |
@@ -56,11 +59,13 @@ Growth Sprints 1–12.1 establish measurement through content review, pipeline o
 | [../research/lead-followup-nurture-operations-2026.md](../research/lead-followup-nurture-operations-2026.md) | Sprint 11 follow-up / nurture research |
 | [../research/local-search-gbp-intelligence-2026.md](../research/local-search-gbp-intelligence-2026.md) | Sprint 12 Local / GBP research |
 | [../research/google-business-profile-api-2026.md](../research/google-business-profile-api-2026.md) | Sprint 12.1 GBP API research |
+| [../research/cross-channel-growth-intelligence-2026.md](../research/cross-channel-growth-intelligence-2026.md) | Sprint 13 cross-channel research |
 | [../research/blog-google-visibility-2026.md](../research/blog-google-visibility-2026.md) | Visibility article research note |
 
 ## Internal tools
 
-- `/reports/growth` — Growth dashboard (baseline preserved; Facebook + Search + conversion + acquisition coverage)
+- `/reports/growth` — Growth dashboard (baseline preserved; Facebook + Search + conversion + acquisition coverage + **Cross-Channel**)
+- `/reports/growth/intelligence` — Cross-Channel Intelligence detail (NOW/NEXT/WATCH · bottlenecks · weekly review)
 - `/reports/growth/content` — Content Intelligence + performance + distribution
 - `/reports/growth/conversion` — Lead Conversion Intelligence detail
 - `/reports/growth/attribution` — Privacy-safe acquisition observations (no PII)
@@ -74,3 +79,4 @@ Growth Sprints 1–12.1 establish measurement through content review, pipeline o
 - Fabricating Search volumes, rankings, or historical performance
 - GBP **write** automation, scheduled sync, or Places API as GBP Performance (`write` / Places deferred)
 - Mutating commercial authority objects from the growth engine
+- Fake composite Growth Score / AI executive summaries on dashboard load
