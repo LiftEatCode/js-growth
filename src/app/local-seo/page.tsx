@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   ArrowRight,
   BarChart3,
@@ -343,6 +344,35 @@ export default function LocalSEOPage() {
                 </Card>
               ))}
             </div>
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="border-y border-border bg-slate-50/60">
+        <Container>
+          <SectionHeader
+            eyebrow="Further reading"
+            title="A practical Local SEO checklist"
+            description="If you already understand Local SEO and need an ordered list of what to fix first, start with the checklist—then return here when you want help implementing it."
+            align="center"
+            className="mx-auto max-w-3xl"
+          />
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button
+              nativeButton={false}
+              render={
+                <Link href="/blog/local-seo-checklist-small-business" />
+              }
+            >
+              Local SEO checklist
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
+            <Button
+              nativeButton={false}
+              render={<Link href="/blog/what-is-local-seo" />}
+            >
+              What is Local SEO?
+            </Button>
           </div>
         </Container>
       </Section>

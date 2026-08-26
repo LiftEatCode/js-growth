@@ -343,6 +343,37 @@ export const INITIAL_CONTENT_PLAN_SEEDS: SeedContentPlan[] = [
   },
 ];
 
+/**
+ * Local SEO checklist blog — distinct from INITIAL_CONTENT_PLAN_SEEDS (V1 length locked).
+ * Collision: RELATED_EXISTING_CONTENT vs definition/diagnosis posts; resolved by checklist angle.
+ */
+export const LOCAL_SEO_CHECKLIST_PLAN_SEED: SeedContentPlan = {
+  slug: "local-seo-checklist-small-business-v1",
+  contentType: "BLOG",
+  sourceType: "CONTENT_GAP",
+  sourceOpportunitySlug: "local-seo-checklist-small-business",
+  topic: "LOCAL_SEO",
+  workingTitle:
+    "Local SEO Checklist for Small Businesses: How to Improve Your Google Visibility",
+  audience:
+    "Local small-business owners who need Google visibility but do not know what to fix first",
+  primaryObjective: "EDUCATION",
+  searchIntent: "COMMERCIAL_INVESTIGATION",
+  pageType: "BLOG",
+  targetServicePath: "/local-seo",
+  publisher: "NONE",
+  priorityBand: "NOW",
+  whyRecommended: [
+    "Supports /local-seo with actionable checklist (not a duplicate definition post)",
+    "Strengthens /seo and /website-audit internal linking",
+    "Natural audit conversion path after diagnostic mid-article CTA",
+    "Supports future Facebook/GBP/video distribution without auto-publish",
+  ],
+  seed: SEARCH_OPPORTUNITY_SEEDS.find(
+    (s) => s.slug === "local-seo-checklist-small-business",
+  ),
+};
+
 export const FIRST_ACCEPTANCE_PLAN_SLUG = "seo-service-page-v1" as const;
 
 export function detectContentCollision(input: {

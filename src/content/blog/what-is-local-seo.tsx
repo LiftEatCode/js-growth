@@ -466,6 +466,14 @@ export const whatIsLocalSeoPost: BlogPost = {
         <Link href="/contact">contact JS Solutions</Link> to discuss a strategy
         built around your market and business goals.
       </p>
+
+      <p>
+        Ready for an ordered action list? Use the{" "}
+        <Link href="/blog/local-seo-checklist-small-business">
+          Local SEO checklist for small businesses
+        </Link>
+        .
+      </p>
     </>
   ),
 };

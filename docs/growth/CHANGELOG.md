@@ -4,6 +4,14 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-25 — Local SEO checklist blog published
+
+- Research: `docs/research/local-seo-checklist-blog-2026.md`
+- Published `/blog/local-seo-checklist-small-business` (checklist angle; RELATED_EXISTING_CONTENT vs definition/diagnosis posts)
+- Search opportunity + `LOCAL_SEO_CHECKLIST_PLAN_SEED` (`local-seo-checklist-small-business-v1`)
+- Inbound links from `/local-seo`, `what-is-local-seo`, visibility diagnosis post
+- Performance: PUBLISHED_AWAITING_DATA — no fabricated GSC metrics
+
 ## 2026-08-25 — Growth Sprint 13 (Cross-Channel Growth Intelligence V1)
 
 - Research: `docs/research/cross-channel-growth-intelligence-2026.md`

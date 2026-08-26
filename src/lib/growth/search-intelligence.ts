@@ -388,6 +388,16 @@ export type SearchBlogInventoryItem = {
 
 export const SEARCH_BLOG_INVENTORY: SearchBlogInventoryItem[] = [
   {
+    slug: "local-seo-checklist-small-business",
+    path: "/blog/local-seo-checklist-small-business",
+    title:
+      "Local SEO Checklist for Small Businesses: How to Improve Your Google Visibility",
+    primaryTopic: "LOCAL_SEO",
+    intent: "COMMERCIAL_INVESTIGATION",
+    relatedServicePath: "/local-seo",
+    status: "CURRENT",
+  },
+  {
     slug: "small-business-not-showing-up-on-google",
     path: "/blog/small-business-not-showing-up-on-google",
     title:
@@ -479,6 +489,14 @@ export const SEARCH_CONTENT_GAPS: SearchContentGap[] = [
     evidence: "FIRST_PARTY_DATA",
   },
   {
+    id: "gap-local-seo-checklist",
+    kind: "REFRESH",
+    topic: "LOCAL_SEO",
+    summary:
+      "Local SEO checklist blog published 2026-08-25 — MONITORING / PUBLISHED_AWAITING_DATA. Do not duplicate; refresh only after evidence windows.",
+    evidence: "FIRST_PARTY_DATA",
+  },
+  {
     id: "gap-gbp-page",
     kind: "MISSING_SUPPORT",
     topic: "GBP",
@@ -528,6 +546,48 @@ export type SearchInternalLinkRec = {
 };
 
 export const SEARCH_INTERNAL_LINK_RECS: SearchInternalLinkRec[] = [
+  {
+    fromPath: "/blog/local-seo-checklist-small-business",
+    toPath: "/local-seo",
+    reason: "Checklist → Local SEO commercial service",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/local-seo-checklist-small-business",
+    toPath: "/seo",
+    reason: "Checklist → site-wide SEO differentiation",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/local-seo-checklist-small-business",
+    toPath: "/website-audit",
+    reason: "Checklist mid/end CTA → diagnostic audit",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/local-seo-checklist-small-business",
+    toPath: "/websites",
+    reason: "Checklist → website foundation",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/local-seo",
+    toPath: "/blog/local-seo-checklist-small-business",
+    reason: "Service page → supporting checklist education",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/what-is-local-seo",
+    toPath: "/blog/local-seo-checklist-small-business",
+    reason: "Definition → actionable checklist",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/small-business-not-showing-up-on-google",
+    toPath: "/blog/local-seo-checklist-small-business",
+    reason: "Visibility diagnosis → ordered Local SEO checklist",
+    evidence: "INFERENCE",
+  },
   {
     fromPath: "/blog/small-business-not-showing-up-on-google",
     toPath: "/seo",
@@ -722,6 +782,25 @@ export const SEARCH_OPPORTUNITY_SEEDS: SeedSearchOpportunity[] = [
     gscEvidence: 0,
     effort: 2,
     notes: "Support content linking to /local-seo.",
+  },
+  {
+    slug: "local-seo-checklist-small-business",
+    topic: "LOCAL_SEO",
+    queryConcept: "local SEO checklist for small businesses",
+    intent: "COMMERCIAL_INVESTIGATION",
+    pageType: "BLOG",
+    source: "CONTENT_GAP",
+    evidenceKind: "MANUAL_RESEARCH",
+    currentPagePath: "/blog/local-seo-checklist-small-business",
+    recommendedPath: "/blog/local-seo-checklist-small-business",
+    commercialRelevance: 3,
+    intentStrength: 3,
+    contentGap: 1,
+    auditFunnelRelevance: 3,
+    gscEvidence: 0,
+    effort: 1,
+    notes:
+      "Published 2026-08-25. Distinct checklist angle vs what-is-local-seo (definition) and visibility diagnosis post. RELATED_EXISTING_CONTENT resolved by intent. MONITORING — no fabricated volumes.",
   },
   {
     slug: "website-development-service",

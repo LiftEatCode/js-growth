@@ -1,4 +1,5 @@
 import { howMuchDoesASmallBusinessWebsiteCostPost } from "@/content/blog/how-much-does-a-small-business-website-cost";
+import { localSeoChecklistSmallBusinessPost } from "@/content/blog/local-seo-checklist-small-business";
 import { smallBusinessNotShowingUpOnGooglePost } from "@/content/blog/small-business-not-showing-up-on-google";
 import { websiteGrowthAuditLaunchPost } from "@/content/blog/website-growth-audit-launch";
 import { whatIsLocalSeoPost } from "@/content/blog/what-is-local-seo";
@@ -11,6 +12,7 @@ import type { BlogPost } from "@/content/blog/types";
 export type { BlogPost } from "@/content/blog/types";
 
 export const blogPosts: BlogPost[] = [
+  localSeoChecklistSmallBusinessPost,
   smallBusinessNotShowingUpOnGooglePost,
   whyAOneTimeWebsiteAuditIsntEnoughPost,
   websiteGrowthAuditLaunchPost,

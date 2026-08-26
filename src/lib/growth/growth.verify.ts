@@ -887,7 +887,13 @@ assert(
   SEARCH_PAGE_INVENTORY.some((p) => p.path === "/ai-solutions" && !p.inSitemap),
   "ai-solutions sitemap gap noted",
 );
-assert(SEARCH_BLOG_INVENTORY.length === 7, "seven blog posts inventoried");
+assert(SEARCH_BLOG_INVENTORY.length === 8, "eight blog posts inventoried");
+assert(
+  SEARCH_BLOG_INVENTORY.some(
+    (p) => p.slug === "local-seo-checklist-small-business",
+  ),
+  "local seo checklist inventoried",
+);
 assert(
   SEARCH_BLOG_INVENTORY.some(
     (p) => p.slug === "small-business-not-showing-up-on-google",

@@ -80,10 +80,30 @@ test.describe("Growth Sprint 12.1 GBP Read Integration", () => {
       test.skip(true, "OAuth env not configured and mock not active on server");
     }
 
+    // Clear stale encrypted tokens (e.g. encryption key rotation) before mock reconnect.
     if (
-      status === "NOT_CONNECTED" ||
-      status === "DISCONNECTED" ||
-      status === "AUTH_EXPIRED"
+      status === "ERROR" ||
+      status === "AUTH_EXPIRED" ||
+      status === "CONNECTED" ||
+      status === "SYNCED"
+    ) {
+      const disconnect = page.getByTestId("gbp-disconnect-button");
+      if (await disconnect.isVisible().catch(() => false)) {
+        await disconnect.click();
+        await expect(page.getByTestId("gbp-connection-status")).toHaveText(
+          /NOT_CONNECTED|DISCONNECTED/,
+          { timeout: 15_000 },
+        );
+      }
+    }
+
+    const statusAfter = await page
+      .getByTestId("gbp-connection-status")
+      .textContent();
+    if (
+      statusAfter === "NOT_CONNECTED" ||
+      statusAfter === "DISCONNECTED" ||
+      statusAfter === "AUTH_EXPIRED"
     ) {
       await Promise.all([
         page.waitForURL(/\/reports\/growth\/local\?gbp=/, { timeout: 30_000 }),

@@ -339,8 +339,11 @@ export const smallBusinessNotShowingUpOnGooglePost: BlogPost = {
 
       <p>
         Use the audit to decide what to fix first. Then improve the site
-        deliberately—whether that means strengthening{" "}
-        <Link href="/local-seo">Local SEO</Link>, clarifying{" "}
+        deliberately—whether that means working through a{" "}
+        <Link href="/blog/local-seo-checklist-small-business">
+          Local SEO checklist
+        </Link>
+        , strengthening <Link href="/local-seo">Local SEO</Link>, clarifying{" "}
         <Link href="/websites">website</Link> structure, or{" "}
         <GrowthTrackedLink
           href="/contact"
