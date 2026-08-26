@@ -374,6 +374,35 @@ export const LOCAL_SEO_CHECKLIST_PLAN_SEED: SeedContentPlan = {
   ),
 };
 
+/**
+ * SEO cost / purchasing education blog — not in INITIAL_CONTENT_PLAN_SEEDS (V1 length locked).
+ * Collision: RELATED_EXISTING_CONTENT vs website-cost + other COMMERCIAL_INVESTIGATION blogs;
+ * resolved by SEO pricing-investigation angle (not website pricing, not /seo duplicate).
+ */
+export const SEO_COST_SMALL_BUSINESS_PLAN_SEED: SeedContentPlan = {
+  slug: "seo-cost-small-business-v1",
+  contentType: "BLOG",
+  sourceType: "CONTENT_GAP",
+  sourceOpportunitySlug: "seo-cost-small-business",
+  topic: "SEO",
+  workingTitle: "How Much Does SEO Cost for a Small Business in 2026?",
+  audience:
+    "Small-business owners evaluating SEO services and trying to understand pricing and fit",
+  primaryObjective: "EDUCATION",
+  searchIntent: "COMMERCIAL_INVESTIGATION",
+  pageType: "BLOG",
+  targetServicePath: "/seo",
+  publisher: "NONE",
+  priorityBand: "NOW",
+  whyRecommended: [
+    "Supports /seo with buyer education (not a second service page)",
+    "Distinct from website-cost blog (SEO purchasing vs website build pricing)",
+    "Natural Website Growth Audit path before retainer decisions",
+    "Supports future Facebook/GBP/video distribution without auto-publish",
+  ],
+  seed: SEARCH_OPPORTUNITY_SEEDS.find((s) => s.slug === "seo-cost-small-business"),
+};
+
 export const FIRST_ACCEPTANCE_PLAN_SLUG = "seo-service-page-v1" as const;
 
 export function detectContentCollision(input: {

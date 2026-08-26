@@ -4,6 +4,15 @@ Dated record of major growth actions. Correlate traffic/funnel changes with real
 
 ---
 
+## 2026-08-26 — SEO cost small-business blog published
+
+- Research: `docs/research/small-business-seo-cost-2026.md`
+- Published `/blog/how-much-does-seo-cost-small-business` (SEO purchasing education; RELATED_EXISTING_CONTENT vs website-cost + commercial-investigation blogs)
+- Search opportunity `seo-cost-small-business` + `SEO_COST_SMALL_BUSINESS_PLAN_SEED` (`seo-cost-small-business-v1`)
+- Inbound links from `/seo` and website-cost blog
+- Pricing labeled MARKET_OBSERVATION; no invented JS Solutions SEO packages; no ranking guarantees
+- Performance: PUBLISHED_AWAITING_DATA — no fabricated GSC metrics
+
 ## 2026-08-25 — Local SEO checklist blog published
 
 - Research: `docs/research/local-seo-checklist-blog-2026.md`

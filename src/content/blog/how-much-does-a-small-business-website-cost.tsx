@@ -159,7 +159,11 @@ export const howMuchDoesASmallBusinessWebsiteCostPost: BlogPost = {
       <p>
         Building these elements correctly from the beginning is usually more
         efficient than rebuilding the website later to correct structural SEO
-        problems.
+        problems. For ongoing SEO purchasing decisions after the site ships, see{" "}
+        <Link href="/blog/how-much-does-seo-cost-small-business">
+          how much SEO costs for a small business
+        </Link>
+        .
       </p>
 
       <p>
@@ -468,7 +472,12 @@ export const howMuchDoesASmallBusinessWebsiteCostPost: BlogPost = {
         Yes. Keyword research, technical optimization, structured content,
         metadata, internal linking, and Local SEO require additional work.
         However, including SEO during development is usually more efficient than
-        rebuilding the website later.
+        rebuilding the website later. Separately, ongoing SEO retainers are a
+        different purchase—see{" "}
+        <Link href="/blog/how-much-does-seo-cost-small-business">
+          SEO cost for small businesses
+        </Link>
+        .
       </p>
 
       <h3>How much does website maintenance cost?</h3>

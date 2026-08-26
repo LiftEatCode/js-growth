@@ -388,6 +388,15 @@ export type SearchBlogInventoryItem = {
 
 export const SEARCH_BLOG_INVENTORY: SearchBlogInventoryItem[] = [
   {
+    slug: "how-much-does-seo-cost-small-business",
+    path: "/blog/how-much-does-seo-cost-small-business",
+    title: "How Much Does SEO Cost for a Small Business in 2026?",
+    primaryTopic: "SEO",
+    intent: "COMMERCIAL_INVESTIGATION",
+    relatedServicePath: "/seo",
+    status: "CURRENT",
+  },
+  {
     slug: "local-seo-checklist-small-business",
     path: "/blog/local-seo-checklist-small-business",
     title:
@@ -546,6 +555,42 @@ export type SearchInternalLinkRec = {
 };
 
 export const SEARCH_INTERNAL_LINK_RECS: SearchInternalLinkRec[] = [
+  {
+    fromPath: "/blog/how-much-does-seo-cost-small-business",
+    toPath: "/seo",
+    reason: "SEO cost education → SEO commercial service",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/how-much-does-seo-cost-small-business",
+    toPath: "/local-seo",
+    reason: "SEO cost education → Local SEO distinction",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/how-much-does-seo-cost-small-business",
+    toPath: "/website-audit",
+    reason: "SEO cost education → diagnostic audit before retainer",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/how-much-does-seo-cost-small-business",
+    toPath: "/websites",
+    reason: "SEO cost education → website foundation",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/seo",
+    toPath: "/blog/how-much-does-seo-cost-small-business",
+    reason: "SEO service → pricing education support",
+    evidence: "INFERENCE",
+  },
+  {
+    fromPath: "/blog/how-much-does-a-small-business-website-cost",
+    toPath: "/blog/how-much-does-seo-cost-small-business",
+    reason: "Website cost → related SEO purchasing question",
+    evidence: "INFERENCE",
+  },
   {
     fromPath: "/blog/local-seo-checklist-small-business",
     toPath: "/local-seo",
@@ -782,6 +827,25 @@ export const SEARCH_OPPORTUNITY_SEEDS: SeedSearchOpportunity[] = [
     gscEvidence: 0,
     effort: 2,
     notes: "Support content linking to /local-seo.",
+  },
+  {
+    slug: "seo-cost-small-business",
+    topic: "SEO",
+    queryConcept: "how much does SEO cost for a small business",
+    intent: "COMMERCIAL_INVESTIGATION",
+    pageType: "BLOG",
+    source: "CONTENT_GAP",
+    evidenceKind: "MANUAL_RESEARCH",
+    currentPagePath: "/blog/how-much-does-seo-cost-small-business",
+    recommendedPath: "/blog/how-much-does-seo-cost-small-business",
+    commercialRelevance: 3,
+    intentStrength: 3,
+    contentGap: 1,
+    auditFunnelRelevance: 3,
+    gscEvidence: 0,
+    effort: 1,
+    notes:
+      "Published 2026-08-26. Distinct SEO purchasing education vs website-cost blog and /seo service page. RELATED_EXISTING_CONTENT resolved by pricing-investigation angle. MONITORING — no fabricated volumes or JS Solutions package prices.",
   },
   {
     slug: "local-seo-checklist-small-business",

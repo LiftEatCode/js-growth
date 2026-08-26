@@ -307,6 +307,35 @@ export default function SeoServicePage() {
         </Container>
       </Section>
 
+      <Section>
+        <Container>
+          <SectionHeader
+            eyebrow="Further reading"
+            title="How much does SEO cost for a small business?"
+            description="If you are comparing proposals or retainers, start with buyer education on what SEO spend actually covers—then return here when you want diagnose-first help."
+            align="center"
+            className="mx-auto max-w-3xl"
+          />
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button
+              nativeButton={false}
+              render={
+                <Link href="/blog/how-much-does-seo-cost-small-business" />
+              }
+            >
+              SEO cost for small businesses
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
+            <Button
+              nativeButton={false}
+              render={<Link href="/local-seo" />}
+            >
+              Local SEO
+            </Button>
+          </div>
+        </Container>
+      </Section>
+
       <CTASection
         title="Ready to strengthen your SEO foundations?"
         description="Start with a Website Growth Audit or talk with us about diagnose-first SEO — without ranking guarantees."

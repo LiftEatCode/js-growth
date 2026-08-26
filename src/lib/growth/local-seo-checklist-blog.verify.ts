@@ -38,8 +38,8 @@ assert(post, "post registered");
 assert(post?.seoTitle?.includes("2026"), "seo title year");
 assert(post?.title.includes("Local SEO Checklist"), "h1 title");
 assert(
-  blogPosts[0]?.slug === slug,
-  "newest post first in registry",
+  blogPosts.some((p) => p.slug === slug),
+  "post in registry",
 );
 
 assert(
