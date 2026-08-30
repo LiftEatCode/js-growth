@@ -398,6 +398,15 @@ export type SearchBlogInventoryItem = {
 
 export const SEARCH_BLOG_INVENTORY: SearchBlogInventoryItem[] = [
   {
+    slug: "how-to-redesign-your-website-without-losing-seo",
+    path: "/blog/how-to-redesign-your-website-without-losing-seo",
+    title: "How to Redesign Your Website Without Losing SEO Rankings",
+    primaryTopic: "SEO",
+    intent: "PROBLEM_SOLUTION",
+    relatedServicePath: "/websites",
+    status: "CURRENT",
+  },
+  {
     slug: "how-much-does-seo-cost-small-business",
     path: "/blog/how-much-does-seo-cost-small-business",
     title: "How Much Does SEO Cost for a Small Business in 2026?",

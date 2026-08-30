@@ -1,5 +1,6 @@
 import { howMuchDoesASmallBusinessWebsiteCostPost } from "@/content/blog/how-much-does-a-small-business-website-cost";
 import { howMuchDoesSeoCostSmallBusinessPost } from "@/content/blog/how-much-does-seo-cost-small-business";
+import { howToRedesignYourWebsiteWithoutLosingSeoPost } from "@/content/blog/how-to-redesign-your-website-without-losing-seo";
 import { localSeoChecklistSmallBusinessPost } from "@/content/blog/local-seo-checklist-small-business";
 import { smallBusinessNotShowingUpOnGooglePost } from "@/content/blog/small-business-not-showing-up-on-google";
 import { websiteGrowthAuditLaunchPost } from "@/content/blog/website-growth-audit-launch";
@@ -13,6 +14,7 @@ import type { BlogPost } from "@/content/blog/types";
 export type { BlogPost } from "@/content/blog/types";
 
 export const blogPosts: BlogPost[] = [
+  howToRedesignYourWebsiteWithoutLosingSeoPost,
   howMuchDoesSeoCostSmallBusinessPost,
   localSeoChecklistSmallBusinessPost,
   smallBusinessNotShowingUpOnGooglePost,

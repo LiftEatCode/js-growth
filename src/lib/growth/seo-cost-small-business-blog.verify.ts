@@ -38,7 +38,10 @@ const post = getBlogPost(slug);
 assert(post, "post registered");
 assert(post?.seoTitle?.includes("JS Solutions"), "seo title brand");
 assert(post?.title.includes("How Much Does SEO Cost"), "h1 title");
-assert(blogPosts[0]?.slug === slug, "newest post first in registry");
+assert(
+  blogPosts.some((p) => p.slug === slug),
+  "post in registry",
+);
 
 assert(
   SEARCH_BLOG_INVENTORY.some((b) => b.slug === slug),
