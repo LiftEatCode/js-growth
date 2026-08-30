@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { blogPosts } from "@/content/blog/posts";
+import { getPublishedProjects, getProjectPath } from "@/content/projects";
 import { getAbsoluteUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -51,12 +52,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: getAbsoluteUrl("/projects"),
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: getAbsoluteUrl("/projects/tha-shop"),
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
@@ -118,5 +113,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: post.featured ? 0.8 : 0.7,
   }));
 
-  return [...routes, ...blogRoutes];
+  const projectRoutes = getPublishedProjects().map((project) => ({
+    url: getAbsoluteUrl(getProjectPath(project.slug)),
+    lastModified: new Date(project.publishedAtIso),
+    changeFrequency: "monthly" as const,
+    priority: project.featured ? 0.8 : 0.7,
+  }));
+
+  return [...routes, ...blogRoutes, ...projectRoutes];
 }

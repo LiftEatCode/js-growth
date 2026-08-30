@@ -22,35 +22,16 @@ type TestimonialCardProps = {
   className?: string;
 };
 
-const testimonials = [
-  {
-    quote:
-      "JS Solutions rebuilt our online presence into something that actually generates inquiries. The site is faster, clearer, and finally positioned for local search.",
-    name: "Kevin",
-    role: "Owner",
-    company: "Tha Shop",
-    services: [
-      "Local SEO",
-      "Web Design",
-      "Social Media Management",
-      "Google Ads",
-    ],
-    rating: 5,
-  },
-  {
-    quote:
-      "They approached our website like a product, not a brochure. Performance, structure, and lead flow were all designed with growth in mind.",
-    name: "Casey Jones",
-    role: "Owner",
-    company: "Crazy Eight Customs",
-    services: [
-      "Web Development",
-      "Marketing",
-      "Local SEO",
-    ],
-    rating: 5,
-  },
-] as const;
+type HomepageTestimonial = {
+  quote: string;
+  name: string;
+  role?: string;
+  company?: string;
+  services?: readonly string[];
+  rating?: number;
+};
+
+const testimonials: readonly HomepageTestimonial[] = [];
 
 export function TestimonialCard({
   quote,
@@ -156,6 +137,10 @@ export function TestimonialCard({
 }
 
 export function TestimonialsSection() {
+  if (testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <Section className="relative overflow-hidden bg-white">
       <div

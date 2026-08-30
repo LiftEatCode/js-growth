@@ -68,6 +68,13 @@ export const siteConfig = {
             "See examples of websites, software, and growth systems we have built.",
           href: "/projects",
         },
+
+        {
+          name: "Tha Shop Case Study",
+          description:
+            "How we rebuilt Tha Shop’s website from GoDaddy hosting into a Next.js growth platform.",
+          href: "/projects/tha-shop-website-redesign",
+        },
       ],
     },
 

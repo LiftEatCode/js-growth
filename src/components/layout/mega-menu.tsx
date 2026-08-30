@@ -21,6 +21,7 @@ import {
   MessageCircle,
   Newspaper,
   Sparkles,
+  Wrench,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -52,6 +53,7 @@ const iconMap: Record<
   "Local SEO": MapPin,
   "AI Automation": Bot,
   Projects: BriefcaseBusiness,
+  "Tha Shop Case Study": Wrench,
   Blog: Newspaper,
   Investment: CircleDollarSign,
   "Website Growth Audit": FileSearch,

@@ -1,4 +1,5 @@
 import type { BlogPost } from "@/content/blog/posts";
+import type { ProjectCaseStudy } from "@/content/projects";
 
 export const SITE_URL = "https://js-growth.com";
 export const SITE_NAME = "JS Solutions";
@@ -142,6 +143,66 @@ export function getWebsiteSchema() {
     url: SITE_URL,
     description:
       "Custom websites, Local SEO, AI automation, and digital growth solutions for local businesses.",
+  };
+}
+
+export function getCaseStudyWebPageSchema(project: ProjectCaseStudy) {
+  const pageUrl = getAbsoluteUrl(`/projects/${project.slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: project.title,
+    description: project.description,
+    url: pageUrl,
+    datePublished: project.publishedAtIso,
+    dateModified: project.publishedAtIso,
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    about: {
+      "@type": "Organization",
+      name: project.client,
+      ...(project.liveUrl ? { url: project.liveUrl } : {}),
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: getAbsoluteUrl("/logo.png"),
+      },
+    },
+  };
+}
+
+export function getCaseStudyBreadcrumbSchema(project: ProjectCaseStudy) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Work",
+        item: getAbsoluteUrl("/projects"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.client,
+        item: getAbsoluteUrl(`/projects/${project.slug}`),
+      },
+    ],
   };
 }
 

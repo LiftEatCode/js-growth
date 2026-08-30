@@ -5,6 +5,7 @@ import { POLICY_ROUTES } from "@/content/legal/policy-meta";
 
 const footerLinks = [
   { href: "/website-audit", label: "Free Website Audit" },
+  { href: "/projects", label: "Work" },
   { href: "/contact", label: "Contact" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
