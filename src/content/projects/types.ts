@@ -13,6 +13,21 @@ export type ProjectRelatedService = {
   href: string;
 };
 
+export type ProjectLiveExample = {
+  title: string;
+  description: string;
+  url: string;
+  /** Visible CTA / accessible name. Prefer natural anchors over repeated keywords. */
+  linkLabel?: string;
+};
+
+export type ProjectLiveExamples = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  items: readonly ProjectLiveExample[];
+};
+
 export type ProjectTechnology = {
   name: string;
   outcome: string;
@@ -42,6 +57,11 @@ export type ProjectCaseStudy = {
   projectTypes: readonly string[];
   liveUrl?: string;
   liveUrlLabel?: string;
+  /**
+   * Public analytics slug for live-site clicks (e.g. "tha-shop").
+   * Not a database ID — `project_id` is forbidden in analytics params.
+   */
+  liveSiteId?: string;
   featured: boolean;
   published: boolean;
   publishedAtIso: string;
@@ -73,6 +93,7 @@ export type ProjectCaseStudy = {
       description: ReactNode;
     }[];
   };
+  liveExamples?: ProjectLiveExamples;
   sections: readonly ProjectNarrativeSection[];
   beforeAfter: {
     beforeTitle: string;

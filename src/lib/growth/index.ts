@@ -9,11 +9,13 @@ export {
   isAllowedGrowthEventParamKey,
   sanitizeGrowthEventParams,
   trackGrowthEvent,
+  PROJECT_LIVE_SITE_SURFACES,
   type GrowthEventName,
   type GrowthEventParams,
   type GrowthCtaPlacement,
   type GrowthCtaKind,
   type GrowthCtaLocation,
+  type ProjectLiveSiteSurface,
 } from "./events";
 
 export {

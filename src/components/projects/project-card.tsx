@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Wrench } from "lucide-react";
 
+import { ProjectLiveSiteLink } from "@/components/projects/project-live-site-link";
 import { Button, Card } from "@/components/ui";
 import type { ProjectCaseStudy } from "@/content/projects";
 import { getProjectPath } from "@/content/projects";
@@ -93,14 +94,15 @@ export function ProjectCard({
               className="w-full justify-between sm:w-auto"
               nativeButton={false}
               render={
-                <a
+                <ProjectLiveSiteLink
                   href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  project={project.liveSiteId}
+                  surface="project-card"
+                  aria-label={`Visit website for ${project.client} (opens in a new tab)`}
                 />
               }
             >
-              {project.liveUrlLabel ?? "Visit site"}
+              Visit Website
               <ArrowUpRight aria-hidden="true" className="size-4" />
             </Button>
           ) : null}

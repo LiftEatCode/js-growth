@@ -2,7 +2,12 @@ import { thaShopWebsiteRedesign } from "./tha-shop-website-redesign";
 
 import type { ProjectCaseStudy } from "./types";
 
-export type { ProjectCaseStudy, ProjectImage } from "./types";
+export type {
+  ProjectCaseStudy,
+  ProjectImage,
+  ProjectLiveExample,
+  ProjectLiveExamples,
+} from "./types";
 
 /**
  * Published and draft case studies. Add a new project file and register it

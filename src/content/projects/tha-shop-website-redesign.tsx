@@ -21,7 +21,8 @@ export const thaShopWebsiteRedesign: ProjectCaseStudy = {
     "Local Business Website",
   ],
   liveUrl: "https://thashops.com",
-  liveUrlLabel: "Visit Tha Shop",
+  liveUrlLabel: "Visit Live Website",
+  liveSiteId: "tha-shop",
   featured: true,
   published: true,
   publishedAtIso: "2026-08-30",
@@ -137,6 +138,49 @@ export const thaShopWebsiteRedesign: ProjectCaseStudy = {
         title: "Conversion-event architecture",
         description:
           "The site can record appointment, phone, and directions events as measurement is put to work after launch.",
+      },
+    ],
+  },
+  liveExamples: {
+    eyebrow: "Live Website",
+    title: "Explore the Live Website",
+    description:
+      "The best way to see the difference is to explore the finished site. Here are a few areas of the new Tha Shop website that demonstrate the structure, content, and lead-generation system built for the business.",
+    items: [
+      {
+        title: "Homepage",
+        description:
+          "See the redesigned homepage, service positioning, local messaging, and conversion-focused calls to action.",
+        url: "https://thashops.com",
+        linkLabel: "Visit the homepage",
+      },
+      {
+        title: "Automotive Services",
+        description:
+          "Explore the service architecture created to help customers understand what Tha Shop offers while supporting future organic search growth.",
+        url: "https://thashops.com/auto-services",
+        linkLabel: "Automotive Services",
+      },
+      {
+        title: "Motorcycle Services",
+        description:
+          "See how a separate service area was structured for Tha Shop's motorcycle repair, maintenance, and custom work.",
+        url: "https://thashops.com/motorcycle-services",
+        linkLabel: "Motorcycle Services",
+      },
+      {
+        title: "SEO Content System",
+        description:
+          "Explore the content system built to support educational automotive content, internal linking, and continued search visibility growth.",
+        url: "https://thashops.com/blog",
+        linkLabel: "Explore the Blog",
+      },
+      {
+        title: "Lead Generation",
+        description:
+          "See the customer contact and appointment experience built to turn website visitors into real service inquiries.",
+        url: "https://thashops.com/contact#appointment",
+        linkLabel: "Contact Tha Shop",
       },
     ],
   },

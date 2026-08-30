@@ -123,6 +123,16 @@ assert(
 );
 assert(isGrowthEventName("audit_completed"), "audit_completed is growth event");
 assert(!isGrowthEventName("button_clicked"), "noisy events not in taxonomy");
+assert(
+  GROWTH_EVENTS.projectLiveSiteClicked === "project_live_site_click",
+  "project live site click event",
+);
+assert(isAllowedGrowthEventParamKey("project"), "project slug allowed");
+assert(isAllowedGrowthEventParamKey("surface"), "surface allowed");
+assert(
+  !isForbiddenAnalyticsParamKey("project"),
+  "project slug key is not a forbidden ID",
+);
 
 assert(
   GROWTH_KEY_EVENT_CANDIDATES.includes(GROWTH_EVENTS.auditSubmitted),
@@ -146,6 +156,15 @@ assert(safe && !("report_id" in safe), "strips report_id");
 assert(safe && !("prospect_id" in safe), "strips prospect_id");
 assert(isAllowedGrowthEventParamKey("placement"), "placement allowed");
 assert(!isAllowedGrowthEventParamKey("email"), "email not allowed growth key");
+
+const liveSiteParams = sanitizeGrowthEventParams({
+  project: "tha-shop",
+  surface: "case-study-hero",
+  url: "https://thashops.com",
+} as Record<string, string | number | boolean>);
+assert(liveSiteParams?.project === "tha-shop", "keeps public project slug");
+assert(liveSiteParams?.surface === "case-study-hero", "keeps live-site surface");
+assert(liveSiteParams && !("url" in liveSiteParams), "strips destination url");
 
 for (const key of [
   "prospect_id",

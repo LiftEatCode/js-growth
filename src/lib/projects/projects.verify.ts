@@ -130,6 +130,20 @@ assert(
   "primary CTA is website audit",
 );
 assert(project?.cta.secondaryHref === "/contact", "secondary CTA is contact");
+assert(project?.liveSiteId === "tha-shop", "public analytics slug, not a database ID");
+assert(project?.liveExamples?.items.length === 5, "five live examples");
+
+const expectedLiveUrls = [
+  "https://thashops.com",
+  "https://thashops.com/auto-services",
+  "https://thashops.com/motorcycle-services",
+  "https://thashops.com/blog",
+  "https://thashops.com/contact#appointment",
+];
+const liveExampleUrls = project?.liveExamples?.items.map((item) => item.url) ?? [];
+for (const url of expectedLiveUrls) {
+  assert(liveExampleUrls.includes(url), `live example ${url}`);
+}
 
 const caseStudySource = readFileSync(
   join(repoRoot, "src/content/projects/tha-shop-website-redesign.tsx"),
@@ -140,13 +154,38 @@ assert(!/ranking increased|traffic increased|PageSpeed|Lighthouse \d/i.test(case
 assert(!/Kevin/.test(caseStudySource), "no fabricated quote attribution");
 assert(caseStudySource.includes("thashops.com"), "live domain mentioned");
 assert(!caseStudySource.includes("target=\"_blank\""), "external link safety belongs in the view, not overused in copy");
+assert(!/rel="nofollow"/.test(caseStudySource), "no nofollow on editorial client links");
 
 const caseStudyView = readFileSync(
   join(repoRoot, "src/components/projects/case-study-view.tsx"),
   "utf8",
 );
-assert(caseStudyView.includes('target="_blank"'), "live site opens in a new tab");
-assert(caseStudyView.includes('rel="noopener noreferrer"'), "external link is safe");
+assert(caseStudyView.includes("Visit Live Website"), "hero live-site CTA");
+assert(caseStudyView.includes("Explore the Live Website"), "explore section heading");
+assert(caseStudyView.includes("ProjectLiveSiteLink"), "shared live-site link");
+assert(caseStudyView.includes("case-study-hero"), "hero surface");
+assert(caseStudyView.includes("live-example"), "example surface");
+assert(caseStudyView.includes("case-study-footer"), "footer surface");
+assert(caseStudyView.includes("See the finished website at"), "footer live-site link");
+assert(!/rel="nofollow"/.test(caseStudyView), "view does not nofollow client site");
+
+const liveSiteLink = readFileSync(
+  join(repoRoot, "src/components/projects/project-live-site-link.tsx"),
+  "utf8",
+);
+assert(liveSiteLink.includes('target="_blank"'), "tracked link opens new tab");
+assert(liveSiteLink.includes('rel="noopener noreferrer"'), "noopener noreferrer");
+assert(!liveSiteLink.includes("nofollow"), "editorial, not nofollow");
+assert(liveSiteLink.includes("projectLiveSiteClicked"), "uses growth event");
+assert(!/trackGrowthEvent\([\s\S]*?url\s*:/.test(liveSiteLink), "does not send destination URL");
+
+const projectCard = readFileSync(
+  join(repoRoot, "src/components/projects/project-card.tsx"),
+  "utf8",
+);
+assert(projectCard.includes("View Case Study"), "card primary CTA");
+assert(projectCard.includes("Visit Website"), "card secondary live-site CTA");
+assert(projectCard.includes("project-card"), "card analytics surface");
 
 const footer = readFileSync(
   join(repoRoot, "src/components/layout/site-footer.tsx"),

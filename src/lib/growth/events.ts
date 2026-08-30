@@ -29,6 +29,8 @@ export const GROWTH_EVENTS = {
   facebookFollowCtaClicked: "facebook_follow_cta_clicked",
   /** Existing checkout intent — marketing observation only; Stripe is payment authority. */
   professionalCheckoutStarted: "professional_checkout_started",
+  /** Case-study live client website click. Does not include the destination URL. */
+  projectLiveSiteClicked: "project_live_site_click",
 } as const;
 
 export type GrowthEventName =
@@ -89,6 +91,16 @@ export const GROWTH_CTA_LOCATIONS = [
 
 export type GrowthCtaLocation = (typeof GROWTH_CTA_LOCATIONS)[number];
 
+export const PROJECT_LIVE_SITE_SURFACES = [
+  "case-study-hero",
+  "live-example",
+  "project-card",
+  "case-study-footer",
+] as const;
+
+export type ProjectLiveSiteSurface =
+  (typeof PROJECT_LIVE_SITE_SURFACES)[number];
+
 export type GrowthEventParams = {
   placement?: GrowthCtaPlacement;
   cta_kind?: GrowthCtaKind;
@@ -104,6 +116,8 @@ export type GrowthEventParams = {
   form_name?: string;
   surface?: string;
   experiment_id?: string;
+  /** Public client slug for live-site clicks, e.g. "tha-shop". Not a database ID. */
+  project?: string;
 };
 
 export function isGrowthEventName(name: string): name is GrowthEventName {
@@ -125,7 +139,8 @@ export function isAllowedGrowthEventParamKey(key: string): boolean {
     key === "successful_competitor_count" ||
     key === "form_name" ||
     key === "surface" ||
-    key === "experiment_id"
+    key === "experiment_id" ||
+    key === "project"
   );
 }
 

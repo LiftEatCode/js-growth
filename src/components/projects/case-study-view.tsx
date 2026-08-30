@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { CTASection } from "@/components/marketing";
+import { ProjectLiveSiteLink } from "@/components/projects/project-live-site-link";
 import {
   Button,
   Card,
@@ -40,7 +41,17 @@ const relatedServiceIcons: Record<
   "/growth-system": Workflow,
 };
 
+function liveSiteHostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
 export function CaseStudyView({ project }: CaseStudyViewProps) {
+  const liveSiteId = project.liveSiteId;
+  const liveExamples = project.liveExamples?.items ?? [];
   return (
     <>
       <section className="relative isolate overflow-hidden bg-brand text-white">
@@ -72,32 +83,34 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button
+                size="xl"
+                nativeButton={false}
+                render={<Link href={project.cta.primaryHref} />}
+              >
+                {project.cta.primaryLabel}
+                <ArrowRight aria-hidden="true" className="ml-1 size-4" />
+              </Button>
+
               {project.liveUrl ? (
                 <Button
                   size="xl"
+                  variant="outline"
                   nativeButton={false}
                   render={
-                    <a
+                    <ProjectLiveSiteLink
                       href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      project={liveSiteId}
+                      surface="case-study-hero"
+                      aria-label={`Visit live website for ${project.client} (opens in a new tab)`}
                     />
                   }
+                  className="border-white/15 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
                 >
-                  {project.liveUrlLabel ?? "Visit live site"}
+                  Visit Live Website
                   <ArrowUpRight aria-hidden="true" className="ml-1 size-4" />
                 </Button>
               ) : null}
-
-              <Button
-                size="xl"
-                variant="outline"
-                nativeButton={false}
-                render={<Link href="/projects" />}
-                className="border-white/15 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
-              >
-                All client work
-              </Button>
             </div>
           </div>
         </Container>
@@ -244,7 +257,77 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
         </Container>
       </Section>
 
-      <Section className="border-y border-border bg-slate-50/60">
+      {liveExamples.length > 0 ? (
+        <Section className="border-y border-border bg-slate-50/60">
+          <Container>
+            <SectionHeader
+              eyebrow={project.liveExamples?.eyebrow ?? "Live Website"}
+              title={
+                project.liveExamples?.title ?? "Explore the Live Website"
+              }
+              description={
+                project.liveExamples?.description ??
+                "The best way to see the difference is to explore the finished site."
+              }
+              align="center"
+              className="mx-auto max-w-3xl"
+            />
+
+            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {liveExamples.map((example) => {
+                const linkLabel = example.linkLabel ?? example.title;
+
+                return (
+                  <ProjectLiveSiteLink
+                    key={example.url}
+                    href={example.url}
+                    project={liveSiteId}
+                    surface="live-example"
+                    aria-label={`${linkLabel} (opens in a new tab)`}
+                    className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-blue/15"
+                  >
+                    <Card
+                      variant="elevated"
+                      padding="lg"
+                      interactive
+                      className="flex h-full flex-col"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="font-heading text-xl font-semibold tracking-tight text-brand">
+                          {example.title}
+                        </h3>
+                        <ArrowUpRight
+                          aria-hidden="true"
+                          className="mt-1 size-5 shrink-0 text-slate-300 transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-blue"
+                        />
+                      </div>
+
+                      <p className="mt-3 flex-1 leading-7 text-muted">
+                        {example.description}
+                      </p>
+
+                      <div className="mt-6 flex flex-col gap-1">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue">
+                          {linkLabel}
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="size-4"
+                          />
+                        </span>
+                        <span className="text-xs font-medium text-muted">
+                          Opens live website in a new tab
+                        </span>
+                      </div>
+                    </Card>
+                  </ProjectLiveSiteLink>
+                );
+              })}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      <Section>
         <Container>
           <SectionHeader
             eyebrow="Before / After"
@@ -452,6 +535,21 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
           </div>
         </Container>
       </Section>
+
+      {project.liveUrl ? (
+        <div className="px-6 pb-2 text-center">
+          <ProjectLiveSiteLink
+            href={project.liveUrl}
+            project={liveSiteId}
+            surface="case-study-footer"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue underline-offset-4 hover:underline"
+            aria-label={`See the finished ${project.client} website at ${liveSiteHostname(project.liveUrl)} (opens in a new tab)`}
+          >
+            See the finished website at {liveSiteHostname(project.liveUrl)}
+            <ArrowUpRight aria-hidden="true" className="size-4" />
+          </ProjectLiveSiteLink>
+        </div>
+      ) : null}
 
       <CTASection
         title={project.cta.title}
