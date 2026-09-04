@@ -55,6 +55,7 @@ export default function RootLayout({
     getWebsiteSchema(),
   ];
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
+  const clarityProjectId = process.env.NEXT_CLARITY_PROJECT_ID?.trim();
 
   return (
     <html
@@ -78,7 +79,9 @@ export default function RootLayout({
           <SiteFooter />
         </div>
         {gaMeasurementId ? <GoogleAnalytics gaId={gaMeasurementId} /> : null}
-        <MicrosoftClarity />
+        {clarityProjectId ? (
+          <MicrosoftClarity projectId={clarityProjectId} />
+        ) : null}
         <AcquisitionCaptureBeacon />
       </body>
     </html>
