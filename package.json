@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
     "test:verify": "node scripts/run-verify.mjs",
+    "audit:gbp": "tsx src/lib/gbp-audit/cli.ts",
     "test:e2e": "playwright test",
     "test:commercial:integration": "tsx tests/commercial/integration/commercial-workflow.integration.ts",
     "test:commercial:db": "COMMERCIAL_TEST_MOCK_RESEND=1 tsx --import ./tests/commercial/shims/register.mjs tests/commercial/integration/commercial-workflow.db.integration.ts",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@hookform/resolvers": "^5.5.7",
+    "@microsoft/clarity": "^1.0.2",
     "@neondatabase/serverless": "^1.1.0",
     "@next/third-parties": "^16.2.12",
     "@prisma/adapter-neon": "^7.9.1",
