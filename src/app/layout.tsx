@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { MicrosoftClarity } from "@/components/analytics/microsoft-clarity";
+import { ConversionEventTracker } from "@/components/analytics/conversion-event-tracker";
 import { AcquisitionCaptureBeacon } from "@/components/growth/growth-page-beacon";
 
 import "./globals.css";
@@ -82,6 +83,7 @@ export default function RootLayout({
         {clarityProjectId ? (
           <MicrosoftClarity projectId={clarityProjectId} />
         ) : null}
+        <ConversionEventTracker />
         <AcquisitionCaptureBeacon />
       </body>
     </html>
