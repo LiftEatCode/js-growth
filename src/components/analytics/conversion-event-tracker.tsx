@@ -32,8 +32,8 @@ function detectCompletedStates(): void {
     trackConversionEvent(
       CONVERSION_EVENTS.auditCompleted,
       {
-        placement: "audit_landing",
-        surface: "website_audit",
+        placement: "audit_page",
+        surface: "audit_results",
         report_context: "inline_landing",
       },
       { oncePerSession: true },
@@ -61,14 +61,14 @@ export function ConversionEventTracker() {
 
       if (href.toLowerCase().startsWith("tel:")) {
         trackConversionEvent(CONVERSION_EVENTS.phoneClicked, {
-          surface: "global_link",
+          surface: "page",
         });
         return;
       }
 
       if (href.toLowerCase().startsWith("mailto:")) {
         trackConversionEvent(CONVERSION_EVENTS.emailClicked, {
-          surface: "global_link",
+          surface: "page",
         });
         return;
       }
@@ -80,7 +80,7 @@ export function ConversionEventTracker() {
           destination.pathname === "/contact"
         ) {
           trackConversionEvent(CONVERSION_EVENTS.contactClicked, {
-            surface: "contact_link",
+            surface: "page",
           });
         }
       } catch {
@@ -115,8 +115,8 @@ export function ConversionEventTracker() {
         trackConversionEvent(
           CONVERSION_EVENTS.auditStarted,
           {
-            placement: "audit_landing",
-            surface: "website_audit",
+            placement: "audit_page",
+            surface: "audit_form",
           },
           {
             ga4: false,
@@ -149,8 +149,8 @@ export function ConversionEventTracker() {
         trackConversionEvent(
           CONVERSION_EVENTS.auditStarted,
           {
-            placement: "audit_landing",
-            surface: "website_audit",
+            placement: "audit_page",
+            surface: "audit_form",
           },
           {
             ga4: false,
