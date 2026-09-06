@@ -63,14 +63,18 @@ assert.equal(
   undefined,
 );
 
-for (const params of [
+const rejectedMetadataCases: Array<
+  Record<string, string | number | boolean>
+> = [
   { placement: "person@example.com" },
   { form_name: "9365551212" },
   { surface: "John Smith" },
   { report_context: "https://example.com/private" },
   { source_channel: "not_a_real_channel" },
   { placement: 123 },
-]) {
+];
+
+for (const params of rejectedMetadataCases) {
   assert.equal(
     sanitizeConversionEventParams(params),
     undefined,
