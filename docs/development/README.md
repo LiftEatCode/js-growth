@@ -20,6 +20,7 @@ Canonical index: [`../README.md`](../README.md).
 | [ai-architecture.md](ai-architecture.md) | All OpenAI paths |
 | [external-services.md](external-services.md) | APIs / env categories |
 | [google-business-profile.md](google-business-profile.md) | GBP OAuth / Cloud setup (Sprint 12.1) |
+| [../gbp-audit-v0.1.md](../gbp-audit-v0.1.md) | GBP Audit Engine v0.2 (score + maturity + confidence; no Google API) |
 | [database-guide.md](database-guide.md) | Prisma entity guide |
 | [security-privacy.md](security-privacy.md) | Boundaries & safety rules |
 | [cost-controls.md](cost-controls.md) | Caps & spend |
