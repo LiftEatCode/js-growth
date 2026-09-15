@@ -2,6 +2,10 @@ import "server-only";
 
 import type { Prisma } from "@/generated/prisma/client";
 import {
+  createDeterministicBusinessEventId,
+  publishBusinessEventSafely,
+} from "@/lib/business-events";
+import {
   normalizeAcquisitionForPersistence,
   type AcquisitionContextV1,
 } from "@/lib/growth/acquisition-capture";
@@ -20,8 +24,8 @@ export type CreateContactSubmissionInput = {
 };
 
 /**
- * Persist contact submission. Attribution failures must not throw to callers
- * that already delivered email — callers should catch.
+ * Persist contact submission. Attribution and JS OS publishing failures must not
+ * throw to callers that already delivered email.
  */
 export async function createContactSubmission(
   input: CreateContactSubmissionInput,
@@ -49,6 +53,19 @@ export async function createContactSubmission(
       },
       select: { id: true },
     });
+
+    await publishBusinessEventSafely({
+      version: 1,
+      eventId: createDeterministicBusinessEventId("quote", row.id),
+      eventType: "growth.quote_submitted",
+      occurredAt: new Date().toISOString(),
+      title: "Quote request submitted",
+      metadata: {
+        form_name: "contact",
+        source: "website",
+      },
+    });
+
     return { ok: true, id: row.id };
   } catch (error) {
     console.error("ContactSubmission persist failed:", error);

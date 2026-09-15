@@ -1,5 +1,9 @@
 "use server";
 
+import {
+  createDeterministicBusinessEventId,
+  publishBusinessEventSafely,
+} from "@/lib/business-events";
 import { normalizeAcquisitionForPersistence } from "@/lib/growth/acquisition-capture";
 import {
   mergeAttributionWithFunnelContext,
@@ -113,6 +117,18 @@ export async function auditWebsite(
         },
       };
     }
+
+    await publishBusinessEventSafely({
+      version: 1,
+      eventId: createDeterministicBusinessEventId("audit", report.id),
+      eventType: "growth.audit_completed",
+      occurredAt: report.createdAt,
+      title: "Website audit completed",
+      metadata: {
+        audit_type: "website",
+        result: "completed",
+      },
+    });
 
     return {
       ...toClientWebsiteAuditResult(
