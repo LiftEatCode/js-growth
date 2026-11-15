@@ -463,6 +463,17 @@ export const howMuchDoesSeoCostSmallBusinessPost: BlogPost = {
         on conversion clarity before buying more traffic.
       </p>
 
+      <h2>Compare quotes by what gets done</h2>
+      <p>
+        Ask each provider to list the pages or profile changes they will deliver, the access they need,
+        who implements the fixes, and what reporting is included. A one-time fix to a broken quote
+        form has a different scope from ongoing service-page research, writing, and measurement.
+      </p>
+      <p>
+        If you need a starting point, <Link href="/free-check">request a free personal check</Link>.
+        The optional $750 Local Visibility Sprint covers three agreed fixes.
+      </p>
+
       <h2>Where should you start?</h2>
 
       <p>A practical sequence:</p>

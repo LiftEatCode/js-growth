@@ -90,14 +90,13 @@ export default function SeoServicePage() {
               </div>
 
               <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight tracking-[-0.05em] text-white sm:text-5xl lg:text-6xl">
-                SEO services for small businesses — without ranking guarantees.
+                SEO for small businesses that serve local customers.
               </h1>
 
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
-                Many small businesses have a website but still struggle to
-                appear for the searches that matter. JS Solutions strengthens
-                clarity, technical foundations, content relevance, and
-                measurement — starting with evidence, not shortcuts.
+                We help repair shops, contractors, and fabricators around Magnolia, Tomball,
+                and The Woodlands fix missing service pages, indexing issues,
+                and unclear paths to call or request a quote.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -106,14 +105,14 @@ export default function SeoServicePage() {
                   nativeButton={false}
                   render={
                     <GrowthTrackedLink
-                      href="/contact"
+                      href="/free-check"
                       growthEvent="service_cta_clicked"
                       placement="service"
                       ctaKind="contact"
                     />
                   }
                 >
-                  Talk about SEO
+                  Request a Free Website &amp; Google Check
                   <ArrowRight aria-hidden="true" className="ml-1 size-4" />
                 </Button>
 
@@ -338,11 +337,11 @@ export default function SeoServicePage() {
 
       <CTASection
         title="Ready to strengthen your SEO foundations?"
-        description="Start with a Website Growth Audit or talk with us about diagnose-first SEO — without ranking guarantees."
+        description="Run an automated website audit or ask for a personal review of your website and Google Business Profile."
         primaryLabel="Run Website Audit"
         primaryHref="/website-audit"
-        secondaryLabel="Contact"
-        secondaryHref="/contact"
+        secondaryLabel="Request a Personal Review"
+        secondaryHref="/free-check"
       />
     </>
   );

@@ -143,8 +143,8 @@ export default function WebsiteAuditPage() {
       <CTASection
         title="Want help implementing the findings?"
         description="JS Solutions can help prioritize and implement the website, SEO, local visibility, conversion, and performance improvements identified in the audit."
-        primaryLabel="Request a Consultation"
-        primaryHref="/contact"
+        primaryLabel="Request a Free Website & Google Check"
+        primaryHref="/free-check"
         secondaryLabel="Run My Free Website Audit"
         secondaryHref="#audit-form"
       />
