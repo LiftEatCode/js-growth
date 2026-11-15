@@ -185,6 +185,13 @@ export const smallBusinessNotShowingUpOnGooglePost: BlogPost = {
         how Maps, website pages, and local relevance work together.
       </p>
 
+      <p>
+        Start by separating a missing website page from a missing Maps listing. Inspect the website URL
+        in Search Console, then search your exact business name in Maps and check profile ownership.
+        If the listing is present and you can manage it, follow our{" "}
+        <Link href="/blog/google-business-profile-optimization">Google Business Profile optimization guide</Link>.
+      </p>
+
       <h2>5. Location and service relevance matter</h2>
 
       <p>

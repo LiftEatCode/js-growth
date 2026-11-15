@@ -219,6 +219,16 @@ export const whyMostSmallBusinessWebsitesDontGenerateLeadsPost: BlogPost = {
         well and where improvement may produce the biggest business impact.
       </p>
 
+      <h2>Try requesting a quote from your phone</h2>
+      <p>
+        Imagine you need a trailer frame repaired. Open the repair page on your phone and see whether
+        you can tell which jobs the shop takes and how to get a quote. Tap the phone number, then
+        submit a labeled test through the form and check that it reaches the inbox someone watches.
+        If either step fails, fix that path before sending more people to the page.
+      </p>
+      <p><Link href="/free-check">Request a free personal website and Google profile check</Link> and
+        we’ll show you one thing we’d fix first.</p>
+
       <h2>What should you do next?</h2>
 
       <p>

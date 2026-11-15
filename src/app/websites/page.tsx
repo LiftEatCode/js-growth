@@ -438,13 +438,32 @@ export default function WebsitesPage() {
         </Container>
       </Section>
 
+      <Section className="bg-slate-50">
+        <Container>
+          <SectionHeader
+            title="Websites we built for local businesses"
+            description="See how we organized services and project information for two different buyers."
+          />
+          <ul className="mt-6 grid gap-6 md:grid-cols-2">
+            <li>
+              <Link className="font-semibold underline" href="/projects/tha-shop-website-redesign">Tha Shop</Link>
+              <p className="mt-2 text-muted">A website for an auto repair and fabrication shop, with clear paths to explore services and get in touch.</p>
+            </li>
+            <li>
+              <Link className="font-semibold underline" href="/projects/dubose-panels-website-redesign">DuBose Panels</Link>
+              <p className="mt-2 text-muted">A rebuilt website that helps commercial buyers find product information and request details for their project.</p>
+            </li>
+          </ul>
+        </Container>
+      </Section>
+
       <CTASection
         title="Build a website that works as hard as your business."
         description="Let’s create a fast, professional, and scalable website designed to generate leads and support your long-term growth."
         primaryLabel="Start Your Website Project"
         primaryHref="/contact"
-        secondaryLabel="Run Website Audit"
-        secondaryHref="/website-audit"
+        secondaryLabel="Request a Free Website Check"
+        secondaryHref="/free-check"
       />
     </>
   );

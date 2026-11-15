@@ -1,3 +1,4 @@
+import { googleBusinessProfileOptimizationPost } from "@/content/blog/google-business-profile-optimization";
 import { howMuchDoesASmallBusinessWebsiteCostPost } from "@/content/blog/how-much-does-a-small-business-website-cost";
 import { howMuchDoesSeoCostSmallBusinessPost } from "@/content/blog/how-much-does-seo-cost-small-business";
 import { howToRedesignYourWebsiteWithoutLosingSeoPost } from "@/content/blog/how-to-redesign-your-website-without-losing-seo";
@@ -14,6 +15,7 @@ import type { BlogPost } from "@/content/blog/types";
 export type { BlogPost } from "@/content/blog/types";
 
 export const blogPosts: BlogPost[] = [
+  googleBusinessProfileOptimizationPost,
   howToRedesignYourWebsiteWithoutLosingSeoPost,
   howMuchDoesSeoCostSmallBusinessPost,
   localSeoChecklistSmallBusinessPost,

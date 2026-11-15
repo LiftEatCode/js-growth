@@ -214,6 +214,13 @@ export const localSeoChecklistSmallBusinessPost: BlogPost = {
         representative scan—not a ranking guarantee.
       </p>
 
+      <p>
+        Open your listing and follow the website link on a phone. Confirm you land on the right page
+        and can reach the business from there. Use the{" "}
+        <Link href="/blog/google-business-profile-optimization">profile optimization guide</Link> for the
+        steps inside the profile itself.
+      </p>
+
       <h2>4. Fix technical SEO problems first</h2>
 
       <p>
