@@ -1,3 +1,4 @@
+import { dubosePanelsWebsiteRedesign } from "./dubose-panels-website-redesign";
 import { thaShopWebsiteRedesign } from "./tha-shop-website-redesign";
 
 import type { ProjectCaseStudy } from "./types";
@@ -15,6 +16,7 @@ export type {
  * from this list.
  */
 export const projects: readonly ProjectCaseStudy[] = [
+  dubosePanelsWebsiteRedesign,
   thaShopWebsiteRedesign,
 ];
 

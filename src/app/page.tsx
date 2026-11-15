@@ -18,12 +18,12 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <FeaturedProjectsSection />
       <HomeWebsiteAuditSection />
       <BusinessProblemsSection {...businessProblems} />
       <HomeGrowthSystemSection />
       <ServicesSection />
       <WhyChooseSection />
-      <FeaturedProjectsSection />
       <ProcessSection />
       <TestimonialsSection />
       <FAQSection />

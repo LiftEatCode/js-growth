@@ -237,7 +237,7 @@ export default async function FollowUpQueuePage({
             </p>
             <ul className="space-y-4">
               {contactPreviews.map(({ contact: c, preview }) => (
-                <li key={c.id}>
+                <li key={c.id} id={`submission-${c.id}`}>
                   <Card className="space-y-3 p-4">
                     <p className="text-sm font-semibold text-brand">
                       {c.name} · {c.service}

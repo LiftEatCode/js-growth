@@ -1,5 +1,6 @@
 import "server-only";
 
+import { FREE_CHECK_SERVICE, FREE_CHECK_SOURCES } from "@/content/free-check";
 import type { Prisma } from "@/generated/prisma/client";
 import {
   createDeterministicBusinessEventId,
@@ -54,15 +55,19 @@ export async function createContactSubmission(
       select: { id: true },
     });
 
+    const isFreeCheck = input.service === FREE_CHECK_SERVICE;
+    const leadChannel = FREE_CHECK_SOURCES.find((source) => attribution?.source === source) ?? "other";
+
     await publishBusinessEventSafely({
       version: 1,
       eventId: createDeterministicBusinessEventId("quote", row.id),
-      eventType: "growth.quote_submitted",
+      eventType: isFreeCheck ? "growth.free_check_requested" : "growth.quote_submitted",
       occurredAt: new Date().toISOString(),
-      title: "Quote request submitted",
+      title: isFreeCheck ? "Free website and Google check requested" : "Quote request submitted",
       metadata: {
         form_name: "contact",
         source: "website",
+        ...(isFreeCheck ? { lead_channel: leadChannel, submission_id: row.id } : {}),
       },
     });
 

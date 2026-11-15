@@ -223,3 +223,23 @@ export function ReportImplementationCta({
     </section>
   );
 }
+
+export function FreeCheckReportCta() {
+  return (
+    <section className="print:hidden rounded-2xl border border-border bg-white p-6 sm:p-8">
+      <h2 className="font-heading text-2xl font-semibold text-brand">
+        Want me to show you what I’d fix first?
+      </h2>
+      <p className="mt-3 text-muted">
+        Request a short, personal walkthrough of one improvement to your website or Google Business Profile.
+      </p>
+      <Button
+        className="mt-5"
+        nativeButton={false}
+        render={<GrowthTrackedLink href="/free-check" growthEvent="contact_cta_clicked" placement="report" ctaKind="consultation" />}
+      >
+        Request My Free Check
+      </Button>
+    </section>
+  );
+}
