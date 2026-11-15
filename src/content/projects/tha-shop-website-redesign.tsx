@@ -424,8 +424,8 @@ export const thaShopWebsiteRedesign: ProjectCaseStudy = {
     title: "Outgrown Your Current Website?",
     description:
       "JS Growth can evaluate an existing website, identify technical, SEO, and conversion limitations, and build a migration plan that keeps the search equity you have already earned.",
-    primaryLabel: "Run My Free Website Audit",
-    primaryHref: "/website-audit",
+    primaryLabel: "Get My Free Website & Google Check",
+    primaryHref: "/free-check",
     secondaryLabel: "Talk About My Website",
     secondaryHref: "/contact",
   },

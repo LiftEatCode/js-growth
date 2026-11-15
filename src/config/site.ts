@@ -12,8 +12,8 @@ export const siteConfig = {
     "Helping local businesses grow with high-performance websites, Local SEO, AI automation, and software-driven marketing.",
 
   primaryCta: {
-    name: "Free Website Audit",
-    href: "/website-audit",
+    name: "Free Website & Google Check",
+    href: "/free-check",
   },
 
   navigation: [
