@@ -20,7 +20,7 @@ export function FeaturedProjectsSection() {
   const isSingle = featuredProjects.length === 1;
 
   return (
-    <Section className="bg-white">
+    <Section id="featured-work" className="bg-white scroll-mt-24">
       <Container>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
@@ -45,7 +45,7 @@ export function FeaturedProjectsSection() {
           className={
             isSingle
               ? "mx-auto mt-14 max-w-3xl"
-              : "mt-14 grid gap-6 lg:grid-cols-3"
+              : "mt-14 grid gap-6 lg:grid-cols-2"
           }
         >
           {featuredProjects.map((project) => (

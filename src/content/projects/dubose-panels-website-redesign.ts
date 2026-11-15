@@ -132,8 +132,8 @@ export const dubosePanelsWebsiteRedesign: ProjectCaseStudy = {
     title: "Ready to Modernize Your Website?",
     description:
       "Let's review your current site and plan a rebuild that fits your business, branding, and next stage of growth.",
-    primaryLabel: "Run My Free Website Audit",
-    primaryHref: "/website-audit",
+    primaryLabel: "Get My Free Website & Google Check",
+    primaryHref: "/free-check",
     secondaryLabel: "Talk About My Website",
     secondaryHref: "/contact",
   },

@@ -17,6 +17,7 @@ import { ReportAiInterpretation } from "@/components/website-audit/report-ai-int
 import { ReportCategoryDives } from "@/components/website-audit/report-category-dives";
 import { ReportCategoryScorecard } from "@/components/website-audit/report-category-scorecard";
 import {
+  FreeCheckReportCta,
   ReportImplementationCta,
   ReportUpgradeCta,
 } from "@/components/website-audit/report-ctas";
@@ -239,6 +240,8 @@ export function AuditResults({
         />
         </div>
       ) : null}
+
+      <FreeCheckReportCta />
 
       <ReportImplementationCta
         showImplementationCta={view.capabilities.showImplementationCta}
