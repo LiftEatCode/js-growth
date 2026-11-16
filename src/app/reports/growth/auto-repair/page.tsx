@@ -19,7 +19,7 @@ export default async function AutoRepairFunnelPage() {
   const requests = await prisma.contactSubmission.findMany({
     where: {
       service: FREE_CHECK_SERVICE,
-      createdAt: { gte: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000) },
+      createdAt: { gte: new Date(new Date().getTime() - 28 * 24 * 60 * 60 * 1000) },
       attributionJson: { path: ["landingPath"], equals: AUTO_REPAIR_WEBSITE_PATH },
     },
     select: { leadId: true },
