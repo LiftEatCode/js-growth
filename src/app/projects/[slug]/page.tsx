@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Link from "next/link";
+import { AUTO_REPAIR_WEBSITE_PATH } from "@/content/auto-repair-websites";
 import { CaseStudyView } from "@/components/projects/case-study-view";
 import {
   getProjectBySlug,
@@ -110,6 +112,13 @@ export default async function ProjectCaseStudyPage({
         }}
       />
       <CaseStudyView project={project} />
+      {project.slug === "tha-shop-website-redesign" && (
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          <Link className="font-semibold underline underline-offset-4" href={AUTO_REPAIR_WEBSITE_PATH}>
+            Explore website design for auto repair shops
+          </Link>
+        </div>
+      )}
     </>
   );
 }

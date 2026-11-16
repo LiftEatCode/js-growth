@@ -1,3 +1,4 @@
+import { AUTO_REPAIR_WEBSITE_PATH } from "@/content/auto-repair-websites";
 import type { MetadataRoute } from "next";
 
 import { blogPosts } from "@/content/blog/posts";
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.9,
     },
+    { url: getAbsoluteUrl(AUTO_REPAIR_WEBSITE_PATH), changeFrequency: "monthly" as const, priority: 0.8 },
     {
       url: getAbsoluteUrl("/websites"),
       lastModified: now,

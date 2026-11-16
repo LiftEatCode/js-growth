@@ -1,3 +1,4 @@
+import { AUTO_REPAIR_FUNNEL_PATH } from "@/content/auto-repair-websites";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -356,6 +357,9 @@ export default async function GrowthDashboardPage() {
           >
             Attribution
             <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
+          <Button nativeButton={false} render={<Link href={AUTO_REPAIR_FUNNEL_PATH} />}>
+            Auto Repair Funnel
           </Button>
           <Button
             nativeButton={false}
