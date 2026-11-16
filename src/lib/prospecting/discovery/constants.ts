@@ -13,7 +13,7 @@ export const STALE_DISCOVERY_RUN_MS = 90_000;
 /**
  * Places API (New) Text Search field mask.
  *
- * websiteUri is required so we can drop businesses with no public site.
+ * websiteUri distinguishes website-audit candidates from businesses with no listed site.
  * That field bills the request as Text Search Enterprise. nationalPhoneNumber
  * is the same Enterprise SKU, so including it does not add Place Details
  * calls or a higher Atmosphere SKU.

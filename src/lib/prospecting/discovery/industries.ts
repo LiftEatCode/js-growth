@@ -14,7 +14,7 @@ export function industrySearchPhrase(industry: string): string {
   const trimmed = industry.trim();
 
   if (!trimmed) {
-    return "local contractor";
+    return "local businesses";
   }
 
   const mapped = INDUSTRY_SEARCH_PHRASES[trimmed.toLowerCase()];

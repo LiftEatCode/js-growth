@@ -130,7 +130,10 @@ export function CampaignForm() {
       </div>
 
       <fieldset>
-        <legend className={labelClassName}>Industries</legend>
+        <legend className={labelClassName}>Industries (optional)</legend>
+        <p className="mt-1 text-sm text-muted">
+          Leave blank to search across all industries. Results depend on the provider and are capped per run.
+        </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {SUGGESTED_INDUSTRIES.map((industry) => {
             const checked = selectedIndustries.includes(industry);

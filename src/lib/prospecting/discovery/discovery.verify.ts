@@ -174,6 +174,27 @@ const floodProvider: BusinessDiscoveryProvider = {
 };
 
 async function main(): Promise<void> {
+  for (const locationLabel of ["Magnolia, TX", "Tomball, TX"]) {
+    const broad = await collectDiscoveryBusinesses({
+      provider: {
+        id: "GOOGLE_PLACES",
+        async search(request) {
+          assert(request.query === `local businesses in ${locationLabel}`, "broad query stays category-neutral");
+          return {
+            businesses: [
+              business({ providerBusinessId: "shop", category: "Auto repair shop" }),
+              business({ providerBusinessId: "restaurant", category: "Restaurant", website: null }),
+            ],
+            nextPageToken: null,
+          };
+        },
+      },
+      industries: [],
+      locationLabel,
+      radiusMiles: null,
+    });
+    assert(broad.businesses.length === 2, "mixed categories and missing websites stay in discovery results");
+  }
   const collected = await collectDiscoveryBusinesses({
   provider: floodProvider,
   industries: ["HVAC"],

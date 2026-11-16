@@ -135,7 +135,7 @@ export default async function ProspectingDashboardPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-muted">
-                      {campaign.industries.join(", ") || "—"}
+                      {campaign.industries.join(", ") || "All industries"}
                     </td>
                     <td className="px-4 py-3">
                       <span className="inline-flex items-center gap-1.5">
