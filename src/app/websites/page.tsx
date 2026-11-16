@@ -1,3 +1,4 @@
+import { AUTO_REPAIR_WEBSITE_PATH } from "@/content/auto-repair-websites";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -456,6 +457,10 @@ export default function WebsitesPage() {
           </ul>
         </Container>
       </Section>
+
+      <Container className="pb-10">
+        <Link className="font-semibold underline underline-offset-4" href={AUTO_REPAIR_WEBSITE_PATH}>Explore website design for auto repair shops</Link>
+      </Container>
 
       <CTASection
         title="Build a website that works as hard as your business."
