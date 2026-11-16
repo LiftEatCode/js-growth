@@ -88,13 +88,6 @@ export async function startCampaignDiscovery(
     };
   }
 
-  if (campaign.industries.length === 0) {
-    return {
-      success: false,
-      message: "Add at least one industry before discovering businesses.",
-    };
-  }
-
   if (!getGooglePlacesApiKey()) {
     return {
       success: false,

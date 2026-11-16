@@ -31,7 +31,9 @@ export async function collectDiscoveryBusinesses(
   const seenPlaceIds = new Set<string>();
   let providerRequestCount = 0;
 
-  for (const industry of input.industries) {
+  // An empty industry selection is the broad search mode.
+  const industries = input.industries.length > 0 ? input.industries : [""];
+  for (const industry of industries) {
     if (
       businesses.length >= limit ||
       providerRequestCount >= MAX_PROVIDER_REQUESTS_PER_RUN

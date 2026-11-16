@@ -140,13 +140,6 @@ export function parseCampaignInput(input: {
 
   const industries = parseIndustries(input.industries);
 
-  if (industries.length === 0) {
-    return {
-      success: false,
-      error: "Select or enter at least one industry.",
-    };
-  }
-
   const desiredQualifiedCount = parseDesiredQualifiedCount(
     input.desiredQualifiedCount,
   );

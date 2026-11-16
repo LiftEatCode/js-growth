@@ -325,16 +325,11 @@ export default async function ProspectingCampaignPage({
           <div className="flex flex-col items-stretch gap-3 sm:items-end">
             <DiscoverBusinessesButton
               campaignId={campaign.id}
-              disabled={
-                !campaign.locationLabel.trim() ||
-                campaign.industries.length === 0
-              }
+              disabled={!campaign.locationLabel.trim()}
               disabledReason={
                 !campaign.locationLabel.trim()
                   ? "Add a campaign location before discovering businesses."
-                  : campaign.industries.length === 0
-                    ? "Add at least one industry before discovering businesses."
-                    : undefined
+                  : undefined
               }
             />
             <AuditQualifyButton
