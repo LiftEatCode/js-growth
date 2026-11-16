@@ -182,8 +182,8 @@ async function main(): Promise<void> {
           assert(request.query === `local businesses in ${locationLabel}`, "broad query stays category-neutral");
           return {
             businesses: [
-              business({ providerBusinessId: "shop", category: "Auto repair shop" }),
-              business({ providerBusinessId: "restaurant", category: "Restaurant", website: null }),
+              business({ providerBusinessId: "shop", businessName: "Fixture Auto", category: "Auto repair shop" }),
+              business({ providerBusinessId: "restaurant", businessName: "Fixture Cafe", category: "Restaurant", website: null }),
             ],
             nextPageToken: null,
           };
